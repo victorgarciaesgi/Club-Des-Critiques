@@ -74,5 +74,21 @@ fos_user:
     firewall_name: main
     user_class: AppBundle\Entity\User
     from_email:
-        address: admin@club-crique.com
-        sender_name: admin club critique
+        address: admin@club-critique.com
+        sender_name: "No reply | Club critique"
+    registration:
+        confirmation:
+            enabled: true
+    resetting:
+        email:
+            from_email:
+                address:        admin@club-critique.com
+                sender_name:    "Ressetting Password | Club critique"
+    service:
+        mailer: fos_user.mailer.twig_swift
+    resetting:
+        email:
+            template:   email/password_resetting.email.twig
+    registration:
+        confirmation:
+            template:   '@FOSUser/Registration/email.txt.twig'
