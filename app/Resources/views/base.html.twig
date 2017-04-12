@@ -1,13 +1,56 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
+    <script type="text/javascript" src='https://code.jquery.com/jquery-latest.min.js'></script>
+    <script src='/js/script.js'></script>
+    {% block javascript %}{% endblock %}
+    <link href="/css/main.css" rel="stylesheet">
+    <link href="/css/tools.css" rel="stylesheet">
+    {% block stylesheets %}{% endblock %}
+</head>
+<body>
+<header>
+    <nav>
+        <img class='logo' src="/assets/logoSimple.png" alt="logo">
+        <div class="header-separation"></div>
+        <ul class="header-nav">
+            <li class='menu' active='true'>
+                <img src='/assets/home_active.svg' class="icon">
+                <span class='titre'>Accueil</span>
+            </li>
+            <li class='menu'>
+                <img src='/assets/contenus.svg' class="icon">
+                <span class='titre'>Contenus</span>
+            </li>
+            <li class='menu'>
+                <img src='/assets/salons.svg' class="icon">
+                <span class='titre'>Salons</span>
+            </li>
+            <div class="header-separation"></div>
+            <li id='search'>
+                <input type="text" class="input-search" name="search" placeholder="Recherche...">
+            </li>
+        </ul>
+        <ul class="header-menus">
+            <li id='connexion' popup="popup-connexion" class='menu popup-bouton'>Connexion</li>
+            <li id='notifications' class='menu popup-bouton' popup="popup-notification">
+                <img src='/assets/notifications.svg' only class="icon">
+                <div class="counter">
+                    <span>5</span>
+                </div>
+            </li>
+            <li id='user' class='menu popup-bouton' popup="popup-user">
+                <span class="name">Victor Garcia</span>
+                <div class="picture" style='background-image: url(/assets/profil.jpg)'></div>
+            </li>
+        </ul>
+    </nav>
+</header>
+{% block body %}{% endblock %}
+{% block footer %}{% endblock %}
+</body>
 </html>

@@ -1,0 +1,456 @@
+// imports
+@import "variables.scss";
+
+// keyframes
+@keyframes loading {
+  from {
+    @include rotate(0deg);
+  }
+
+  to {
+    @include rotate(360deg);
+  }
+}
+html{
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  padding-top: 50px;
+  font-family: $mainFont, sans-serif;
+  color: $mainColor;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-width: 800px;
+}
+
+*{
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+span {
+  padding: 0;
+  margin: 0;
+}
+
+p{
+  margin: 0;
+}
+
+ul, li {
+  @include userselect;
+
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  list-style-type: none;
+}
+
+input, textarea {
+  outline: none;
+  border: none;
+  background: none;
+  resize: none;
+}
+
+label {
+  display: block;
+}
+
+.helper {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.header-separation{
+  position: relative;
+  float: left;
+  height: calc(100% - 12px);
+  width: 1px;
+  background-color: $w240;
+  margin: 6px 10px 0 10px;
+}
+
+.l-separation10 {
+  position: relative;
+  float: left;
+  height: 1px;
+  width: calc(100% - 10px);
+  margin: 5px 0 5px 5px;
+  background-color: $w200;
+}
+
+.l-separation20 {
+  position: relative;
+  float: left;
+  height: 1px;
+  width: calc(100% - 20px);
+  margin: 5px 0 5px 10px;
+  background-color: $w200;
+}
+
+// Template champs formulaire
+
+.input-search{
+  position: relative;
+  float: left;
+  border: 1px solid $mainGreen1;
+  background-color: $w245;
+  color: $mainColor;
+  vertical-align: middle;
+  height: 30px;
+  padding: 5px 5px 5px 10px;
+  width: 200px;
+  margin: 5px 0 5px 0;
+  line-height: 30px;
+  font-size: 13px;
+  border-radius: 4px;
+
+  &:hover{
+      background-color: $w250;
+  }
+
+  &:focus{
+    background-color: $w255;
+  }
+}
+
+
+
+.input-form {
+  position: relative;
+  float: left;
+  background-color: $w250;
+  color: $mainColor;
+  height: 30px;
+  padding: 5px 5px 5px 10px;
+  width: 100%;
+  margin: 5px 0 5px 0;
+  line-height: 30px;
+  box-shadow: 0 0 5px $w210;
+  font-size: 13px;
+
+  &:hover {
+    box-shadow: 0 0 6px $w200;
+  }
+
+  &:focus {
+    box-shadow: 0 0 8px rgb(190,190,190);
+  }
+}
+
+input.input-form {
+  height: 30px;
+}
+
+textarea.input-form {
+  height: 50px;
+}
+
+form label {
+  position: relative;
+  float: left;
+  width: 100%;
+  font-size: 14px;
+  font-weight: bold;
+  color: rgb(110, 110, 110);
+  margin-bottom: 5px;
+  margin-top: 10px;
+}
+
+
+// Template bouton
+
+.bouton {
+  position: relative;
+  width: auto;
+  float: left;
+  height: 30px;
+  font-size: $boutonfont;
+  border-radius: 4px;
+  line-height: 30px;
+  margin: 5px;
+  text-align: center;
+  cursor: pointer;
+  font-weight: normal;
+  box-shadow: 0 0 5px $w200;
+  padding: 0px 20px 0px 20px;
+  @include userselect;
+
+
+  &[design='blanc'] {
+    background-color: $w250;
+    color: $g90;
+    border: 1px solid $w220;
+
+    &[state='false']:hover {
+      background-color: $w240;
+    }
+
+    &[state='false']:active {
+      background-color: $w230;
+    }
+
+    &[state='true']:hover {
+      background-color: $mainColor - rgb(20, 20, 20);
+    }
+
+    &[state='true']:active {
+      background-color: $mainColor - rgb(40, 40, 40);
+    }
+
+    &:hover {
+      background-color: $w240;
+    }
+
+    &:active {
+      background-color: $w230;
+    }
+  }
+
+  &[design='brown'] {
+    background-color: $mainMarron;
+    // border: 1px solid ($mainMarron - rgb(20, 20, 20));
+    color: $w240;
+
+    &:hover {
+      background-color: $mainMarron - rgb(20, 20, 20);
+    }
+
+    &:active {
+      background-color: $mainMarron - rgb(40, 40, 40);
+    }
+  }
+
+  &[design='red'] {
+    background-color: $red1;
+    border: 1px solid ($red1 - rgb(20, 20, 20));
+    color: white;
+
+    &:hover {
+      background-color: $red1 - rgb(20, 20, 20);
+    }
+
+    &:active {
+      background-color: $red1 - rgb(40, 40, 40);
+    }
+  }
+
+  &[design='green'] {
+    background-color: $mainGreen2;
+    // border: 1px solid ($mainGreen2 - rgb(20, 20, 20));
+    color: white;
+
+    &:hover {
+      background-color: $mainGreen2 - rgb(20, 20, 20);
+    }
+
+    &:active {
+      background-color: $mainGreen2 - rgb(40, 40, 40);
+    }
+  }
+
+  &[image] {
+    img {
+      vertical-align: middle;
+      margin: 0 5px 0 5px;
+    }
+
+    span {
+      padding: 0 5px 0 0;
+    }
+  }
+}
+
+.switch {
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  width: 60px;
+  height: 30px;
+  border-radius: 30px;
+  border: 1px solid $w230;
+
+  @include transition(all, 0.3s);
+
+  .cercle {
+    position: absolute;
+    height: 28px;
+    width: 28px;
+    left: 1px;
+    top: 1px;
+    border-radius: 100%;
+    background-color: white;
+
+    @include transition(all, 0.3s);
+  }
+
+  &[state='true'] {
+    background-color: $green1;
+
+    .cercle {
+      left: 1px;
+    }
+  }
+
+  &[state='false'] {
+    background-color: $w220;
+
+    .cercle {
+      left: 31px;
+    }
+  }
+}
+
+.lazyload {
+  position: relative;
+  float: left;
+  width: 100%;
+  height: 70px;
+
+  .lazyloadgif {
+    position: absolute;
+    left: 50%;
+    margin-left: -20px;
+    height: 50px;
+    width: 50px;
+    top: 15px;
+    background-image: url("../assets/load.gif");
+    background-size: contain;
+  }
+}
+
+a.hoverName {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// .popupConfirm
+
+// classes generiques
+
+.d-none {
+  display: none;
+}
+
+// taille
+.h-auto {
+  height: auto;
+}
+
+.h-100 {
+  height: 100%;
+}
+
+.w-auto {
+  width: auto;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+// floats
+.f-left {
+  position: relative;
+  float: left;
+}
+
+.f-right {
+  position: relative;
+  float: right;
+}
+
+.margin-t10 {
+  margin-top: 10px;
+}
+
+// backgrounds
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-w250 {
+  background-color: $w250;
+}
+
+.bg-w245 {
+  background-color: $w245;
+}
+
+.bg-w240 {
+  background-color: $w240;
+}
+
+.bg-w235 {
+  background-color: $w235;
+}
+
+.bg-w230 {
+  background-color: $w230;
+}
+
+.bg-w220 {
+  background-color: $w220;
+}
+
+.bg-w210 {
+  background-color: $w210;
+}
+
+.bg-w200 {
+  background-color: $w200;
+}
+
+// couleurs
+.c-mainColor {
+  color: $mainColor;
+}
+
+.c-grey90 {
+  color: $g90;
+}
+
+.c-w250 {
+  color: $w250;
+}
+
+.c-w240 {
+  color: $w240;
+}
+
+.c-red1 {
+  color: $red1;
+}
+
+//fonts
+
+.f-bold {
+  font-weight: bold;
+}
+
+.f-normal {
+  font-weight: normal;
+}
