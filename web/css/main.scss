@@ -346,14 +346,17 @@ aside{
   width: auto;
   height: auto;
   min-width : 200px;
-  min-height: 270px;
+  color: rgb(100,100,100);
+  min-height: 150px;
   z-index: 1001;
+  @include userselect;
 
   #pin{
     position: absolute;
     top: -9px;
     left: 50%;
     margin-left: -10px;
+    z-index: 1002;
   }
 
   .header{
@@ -363,6 +366,8 @@ aside{
     height: 30px;
     line-height: 30px;
     width: 100%;
+    color: rgb(100,100,100);
+    background-color: $w245;
     // border-bottom: 1px solid $mainGreen2;
     box-shadow: 0 1px 3px $w230;
     font-weight: bold;
@@ -374,6 +379,29 @@ aside{
     float: left;
     width: 100%;
     height: auto;
+    padding: 5px;
+  }
+
+  .connexion{
+    position: relative;
+    float: left;
+    width: 100%;
+    height: auto;
+    padding: 5px 5px 0 5px;
+  }
+
+  .footer{
+    position: relative;
+    float: left;
+    height: auto;
+    padding: 0 5px 5px 5px;
+    width: 100%;
+    text-align: center;
+
+    .bouton{
+      display: inline-block;
+      float: none;
+    }
   }
 
   .user{
@@ -381,6 +409,7 @@ aside{
     float: left;
     width: 100%;
     height: auto;
+    background-color: $w245;
     border-bottom: 1px solid $w240;
 
     .user-picture{

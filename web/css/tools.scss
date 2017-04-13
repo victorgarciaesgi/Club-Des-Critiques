@@ -121,7 +121,7 @@ label {
   vertical-align: middle;
   height: 30px;
   padding: 5px 5px 5px 10px;
-  width: 200px;
+  width: 250px;
   margin: 5px 0 5px 0;
   line-height: 30px;
   font-size: 13px;
@@ -138,37 +138,58 @@ label {
 
 
 
+// .input-form {
+//   position: relative;
+//   float: left;
+//   background-color: $w250;
+//   color: $mainColor;
+//   height: 30px;
+//   padding: 5px 5px 5px 10px;
+//   width: 100%;
+//   margin: 5px 0 5px 0;
+//   line-height: 30px;
+//   box-shadow: 0 0 5px $w210;
+//   font-size: 13px;
+//
+//   &:hover {
+//     box-shadow: 0 0 6px $w200;
+//   }
+//
+//   &:focus {
+//     box-shadow: 0 0 8px rgb(190,190,190);
+//   }
+// }
+
+
 .input-form {
   position: relative;
   float: left;
-  background-color: $w250;
+  border: 1px solid $mainGreen1;
+  background-color: white;
   color: $mainColor;
-  height: 30px;
+  vertical-align: middle;
+  height: 35px;
   padding: 5px 5px 5px 10px;
   width: 100%;
   margin: 5px 0 5px 0;
   line-height: 30px;
-  box-shadow: 0 0 5px $w210;
   font-size: 13px;
+  border-radius: 4px;
 
-  &:hover {
-    box-shadow: 0 0 6px $w200;
+  &:hover{
+    border: 1px solid darken($mainGreen1, 10%);
   }
 
-  &:focus {
-    box-shadow: 0 0 8px rgb(190,190,190);
+  &:focus{
+    border: 1px solid darken($mainGreen1, 20%);
   }
-}
-
-input.input-form {
-  height: 30px;
 }
 
 textarea.input-form {
   height: 50px;
 }
 
-form label {
+form label.label {
   position: relative;
   float: left;
   width: 100%;
@@ -186,15 +207,17 @@ form label {
   position: relative;
   width: auto;
   float: left;
-  height: 30px;
+  height: 33px;
   font-size: $boutonfont;
   border-radius: 4px;
-  line-height: 30px;
+  line-height: 33px;
   margin: 5px;
   text-align: center;
   cursor: pointer;
+  border: 1px solid transparent;
   font-weight: normal;
-  box-shadow: 0 0 5px $w200;
+  color: white;
+  // box-shadow: 0 0 5px $w230;
   padding: 0px 20px 0px 20px;
   @include userselect;
 
@@ -282,6 +305,54 @@ form label {
     }
   }
 }
+
+
+// composant checkbox
+
+
+.checkbox{
+  position: relative;
+  float: left;
+  padding: 5px;
+  height: auto;
+  width: 100%;
+
+  span{
+    font-size: 13px;
+  }
+
+  label{
+    position: relative;
+    display: inline-block;
+    height: 17px;
+    width: 17px;
+    vertical-align: middle;
+    background-color: white;
+    border-radius: 3px;
+    border: 1px solid $w230;
+    @include bg-center;
+  }
+
+  input{
+    opacity: 0;
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin:0;
+
+    &:checked + label{
+      background-color: $mainGreen2;
+      background-image: url('../assets/done.svg');
+      border: 1px solid transparent;
+    }
+    &:focus + label{
+      border: 1px solid $mainGreen2;
+    }
+  }
+}
+
+
+
 
 .switch {
   display: inline-block;

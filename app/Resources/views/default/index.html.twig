@@ -207,13 +207,31 @@
         </div>
     </div>
 
-    <div id='popup-connexion' class="popup-box" style='width: 400px' state='false'>
+    <div id='popup-connexion' class="popup-box" style='width: 350px' state='false'>
         <img id='pin' src="/assets/up.png" alt="">
         <div class="header">
             Connexion
         </div>
         <div class="content">
-
+          <div class="connexion">
+            <form class="" action="index.html" method="post">
+              <input type="text" class='input-form' name="login" value="" placeholder="Pseudo/Mail">
+              <input type="password" class='input-form' name="password" value="" placeholder="Mot de passe">
+              <div class="checkbox">
+                <input id='souvenir' type="checkbox" name="souvenir" value="">
+                <label for="souvenir"></label>
+                <span> Se souvenir de moi</span>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="footer">
+          <div class="bouton" design='blanc'>
+            Mot de passe oublié
+          </div>
+          <div class="bouton" design='green'>
+            Connexion
+          </div>
         </div>
     </div>
 
@@ -231,4 +249,18 @@
             <li class='user-option'>Deconnexion</li>
         </ul>
     </div>
+
+
+    <div id='popup-search' class="popup-box" style='width: 400px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Contenus
+        </div>
+        <div class="content">
+          <div class="search-content">
+
+          </div>
+        </div>
+    </div>
+
 {% endblock %}
