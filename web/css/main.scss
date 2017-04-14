@@ -195,6 +195,15 @@ section{
       }
     }
 
+    .contact-form{
+      position: relative;
+      float: left;
+      height: auto;
+      width: 400px;
+      margin-left: 50%;
+      @include translateX(-50%);
+    }
+
     .list-books{
       position: relative;
       float: left;
@@ -366,6 +375,7 @@ aside{
     height: 30px;
     line-height: 30px;
     width: 100%;
+    border-radius: 3px 3px 0 0;
     color: rgb(100,100,100);
     background-color: $w245;
     // border-bottom: 1px solid $mainGreen2;
@@ -448,17 +458,20 @@ aside{
     .user-option{
       position: relative;
       float: left;
-      height: 30px;
+      height: 35px;
       width: 100%;
       padding-left: 20px;
-      line-height: 30px;
+      line-height: 35px;
       font-size: 14px;
       cursor: pointer;
       font-weight: bold;
 
       &:hover{
-        background-color: $mainGreen2;
-        color: white;
+        background-color: $w230;
+      }
+
+      &:active{
+        background-color: $w210;
       }
     }
   }
