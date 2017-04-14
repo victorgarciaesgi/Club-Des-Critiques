@@ -186,7 +186,8 @@ label {
 }
 
 textarea.input-form {
-  height: 50px;
+  height: 80px;
+  line-height: 20px;
 }
 
 form label.label {
@@ -195,9 +196,8 @@ form label.label {
   width: 100%;
   font-size: 14px;
   font-weight: bold;
-  color: rgb(110, 110, 110);
-  margin-bottom: 5px;
-  margin-top: 10px;
+  color: rgb(100,100,100);
+  margin-top: 5px;
 }
 
 
