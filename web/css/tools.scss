@@ -210,7 +210,7 @@ form label.label {
   height: 33px;
   font-size: $boutonfont;
   border-radius: 4px;
-  line-height: 33px;
+  line-height: 32px;
   margin: 5px;
   text-align: center;
   cursor: pointer;
@@ -218,7 +218,7 @@ form label.label {
   font-weight: normal;
   color: white;
   // box-shadow: 0 0 5px $w230;
-  padding: 0px 20px 0px 20px;
+  padding: 0px 17px 0px 17px;
   @include userselect;
 
 
@@ -255,7 +255,7 @@ form label.label {
   &[design='brown'] {
     background-color: $mainMarron;
     // border: 1px solid ($mainMarron - rgb(20, 20, 20));
-    color: $w240;
+    color: white;
 
     &:hover {
       background-color: $mainMarron - rgb(20, 20, 20);
@@ -329,7 +329,7 @@ form label.label {
     vertical-align: middle;
     background-color: white;
     border-radius: 3px;
-    border: 1px solid $w230;
+    border: 1px solid $w200;
     @include bg-center;
   }
 
@@ -345,9 +345,9 @@ form label.label {
       background-image: url('../assets/done.svg');
       border: 1px solid transparent;
     }
-    &:focus + label{
-      border: 1px solid $mainGreen2;
-    }
+    // &:focus + label{
+    //   border: 1px solid $mainGreen2;
+    // }
   }
 }
 
