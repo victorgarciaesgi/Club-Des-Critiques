@@ -159,6 +159,20 @@ section{
   margin-bottom: 10px;
   border-bottom: 2px solid $mainGreen2;
 
+  .footer{
+    position: relative;
+    float: left;
+    height: auto;
+    padding: 5px;
+    width: 100%;
+    text-align: center;
+
+    .bouton{
+      display: inline-block;
+      float: none;
+    }
+  }
+
   .title{
     position: relative;
     float: left;
