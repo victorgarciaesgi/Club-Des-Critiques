@@ -106,7 +106,7 @@ header{
     &[active=true]{
       color: $mainMarron;
       border-radius: 3px 3px 0 0;
-      border-bottom: 2px solid $mainMarron;
+      // border-bottom: 2px solid $mainMarron;
     }
 
     &:hover{

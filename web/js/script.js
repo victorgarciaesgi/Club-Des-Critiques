@@ -54,7 +54,7 @@ $(document).ready(function() {
 
 
 
-  $("header").on('click','.popup-bouton',function(event){
+  $("body").on('click','.popup-bouton',function(event){
     event.stopPropagation();
     var popupName = $(this).attr("popup");
     var state = $("#" + popupName).attr('state');
@@ -89,6 +89,8 @@ $(document).ready(function() {
   $(".popup-box").click(function(event){
     event.stopPropagation();
   })
+
+  
 
 
 

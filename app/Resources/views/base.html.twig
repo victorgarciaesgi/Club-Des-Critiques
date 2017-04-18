@@ -52,5 +52,75 @@
 </header>
 {% block body %}{% endblock %}
 {% block footer %}{% endblock %}
+
+<div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="header">
+        Notifications
+    </div>
+    <div class="content">
+
+    </div>
+</div>
+
+<div id='popup-connexion' class="popup-box" style='width: 350px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="header">
+        Connexion
+    </div>
+    <div class="content">
+      <div class="connexion">
+        <form class="" action="index.html" method="post">
+          <input type="text" class='input-form' name="login" value="" placeholder="Pseudo/Mail">
+          <input type="password" class='input-form' name="password" value="" placeholder="Mot de passe">
+          <div class="checkbox">
+            <input id='souvenir' type="checkbox" name="souvenir" value="">
+            <label for="souvenir"></label>
+            <span> Se souvenir de moi</span>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="bouton" design='blanc'>
+        Mot de passe oublié
+      </div>
+      <div class="bouton" design='green'>
+        Connexion
+      </div>
+    </div>
+</div>
+
+<div id='popup-user' class="popup-box" style='width: 200px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="user">
+        <div class="user-picture" style='background-image: url(/assets/profil.jpg)'></div>
+        <div class="user-name">Victor Garcia</div>
+    </div>
+    <ul class='user-option-list'>
+        <li class='user-option'>Mon profil</li>
+        <li class='user-option'>Éditer mes infos</li>
+        <li class='user-option'>Réglages</li>
+        <li class='user-option'>Aide</li>
+        <li class='user-option'>Deconnexion</li>
+    </ul>
+</div>
+
+
+<div id='popup-search' class="popup-box" style='width: 400px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="header">
+        Contenus
+    </div>
+    <div class="content">
+      <div class="search-content">
+
+      </div>
+    </div>
+</div>
+
+
+
+
 </body>
 </html>
