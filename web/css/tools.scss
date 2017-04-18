@@ -223,32 +223,32 @@ form label.label {
 
 
   &[design='blanc'] {
-    background-color: $w250;
+    background-color: white;
     color: $g90;
     border: 1px solid $w220;
 
-    &[state='false']:hover {
-      background-color: $w240;
-    }
-
-    &[state='false']:active {
-      background-color: $w230;
-    }
-
-    &[state='true']:hover {
-      background-color: $mainColor - rgb(20, 20, 20);
-    }
-
-    &[state='true']:active {
-      background-color: $mainColor - rgb(40, 40, 40);
-    }
+    // &[state='false']:hover {
+    //   background-color: $w240;
+    // }
+    //
+    // &[state='false']:active {
+    //   background-color: $w230;
+    // }
+    //
+    // &[state='true']:hover {
+    //   background-color: $mainColor - rgb(20, 20, 20);
+    // }
+    //
+    // &[state='true']:active {
+    //   background-color: $mainColor - rgb(40, 40, 40);
+    // }
 
     &:hover {
-      background-color: $w240;
+      background-color: $w245;
     }
 
     &:active {
-      background-color: $w230;
+      background-color: $w240;
     }
   }
 
@@ -313,7 +313,7 @@ form label.label {
 .checkbox{
   position: relative;
   float: left;
-  padding: 5px;
+  padding: 5px 5px 5px 5px;
   height: auto;
   width: 100%;
 
@@ -334,6 +334,7 @@ form label.label {
   }
 
   input{
+    position: absolute;
     opacity: 0;
     height: 0;
     width: 0;

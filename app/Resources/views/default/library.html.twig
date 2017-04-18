@@ -1,4 +1,22 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <h1>/Library</h1>
+    <div id="library">
+
+
+
+    </div>
+
+    <script type="text/javascript">
+    $.ajax({
+      url:"{{ (path('library_addSearch')) }}",
+      datatype:"json_data",
+      method:'POST',
+      data:{},
+      crossDomain: true,
+      async:false,
+      success:function(data){
+        console.log(data);
+      }
+    });
+    </script>
 {% endblock %}
