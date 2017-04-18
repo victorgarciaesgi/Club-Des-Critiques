@@ -25,7 +25,7 @@ class LibraryController extends Controller
     }
 
     /**
-     * @Route("/library/addSearch", name="library_addSearch")
+     * @Route("/library/addSearch", options = { "expose" = true }, name="library_addSearch")
      * @Method({"POST"})
      */
 

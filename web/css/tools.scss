@@ -30,6 +30,20 @@ body {
   min-width: 800px;
 }
 
+// [ng\:cloak], [ng-cloak], .ng-cloak {
+//     text-align: center;
+//
+//     &::after{
+//       content:"";
+//       display: block!important;
+//       position: relative;
+//       height: 30px;
+//       width: 30px;
+//       background-image: url('../assets/load.gif');
+//       @include bg-center;
+//     }
+// }
+
 *{
   box-sizing: border-box;
 }
@@ -200,6 +214,28 @@ form label.label {
   margin-top: 5px;
 }
 
+select{
+  position: relative;
+  height: 30px;
+  outline: none;
+  color: $mainColor;
+  border-radius: 3px;
+  font-size: 13px;
+  line-height: 29px;
+  padding: 0 10px 0 10px;
+  box-shadow: none;
+  border: 1px solid $w210;
+  background: transparent;
+  background-color: white;
+  margin-bottom: 2px;
+  vertical-align: middle;
+  display: inline-block;
+  background-image: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+
 
 // Template bouton
 
@@ -330,7 +366,13 @@ form label.label {
     background-color: white;
     border-radius: 3px;
     border: 1px solid $w200;
+    @include transition(all, 0.3s);
     @include bg-center;
+    cursor: pointer;
+
+    &:hover{
+      border-color: $mainGreen2;
+    }
   }
 
   input{
