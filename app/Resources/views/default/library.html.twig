@@ -1,22 +1,78 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div id="library">
+    <div id="library" ng-controller='library'>
+
+      <section>
+
+        <article id="categories">
+          <div class="title">
+            Filtrer
+          </div>
+          <div class="options-tri">
+            <div id='library-categories' class="options-container">
+              <div class="type">
+                Catégories
+              </div>
+              <div class="list">
+                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
+                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
+                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
+                  <span>{(c.label)}</span>
+                </div>
+              </div>
+            </div>
+            <div id='' class="options-container">
+              <div class="type">
+                Autre
+              </div>
+              <div class="list">
+                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
+                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
+                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
+                  <span>{(c.label)}</span>
+                </div>
+              </div>
+            </div>
+            <div id='' class="options-container">
+              <div class="type">
+                Autre
+              </div>
+              <div class="list">
+                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
+                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
+                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
+                  <span>{(c.label)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article id="book-library">
+          <div class="title">
+            <div class="group">
+              <span>Résultats</span>
+              <select class="" name="">
+                <option value="">20 par page</option>
+              </select>
+            </div>
+            <div class="group">
+              <span>Trier par</span>
+              <select class="" name="">
+                <option value="">Genre</option>
+                <option value="">Prix</option>
+              </select>
+            </div>
+          </div>
+          <div class="biblioteque">
+
+          </div>
+        </article>
+
+      </section>
 
 
 
     </div>
 
-    <script type="text/javascript">
-    $.ajax({
-      url:"{{ (path('library_addSearch')) }}",
-      datatype:"json_data",
-      method:'POST',
-      data:{},
-      crossDomain: true,
-      async:false,
-      success:function(data){
-        console.log(data);
-      }
-    });
-    </script>
 {% endblock %}

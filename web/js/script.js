@@ -1,49 +1,6 @@
 $(document).ready(function() {
 
 
-  var books = [
-    {isbn: 9781781101032},
-    {isbn: 9781623150273},
-    {isbn: 9782747073288},
-    {isbn: 9782266223690},
-    {isbn: 9782747073288},
-    {isbn: 9782747021067},
-    {isbn: 9782747073288},
-    {isbn: 9782747073288},
-    {isbn: 9782747064903},
-  ]
-
-  // $.each(books,function(index, value) {
-  //   $.ajax({
-  // 		url:"../script/test.php",
-  // 		datatype:"jsonp",
-  // 		method:'POST',
-  // 		data:{url: "https://www.googleapis.com/books/v1/volumes?q=isbn:" + value.isbn},
-  //     crossDomain: true,
-  // 		async:false,
-  // 		success:function(data){
-  // 			var result = JSON.parse(data);
-  //       var item = result.items[0].volumeInfo;
-  //       var template = `<li class='book-wrapper'>
-  //                       <div class="cover" style='background-image: url("`+(item.imageLinks != null?item.imageLinks.thumbnail:'noexist.jpg') +`")'></div>
-  //                       <div class="name info-book">`+ item.title +`</div>
-  //                       <div class="author info-book">`+ item.authors[0] +`</div>
-  //                       <div class="rating info-book">
-  //                         <img src="../assets/star_plain.svg" alt="">
-  //                         <img src="../assets/star_plain.svg" alt="">
-  //                         <img src="../assets/star_plain.svg" alt="">
-  //                         <img src="../assets/star_half.svg" alt="">
-  //                         <img src="../assets/star_empty.svg" alt="">
-  //                       </div>
-  //                     </li>`;
-  //       $("#books-une").append(template);
-  // 		}
-  // 	});
-  //
-  // });
-
-
-
   $(document).click(function(){
     $('.popup-box').hide().attr('state','false');
   })
@@ -51,6 +8,10 @@ $(document).ready(function() {
   $(window).resize(function(event) {
     $('.popup-box').hide().attr('state','false');
   });
+
+  $(".popup-box").click(function(event){
+    event.stopPropagation();
+  })
 
 
 
@@ -85,16 +46,67 @@ $(document).ready(function() {
     }
   })
 
+  $.ajax({
+    url: Routing.generate('library_addSearch'),
+    datatype:"json_data",
+    method:'POST',
+    data:{},
+    crossDomain: true,
+    async:false,
+    success:function(data){
+      console.log(data);
+    }
+  });
 
-  $(".popup-box").click(function(event){
-    event.stopPropagation();
-  })
-
-  
 
 
 
 
+
+
+
+
+
+    // var books = [
+    //   {isbn: 9781781101032},
+    //   {isbn: 9781623150273},
+    //   {isbn: 9782747073288},
+    //   {isbn: 9782266223690},
+    //   {isbn: 9782747073288},
+    //   {isbn: 9782747021067},
+    //   {isbn: 9782747073288},
+    //   {isbn: 9782747073288},
+    //   {isbn: 9782747064903},
+    // ]
+
+    // $.each(books,function(index, value) {
+    //   $.ajax({
+    // 		url:"../script/test.php",
+    // 		datatype:"jsonp",
+    // 		method:'POST',
+    // 		data:{url: "https://www.googleapis.com/books/v1/volumes?q=isbn:" + value.isbn},
+    //     crossDomain: true,
+    // 		async:false,
+    // 		success:function(data){
+    // 			var result = JSON.parse(data);
+    //       var item = result.items[0].volumeInfo;
+    //       var template = `<li class='book-wrapper'>
+    //                       <div class="cover" style='background-image: url("`+(item.imageLinks != null?item.imageLinks.thumbnail:'noexist.jpg') +`")'></div>
+    //                       <div class="name info-book">`+ item.title +`</div>
+    //                       <div class="author info-book">`+ item.authors[0] +`</div>
+    //                       <div class="rating info-book">
+    //                         <img src="../assets/star_plain.svg" alt="">
+    //                         <img src="../assets/star_plain.svg" alt="">
+    //                         <img src="../assets/star_plain.svg" alt="">
+    //                         <img src="../assets/star_half.svg" alt="">
+    //                         <img src="../assets/star_empty.svg" alt="">
+    //                       </div>
+    //                     </li>`;
+    //       $("#books-une").append(template);
+    // 		}
+    // 	});
+    //
+    // });
 
 
 

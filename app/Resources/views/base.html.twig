@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" ng-app='mainApp'>
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
+    <script src='/js/angular.min.js'></script>
     <script type="text/javascript" src='https://code.jquery.com/jquery-latest.min.js'></script>
     <script src='/js/script.js'></script>
+    <script src='/js/library.js'></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% block javascript %}{% endblock %}
     <link href="/css/main.css" rel="stylesheet">
     <link href="/css/tools.css" rel="stylesheet">
@@ -18,16 +22,24 @@
         <img class='logo' src="/assets/logoSimple.png" alt="logo">
         <div class="header-separation"></div>
         <ul class="header-nav">
-            <li class='menu' active='true'>
-                <img src='/assets/home_active.svg' class="icon">
-                <span class='titre'>Accueil</span>
-            </li>
+            <a href="{{path('homepage')}}">
+              <li class='menu' active='{{app.request.attributes.get('_route') == 'homepage'?'true':'false'}}'>
+                  <img true src='/assets/home_active.svg' class="icon">
+                  <img false src='/assets/home.svg' class="icon">
+                  <span class='titre'>Accueil</span>
+              </li>
+            </a>
+            <a href="{{path('library')}}">
+              <li class='menu' active='{{app.request.attributes.get('_route') == 'library'?'true':'false'}}'>
+                  <img false src='/assets/contenus.svg' class="icon">
+                  <img true src='/assets/contenus_active.svg' class="icon">
+                  <span class='titre'>Bibliotèque</span>
+              </li>
+            </a>
+
             <li class='menu'>
-                <img src='/assets/contenus.svg' class="icon">
-                <span class='titre'>Bibliotèque</span>
-            </li>
-            <li class='menu'>
-                <img src='/assets/salons.svg' class="icon">
+                <img false src='/assets/salons.svg' class="icon">
+                <img true src='/assets/salons_active.svg' class="icon">
                 <span class='titre'>Salons</span>
             </li>
             <div class="header-separation"></div>

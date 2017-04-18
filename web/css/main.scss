@@ -55,8 +55,9 @@ header{
     padding: 0 10px 0 10px;
     line-height: 40px;
     cursor: pointer;
-
     @include transition(background-color, 0.3s);
+
+
 
     //Photo du profil
     .picture{
@@ -78,9 +79,11 @@ header{
       width: 22px;
       vertical-align: middle;
       margin: 0 5px 3px 0px;
+      display: none;
 
       &[only]{
         margin-right: 0;
+        display: inline-block;
       }
     }
 
@@ -103,10 +106,18 @@ header{
     }
 
     // Quand la navigation correspond à la page active
-    &[active=true]{
+    &[active='true']{
       color: $mainMarron;
       border-radius: 3px 3px 0 0;
       // border-bottom: 2px solid $mainMarron;
+      img[true]{
+        display: inline-block;
+      }
+    }
+    &[active='false']{
+      img[false]{
+        display: inline-block;
+      }
     }
 
     &:hover{
@@ -489,4 +500,109 @@ aside{
       }
     }
   }
+}
+
+
+
+
+
+
+
+
+
+
+
+// Container de la biblioteque
+
+
+#library{
+  position: relative;
+  float: left;
+  height: 100%;
+  width: 100%;
+  padding: 15px 10px 5px 10px;
+  color: rgb(80,80,80);;
+
+  section{
+    height: 100%;
+    margin-bottom: 0;
+
+    .title{
+      text-align: center;
+      font-size: 17px;
+      color: $mainColor;
+    }
+  }
+
+  article{
+    position: relative;
+    float: left;
+    height: 100%;
+  }
+
+  #categories{
+    width: 250px;
+    border-right: 1px solid $w220;
+
+
+    .options-tri{
+      position: relative;
+      float: left;
+      height: auto;
+      width: 100%;
+
+      .options-container{
+        position: relative;
+        float: left;
+        height: auto;
+        width: 100%;
+        border-bottom: 1px solid $w220;
+
+        .type{
+          position: relative;
+          float: left;
+          height: 30px;
+          width: 100%;
+          font-size: 14px;
+          padding-left: 5px;
+          background-color: $w240;
+          line-height: 30px;
+          text-align: left;
+          box-shadow: 0 1px 3px $w210;
+        }
+
+        .list{
+          position: relative;
+          float: left;
+          height: auto;
+          width: 100%;
+          padding: 5px 0 5px 0;
+        }
+      }
+    }
+  }
+
+  #book-library{
+    width: calc(100% - 251px);
+
+    .title{
+      text-align: left;
+      font-size: 15px;
+      padding-left: 0;
+      font-weight: normal;
+
+      .group{
+        position: relative;
+        float: left;
+        padding: 0 10px 0 10px;
+        width: auto;
+        border-right: 1px solid $w240;
+        span{
+          margin-right: 5px;
+        }
+      }
+    }
+  }
+
+
 }
