@@ -5,10 +5,17 @@
     <title>{% block title %}Welcome!{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
-    <script src='/js/angular.min.js'></script>
+    <script type="text/javascript" src='/lib/angular.min.js'></script>
     <script type="text/javascript" src='https://code.jquery.com/jquery-latest.min.js'></script>
-    <script src='/js/script.js'></script>
-    <script src='/js/library.js'></script>
+    <script type="text/javascript" src='/js/functions.js'></script>
+    <script type="text/javascript" src='/js/ajax.js'></script>
+
+    <script type="text/javascript" src='/js/header.js'></script>
+    <script type="text/javascript" src='/js/script.js'></script>
+    <script type="text/javascript" src='/js/library.js'></script>
+
+
+    </script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% block javascript %}{% endblock %}
@@ -17,7 +24,7 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body>
-<header>
+<header ng-controller='header'>
     <nav>
         <img class='logo' src="/assets/logoSimple.png" alt="logo">
         <div class="header-separation"></div>
