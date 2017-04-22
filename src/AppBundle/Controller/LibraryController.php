@@ -32,7 +32,7 @@ class LibraryController extends Controller
     public function AddSearchAction(Request $request)
     {
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/books/v1/volumes?q:hunger');
+      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/books/v1/volumes?q=hunger');
       curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json')); // Assuming you're requesting JSON
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 

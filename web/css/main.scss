@@ -585,6 +585,13 @@ aside{
   #book-library{
     width: calc(100% - 251px);
 
+    .bouton{
+      margin: 0;
+      margin-top: 5px;
+      height: 30px;
+      line-height: 29px;
+    }
+
     .title{
       text-align: left;
       font-size: 15px;
@@ -596,6 +603,7 @@ aside{
         float: left;
         padding: 0 10px 0 10px;
         width: auto;
+        height: 100%;
         border-right: 1px solid $w240;
         span{
           margin-right: 5px;

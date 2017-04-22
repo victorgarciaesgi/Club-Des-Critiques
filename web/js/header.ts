@@ -1,6 +1,9 @@
 /// <reference path="../typings/jquery.d.ts" />
 /// <reference path="../typings/router.d.ts" />
 /// <reference path="../typings/angular.d.ts" />
+/// <reference path="./functions.ts" />
+/// <reference path="./Interfaces.ts" />
+/// <reference path="./ajax.ts" />
 
 var MainApp: any = angular.module('mainApp',[])
 .config(function($interpolateProvider){
@@ -12,33 +15,8 @@ MainApp.controller('header', ['$scope', function ($scope) {
 
 
   // Affichage des popups de header
-  $("body").on('click','.popup-bouton',function(event){
-    event.stopPropagation();
-    var popupName: string = $(this).attr("popup");
-    var state: string = $("#" + popupName).attr('state');
-
-
-    if (state == 'false') {
-      $('.popup-box').hide().attr('state','false');
-      var width: number= $(this).outerWidth();
-      var position: number = Math.round($(this).offset().left);
-      var popupWidth: number = $("#" + popupName).width();
-      var outputLeft: number = position + width / 2 - popupWidth / 2;
-      var windowWidth: number = $(window).width();
-
-      if((outputLeft + popupWidth) > (windowWidth - 10)){
-        outputLeft = windowWidth - popupWidth - 10;
-        var left: number = position - outputLeft + (width/2)
-        $("#" + popupName).find('#pin').css({left: left})
-      }
-      $("#" + popupName).css({
-        left: outputLeft,
-        display: 'block'
-      }).attr('state','true')
-    }
-    else{
-      $("#" + popupName).attr('state','false').hide();
-    }
+  $("body").on('click','.popup-bouton',function(event: Event){
+    displayPopup($(this), event);
   })
 
 
@@ -48,11 +26,11 @@ MainApp.controller('header', ['$scope', function ($scope) {
     $('.popup-box').hide().attr('state','false');
   })
 
-  $(window).resize(function(event) {
+  $(window).resize(function(event: Event) {
     $('.popup-box').hide().attr('state','false');
   });
 
-  $(".popup-box").click(function(event){
+  $(".popup-box").click(function(event: Event){
     event.stopPropagation();
   })
 
