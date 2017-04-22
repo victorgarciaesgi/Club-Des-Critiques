@@ -254,8 +254,15 @@ select{
   font-weight: normal;
   color: white;
   // box-shadow: 0 0 5px $w230;
-  padding: 0px 17px 0px 17px;
+  padding: 0px 13px 0px 13px;
   @include userselect;
+
+  img{
+    position: inline-block;
+    vertical-align: middle;
+    margin-bottom: 2px;
+    margin-left: -5px;
+  }
 
 
   &[design='blanc'] {
