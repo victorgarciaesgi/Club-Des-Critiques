@@ -58,6 +58,11 @@ header{
     @include transition(background-color, 0.3s);
 
 
+    @media screen and (max-width: 1000px)  {
+      .titre{
+        display: none;
+      }
+    }
 
     //Photo du profil
     .picture{
@@ -66,10 +71,15 @@ header{
       height: 25px;
       width: 25px;
       border-radius: 100%;
+      text-align: center;
       vertical-align: middle;
       margin: 0 0px 2px 5px;
       border: 2px solid $mainMarron;
       @include bg-center;
+    }
+
+    span.titre{
+      margin-left: 5px;
     }
 
     img.icon{
@@ -78,7 +88,7 @@ header{
       height: 22px;
       width: 22px;
       vertical-align: middle;
-      margin: 0 5px 3px 0px;
+      margin: 0 0px 3px 0px;
       display: none;
 
       &[only]{
@@ -108,7 +118,6 @@ header{
     // Quand la navigation correspond à la page active
     &[active='true']{
       color: $mainMarron;
-      border-radius: 3px 3px 0 0;
       // border-bottom: 2px solid $mainMarron;
       img[true]{
         display: inline-block;
@@ -497,6 +506,83 @@ aside{
 
       &:active{
         background-color: $w210;
+      }
+    }
+  }
+}
+
+
+.popup-window{
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+
+  .window{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: $w250;
+    border-radius: 3px;
+    box-shadow: 0 0 20px rgba(50, 50, 50, 0.4);
+    width: auto;
+    height: auto;
+    min-width : 400px;
+    color: rgb(100,100,100);
+    min-height: 150px;
+    max-width: 70%;
+    z-index: 1001;
+    @include translate(-50%, -50%);
+    overflow: hidden;
+
+
+    .header{
+      position: relative;
+      float: left;
+      padding-left: 10px;
+      height: 35px;
+      line-height: 35px;
+      width: 100%;
+      border-radius: 3px 3px 0 0;
+      color: rgb(100,100,100);
+      background-color: $w245;
+      // border-bottom: 1px solid $mainGreen2;
+      box-shadow: 0 1px 3px $w200;
+      font-weight: bold;
+      font-size: 15px;
+      overflow-y: auto;
+    }
+
+    .content{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: auto;
+      padding: 5px;
+
+
+      .legend{
+        padding: 10px;
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+
+    .footer{
+      position: relative;
+      float: left;
+      height: 100%;
+      padding: 5px;
+      width: 100%;
+      text-align: center;
+      border-top: 1px solid $w240;
+
+      .bouton{
+        display: inline-block;
+        float: none;
       }
     }
   }

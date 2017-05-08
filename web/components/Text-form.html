@@ -1,0 +1,88 @@
+<div class="input-form-wrap f-left h-auto w-100"
+     ng-switch='$ctrl.vgData.validator'>
+  <input ng-switch-when='vg-password'
+          type="{($ctrl.vgData.type)}"
+          ng-model='$ctrl.vgModel'
+          ng-value='$ctrl.vgModel'
+          class='input-form'
+          placeholder="{($ctrl.vgData.placeholder)}"
+          name='{($ctrl.vgData.name)}'
+          ng-required='$ctrl.vgData.required'
+          ng-disabled='$ctrl.vgDisabled'
+          vg-password />
+
+  <div ng-switch-when='vg-token'>
+
+    <label class='label'>Catégories de ce livre (Entrée pour ajouter)</label>
+		<div id='ajout-tag-wrap' class='f-left'>
+        <ul class='u-t-input f-left w-100 h-auto'>
+
+            <input class='inputTagsText f-left' type='text' placeholder='Catégorie...'>
+        </ul>
+        <ul class='searchResult'>
+
+        </ul>
+    </div>
+    <input class='uploadTagsValues'
+            ng-model='$ctrl.vgModel'
+            ng-value='$ctrl.vgModel'
+            class='input-form'
+            placeholder="{($ctrl.vgData.placeholder)}"
+            name='{($ctrl.vgData.name)}'
+            ng-required='$ctrl.vgData.required'>
+    <div class="input-form-result" ng-show='$ctrl.vgResult.data.length > 0'>
+      <ul>
+        <li ng-repeat='result in $ctrl.vgResult.data | limitTo: 4'>
+          <div class="cover"
+          style='background-image: url({(result.volumeInfo.imageLinks?result.volumeInfo.imageLinks.smallThumbnail:"/assets/no_thumbnail.svg")})'>
+
+          </div>
+          <div class="infos">
+            <span class='title'>{(result.volumeInfo.title)}</span>
+            <span class='author'>{(result.volumeInfo.authors[0])}</span>
+            <span class='description'>{(result.volumeInfo.description)}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div ng-switch-when='vg-search'>
+    <input type="{($ctrl.vgData.type)}"
+            ng-model='$ctrl.vgModel'
+            ng-value='$ctrl.vgModel'
+            class='input-form'
+            placeholder="{($ctrl.vgData.placeholder)}"
+            name='{($ctrl.vgData.name)}'
+            ng-required='$ctrl.vgData.required'
+            ng-model-options='{debounce: 500}'
+            ng-disabled='$ctrl.vgDisabled'
+           />
+    <div ng-show='$ctrl.vgSearching' class="loading-spinner"></div>
+    <div class="input-form-result" ng-show='$ctrl.vgResult.data.length > 0'>
+      <ul>
+        <li ng-repeat='result in $ctrl.vgResult.data | limitTo: 4'>
+          <div class="cover"
+          style='background-image: url({(result.volumeInfo.imageLinks?result.volumeInfo.imageLinks.smallThumbnail:"/assets/no_thumbnail.svg")})'>
+
+          </div>
+          <div class="infos">
+            <span class='title'>{(result.volumeInfo.title)}</span>
+            <span class='author'>{(result.volumeInfo.authors[0])}</span>
+            <span class='description'>{(result.volumeInfo.description)}</span>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <input ng-switch-default
+          type="{($ctrl.vgData.type)}"
+          ng-model='$ctrl.vgModel'
+          ng-value='$ctrl.vgModel'
+          class='input-form'
+          placeholder="{($ctrl.vgData.placeholder)}"
+          name='{($ctrl.vgData.name)}'
+          ng-required='$ctrl.vgData.required'
+          ng-disabled='$ctrl.vgDisabled'
+           />
+</div>

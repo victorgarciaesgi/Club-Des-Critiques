@@ -2,13 +2,43 @@
 @import "variables.scss";
 
 // keyframes
-@keyframes loading {
-  from {
-    @include rotate(0deg);
+@keyframes spinner-animation {
+    0% { transform: rotateZ(  0deg); -webkit-animation-timing-function: cubic-bezier(0, 0, .8, .2);opacity: 1}
+   50% { transform: rotateZ(180deg); -webkit-animation-timing-function: cubic-bezier(.2, .8, 1, 1); }
+  100% { transform: rotateZ(360deg); }
+}
+
+.loading-spinner {
+  position: relative;
+  display: block;
+  width: $Loadersize;
+  height: $Loadersize;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    z-index: 10; // prevent sibling elements from getting their own layers
+    top: 0;
+    left: 0;
+    border-radius: 1em;
+    width: inherit;
+    height: inherit;
+    border-radius: 1em;
+    border: 1px solid;
+    animation: spinner-animation 1.2s infinite;
+    animation-fill-mode: backwards;
+  }
+  &::before {
+    border-color: $mainGreen2 transparent transparent transparent;
+  }
+  &::after {
+    border-color: transparent lighten($mainGreen2, 15%) transparent transparent;
+    animation-delay: 0.6s;
   }
 
-  to {
-    @include rotate(360deg);
+  &.inline-block {
+    display: inline-block;
   }
 }
 html{
@@ -21,12 +51,12 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  padding-top: 50px;
   font-family: $mainFont, sans-serif;
   color: $mainColor;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
+  padding-top: 50px;
   min-width: 800px;
 }
 
@@ -79,22 +109,10 @@ input, textarea {
   resize: none;
 }
 
-label {
-  display: block;
-}
-
-.helper {
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
-}
-
-.pointer {
-  cursor: pointer;
-}
-
-.textCenter {
-  text-align: center;
+pre{
+  position: relative;
+  float: left;
+  width: 100%;
 }
 
 .header-separation{
@@ -183,7 +201,7 @@ label {
   color: $mainColor;
   vertical-align: middle;
   height: 35px;
-  padding: 5px 5px 5px 10px;
+  padding: 5px 30px 5px 10px;
   width: 100%;
   margin: 5px 0 5px 0;
   line-height: 30px;
@@ -196,6 +214,88 @@ label {
 
   &:focus{
     border: 1px solid darken($mainGreen1, 20%);
+  }
+  & + .loading-spinner{
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    @include translateY(-50%);
+  }
+}
+
+.input-form-wrap{
+  position: relative;
+  float: left;
+  width: 100%;
+  height: auto;
+
+  .input-form-result{
+    position: absolute;
+    top: calc(100% - 5px);
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 3;
+    background-color: white;
+    box-shadow: 0 0 5px $w210;
+
+    ul{
+      position: relative;
+      float: left;
+      height: auto;
+      width: 100%;
+
+      li{
+        position: relative;
+        float: left;
+        height: 70px;
+        width: 100%;
+        border-bottom: 1px solid $w230;
+        padding: 5px;
+
+        .cover{
+          position: relative;
+          float: left;
+          height: 100%;
+          width: 40px;
+          margin-right: 5px;
+          @include bg-center;
+          background-color: $w200;
+        }
+
+        .infos{
+          position: relative;
+          float: left;
+          height: 100%;
+          width: calc(100% - 45px);
+
+          span{
+            position: relative;
+            float: left;
+            width: 100%;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .title{
+            height: 20px;
+            font-weight: bold;
+            font-size: 14px;
+          }
+          .author{
+            height: 20px;
+            font-size: 13px;
+          }
+          .description{
+            height: 20px;
+            font-size: 13px;
+          }
+        }
+      }
+
+
+    }
   }
 }
 
@@ -231,9 +331,9 @@ select{
   vertical-align: middle;
   display: inline-block;
   background-image: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  // -webkit-appearance: none;
+  // -moz-appearance: none;
+  // appearance: none;
 }
 
 
@@ -262,6 +362,11 @@ select{
     vertical-align: middle;
     margin-bottom: 2px;
     margin-left: -5px;
+  }
+
+  &[disabled='disabled']{
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 
 
@@ -359,6 +464,7 @@ select{
   padding: 5px 5px 5px 5px;
   height: auto;
   width: 100%;
+  @include userselect;
 
   span{
     font-size: 13px;
@@ -462,11 +568,6 @@ select{
   }
 }
 
-a.hoverName {
-  &:hover {
-    text-decoration: underline;
-  }
-}
 
 // .popupConfirm
 
@@ -476,95 +577,21 @@ a.hoverName {
   display: none;
 }
 
-// taille
-.h-auto {
+.h-auto{
   height: auto;
 }
 
-.h-100 {
-  height: 100%;
-}
-
-.w-auto {
-  width: auto;
-}
-
-.w-100 {
+.w-100{
   width: 100%;
 }
 
-// floats
-.f-left {
+.f-left{
   position: relative;
   float: left;
 }
 
-.f-right {
-  position: relative;
-  float: right;
-}
 
-.margin-t10 {
-  margin-top: 10px;
-}
 
-// backgrounds
-.bg-cover {
-  background-size: cover;
-}
-
-.bg-w250 {
-  background-color: $w250;
-}
-
-.bg-w245 {
-  background-color: $w245;
-}
-
-.bg-w240 {
-  background-color: $w240;
-}
-
-.bg-w235 {
-  background-color: $w235;
-}
-
-.bg-w230 {
-  background-color: $w230;
-}
-
-.bg-w220 {
-  background-color: $w220;
-}
-
-.bg-w210 {
-  background-color: $w210;
-}
-
-.bg-w200 {
-  background-color: $w200;
-}
-
-// couleurs
-.c-mainColor {
-  color: $mainColor;
-}
-
-.c-grey90 {
-  color: $g90;
-}
-
-.c-w250 {
-  color: $w250;
-}
-
-.c-w240 {
-  color: $w240;
-}
-
-.c-red1 {
-  color: $red1;
-}
 
 //fonts
 

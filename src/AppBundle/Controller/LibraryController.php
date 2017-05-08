@@ -31,8 +31,11 @@ class LibraryController extends Controller
 
     public function AddSearchAction(Request $request)
     {
+      $data = json_decode($request->getContent(), true);
+      // return new JsonResponse($data);
+      $querry = $request->request->get('querry');
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/books/v1/volumes?q=hunger');
+      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/books/v1/volumes?q='.$data['data']);
       curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json')); // Assuming you're requesting JSON
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
