@@ -6,13 +6,15 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
     <script type="text/javascript" src='/lib/angular.min.js'></script>
-    <script type="text/javascript" src='https://code.jquery.com/jquery-latest.min.js'></script>
-    <script type="text/javascript" src='/js/functions.js'></script>
-    <script type="text/javascript" src='/js/ajax.js'></script>
+    <script type="text/javascript" src='/lib/jquery.min.js'></script>
+    <script type="text/javascript" src='/ts/Functions.js'></script>
 
-    <script type="text/javascript" src='/js/header.js'></script>
-    <script type="text/javascript" src='/js/script.js'></script>
-    <script type="text/javascript" src='/js/library.js'></script>
+    <script type="text/javascript" src='/ts/MainController.js'></script>
+    <script type="text/javascript" src='/ts/Ajax.js'></script>
+
+    <script type="text/javascript" src='/ts/HeaderController.js'></script>
+    <script type="text/javascript" src='/ts/LibraryController.js'></script>
+    <script type="text/javascript" src='/ts/Components.js'></script>
 
 
     </script>
@@ -23,7 +25,7 @@
     <link href="/css/tools.css" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
 </head>
-<body>
+<body ng-controller='{{app.request.attributes.get('_route')}}'>
 <header ng-controller='header'>
     <nav>
         <img class='logo' src="/assets/logoSimple.png" alt="logo">
@@ -31,8 +33,8 @@
         <ul class="header-nav">
             <a href="{{path('homepage')}}">
               <li class='menu' active='{{app.request.attributes.get('_route') == 'homepage'?'true':'false'}}'>
-                  <img true src='/assets/home_active.svg' class="icon">
                   <img false src='/assets/home.svg' class="icon">
+                  <img true src='/assets/home_active.svg' class="icon">
                   <span class='titre'>Accueil</span>
               </li>
             </a>
@@ -44,11 +46,13 @@
               </li>
             </a>
 
-            <li class='menu'>
-                <img false src='/assets/salons.svg' class="icon">
-                <img true src='/assets/salons_active.svg' class="icon">
-                <span class='titre'>Salons</span>
-            </li>
+            <a href="">
+              <li class='menu' active='{{app.request.attributes.get('_route') == 'salons'?'true':'false'}}'>
+                  <img false src='/assets/salons.svg' class="icon">
+                  <img true src='/assets/salons_active.svg' class="icon">
+                  <span class='titre'>Salons</span>
+              </li>
+            </a>
             <div class="header-separation"></div>
             <li id='search'>
                 <input type="text" class="input-search" name="content" placeholder="Recherche de livres...">
@@ -68,75 +72,82 @@
             </li>
         </ul>
     </nav>
+    <div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Notifications
+        </div>
+        <div class="content">
+
+        </div>
+    </div>
+
+    <div id='popup-connexion' class="popup-box" style='width: 350px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Connexion
+        </div>
+        <div class="content">
+          <form name='ConnexionFormX' ng-submit='ConnexionAction'>
+            <div class="connexion">
+
+                <text-form vg-model='ConnexionForm.values.login'
+                            vg-data='ConnexionForm.login'>
+                </text-form>
+                <text-form vg-model='ConnexionForm.values.password'
+                            vg-data='ConnexionForm.password'>
+                </text-form>
+
+                <checkbox vg-model='ConnexionForm.values.souvenir' vg-label='{(ConnexionForm.souvenir.label)}' vg-name='{(ConnexionForm.souvenir.name)}'></checkbox>
+                <pre class='f-left'>{(ConnexionForm.values | json)}</pre>
+
+            </div>
+            <div class="footer">
+              <div class="bouton" design='blanc'>
+                Mot de passe oublié
+              </div>
+              <button class="bouton" type='submit' design='green'
+                      ng-disabled='ConnexionFormX.$invalid'>
+                Connexion
+              </button>
+            </div>
+          </form>
+        </div>
+
+    </div>
+
+    <div id='popup-user' class="popup-box" style='width: 200px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="user">
+            <div class="user-picture" style='background-image: url(/assets/profil.jpg)'></div>
+            <div class="user-name">Victor Garcia</div>
+        </div>
+        <ul class='user-option-list'>
+            <li class='user-option'>Mon profil</li>
+            <li class='user-option'>Éditer mes infos</li>
+            <li class='user-option'>Réglages</li>
+            <li class='user-option'>Aide</li>
+            <li class='user-option'>Deconnexion</li>
+        </ul>
+    </div>
+
+
+    <div id='popup-search' class="popup-box" style='width: 400px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Contenus
+        </div>
+        <div class="content">
+          <div class="search-content">
+
+          </div>
+        </div>
+    </div>
 </header>
 {% block body %}{% endblock %}
 {% block footer %}{% endblock %}
 
-<div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
-    <img id='pin' src="/assets/up.png" alt="">
-    <div class="header">
-        Notifications
-    </div>
-    <div class="content">
 
-    </div>
-</div>
-
-<div id='popup-connexion' class="popup-box" style='width: 350px' state='false'>
-    <img id='pin' src="/assets/up.png" alt="">
-    <div class="header">
-        Connexion
-    </div>
-    <div class="content">
-      <div class="connexion">
-        <form class="" action="index.html" method="post">
-          <input type="text" class='input-form' name="login" value="" placeholder="Pseudo/Mail">
-          <input type="password" class='input-form' name="password" value="" placeholder="Mot de passe">
-          <div class="checkbox">
-            <input id='souvenir' type="checkbox" name="souvenir" value="">
-            <label for="souvenir"></label>
-            <span> Se souvenir de moi</span>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="footer">
-      <div class="bouton" design='blanc'>
-        Mot de passe oublié
-      </div>
-      <div class="bouton" design='green'>
-        Connexion
-      </div>
-    </div>
-</div>
-
-<div id='popup-user' class="popup-box" style='width: 200px' state='false'>
-    <img id='pin' src="/assets/up.png" alt="">
-    <div class="user">
-        <div class="user-picture" style='background-image: url(/assets/profil.jpg)'></div>
-        <div class="user-name">Victor Garcia</div>
-    </div>
-    <ul class='user-option-list'>
-        <li class='user-option'>Mon profil</li>
-        <li class='user-option'>Éditer mes infos</li>
-        <li class='user-option'>Réglages</li>
-        <li class='user-option'>Aide</li>
-        <li class='user-option'>Deconnexion</li>
-    </ul>
-</div>
-
-
-<div id='popup-search' class="popup-box" style='width: 400px' state='false'>
-    <img id='pin' src="/assets/up.png" alt="">
-    <div class="header">
-        Contenus
-    </div>
-    <div class="content">
-      <div class="search-content">
-
-      </div>
-    </div>
-</div>
 
 
 

@@ -1,0 +1,14 @@
+<div class="input-form-wrap"
+     ng-switch='$ctrl.vgData.validator'>
+  <textarea ng-switch-default='vg-password'
+          type="{($ctrl.vgData.type)}"
+          ng-model='$ctrl.vgModel'
+          ng-value='$ctrl.vgModel'
+          class='input-form'
+          placeholder="{($ctrl.vgData.placeholder)}"
+          name='{($ctrl.vgData.name)}'
+          ng-required='$ctrl.vgData.required'
+          ng-disabled='$ctrl.vgDisabled'
+          >
+  </textarea>
+</div>
