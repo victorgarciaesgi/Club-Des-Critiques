@@ -10,44 +10,24 @@ MainApp.controller('library', function ($scope, $rootScope, AjaxGet) {
     {id: 6,label: 'Biographie', name:'biographie'}
   ];
 
-  $scope.addBook = true;
+  $scope.addBook = false;
 
   $scope.AddBookForm = {
     values: {
       search: ""
     },
     bookFound: false,
-    searching: false,
-    search_result: {
-      selected: {},
-      data: {}
-    },
     elements: {
-      search: {placeholder: 'Recherche un livre..',name: 'book_search',type: 'text',required: true,validator: 'vg-search'},
+      search: {source: 'library_addSearch',placeholder: 'Recherche un livre..',name: 'book_search',type: 'text',required: true,validator: 'vg-search'},
       author: {placeholder: 'Auteur..',name: 'book_author',type: 'text',required: true,},
       illustration: {placeholder: 'Illustration du livre',name: 'book_illustration',type: 'file',required: true},
       description: {placeholder: 'Description..',name: 'book_description',type: 'text',required: true},
-      categories: {placeholder: 'Catégories..',name: 'book_categories',type: 'text',required: true,validator: 'vg-tokens'},
+      categories: {source: 'library_addCategories',placeholder: 'Catégories..',name: 'book_categories',type: 'text',required: true,validator: 'vg-tokens'},
       isbn: {placeholder: 'Isbn..',name: 'book_isbn',type: 'text',required: false},
       pages: {placeholder: 'Nombre de pages..',name: 'book_pages',type: 'text',required: false},
       rating: {placeholder: 'Votre note pour ce livre..',name: 'book_rating',type:'text',required: true},
     }
   }
-
-  $scope.$watch('AddBookForm.values.search', function(newValue, oldValue, scope){
-    if (newValue == '' || newValue == undefined){
-      $scope.AddBookForm.search_result.data = {};
-    }
-    else if (newValue.trim().length > 1){
-      $scope.AddBookForm.searching = true;
-      var getBooks = AjaxGet.getData('library_addSearch',newValue.replace(/ /g,'%20'));
-      getBooks.then(function(result){
-        console.log(result)
-        $scope.AddBookForm.searching = false;
-        $scope.AddBookForm.search_result.data = result.items;
-      })
-    }
-  })
 
 
 

@@ -1,0 +1,20 @@
+<div class="input-form-wrap f-left h-auto w-100">
+  <div class='legend'>Catégories de ce livre (Entrée pour ajouter)</div>
+  <div class='ajout-tag-wrap' class='f-left'>
+    <ul class=' input-form u-t-input f-left w-100 h-auto'>
+
+        <input class='inputTagsText f-left' type='text' placeholder="{($ctrl.vgData.placeholder)}">
+    </ul>
+    <ul class='searchResult'>
+        <li ng-repeat='result in $ctrl.vgResult.data | limitTo: 5'>
+        </li>
+    </ul>
+  </div>
+  <input class='uploadTagsValues'
+        ng-model='$ctrl.vgModel'
+        ng-value='$ctrl.vgModel'
+        class='input-form'
+        name='{($ctrl.vgData.name)}'
+        ng-required='$ctrl.vgData.required'
+        style:'display: none'>
+</div>

@@ -1,7 +1,6 @@
 
 
 MainApp.factory('AjaxGet', function($http) {
-
     var getData =  function(route, querry) {
       return $http({
         url: Routing.generate(route),
