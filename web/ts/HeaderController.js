@@ -45,7 +45,7 @@ MainApp.controller('header', function ($scope, $rootScope) {
 
   $(document).ready(function() {
     // Affichage des popups de header
-    $("body").on('click','.popup-bouton',function(event){
+    $("body").on('click','.popup-bouton, openPopupWindow',function(event){
       displayPopup($(this), event);
     })
 
@@ -60,23 +60,10 @@ MainApp.controller('header', function ($scope, $rootScope) {
       $('.popup-box').hide().attr('state','false');
     });
 
-    $(".popup-box").click(function(event){
+    $(".popup-box, .popup-window .window").click(function(event){
       event.stopPropagation();
     })
 
-
-
-      // var books = [
-      //   {isbn: 9781781101032},
-      //   {isbn: 9781623150273},
-      //   {isbn: 9782747073288},
-      //   {isbn: 9782266223690},
-      //   {isbn: 9782747073288},
-      //   {isbn: 9782747021067},
-      //   {isbn: 9782747073288},
-      //   {isbn: 9782747073288},
-      //   {isbn: 9782747064903},
-      // ]
   })
 
 });

@@ -64,7 +64,7 @@
               </select>
             </div>
             <div class="group">
-              <div class="bouton" design='blanc'>
+              <div class="bouton openPopupWindow" popup='addBook' design='blanc'>
                 <img src="/assets/add.svg" alt="">Ajouter un livre
               </div>
             </div>
@@ -82,8 +82,7 @@
 
     </div>
 
-    <div id='addBook' class="popup-window" ng-if='addBook'
-          ng-click='addBook = false'>
+    <div id='addBook-window' class="popup-window">
       <div class="window" style='width: 500px'>
         <form name='AddBookFormX'>
 
@@ -94,36 +93,29 @@
               <div class="legend">
                 La recherche par titre va completer automatiquement les informations du livre
               </div>
-              <text-form vg-model='AddBookForm.values.search'
+              <search-form vg-model='AddBookForm.values.search'
                           vg-data='AddBookForm.elements.search'
-                          vg-searching='AddBookForm.searching'
-                          vg-result='AddBookForm.search_result'>
-              </text-form>
+                          vg-source='{(AddBookForm.elements.search.source)}'>
+              </search-form>
               <text-form vg-model='AddBookForm.values.author'
-                          vg-data='AddBookForm.elements.author'
-                          vg-disabled='AddBookForm.bookFound'>
+                          vg-data='AddBookForm.elements.author'>
               </text-form>
               <input type="file" name="" value="Illustration">
               <area-form vg-model='AddBookForm.values.description'
-                          vg-data='AddBookForm.elements.description'
-                          vg-disabled='AddBookForm.bookFound'>
+                          vg-data='AddBookForm.elements.description'>
               </area-form>
-              <text-form vg-model='AddBookForm.values.categories'
-                          vg-data='AddBookForm.elements.categories'
-                          vg-disabled='AddBookForm.bookFound'>
-              </text-form>
+              <token-form vg-model='AddBookForm.values.categories'
+                          vg-data='AddBookForm.elements.categories'>
+              </token-form>
               <text-form vg-model='AddBookForm.values.isbn'
                           vg-data='AddBookForm.elements.isbn'
-                          vg-disabled='AddBookForm.bookFound'
                           ng-if='AddBookForm.bookFound'>
               </text-form>
               <text-form vg-model='AddBookForm.values.pages'
-                          vg-data='AddBookForm.elements.pages'
-                          vg-disabled='AddBookForm.bookFound'>
+                          vg-data='AddBookForm.elements.pages'>
               </text-form>
               <text-form vg-model='AddBookForm.values.rating'
-                          vg-data='AddBookForm.elements.rating'
-                          vg-disabled='AddBookForm.bookFound'>
+                          vg-data='AddBookForm.elements.rating'>
               </text-form>
               <pre>{(AddBookForm.values | json)}</pre>
           </div>

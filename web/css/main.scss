@@ -588,7 +588,45 @@ aside{
   }
 }
 
+// Composants
 
+
+.ajout-tag-wrap{
+  cursor: text;
+  width: 100%;
+  min-height: 40px;
+  height: auto;
+
+  .u-t-input{
+    height: auto;
+    min-height: 35px;
+
+    input{
+      height: 25px;
+      line-height: 25px;
+      font-size: 13px;
+      // margin-top: 1px;
+    }
+
+    .tag{
+      line-height: 30px;
+
+
+      span{
+        margin: 0;
+        float: none;
+        color: white;
+        font-weight: normal;
+      }
+
+      .t-u-delete{
+        vertical-align: middle;
+        margin-top: -2px;
+        cursor: pointer;
+      }
+    }
+  }
+}
 
 
 
@@ -625,6 +663,7 @@ aside{
     float: left;
     height: 100%;
   }
+
 
   #categories{
     width: 250px;

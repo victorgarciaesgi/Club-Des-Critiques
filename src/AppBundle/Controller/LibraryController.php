@@ -38,11 +38,29 @@ class LibraryController extends Controller
       curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/books/v1/volumes?q='.$data['data']);
       curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json')); // Assuming you're requesting JSON
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
       $response = curl_exec($ch);
-
-      // If using JSON...
       $data = json_decode($response);
+      if (isset($data->items)) {
+        return new JsonResponse($data->items);
+      }
+      else {
+        $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);
+        return new JsonResponse();
+      }
+
+
+    }
+
+
+    /**
+     * @Route("/library/addCategories", options = { "expose" = true }, name="library_addCategories")
+     * @Method({"POST"})
+     */
+
+    public function AddCategoriesAction(Request $request)
+    {
+      $data = json_decode($request->getContent(), true);
+
       return new JsonResponse($data);
     }
 }
