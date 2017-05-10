@@ -1,20 +1,32 @@
 <div class="input-form-wrap f-left h-auto w-100">
   <div class='legend'>Catégories de ce livre (Entrée pour ajouter)</div>
-  <div class='ajout-tag-wrap' class='f-left'>
-    <ul class=' input-form u-t-input f-left w-100 h-auto'>
+  <input type="{($ctrl.vgData.type)}"
+          class='input-form'
+          placeholder="{($ctrl.vgData.placeholder)}"
+          ng-model='$ctrl.searchText'
+          ng-value='$ctrl.searchText'
+          ng-required='$ctrl.vgData.required'
+          ng-disabled='$ctrl.vgDisabled'
+          ng-keydown='$ctrl.keydown($event, $this)'
+         />
+  <div ng-show='$ctrl.searching' class="loading-spinner"></div>
+  <div class="input-form-result" ng-show='$ctrl.search_result.data.length > 0 || $ctrl.error'>
+    <ul ng-show='$ctrl.search_result.data.length > 0'>
+      <li ng-repeat='result in $ctrl.search_result.data | limitTo: 4'>
 
-        <input class='inputTagsText f-left' type='text' placeholder="{($ctrl.vgData.placeholder)}">
+      </li>
     </ul>
-    <ul class='searchResult'>
-        <li ng-repeat='result in $ctrl.vgResult.data | limitTo: 5'>
-        </li>
+    <ul>
+      <div class="error_message">
+
+      </div>
     </ul>
   </div>
-  <input class='uploadTagsValues'
-        ng-model='$ctrl.vgModel'
-        ng-value='$ctrl.vgModel'
-        class='input-form'
-        name='{($ctrl.vgData.name)}'
-        ng-required='$ctrl.vgData.required'
-        style:'display: none'>
+  <div class="token-container">
+    <li ng-repeat='token in $ctrl.vgModel' class='token'>
+      <span>{(token.label)}</span>
+      <img class='t-u-delete' src='/assets/delete.svg' height='18' width= '18'>
+    </li>
+  </div>
+
 </div>
