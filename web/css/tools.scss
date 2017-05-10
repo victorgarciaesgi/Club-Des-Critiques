@@ -229,6 +229,31 @@ pre{
   width: 100%;
   height: auto;
 
+  .token-container{
+    position: relative;
+    padding: 5px;
+    float: left;
+    height: auto;
+    width: 100%;
+
+    .token{
+      position: relative;
+      float: left;
+      padding: 5px 5px 5px 10px;
+      background-color: $mainGreen2;
+      font-size: 13px;
+      color: white;
+      border-radius: 3px;
+      box-shadow: 0 0 3px transparentize($g90, 0.7);
+      margin-right: 5px;
+      margin-bottom: 5px;
+       *{
+         display: inline-block;
+         vertical-align: middle;
+       }
+    }
+  }
+
   .input-form-result{
     position: absolute;
     top: calc(100% - 5px);

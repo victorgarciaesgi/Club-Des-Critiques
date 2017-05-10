@@ -75,31 +75,21 @@ MainApp.component('tokenForm', {
     ctrl.error = false;
     ctrl.errorMessage = "";
     ctrl.searching = false,
-    ctrl.search_result = {selected: {},data: {}
-    }
+    ctrl.search_result = {selected: {},data: {}}
+    ctrl.searchText = "";
 
-    $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
-      if (newValue == '' || newValue == undefined){
-        ctrl.search_result.data = {};
+    ctrl.$onInit = function() {
+      ctrl.vgModel = [];
+    };
+
+    ctrl.keydown = function(event, element) {
+      if (event.which == 13){
+        event.preventDefault();
+        ctrl.vgModel.push({label: ctrl.searchText});
+        ctrl.searchText = "";
       }
-      else if (newValue.trim().length > 1){
-        ctrl.searching = true;
-        ctrl.error = false;
-        ctrl.errorMessage = "";
-        var getBooks = AjaxGet.getData(ctrl.vgSource ,newValue.replace(/ /g,'%20'));
-        getBooks.then(function(result){
-          console.log(result)
-          if (result.error){
-            ctrl.error = true;
-            ctrl.errorMessage = result.error;
-          }
-          else{
-            ctrl.searching = false;
-            ctrl.search_result.data = result;
-          }
-        })
-      }
-    })
+
+    };
 
   },
   bindings: {
