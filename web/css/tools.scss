@@ -170,29 +170,6 @@ pre{
 
 
 
-// .input-form {
-//   position: relative;
-//   float: left;
-//   background-color: $w250;
-//   color: $mainColor;
-//   height: 30px;
-//   padding: 5px 5px 5px 10px;
-//   width: 100%;
-//   margin: 5px 0 5px 0;
-//   line-height: 30px;
-//   box-shadow: 0 0 5px $w210;
-//   font-size: 13px;
-//
-//   &:hover {
-//     box-shadow: 0 0 6px $w200;
-//   }
-//
-//   &:focus {
-//     box-shadow: 0 0 8px rgb(190,190,190);
-//   }
-// }
-
-
 .input-form {
   position: relative;
   float: left;
@@ -214,13 +191,31 @@ pre{
 
   &:focus{
     border: 1px solid darken($mainGreen1, 20%);
+    + .input-form-result{
+      display: block;
+    }
   }
-  & + .loading-spinner{
-    position: absolute;
-    right: 18px;
-    top: 50%;
-    @include translateY(-50%);
-  }
+}
+
+.token{
+  position: relative;
+  float: left;
+  padding: 5px 10px 5px 10px;
+  background-color: $mainGreen2;
+  font-size: 13px;
+  color: white;
+  border-radius: 3px;
+  box-shadow: 0 0 3px transparentize($g90, 0.7);
+  margin-right: 10px;
+  margin-bottom: 5px;
+   *{
+     display: inline-block;
+     vertical-align: middle;
+   }
+
+   img{
+     cursor: pointer;
+   }
 }
 
 .input-form-wrap{
@@ -229,30 +224,21 @@ pre{
   width: 100%;
   height: auto;
 
+  .loading-spinner{
+    position: absolute;
+    right: 18px;
+    top: 50%;
+    @include translateY(-50%);
+  }
+
   .token-container{
     position: relative;
     padding: 5px;
     float: left;
     height: auto;
     width: 100%;
-
-    .token{
-      position: relative;
-      float: left;
-      padding: 5px 5px 5px 10px;
-      background-color: $mainGreen2;
-      font-size: 13px;
-      color: white;
-      border-radius: 3px;
-      box-shadow: 0 0 3px transparentize($g90, 0.7);
-      margin-right: 5px;
-      margin-bottom: 5px;
-       *{
-         display: inline-block;
-         vertical-align: middle;
-       }
-    }
   }
+
 
   .input-form-result{
     position: absolute;
@@ -263,6 +249,7 @@ pre{
     z-index: 3;
     background-color: white;
     box-shadow: 0 0 5px $w210;
+    display: none;
 
     ul{
       position: relative;
@@ -277,6 +264,19 @@ pre{
         width: 100%;
         border-bottom: 1px solid $w230;
         padding: 5px;
+        cursor: pointer;
+
+        &:hover{
+          background-color: $w240;
+        }
+
+        &.selected{
+          background-color: $w235;
+          background-color: $mainGreen1;
+          &:hover{
+            background-color: $mainGreen1;
+            }
+        }
 
         .cover{
           position: relative;
@@ -387,6 +387,9 @@ select{
     vertical-align: middle;
     margin-bottom: 2px;
     margin-left: -5px;
+    margin-right: 5px;
+    height: 17px;
+    width: 17px;
   }
 
   &[disabled='disabled']{

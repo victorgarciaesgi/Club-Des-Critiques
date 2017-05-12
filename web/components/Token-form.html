@@ -1,15 +1,17 @@
 <div class="input-form-wrap f-left h-auto w-100">
-  <div class='legend'>Catégories de ce livre (Entrée pour ajouter)</div>
+  <div class='legend'>{($ctrl.vgData.legend)}</div>
   <input type="{($ctrl.vgData.type)}"
           class='input-form'
           placeholder="{($ctrl.vgData.placeholder)}"
           ng-model='$ctrl.searchText'
           ng-value='$ctrl.searchText'
-          ng-required='$ctrl.vgData.required'
           ng-disabled='$ctrl.vgDisabled'
           ng-keydown='$ctrl.keydown($event, $this)'
          />
-  <div ng-show='$ctrl.searching' class="loading-spinner"></div>
+ <input type="hidden" class='input-form'
+       ng-model='$ctrl.filled'
+        name='{($ctrl.vgData.name)}'
+        ng-required='$ctrl.vgData.required'>
   <div class="input-form-result" ng-show='$ctrl.search_result.data.length > 0 || $ctrl.error'>
     <ul ng-show='$ctrl.search_result.data.length > 0'>
       <li ng-repeat='result in $ctrl.search_result.data | limitTo: 4'>
@@ -25,8 +27,9 @@
   <div class="token-container">
     <li ng-repeat='token in $ctrl.vgModel' class='token'>
       <span>{(token.label)}</span>
-      <img class='t-u-delete' src='/assets/delete.svg' height='18' width= '18'>
+      <img class='t-u-delete' ng-click='$ctrl.delete($event,$index,token)' src='/assets/delete.svg' height='18' width= '18'>
     </li>
   </div>
+  <div ng-show='$ctrl.searching' class="loading-spinner"></div>
 
 </div>
