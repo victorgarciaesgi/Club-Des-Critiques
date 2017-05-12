@@ -31,52 +31,93 @@ MainApp.component('textForm', {
 
 MainApp.component('searchForm', {
   templateUrl: '../components/Search-form.html',
-  controller: function($scope, $element, $attrs, AjaxGet){
+  controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
+    ctrl.limit = 4;
+    ctrl.bookFound = false;
     ctrl.error = false;
     ctrl.errorMessage = "";
     ctrl.searching = false,
-    ctrl.search_result = {selected: {},data: {}
+    ctrl.search_result = {selected: {},data: {}}
+
+    ctrl.keydown = function(event, element){
+      if (event.which == 13) {
+        event.preventDefault();
+      }
+      if (!ctrl.searching && ctrl.vgModel.length > 1 && ctrl.vgModel != undefined){
+        if (event.which == 13) {
+          event.preventDefault();
+          ctrl.onSelectResult({result: ctrl.search_result.selected});
+          ctrl.search_result = {selected: {},data: {}}
+          ctrl.bookFound = true;
+        }
+        else if (event.which == 38 || event.which == 40){
+          var list = ctrl.search_result.data;
+          var index = ctrl.search_result.selected.indexList;
+          event.preventDefault();
+          if((event.which == 38 && index > 0) || (event.which == 40 && index < ctrl.limit - 1)){
+            var direction = (- 39) + event.which;
+            ctrl.search_result.selected = list[index + direction];
+            ctrl.search_result.selected["indexList"] = index + direction;
+          }
+        }
+        else if (event.which == 27) {
+          ctrl.search_result = {selected: {},data: {}}
+        }
+      }
+
     }
 
     $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
       if (newValue == '' || newValue == undefined){
-        ctrl.search_result.data = {};
+        ctrl.search_result = {selected: {},data: {}}
       }
-      else if (newValue.trim().length > 1){
+      else if (newValue.trim().length > 1 && !ctrl.bookFound){
         ctrl.searching = true;
-        var getBooks = AjaxGet.getData(ctrl.vgSource ,newValue.replace(/ /g,'%20'));
-        getBooks.then(function(result){
-          console.log(result)
-          if (result.error){
-            ctrl.error = true;
-            ctrl.errorMessage = result.error;
-          }
-          else{
-            ctrl.searching = false;
-            ctrl.search_result.data = result;
-          }
-        })
+        ctrl.search(ctrl.vgSource ,newValue);
+      }
+      else{
+        ctrl.search_result = {selected: {},data: {}}
+        ctrl.bookFound = false;
       }
     })
+
+    ctrl.search = function(source, value){
+      var get = AjaxRequest.get(source, value.replace(/ /g,'%20'));
+      get.then(function(result){
+        console.log(result)
+        if (result.error){
+          ctrl.error = true;
+          ctrl.errorMessage = result.error;
+        }
+        else{
+          ctrl.searching = false;
+          ctrl.search_result.data = result;
+          ctrl.search_result.selected = result[0];
+          ctrl.search_result.selected["indexList"] = 0;
+        }
+      })
+    }
   },
   bindings: {
     vgModel: '=',
     vgData: '=',
     vgDisabled: '=?',
-    vgSource: '@'
+    vgSource: '@',
+    onSelectResult: '&'
   }
 });
 
 MainApp.component('tokenForm', {
   templateUrl: '../components/Token-form.html',
-  controller: function($scope, $element, $attrs, AjaxGet){
+  controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
     ctrl.error = false;
     ctrl.errorMessage = "";
     ctrl.searching = false,
     ctrl.search_result = {selected: {},data: {}}
     ctrl.searchText = "";
+    ctrl.filled = "";
 
     ctrl.$onInit = function() {
       ctrl.vgModel = [];
@@ -88,8 +129,20 @@ MainApp.component('tokenForm', {
         ctrl.vgModel.push({label: ctrl.searchText});
         ctrl.searchText = "";
       }
-
     };
+
+    ctrl.delete = function(event,index, token){
+      ctrl.vgModel.splice(index, 1);
+    }
+
+    $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
+      if (newValue.length == 0){
+        ctrl.filled = "";
+      }
+      else{
+        ctrl.filled = "filled";
+      }
+    }, true)
 
   },
   bindings: {

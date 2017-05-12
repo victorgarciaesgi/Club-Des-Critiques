@@ -8,13 +8,16 @@
           ng-required='$ctrl.vgData.required'
           ng-model-options='{debounce: 500}'
           ng-disabled='$ctrl.vgDisabled'
+          ng-keydown='$ctrl.keydown($event, $this)'
+          ng-trim="false"
          />
-  <div ng-show='$ctrl.searching' class="loading-spinner"></div>
   <div class="input-form-result" ng-show='$ctrl.search_result.data.length > 0 || $ctrl.error'>
     <ul ng-show='$ctrl.search_result.data.length > 0'>
-      <li ng-repeat='result in $ctrl.search_result.data | limitTo: 4'>
+      <li ng-repeat='result in $ctrl.search_result.data | limitTo: $ctrl.limit'
+          ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
+          ng-click=''>
         <div class="cover"
-        style='background-image: url({(result.volumeInfo.imageLinks?result.volumeInfo.imageLinks.smallThumbnail:"/assets/no_thumbnail.svg")})'>
+        style='background-image: url({(result.volumeInfo.imageLinks?result.volumeInfo.imageLinks.smallThumbnail:"/assets/no_thumbnail.jpg")})'>
 
         </div>
         <div class="infos">
@@ -30,4 +33,5 @@
       </div>
     </ul>
   </div>
+  <div ng-show='$ctrl.searching' class="loading-spinner"></div>
 </div>

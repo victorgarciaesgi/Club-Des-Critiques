@@ -1,6 +1,6 @@
 
 
-MainApp.controller('library', function ($scope, $rootScope, AjaxGet) {
+MainApp.controller('library', function ($scope, $rootScope, $q) {
   $scope.categories = [
     {id: 1,label: 'Roman Policier', name:'policier'},
     {id: 2,label: 'Romance', name:'romance'},
@@ -11,22 +11,79 @@ MainApp.controller('library', function ($scope, $rootScope, AjaxGet) {
   ];
 
   $scope.addBook = false;
+  $scope.coverLoaded = false;
+  $scope.coverSearching = false;
 
   $scope.AddBookForm = {
     values: {
       search: ""
     },
-    bookFound: false,
     elements: {
-      search: {source: 'library_addSearch',placeholder: 'Recherche un livre..',name: 'book_search',type: 'text',required: true,validator: 'vg-search'},
+      search: {placeholder: 'Rechercher un livre..',name: 'book_search',type: 'text',required: true,validator: 'vg-search', source: 'library_addSearch'},
       author: {placeholder: 'Auteur..',name: 'book_author',type: 'text',required: true,},
-      illustration: {placeholder: 'Illustration du livre',name: 'book_illustration',type: 'file',required: true},
+      illustration: {placeholder: 'Illustration du livre (lien)',name: 'book_illustration',type: 'text',required: true},
       description: {placeholder: 'Description..',name: 'book_description',type: 'text',required: true},
-      categories: {source: 'library_addCategories',placeholder: 'Catégories..',name: 'book_categories',type: 'text',required: true,validator: 'vg-tokens'},
+      categories: {source: 'library_addCategories',placeholder: 'Catégorie... (Entrée pour ajouter)',name: 'book_categories',type: 'text',required: true,legend:'Catégories de ce livre'},
       isbn: {placeholder: 'Isbn..',name: 'book_isbn',type: 'text',required: false},
       pages: {placeholder: 'Nombre de pages..',name: 'book_pages',type: 'text',required: false},
       rating: {placeholder: 'Votre note pour ce livre..',name: 'book_rating',type:'text',required: true},
     }
+  }
+
+  $scope.$watch('AddBookForm.values.illustration', function(newValue, oldValue, scope){
+    if(newValue){
+      $scope.waitLoad(newValue);
+    }
+  })
+
+  $scope.selectResult = function(book){
+    $scope.AddBookForm.values = {};
+    $scope.AddBookForm.values.author = book.volumeInfo.authors[0];
+    $scope.AddBookForm.values.search = book.volumeInfo.title;
+    $scope.AddBookForm.values.illustration = book.volumeInfo.imageLinks.thumbnail;
+    $scope.AddBookForm.values.pages = book.volumeInfo.pageCount;
+    $scope.AddBookForm.values.isbn = book.volumeInfo.industryIdentifiers;
+    $scope.AddBookForm.values.description = book.volumeInfo.description;
+    $scope.AddBookForm.values.date = book.volumeInfo.publishedDate;
+    $scope.AddBookForm.values.price = book.saleInfo.retailPrice.amount;
+    $scope.AddBookForm.values.categories = [];
+    $.each(book.volumeInfo.categories,function(index, el) {
+      $scope.AddBookForm.values.categories.push({label: el})
+    });
+    $scope.waitLoad(book.volumeInfo.imageLinks.thumbnail);
+  }
+
+  $scope.waitLoad = function(link){
+    if(link.length > 10){
+      $scope.coverSearching = true;
+      var promise = $scope.promiseLoad(link);
+      promise.then(function(data) {
+        $scope.AddBookForm.values.illustration = link;
+        $scope.coverSearching = false;
+        $scope.coverLoaded = true;
+      }, function(reason) {
+        $scope.coverSearching = false;
+        $scope.coverLoaded = false;
+      });
+    }
+  }
+
+  $scope.promiseLoad = function(link){
+    return $q(function(resolve, reject){
+      var img = new Image();
+      img.onload = function(event){
+        resolve(img.src = link);
+      }
+      img.onerror = function(){
+        reject(false);
+      }
+      img.src = link;
+    })
+
+  }
+
+  $scope.submitBook = function(){
+
   }
 
 
