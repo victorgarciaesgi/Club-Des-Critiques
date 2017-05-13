@@ -18,6 +18,16 @@ MainApp.component('dropdown', {
   }
 });
 
+MainApp.component('areaForm', {
+  templateUrl: '../components/Area-form.html',
+  controller: function(){},
+  bindings: {
+    vgModel: '=',
+    vgData: '=',
+    vgDisabled: '=?',
+  }
+});
+
 
 MainApp.component('textForm', {
   templateUrl: '../components/Text-form.html',
@@ -47,9 +57,7 @@ MainApp.component('searchForm', {
       if (!ctrl.searching && ctrl.vgModel.length > 1 && ctrl.vgModel != undefined){
         if (event.which == 13) {
           event.preventDefault();
-          ctrl.onSelectResult({result: ctrl.search_result.selected});
-          ctrl.search_result = {selected: {},data: {}}
-          ctrl.bookFound = true;
+          ctrl.selectAction(ctrl.search_result.selected);
         }
         else if (event.which == 38 || event.which == 40){
           var list = ctrl.search_result.data;
@@ -65,7 +73,12 @@ MainApp.component('searchForm', {
           ctrl.search_result = {selected: {},data: {}}
         }
       }
+    }
 
+    ctrl.selectAction = function(book){
+      ctrl.onSelectResult({result: book});
+      ctrl.search_result = {selected: {},data: {}}
+      ctrl.bookFound = true;
     }
 
     $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
@@ -136,14 +149,15 @@ MainApp.component('tokenForm', {
     }
 
     $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
-      if (newValue.length == 0){
-        ctrl.filled = "";
-      }
-      else{
-        ctrl.filled = "filled";
+      if (!!newValue) {
+        if (newValue.length == 0){
+          ctrl.filled = "";
+        }
+        else{
+          ctrl.filled = "filled";
+        }
       }
     }, true)
-
   },
   bindings: {
     vgModel: '=',
@@ -153,15 +167,61 @@ MainApp.component('tokenForm', {
   }
 });
 
-MainApp.component('areaForm', {
-  templateUrl: '../components/Area-form.html',
-  controller: function(){},
+MainApp.component('ratingForm', {
+  templateUrl: '../components/Rating-form.html',
+  controller: function($scope, $element, $attrs, AjaxRequest){
+    var ctrl = this;
+    ctrl.count = 5;
+    ctrl.dirty = false;
+    ctrl.hoverStar = false;
+    ctrl.filled = "";
+
+    ctrl.$onInit = function(){
+      ctrl.rating = ctrl.vgData.init;
+    }
+    ctrl.getNumber = function(num) {
+      return new Array(num);
+    }
+    ctrl.hover = function(value){
+      ctrl.rating = value;
+      ctrl.hoverStar = true;
+    }
+
+    ctrl.leave = function(){
+      if (ctrl.dirty) {
+        ctrl.rating = ctrl.vgModel;
+      }
+      else{
+        ctrl.rating = ctrl.vgData.init;
+      }
+      ctrl.hoverStar = false;
+    }
+
+    ctrl.set = function(value){
+      ctrl.dirty = true;
+      ctrl.hoverStar = false;
+      ctrl.vgModel = value;
+    }
+
+    $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
+      if (!!newValue) {
+        if (newValue.length == 0){
+          ctrl.filled = "";
+        }
+        else{
+          ctrl.filled = "filled";
+        }
+      }
+    }, true)
+  },
   bindings: {
     vgModel: '=',
     vgData: '=',
+    vgSource: '=?',
     vgDisabled: '=?',
   }
 });
+
 
 
 
