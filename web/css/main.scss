@@ -857,3 +857,60 @@ aside{
     }
   }
 }
+
+
+rating-form{
+
+  .input-form-wrap{
+    text-align: center;
+
+    .star-container{
+      display: inline-block;
+      width: auto;
+      height: auto;
+      padding: 5px 0 5px 0;
+      .starRating{
+        position: relative;
+        float: left;
+        height: 25px;
+        width: 25px;
+        cursor: pointer;
+        background-position: center center;
+        background-size: 30px 30px;
+
+        &.full[color='brown']{
+          background-image: url('../assets/star_plain.svg');
+        }
+        &.half[color='brown']{
+          background-image: url('../assets/star_half.svg');
+        }
+        &.empty[color='brown']{
+          background-image: url('../assets/star_empty.svg');
+        }
+        &.full[color='green']{
+          background-image: url('../assets/star_plain_green.svg');
+        }
+        &.half[color='green']{
+          background-image: url('../assets/star_half_green.svg');
+        }
+        &.empty[color='green']{
+          background-image: url('../assets/star_empty_green.svg');
+        }
+
+        .part{
+          position: relative;
+          float: left;
+          height: 100%;
+          width: 50%;
+        }
+      }
+      .star-zero{
+        position: relative;
+        float: left;
+        height: 25px;
+        width: 13px;
+        cursor: pointer;
+      }
+    }
+  }
+}
