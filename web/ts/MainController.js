@@ -11,7 +11,14 @@ MainApp.run(function($rootScope) {
 
 MainApp.filter('cap', function() {
     return function(input) {
-      return (!!input) ? input.charAt(0).toUpperCase() + input.substr(1).toLowerCase() : '';
+      if ((!!input)) {
+        if (input.charAt(0).toUpperCase() === input.charAt(0)){
+          return input;
+        }
+        else{
+          return input.charAt(0).toUpperCase() + input.substr(1).toLowerCase();
+        }
+      }
     }
 });
 

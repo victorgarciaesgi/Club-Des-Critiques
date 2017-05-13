@@ -26,7 +26,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
       categories: {source: 'library_addCategories',placeholder: 'Catégorie... (Entrée pour ajouter)',name: 'book_categories',type: 'text',required: true,legend:'Catégories de ce livre'},
       isbn: {placeholder: 'Isbn..',name: 'book_isbn',type: 'text',required: false},
       pages: {placeholder: 'Nombre de pages..',name: 'book_pages',type: 'text',required: false},
-      rating: {placeholder: 'Votre note pour ce livre..',name: 'book_rating',type:'text',required: true},
+      rating: {placeholder: 'Votre note pour ce livre',name: 'book_rating',type:'text',required: true, init: 0},
     }
   }
 
@@ -45,7 +45,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
     $scope.AddBookForm.values.isbn = book.volumeInfo.industryIdentifiers;
     $scope.AddBookForm.values.description = book.volumeInfo.description;
     $scope.AddBookForm.values.date = book.volumeInfo.publishedDate;
-    $scope.AddBookForm.values.price = book.saleInfo.retailPrice.amount;
+    $scope.AddBookForm.values.price = (!!book.saleInfo.retailPrice)?book.saleInfo.retailPrice.amount:null;
     $scope.AddBookForm.values.categories = [];
     $.each(book.volumeInfo.categories,function(index, el) {
       $scope.AddBookForm.values.categories.push({label: el})

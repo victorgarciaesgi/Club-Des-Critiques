@@ -15,7 +15,7 @@
     <ul ng-show='$ctrl.search_result.data.length > 0'>
       <li ng-repeat='result in $ctrl.search_result.data | limitTo: $ctrl.limit'
           ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
-          ng-click=''>
+          ng-mousedown='$ctrl.selectAction(result)'>
         <div class="cover"
         style='background-image: url({(result.volumeInfo.imageLinks?result.volumeInfo.imageLinks.smallThumbnail:"/assets/no_thumbnail.jpg")})'>
 
