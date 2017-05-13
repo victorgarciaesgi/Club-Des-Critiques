@@ -120,9 +120,9 @@
                 <text-form vg-model='AddBookForm.values.pages'
                             vg-data='AddBookForm.elements.pages'>
                 </text-form>
-                <text-form vg-model='AddBookForm.values.rating'
-                            vg-data='AddBookForm.elements.rating'>
-                </text-form>
+                <rating-form vg-model='AddBookForm.values.rating'
+                              vg-data='AddBookForm.elements.rating'>
+                </rating-form>
                 <pre>{(AddBookForm.values | json)}</pre>
               </div><!--
             --><div class="form-section" style='width: 400px' color>
@@ -177,8 +177,8 @@
               </div>
           </div>
           <div class="footer">
-            <button class="bouton" design='blanc'>Annuler</button>
-            <button class="bouton" design='blanc'>Vider les champs</button>
+            <div class="bouton" design='blanc'>Annuler</div>
+            <div class="bouton" design='blanc' ng-click='AddBookForm.values = {categories:[]}'>Vider les champs</div>
             <button class="bouton" type='submit' design='green'
             ng-disabled='AddBookFormX.$invalid'>Ajouter un livre</button>
 
