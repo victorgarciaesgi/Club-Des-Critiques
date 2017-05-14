@@ -40,7 +40,7 @@ class Media
     /**
      * @var string
      *
-     * @ORM\Column(name="img", type="string", length=255, nullable=false)
+     * @ORM\Column(name="img", type="string", length=1000, nullable=false)
      */
     private $img;
 
