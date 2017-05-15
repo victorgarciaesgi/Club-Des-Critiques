@@ -3,9 +3,9 @@
   <div class="star-container" ng-mouseleave='$ctrl.leave()'>
     <div class="star-zero" ng-mouseenter="$ctrl.hover(0)" ng-click="$ctrl.set(0)"></div>
     <div class="starRating" ng-class='{
-          full: $index < $ctrl.rating,
-          half: $index == $ctrl.rating - 0.5,
-          empty: $index >= $ctrl.rating
+          full: $index < $ctrl.vgModel,
+          half: $index == $ctrl.vgModel - 0.5,
+          empty: $index >= $ctrl.vgModel
         }'
         ng-repeat='star in $ctrl.getNumber($ctrl.count) track by $index'
         color='{((!$ctrl.hoverStar && $ctrl.dirty)?"green":"brown")}'>
