@@ -27,6 +27,9 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
       isbn: {placeholder: 'Isbn..',name: 'book_isbn',type: 'text',required: false},
       pages: {placeholder: 'Nombre de pages..',name: 'book_pages',type: 'number',required: false},
       rating: {placeholder: 'Votre note pour ce livre',name: 'book_rating',type:'text',required: true, init: 0},
+    },
+    submit: (values) => {
+
     }
   }
 
@@ -79,10 +82,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
       }
       img.src = link;
     })
-
-  }
-
-  $scope.submitBook = function(){
 
   }
 

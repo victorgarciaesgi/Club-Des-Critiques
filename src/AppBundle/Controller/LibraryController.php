@@ -45,7 +45,7 @@ class LibraryController extends Controller
       }
       else {
         $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);
-        return new JsonResponse();
+        return new JsonResponse($error_data);
       }
 
 
