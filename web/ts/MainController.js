@@ -29,7 +29,7 @@ MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
     elements: {
       mail: {placeholder: 'Votre email...',name: 'mail',type:'email',required: true},
     },
-    submit: function(values){
+    submit: (values) => {
       var send = AjaxRequest.send('mail_register',values)
     }
   }
