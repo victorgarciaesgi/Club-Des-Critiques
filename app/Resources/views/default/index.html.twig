@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-    <div id="home" ng-controller='home'>
+    <div id="home">
         <section class="contexte">
             <div class="title">
                 Contexte
@@ -34,7 +34,7 @@
                 <ul id='books-une' class='list-books'>
 
                     <li class='book-wrapper'>
-                        <div class="cover" style='background-image: url("../assets/book1.jpg")'></div>
+                        <div class="cover" style=''></div>
                         <div class="name info-book">The Sellout</div>
                         <div class="author info-book">Paul Beatty</div>
                         <div class="rating info-book">
@@ -46,7 +46,7 @@
                         </div>
                     </li>
                     <li class='book-wrapper'>
-                        <div class="cover" style='background-image: url("../assets/book6.jpg")'></div>
+                        <div class="cover" style=''></div>
                         <div class="name info-book">Harry Potter et l'enfant maudit</div>
                         <div class="author info-book">J.K Rowling</div>
                         <div class="rating info-book">
@@ -58,7 +58,7 @@
                         </div>
                     </li>
                     <li class='book-wrapper'>
-                        <div class="cover" style='background-image: url("../assets/book2.jpg")'></div>
+                        <div class="cover" style=''></div>
                         <div class="name info-book">The Sellout</div>
                         <div class="author info-book">Paul Beatty</div>
                         <div class="rating info-book">
@@ -70,7 +70,7 @@
                         </div>
                     </li>
                     <li class='book-wrapper'>
-                        <div class="cover" style='background-image: url("../assets/book3.jpg")'></div>
+                        <div class="cover" style=''></div>
                         <div class="name info-book">The Sellout</div>
                         <div class="author info-book">Paul Beatty</div>
                         <div class="rating info-book">
@@ -82,7 +82,7 @@
                         </div>
                     </li>
                     <li class='book-wrapper'>
-                        <div class="cover" style='background-image: url("../assets/book4.jpg")'></div>
+                        <div class="cover" style=''></div>
                         <div class="name info-book">The Sellout</div>
                         <div class="author info-book">Paul Beatty</div>
                         <div class="rating info-book">
@@ -94,7 +94,7 @@
                         </div>
                     </li>
                     <li class='book-wrapper'>
-                        <div class="cover" style='background-image: url("../assets/book5.jpg")'></div>
+                        <div class="cover" style=''></div>
                         <div class="name info-book">The Sellout</div>
                         <div class="author info-book">Paul Beatty</div>
                         <div class="rating info-book">
@@ -106,7 +106,7 @@
                         </div>
                     </li>
                     <li class='book-wrapper'>
-                        <div class="cover" style='background-image: url("../assets/book6.jpg")'></div>
+                        <div class="cover" style=''></div>
                         <div class="name info-book">The Sellout</div>
                         <div class="author info-book">Paul Beatty</div>
                         <div class="rating info-book">
@@ -202,10 +202,17 @@
             <div class="content">
                 <p>Indiquez votre adresse mail. <br>
                     Nous vous enverrons un mot de passe provisoire et un lien pour remplir votre profil</p>
-                <input id="mail_subscribe" type="mail" class='input-form' name="mail" value="" placeholder="Votre email...">
-                <div class="footer">
-                    <div class="bouton" design='brown'>S'inscrire</div>
-                </div>
+                <form name='mailRegisterX' ng-submit='mailRegister.submit(mailRegister.values)'>
+                  <text-form vg-model='mailRegister.values.mail'
+                              vg-data='mailRegister.elements.mail'>
+                  </text-form>
+                  <div class="footer">
+                    <button class="bouton" type='submit' design='brown'
+                        ng-disabled='mailRegisterX.$invalid'>S'inscrire</button>
+                  </div>
+                </form>
+
+                <pre>{(mailRegister.values | json)}</pre>
             </div>
         </section>
     </aside>

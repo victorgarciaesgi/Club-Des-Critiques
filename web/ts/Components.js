@@ -175,24 +175,25 @@ MainApp.component('ratingForm', {
     ctrl.dirty = false;
     ctrl.hoverStar = false;
     ctrl.filled = "";
+    ctrl.rating = 0;
 
     ctrl.$onInit = function(){
-      ctrl.rating = ctrl.vgData.init;
+      ctrl.vgModel = (ctrl.vgData.init?ctrl.vgData.init:0);
     }
     ctrl.getNumber = function(num) {
       return new Array(num);
     }
     ctrl.hover = function(value){
-      ctrl.rating = value;
+      ctrl.vgModel = value;
       ctrl.hoverStar = true;
     }
 
     ctrl.leave = function(){
       if (ctrl.dirty) {
-        ctrl.rating = ctrl.vgModel;
+        ctrl.vgModel = ctrl.rating;
       }
       else{
-        ctrl.rating = ctrl.vgData.init;
+        ctrl.vgModel = ctrl.vgData.init;
       }
       ctrl.hoverStar = false;
     }
@@ -201,6 +202,7 @@ MainApp.component('ratingForm', {
       ctrl.dirty = true;
       ctrl.hoverStar = false;
       ctrl.vgModel = value;
+      ctrl.rating = value;
     }
 
     $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
@@ -211,6 +213,9 @@ MainApp.component('ratingForm', {
         else{
           ctrl.filled = "filled";
         }
+      }
+      else{
+        ctrl.vgModel = (ctrl.vgData.init?ctrl.vgData.init:0);
       }
     }, true)
   },
