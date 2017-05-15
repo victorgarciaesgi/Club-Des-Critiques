@@ -25,7 +25,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
       description: {placeholder: 'Description..',name: 'book_description',type: 'text',required: true},
       categories: {source: 'library_addCategories',placeholder: 'Catégorie... (Entrée pour ajouter)',name: 'book_categories',type: 'text',required: true,legend:'Catégories de ce livre'},
       isbn: {placeholder: 'Isbn..',name: 'book_isbn',type: 'text',required: false},
-      pages: {placeholder: 'Nombre de pages..',name: 'book_pages',type: 'text',required: false},
+      pages: {placeholder: 'Nombre de pages..',name: 'book_pages',type: 'number',required: false},
       rating: {placeholder: 'Votre note pour ce livre',name: 'book_rating',type:'text',required: true, init: 0},
     }
   }
