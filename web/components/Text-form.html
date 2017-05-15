@@ -9,7 +9,7 @@
           name='{($ctrl.vgData.name)}'
           ng-required='$ctrl.vgData.required'
           ng-disabled='$ctrl.vgDisabled'
-          
+
           vg-password />
 
 
@@ -22,5 +22,6 @@
           name='{($ctrl.vgData.name)}'
           ng-required='$ctrl.vgData.required'
           ng-disabled='$ctrl.vgDisabled'
+          ng-model-options="{'allowInvalid': true}"
            />
 </div>

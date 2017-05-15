@@ -22,6 +22,16 @@ MainApp.filter('cap', function() {
     }
 });
 
-MainApp.controller('homepage', function ($scope, $rootScope) {
+MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
+
+  $scope.mailRegister = {
+    values: {},
+    elements: {
+      mail: {placeholder: 'Votre email...',name: 'mail',type:'email',required: true},
+    },
+    submit: function(values){
+      var send = AjaxRequest.send('mail_register',values)
+    }
+  }
 
 });
