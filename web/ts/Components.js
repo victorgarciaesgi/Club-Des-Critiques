@@ -1,7 +1,9 @@
 
+
+// Composant checkbox <checkbox></checkbox>
 MainApp.component('checkbox', {
   templateUrl: '../components/Checkbox.html',
-  controller: function(){},
+  controller: function($scope, $element, $attrs, AjaxRequest){},
   bindings: {
     vgModel: '=',
     vgLabel: '@',
@@ -9,21 +11,31 @@ MainApp.component('checkbox', {
   }
 });
 
+// Composant select <dropdown></dropdown>
 MainApp.component('dropdown', {
   templateUrl: '../components/Dropdown.html',
-  controller: function(){},
+  controller: function($scope, $element, $attrs, AjaxRequest){
+  },
   bindings: {
     vgModel: '=',
-    vgData: '=',
+    vgData: '<',
   }
 });
 
+// composant textarea
 MainApp.component('areaForm', {
   templateUrl: '../components/Area-form.html',
-  controller: function(){},
+  controller: function($scope, $element, $attrs, AjaxRequest){
+    var ctrl = this;
+    $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
+      if (!!newValue) {
+        scope.areaForm[ctrl.vgData.name].$setDirty();
+      }
+    }, true)
+  },
   bindings: {
     vgModel: '=',
-    vgData: '=',
+    vgData: '<',
     vgDisabled: '=?',
   }
 });
@@ -31,10 +43,17 @@ MainApp.component('areaForm', {
 
 MainApp.component('textForm', {
   templateUrl: '../components/Text-form.html',
-  controller: function(){},
+  controller: function($scope, $element, $attrs, AjaxRequest){
+    var ctrl = this;
+    $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
+      if (!!newValue) {
+        scope.textForm[ctrl.vgData.name].$setDirty();
+      }
+    }, true)
+  },
   bindings: {
     vgModel: '=',
-    vgData: '=',
+    vgData: '<',
     vgDisabled: '=?',
   }
 });
@@ -45,24 +64,23 @@ MainApp.component('searchForm', {
     var ctrl = this;
     ctrl.limit = 4;
     ctrl.bookFound = false;
+    ctrl.selectBook = false;
     ctrl.error = false;
     ctrl.errorMessage = "";
     ctrl.searching = false,
     ctrl.search_result = {selected: {},data: {}}
 
-    ctrl.keydown = function(event, element){
-      if (event.which == 13) {
-        event.preventDefault();
-      }
+    ctrl.keydown = (event, element) => {
+      if (event.which == 13) {event.preventDefault();}
       if (!ctrl.searching && ctrl.vgModel.length > 1 && ctrl.vgModel != undefined){
         if (event.which == 13) {
           event.preventDefault();
           ctrl.selectAction(ctrl.search_result.selected);
         }
         else if (event.which == 38 || event.which == 40){
+          event.preventDefault();
           var list = ctrl.search_result.data;
           var index = ctrl.search_result.selected.indexList;
-          event.preventDefault();
           if((event.which == 38 && index > 0) || (event.which == 40 && index < ctrl.limit - 1)){
             var direction = (- 39) + event.which;
             ctrl.search_result.selected = list[index + direction];
@@ -75,29 +93,16 @@ MainApp.component('searchForm', {
       }
     }
 
-    ctrl.selectAction = function(book){
+    ctrl.selectAction = (book) => {
       ctrl.onSelectResult({result: book});
       ctrl.search_result = {selected: {},data: {}}
       ctrl.bookFound = true;
+      ctrl.selectBook = true;
     }
 
-    $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
-      if (newValue == '' || newValue == undefined){
-        ctrl.search_result = {selected: {},data: {}}
-      }
-      else if (newValue.trim().length > 1 && !ctrl.bookFound){
-        ctrl.searching = true;
-        ctrl.search(ctrl.vgSource ,newValue);
-      }
-      else{
-        ctrl.search_result = {selected: {},data: {}}
-        ctrl.bookFound = false;
-      }
-    })
-
-    ctrl.search = function(source, value){
-      var get = AjaxRequest.get(source, value.replace(/ /g,'%20'));
-      get.then(function(result){
+    ctrl.search = (source, value) => {
+      var promise = AjaxRequest.get(source, value.replace(/ /g,'%20'));
+      promise.then((result) => {
         console.log(result)
         if (result.error){
           ctrl.error = true;
@@ -111,10 +116,27 @@ MainApp.component('searchForm', {
         }
       })
     }
+
+    $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
+      if (!!newValue){
+        if (newValue.trim().length > 1 && !ctrl.selectBook){
+          ctrl.searching = true;
+          ctrl.search(ctrl.vgSource ,newValue);
+        }
+        else{
+          ctrl.selectBook = false;
+        }
+      }
+      else{
+        ctrl.vgModel = "";
+        ctrl.search_result = {selected: {},data: {}}
+        ctrl.bookFound = false;
+      }
+    })
   },
   bindings: {
     vgModel: '=',
-    vgData: '=',
+    vgData: '<',
     vgDisabled: '=?',
     vgSource: '@',
     onSelectResult: '&'
@@ -132,11 +154,11 @@ MainApp.component('tokenForm', {
     ctrl.searchText = "";
     ctrl.filled = "";
 
-    ctrl.$onInit = function() {
+    ctrl.$onInit = () => {
       ctrl.vgModel = [];
     };
 
-    ctrl.keydown = function(event, element) {
+    ctrl.keydown = (event, element) => {
       if (event.which == 13){
         event.preventDefault();
         ctrl.vgModel.push({label: ctrl.searchText});
@@ -144,28 +166,29 @@ MainApp.component('tokenForm', {
       }
     };
 
-    ctrl.delete = function(event,index, token){
+    ctrl.delete = (event,index, token) => {
       ctrl.vgModel.splice(index, 1);
     }
 
-    $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
+    $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
-        if (newValue.length == 0){
-          ctrl.filled = "";
-        }
-        else{
-          ctrl.filled = "filled";
-        }
+        ctrl.filled = (newValue.length == 0?"":"filled");
+      }
+      else{
+        ctrl.vgModel = [];
+        ctrl.dirty = false;
       }
     }, true)
   },
   bindings: {
     vgModel: '=',
-    vgData: '=',
+    vgData: '<',
     vgSource: '=?',
     vgDisabled: '=?',
   }
 });
+
+// Composant notation par étoiles
 
 MainApp.component('ratingForm', {
   templateUrl: '../components/Rating-form.html',
@@ -177,51 +200,42 @@ MainApp.component('ratingForm', {
     ctrl.filled = "";
     ctrl.rating = 0;
 
-    ctrl.$onInit = function(){
+    ctrl.$onInit = () => {
       ctrl.vgModel = (ctrl.vgData.init?ctrl.vgData.init:0);
     }
-    ctrl.getNumber = function(num) {
-      return new Array(num);
-    }
-    ctrl.hover = function(value){
+
+    ctrl.getNumber = (num) => {return new Array(num)}
+
+    ctrl.hover = (value) => {
       ctrl.vgModel = value;
       ctrl.hoverStar = true;
     }
 
-    ctrl.leave = function(){
-      if (ctrl.dirty) {
-        ctrl.vgModel = ctrl.rating;
-      }
-      else{
-        ctrl.vgModel = ctrl.vgData.init;
-      }
+    ctrl.leave = () => {
+      ctrl.vgModel = (ctrl.dirty?ctrl.rating:ctrl.vgData.init);
       ctrl.hoverStar = false;
     }
 
-    ctrl.set = function(value){
+    ctrl.set = (value) => {
       ctrl.dirty = true;
       ctrl.hoverStar = false;
       ctrl.vgModel = value;
       ctrl.rating = value;
     }
 
-    $scope.$watch('$ctrl.vgModel', function(newValue, oldValue, scope){
+    $scope.$watch('$ctrl.vgModel', (newValue, oldValue, scope) => {
       if (!!newValue) {
-        if (newValue.length == 0){
-          ctrl.filled = "";
-        }
-        else{
-          ctrl.filled = "filled";
-        }
+        ctrl.filled = (newValue.length == 0?"":"filled");
       }
       else{
         ctrl.vgModel = (ctrl.vgData.init?ctrl.vgData.init:0);
+        ctrl.dirty = false;
       }
     }, true)
   },
   bindings: {
     vgModel: '=',
-    vgData: '=',
+    vgData: '<',
     vgSource: '=?',
     vgDisabled: '=?',
   }
@@ -232,21 +246,3 @@ MainApp.component('ratingForm', {
 
 
 // Form validation directives
-
-MainApp.directive('vgPassword', function() {
-  return {
-    require: 'ngModel',
-    link: function(scope, elm, attrs, ctrl) {
-      ctrl.$validators.length = function(modelValue, viewValue) {
-        if (ctrl.$isEmpty(modelValue)) {
-          return true;
-        }
-        else if (viewValue.length > 4 && viewValue.length < 10) {
-          return true;
-        }
-
-        return false;
-      };
-    }
-  };
-});

@@ -578,6 +578,7 @@ aside{
         position: relative;
         display: inline-block;
         height: auto;
+        width: 50%;
         overflow-y: auto;
         overflow-x: hidden;
         padding: 5px;
@@ -589,6 +590,7 @@ aside{
           padding: 10px;
           font-size: 14px;
           text-align: center;
+          font-weight: bold;
           white-space: normal;
         }
 

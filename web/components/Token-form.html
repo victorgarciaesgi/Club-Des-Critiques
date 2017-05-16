@@ -1,3 +1,4 @@
+<ng-form name='tokenForm'>
 <div class="input-form-wrap f-left h-auto w-100">
   <div class='legend'>{($ctrl.vgData.legend)}</div>
   <input type="{($ctrl.vgData.type)}"
@@ -5,6 +6,10 @@
           placeholder="{($ctrl.vgData.placeholder)}"
           ng-model='$ctrl.searchText'
           ng-value='$ctrl.searchText'
+          ng-class='{
+            formError: (tokenForm[$ctrl.vgData.name].$invalid && tokenForm[$ctrl.vgData.name].$dirty),
+            formValid: (tokenForm[$ctrl.vgData.name].$valid && tokenForm[$ctrl.vgData.name].$dirty)
+          }'
           ng-disabled='$ctrl.vgDisabled'
           ng-keydown='$ctrl.keydown($event, $this)'
          />
@@ -31,5 +36,9 @@
     </li>
   </div>
   <div ng-show='$ctrl.searching' class="loading-spinner"></div>
-
+  <div ng-show='tokenForm[$ctrl.vgData.name].$valid && tokenForm[$ctrl.vgData.name].$dirty' class="form-valid-icon form-valid"></div>
+  <div ng-show='tokenForm[$ctrl.vgData.name].$invalid && tokenForm[$ctrl.vgData.name].$dirty' class="form-valid-icon form-invalid">
 </div>
+
+
+</ng-form>

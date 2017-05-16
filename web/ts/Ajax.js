@@ -17,18 +17,8 @@ MainApp.factory('AjaxRequest', function($http) {
         return returnData;
       })
     }
-    var send =  function(route, querry) {
-      return $http({
-        url: Routing.generate(route),
-        method: "POST",
-        data: {data: querry}
-      }).then(function(result){
-          return result;
-      })
-    }
     return {
       get : get,
-      send: send
     };
 });
 

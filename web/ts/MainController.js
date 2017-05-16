@@ -29,8 +29,8 @@ MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
     elements: {
       mail: {placeholder: 'Votre email...',name: 'mail',type:'email',required: true},
     },
-    submit: (values) => {
-      var send = AjaxRequest.send('mail_register',values)
+    submit: () => {
+      var promise = AjaxRequest.get('mail_register',this.values);
     }
   }
 
