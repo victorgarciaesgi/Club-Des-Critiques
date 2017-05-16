@@ -20,7 +20,11 @@ MainApp.controller('header', function ($scope, $rootScope) {
         label: "Se souvenir de moi",
         name: 'souvenir',
         required: false
+      },
+      submit: () => {
+        
       }
+
     }
 
 

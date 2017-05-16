@@ -173,7 +173,7 @@ pre{
 .input-form {
   position: relative;
   float: left;
-  border: 1px solid $mainGreen1;
+  border: 1px solid $w200;
   background-color: white;
   color: $mainColor;
   vertical-align: middle;
@@ -185,15 +185,22 @@ pre{
   font-size: 13px;
   border-radius: 4px;
 
-  &:hover{
-    border: 1px solid darken($mainGreen1, 10%);
-  }
+  // &:hover{
+  //   border: 1px solid darken($mainGreen1, 10%);
+  // }
 
   &:focus{
-    border: 1px solid darken($mainGreen1, 20%);
+    border: 1px solid darken($w200, 20%);
     + .input-form-result{
       display: block;
     }
+  }
+
+  &.formError{
+    border-color: $red1;
+  }
+  &.formValid{
+    border-color: $green1;
   }
 }
 
@@ -226,7 +233,7 @@ pre{
 
   .loading-spinner{
     position: absolute;
-    right: 18px;
+    right: 10px;
     top: 50%;
     @include translateY(-50%);
   }
@@ -237,6 +244,23 @@ pre{
     float: left;
     height: auto;
     width: 100%;
+  }
+
+  .form-valid-icon{
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    height: 20px;
+    width: 20px;
+    @include translateY(-50%);
+    @include bg-center;
+
+    &.form-valid{
+      background-image: url('../assets/form-valid-green.svg');
+    }
+    &.form-invalid{
+      background-image: url('../assets/form-invalid-red.svg');
+    }
   }
 
 

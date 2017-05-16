@@ -1,14 +1,17 @@
+<ng-form name='ratingForm'>
 <div class="input-form-wrap">
   <div class='legend'>{($ctrl.vgData.placeholder)}</div>
   <div class="star-container" ng-mouseleave='$ctrl.leave()'>
     <div class="star-zero" ng-mouseenter="$ctrl.hover(0)" ng-click="$ctrl.set(0)"></div>
-    <div class="starRating" ng-class='{
+    <div class="starRating"
+        ng-class='{
           full: $index < $ctrl.vgModel,
           half: $index == $ctrl.vgModel - 0.5,
           empty: $index >= $ctrl.vgModel
         }'
         ng-repeat='star in $ctrl.getNumber($ctrl.count) track by $index'
         color='{((!$ctrl.hoverStar && $ctrl.dirty)?"green":"brown")}'>
+        
           <div class="part" ng-mouseenter="$ctrl.hover($index + 0.5)"
           ng-click="$ctrl.set($index + 0.5)"></div>
           <div class="part" ng-mouseenter="$ctrl.hover($index + 1)"
@@ -19,3 +22,4 @@
   <input type="hidden" name="" ng-value="$ctrl.dirty?'dirty':''"
         ng-required='$ctrl.vgData.required' ng-model='$ctrl.filled'>
 </div>
+</ng-form>
