@@ -59,5 +59,134 @@ class Website
     private $param4;
 
 
-}
 
+    /**
+     * Get idWebsite
+     *
+     * @return integer
+     */
+    public function getIdWebsite()
+    {
+        return $this->idWebsite;
+    }
+
+    /**
+     * Set concept
+     *
+     * @param string $concept
+     *
+     * @return Website
+     */
+    public function setConcept($concept)
+    {
+        $this->concept = $concept;
+
+        return $this;
+    }
+
+    /**
+     * Get concept
+     *
+     * @return string
+     */
+    public function getConcept()
+    {
+        return $this->concept;
+    }
+
+    /**
+     * Set reportChatroomLimit
+     *
+     * @param integer $reportChatroomLimit
+     *
+     * @return Website
+     */
+    public function setReportChatroomLimit($reportChatroomLimit)
+    {
+        $this->reportChatroomLimit = $reportChatroomLimit;
+
+        return $this;
+    }
+
+    /**
+     * Get reportChatroomLimit
+     *
+     * @return integer
+     */
+    public function getReportChatroomLimit()
+    {
+        return $this->reportChatroomLimit;
+    }
+
+    /**
+     * Set maxUserChatroom
+     *
+     * @param integer $maxUserChatroom
+     *
+     * @return Website
+     */
+    public function setMaxUserChatroom($maxUserChatroom)
+    {
+        $this->maxUserChatroom = $maxUserChatroom;
+
+        return $this;
+    }
+
+    /**
+     * Get maxUserChatroom
+     *
+     * @return integer
+     */
+    public function getMaxUserChatroom()
+    {
+        return $this->maxUserChatroom;
+    }
+
+    /**
+     * Set param3
+     *
+     * @param integer $param3
+     *
+     * @return Website
+     */
+    public function setParam3($param3)
+    {
+        $this->param3 = $param3;
+
+        return $this;
+    }
+
+    /**
+     * Get param3
+     *
+     * @return integer
+     */
+    public function getParam3()
+    {
+        return $this->param3;
+    }
+
+    /**
+     * Set param4
+     *
+     * @param integer $param4
+     *
+     * @return Website
+     */
+    public function setParam4($param4)
+    {
+        $this->param4 = $param4;
+
+        return $this;
+    }
+
+    /**
+     * Get param4
+     *
+     * @return integer
+     */
+    public function getParam4()
+    {
+        return $this->param4;
+    }
+}

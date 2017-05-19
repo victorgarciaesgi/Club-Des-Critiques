@@ -132,4 +132,3 @@ class HistoryParticipant
         return $this->archive;
     }
 }
-

@@ -106,4 +106,3 @@ class Contact
         return $this->idUserContact;
     }
 }
-

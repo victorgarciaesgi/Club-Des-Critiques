@@ -73,4 +73,148 @@ class User extends BaseUser
      * @ORM\Column(name="keyword", type="text", nullable=false)
      */
     private $keyword;
+
+    /**
+     * Set note
+     *
+     * @param integer $note
+     *
+     * @return User
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return integer
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set ranking
+     *
+     * @param integer $ranking
+     *
+     * @return User
+     */
+    public function setRanking($ranking)
+    {
+        $this->ranking = $ranking;
+
+        return $this;
+    }
+
+    /**
+     * Get ranking
+     *
+     * @return integer
+     */
+    public function getRanking()
+    {
+        return $this->ranking;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return User
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set addressIP
+     *
+     * @param string $addressIP
+     *
+     * @return User
+     */
+    public function setAddressIP($addressIP)
+    {
+        $this->addressIP = $addressIP;
+
+        return $this;
+    }
+
+    /**
+     * Get addressIP
+     *
+     * @return string
+     */
+    public function getAddressIP()
+    {
+        return $this->addressIP;
+    }
+
+    /**
+     * Set isBlocked
+     *
+     * @param boolean $isBlocked
+     *
+     * @return User
+     */
+    public function setIsBlocked($isBlocked)
+    {
+        $this->isBlocked = $isBlocked;
+
+        return $this;
+    }
+
+    /**
+     * Get isBlocked
+     *
+     * @return boolean
+     */
+    public function getIsBlocked()
+    {
+        return $this->isBlocked;
+    }
+
+    /**
+     * Set keyword
+     *
+     * @param string $keyword
+     *
+     * @return User
+     */
+    public function setKeyword($keyword)
+    {
+        $this->keyword = $keyword;
+
+        return $this;
+    }
+
+    /**
+     * Get keyword
+     *
+     * @return string
+     */
+    public function getKeyword()
+    {
+        return $this->keyword;
+    }
 }

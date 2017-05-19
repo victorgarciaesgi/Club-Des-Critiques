@@ -163,5 +163,28 @@ class MessagesPrivate
     {
         return $this->dateCreated;
     }
-}
 
+    /**
+     * Set idPrivateChat
+     *
+     * @param \AppBundle\Entity\PrivateChat $idPrivateChat
+     *
+     * @return MessagesPrivate
+     */
+    public function setIdPrivateChat(\AppBundle\Entity\PrivateChat $idPrivateChat = null)
+    {
+        $this->idPrivateChat = $idPrivateChat;
+
+        return $this;
+    }
+
+    /**
+     * Get idPrivateChat
+     *
+     * @return \AppBundle\Entity\PrivateChat
+     */
+    public function getIdPrivateChat()
+    {
+        return $this->idPrivateChat;
+    }
+}
