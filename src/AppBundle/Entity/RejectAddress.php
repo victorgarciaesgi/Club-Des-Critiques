@@ -97,5 +97,28 @@ class RejectAddress
     {
         return $this->reject;
     }
-}
 
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return RejectAddress
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+}

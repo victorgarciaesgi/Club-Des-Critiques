@@ -164,4 +164,3 @@ class MessagesChatRoom
         return $this->dateCreated;
     }
 }
-

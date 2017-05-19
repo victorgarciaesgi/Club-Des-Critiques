@@ -7,30 +7,37 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
-class DefaultController extends Controller
+class BookController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
-     */
-    public function indexAction(Request $request)
-    {
-        // replace this example code with whatever you need
-        return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ]);
-    }
-
-    /**
-     * Route pour le formulaire de contact
+     * Controller pour l'ajout d'un livre
      *
-     * @Route("/contact", name="contact", options = { "expose" = true })
+     * @Route("/add-book/", name="add_book", options = { "expose" = true })
      */
     public function contactAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         $data = $data['data'];
-        $currentDate = new \Datetime("now");
+        /*
+            {
+            "search": "naruto",
+            "categories": [
+            {
+              "label": "test"
+            },
+            {
+              "label": "test"
+            }
+            ],
+            "rating": 0,
+            "author": "dazdazdzadzdazdz",
+            "illustration": "dazdazdazdaz",
+            "description": "adzadza",
+            "pages": 160
+            }
+        */
 
+        $currentDate = new \Datetime("now");
         $MessageContact = new ContactUS();
         $MessageContact->setName($data['name']);
         $MessageContact->setMail($data['mail']);

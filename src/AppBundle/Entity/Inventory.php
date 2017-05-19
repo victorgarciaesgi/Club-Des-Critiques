@@ -172,5 +172,28 @@ class Inventory
     {
         return $this->status;
     }
-}
 
+    /**
+     * Set isVisible
+     *
+     * @param boolean $isVisible
+     *
+     * @return Inventory
+     */
+    public function setIsVisible($isVisible)
+    {
+        $this->isVisible = $isVisible;
+
+        return $this;
+    }
+
+    /**
+     * Get isVisible
+     *
+     * @return boolean
+     */
+    public function getIsVisible()
+    {
+        return $this->isVisible;
+    }
+}

@@ -124,5 +124,326 @@ class Chatroom
      */
     private $is_active;
 
-}
 
+    /**
+     * Get idChatroom
+     *
+     * @return integer
+     */
+    public function getIdChatroom()
+    {
+        return $this->idChatroom;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Chatroom
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set numberRoom
+     *
+     * @param integer $numberRoom
+     *
+     * @return Chatroom
+     */
+    public function setNumberRoom($numberRoom)
+    {
+        $this->number_room = $numberRoom;
+
+        return $this;
+    }
+
+    /**
+     * Get numberRoom
+     *
+     * @return integer
+     */
+    public function getNumberRoom()
+    {
+        return $this->number_room;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return Chatroom
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set dateCreated
+     *
+     * @param \DateTime $dateCreated
+     *
+     * @return Chatroom
+     */
+    public function setDateCreated($dateCreated)
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get dateCreated
+     *
+     * @return \DateTime
+     */
+    public function getDateCreated()
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * Set dateUpdate
+     *
+     * @param \DateTime $dateUpdate
+     *
+     * @return Chatroom
+     */
+    public function setDateUpdate($dateUpdate)
+    {
+        $this->dateUpdate = $dateUpdate;
+
+        return $this;
+    }
+
+    /**
+     * Get dateUpdate
+     *
+     * @return \DateTime
+     */
+    public function getDateUpdate()
+    {
+        return $this->dateUpdate;
+    }
+
+    /**
+     * Set dateClosed
+     *
+     * @param \DateTime $dateClosed
+     *
+     * @return Chatroom
+     */
+    public function setDateClosed($dateClosed)
+    {
+        $this->dateClosed = $dateClosed;
+
+        return $this;
+    }
+
+    /**
+     * Get dateClosed
+     *
+     * @return \DateTime
+     */
+    public function getDateClosed()
+    {
+        return $this->dateClosed;
+    }
+
+    /**
+     * Set dateStart
+     *
+     * @param \DateTime $dateStart
+     *
+     * @return Chatroom
+     */
+    public function setDateStart($dateStart)
+    {
+        $this->dateStart = $dateStart;
+
+        return $this;
+    }
+
+    /**
+     * Get dateStart
+     *
+     * @return \DateTime
+     */
+    public function getDateStart()
+    {
+        return $this->dateStart;
+    }
+
+    /**
+     * Set dateEnd
+     *
+     * @param \DateTime $dateEnd
+     *
+     * @return Chatroom
+     */
+    public function setDateEnd($dateEnd)
+    {
+        $this->dateEnd = $dateEnd;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEnd
+     *
+     * @return \DateTime
+     */
+    public function getDateEnd()
+    {
+        return $this->dateEnd;
+    }
+
+    /**
+     * Set note
+     *
+     * @param integer $note
+     *
+     * @return Chatroom
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+
+        return $this;
+    }
+
+    /**
+     * Get note
+     *
+     * @return integer
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return Chatroom
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     * @return Chatroom
+     */
+    public function setIsActive($isActive)
+    {
+        $this->is_active = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Get isActive
+     *
+     * @return boolean
+     */
+    public function getIsActive()
+    {
+        return $this->is_active;
+    }
+
+    /**
+     * Set createdBy
+     *
+     * @param \AppBundle\Entity\User $createdBy
+     *
+     * @return Chatroom
+     */
+    public function setCreatedBy(\AppBundle\Entity\User $createdBy = null)
+    {
+        $this->createdBy = $createdBy;
+
+        return $this;
+    }
+
+    /**
+     * Get createdBy
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getCreatedBy()
+    {
+        return $this->createdBy;
+    }
+
+    /**
+     * Set idMedia
+     *
+     * @param \AppBundle\Entity\Media $idMedia
+     *
+     * @return Chatroom
+     */
+    public function setIdMedia(\AppBundle\Entity\Media $idMedia = null)
+    {
+        $this->idMedia = $idMedia;
+
+        return $this;
+    }
+
+    /**
+     * Get idMedia
+     *
+     * @return \AppBundle\Entity\Media
+     */
+    public function getIdMedia()
+    {
+        return $this->idMedia;
+    }
+}

@@ -106,5 +106,28 @@ class chatroom_alert
     {
         return $this->nb;
     }
-}
 
+    /**
+     * Set idChatroom
+     *
+     * @param \AppBundle\Entity\chatroom $idChatroom
+     *
+     * @return chatroom_alert
+     */
+    public function setIdChatroom(\AppBundle\Entity\chatroom $idChatroom = null)
+    {
+        $this->idChatroom = $idChatroom;
+
+        return $this;
+    }
+
+    /**
+     * Get idChatroom
+     *
+     * @return \AppBundle\Entity\chatroom
+     */
+    public function getIdChatroom()
+    {
+        return $this->idChatroom;
+    }
+}

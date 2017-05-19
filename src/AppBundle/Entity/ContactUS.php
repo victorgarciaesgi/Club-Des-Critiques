@@ -218,4 +218,3 @@ class ContactUS
         return $this->status;
     }
 }
-

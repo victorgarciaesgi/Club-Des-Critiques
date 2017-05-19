@@ -288,4 +288,3 @@ class Comment
         return $this->isActive;
     }
 }
-

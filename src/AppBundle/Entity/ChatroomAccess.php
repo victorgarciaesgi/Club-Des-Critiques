@@ -54,5 +54,110 @@ class ChatroomAccess
      */
     private $isConnected;
 
-}
 
+    /**
+     * Get idChatroomAccess
+     *
+     * @return integer
+     */
+    public function getIdChatroomAccess()
+    {
+        return $this->idChatroomAccess;
+    }
+
+    /**
+     * Set idUser
+     *
+     * @param integer $idUser
+     *
+     * @return ChatroomAccess
+     */
+    public function setIdUser($idUser)
+    {
+        $this->idUser = $idUser;
+
+        return $this;
+    }
+
+    /**
+     * Get idUser
+     *
+     * @return integer
+     */
+    public function getIdUser()
+    {
+        return $this->idUser;
+    }
+
+    /**
+     * Set status
+     *
+     * @param integer $status
+     *
+     * @return ChatroomAccess
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return integer
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    /**
+     * Set isConnected
+     *
+     * @param boolean $isConnected
+     *
+     * @return ChatroomAccess
+     */
+    public function setIsConnected($isConnected)
+    {
+        $this->isConnected = $isConnected;
+
+        return $this;
+    }
+
+    /**
+     * Get isConnected
+     *
+     * @return boolean
+     */
+    public function getIsConnected()
+    {
+        return $this->isConnected;
+    }
+
+    /**
+     * Set idChatroom
+     *
+     * @param \AppBundle\Entity\Chatroom $idChatroom
+     *
+     * @return ChatroomAccess
+     */
+    public function setIdChatroom(\AppBundle\Entity\Chatroom $idChatroom = null)
+    {
+        $this->idChatroom = $idChatroom;
+
+        return $this;
+    }
+
+    /**
+     * Get idChatroom
+     *
+     * @return \AppBundle\Entity\Chatroom
+     */
+    public function getIdChatroom()
+    {
+        return $this->idChatroom;
+    }
+}
