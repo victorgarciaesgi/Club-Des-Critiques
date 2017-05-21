@@ -1,15 +1,17 @@
 
 
 MainApp.controller('library', function ($scope, $rootScope, $q) {
-  $scope.categories = [
-    {id: 1,label: 'Roman Policier', name:'policier'},
-    {id: 2,label: 'Romance', name:'romance'},
-    {id: 3,label: 'Drame', name:'drame'},
-    {id: 4,label: 'Fantastique', name:'fantastique'},
-    {id: 5,label: 'Aventure', name:'aventure'},
-    {id: 6,label: 'Biographie', name:'biographie'}
-  ];
-
+  $scope.categories = {
+    values: {},
+    elements: [
+      {id: 1,label: 'Roman Policier', name:'policier'},
+      {id: 2,label: 'Romance', name:'romance'},
+      {id: 3,label: 'Drame', name:'drame'},
+      {id: 4,label: 'Fantastique', name:'fantastique'},
+      {id: 5,label: 'Aventure', name:'aventure'},
+      {id: 6,label: 'Biographie', name:'biographie'}
+    ]
+  }
   $scope.addBook = false;
   $scope.coverLoaded = false;
   $scope.coverSearching = false;
@@ -23,17 +25,15 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
       search: ""
     },
     elements: {
-      search: {placeholder: 'Rechercher un livre..',name: 'search',type: 'text',required: true, source: 'library_addSearch'},
-      author: {placeholder: 'Auteur..',name: 'author',type: 'text',required: true},
-      illustration: {placeholder: 'Illustration du livre (lien)',name: 'illustration',type: 'text',required: true, validator:'link'},
-      description: {placeholder: 'Description..',name: 'description',type: 'text',required: true},
-      categories: {source: 'library_addCategories',placeholder: 'Catégorie... (Entrée pour ajouter)',name: 'categories',type: 'text',required: true,legend:'Catégories de ce livre'},
-      pages: {placeholder: 'Nombre de pages..',name: 'pages',type: 'number',required: false},
-      rating: {placeholder: 'Votre note pour ce livre',name: 'rating',type:'text',required: true, init: 0},
+      search: new textForm('Rechercher un livre..','search','text',true,null,'library_addSearch', null, null,true,null),
+      author: new textForm('Auteur..','author','text',true,null,null, null, null, true, null),
+      illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'link', true,'L\'illustration du livre est obligatoire'),
+      description: new textForm('Description','description','text',true,null,null, null, null, true, null),
+      categories: new textForm('Catégories.. (Entrée pour ajouter)','categories','text',true,'Catégories de ce livre','library_addCategories', null, null, true, 'Veuillez rentrer au moins une catégorie'),
+      pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),
+      rating: new textForm('Votre note pour ce livre','rating','text',true,null,null, 0, null,true, 'Vous devez attribuer une note à ce livre'),
     },
-    submit: (values) => {
-
-    },
+    submit: (values) => {},
     reset: () => {
       $scope.AddBookForm.values = {categories:[]};
       $scope.AddBookFormX.$setPristine();

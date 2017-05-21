@@ -6,8 +6,7 @@ MainApp.component('checkbox', {
   controller: function($scope, $element, $attrs, AjaxRequest){},
   bindings: {
     vgModel: '=',
-    vgLabel: '@',
-    vgName: '@'
+    vgData: '<',
   }
 });
 
@@ -88,7 +87,9 @@ MainApp.component('searchForm', {
           }
         }
         else if (event.which == 27) {
-          ctrl.search_result = {selected: {},data: {}}
+          ctrl.error = false;
+          ctrl.selectBook = false;
+          ctrl.search_result = {selected: {},data: {}};
         }
       }
     }
@@ -101,10 +102,13 @@ MainApp.component('searchForm', {
     }
 
     ctrl.search = (source, value) => {
+      ctrl.error = false;
       var promise = AjaxRequest.get(source, value.replace(/ /g,'%20'));
       promise.then((result) => {
         console.log(result)
         if (result.error){
+          ctrl.searching = false;
+          ctrl.search_result = {selected: {},data: {}}
           ctrl.error = true;
           ctrl.errorMessage = result.error;
         }
@@ -161,7 +165,9 @@ MainApp.component('tokenForm', {
     ctrl.keydown = (event, element) => {
       if (event.which == 13){
         event.preventDefault();
-        ctrl.vgModel.push({label: ctrl.searchText});
+        if(ctrl.searchText.length > 0){
+          ctrl.vgModel.push({label: ctrl.searchText});
+        }
         ctrl.searchText = "";
       }
     };
@@ -172,11 +178,13 @@ MainApp.component('tokenForm', {
 
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
-        ctrl.filled = (newValue.length == 0?"":"filled");
+        if ($scope.tokenForm[ctrl.vgData.name].$pristine && newValue.length > 0) {
+          $scope.tokenForm[ctrl.vgData.name].$setDirty();
+        }
+        ctrl.filled = (newValue.length == 0?null:"filled");
       }
       else{
         ctrl.vgModel = [];
-        ctrl.dirty = false;
       }
     }, true)
   },
@@ -195,10 +203,10 @@ MainApp.component('ratingForm', {
   controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
     ctrl.count = 5;
-    ctrl.dirty = false;
     ctrl.hoverStar = false;
     ctrl.filled = "";
     ctrl.rating = 0;
+    ctrl.hoverCount = 0;
 
     ctrl.$onInit = () => {
       ctrl.vgModel = (ctrl.vgData.init?ctrl.vgData.init:0);
@@ -207,17 +215,17 @@ MainApp.component('ratingForm', {
     ctrl.getNumber = (num) => {return new Array(num)}
 
     ctrl.hover = (value) => {
-      ctrl.vgModel = value;
       ctrl.hoverStar = true;
+      ctrl.hoverCount = value;
     }
 
     ctrl.leave = () => {
-      ctrl.vgModel = (ctrl.dirty?ctrl.rating:ctrl.vgData.init);
       ctrl.hoverStar = false;
+      console.log(ctrl.vgData.init)
+      ctrl.hoverCount = ($scope.ratingForm[ctrl.vgData.name].$dirty?ctrl.rating:ctrl.vgData.init);
     }
 
     ctrl.set = (value) => {
-      ctrl.dirty = true;
       ctrl.hoverStar = false;
       ctrl.vgModel = value;
       ctrl.rating = value;
@@ -225,11 +233,15 @@ MainApp.component('ratingForm', {
 
     $scope.$watch('$ctrl.vgModel', (newValue, oldValue, scope) => {
       if (!!newValue) {
-        ctrl.filled = (newValue.length == 0?"":"filled");
+        console.log($scope.ratingForm[ctrl.vgData.name])
+        if ($scope.ratingForm[ctrl.vgData.name].$pristine) {
+          $scope.ratingForm[ctrl.vgData.name].$setDirty();
+        }
+        ctrl.filled = (newValue.length == 0?null:"filled");
       }
       else{
-        ctrl.vgModel = (ctrl.vgData.init?ctrl.vgData.init:0);
-        ctrl.dirty = false;
+        ctrl.hoverCount = (ctrl.vgData.init?ctrl.vgData.init:0);
+        ctrl.filled = "";
       }
     }, true)
   },

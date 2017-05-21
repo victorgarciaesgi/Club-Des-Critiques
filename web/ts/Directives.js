@@ -1,4 +1,4 @@
-var LINK_REGXP = new RegExp("(https?:\/\/.*)", "gi");
+
 
 MainApp.directive('vgValidator', function() {
   return {
@@ -8,11 +8,20 @@ MainApp.directive('vgValidator', function() {
       var validator = attrs.vgValidator;
       switch (validator) {
         case "link":
+          var regxp = new RegExp("(https?:\/\/.*)")
           ctrl.$validators.link = (modelValue, viewValue) => {
-            if (LINK_REGXP.test(modelValue)){
+            if(!!modelValue){
+              var verif = regxp.test(modelValue)
+              if(verif){
+                return true;
+              }
+              else{
+                return false;
+              }
+            }
+            else{
               return true;
             }
-            return false;
           };
           break;
         default:
