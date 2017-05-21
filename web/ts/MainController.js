@@ -24,10 +24,20 @@ MainApp.filter('cap', function() {
 
 MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
 
+  // new textForm(placeholder, name, type, required, legend, source, init, validator, error, errorMessage)
+  //
+  // Legend -> message affiché au dessus du champs
+  // validator -> verificateur de syntaxe (email, number ou le nom d'un validator personnalisé)
+  // source -> controlleur symphony du champs de recherche
+  // required -> champs requis pour les formulaire
+  // error-> affiche les messages erreurs ou non
+  // errorMessage -> message personnalisé d'erreur de required
+
+
   $scope.mailRegister = {
     values: {},
     elements: {
-      mail: {placeholder: 'Votre email...',name: 'mail',type:'email',required: true},
+      mail: new textForm('Votre email..','mail','email',true,null,null, null, 'email', true, null),
     },
     submit: () => {
       var promise = AjaxRequest.get('mail_register',this.values);

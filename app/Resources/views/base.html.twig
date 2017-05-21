@@ -16,6 +16,7 @@
     <script type="text/javascript" src='/ts/LibraryController.js'></script>
     <script type="text/javascript" src='/ts/Components.js'></script>
     <script type="text/javascript" src='/ts/Directives.js'></script>
+    <script type="text/javascript" src='/ts/Classes.js'></script>
 
 
     </script>
@@ -99,7 +100,8 @@
                             vg-data='ConnexionForm.password'>
                 </text-form>
 
-                <checkbox vg-model='ConnexionForm.values.souvenir' vg-label='{(ConnexionForm.souvenir.label)}' vg-name='{(ConnexionForm.souvenir.name)}'></checkbox>
+                <checkbox vg-model='ConnexionForm.values.souvenir' vg-label='{(ConnexionForm.souvenir.label)}'
+                vg-name='{(ConnexionForm.souvenir.name)}'></checkbox>
                 <pre class='f-left'>{(ConnexionForm.values | json)}</pre>
 
             </div>

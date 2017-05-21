@@ -196,11 +196,15 @@ pre{
     }
   }
 
+  &:required{
+    box-shadow: none;
+  }
+
   &.formError{
     border-color: $red1;
   }
   &.formValid{
-    border-color: $green1;
+    border-color: $mainGreen2;
   }
 }
 
@@ -224,6 +228,22 @@ pre{
      cursor: pointer;
    }
 }
+
+ng-form{
+  .errorMessage{
+    position: relative;
+    float: left;
+    height: auto;
+    width: 100%;
+    color: $red1;
+    font-size: 13px;
+
+    span{
+      padding: 5px;
+    }
+  }
+}
+
 
 .input-form-wrap{
   position: relative;
@@ -254,12 +274,35 @@ pre{
     width: 20px;
     @include translateY(-50%);
     @include bg-center;
+    cursor: pointer;
+
+
 
     &.form-valid{
       background-image: url('../assets/form-valid-green.svg');
     }
     &.form-invalid{
       background-image: url('../assets/form-invalid-red.svg');
+    }
+    &.form-required{
+      background-image: url('../assets/form-required.svg');
+      height: 15px;
+      width: 15px;
+      &:hover:after{
+        content:"Requis";
+        background-color: $g90;
+        color: white;
+        position: absolute;
+        width: auto;
+        height: auto;
+        left: 50%;
+        @include translateX(-50%);
+        top: calc(-100% - 10px);
+        border-radius: 3px;
+        font-size: 11px;
+        opacity: 1;
+        padding: 4px 6px 4px 6px;
+      }
     }
   }
 

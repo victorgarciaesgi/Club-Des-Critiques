@@ -14,36 +14,12 @@
                 Catégories
               </div>
               <div class="list">
-                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
-                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
-                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
-                  <span>{(c.label)}</span>
-                </div>
+                  <checkbox ng-repeat='c in categories.elements'
+                            vg-model='categories.values[c.name]'
+                            vg-data='categories.elements[$index]'>
+                  </checkbox>
               </div>
-            </div>
-            <div id='' class="options-container">
-              <div class="type">
-                Autre
-              </div>
-              <div class="list">
-                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
-                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
-                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
-                  <span>{(c.label)}</span>
-                </div>
-              </div>
-            </div>
-            <div id='' class="options-container">
-              <div class="type">
-                Autre
-              </div>
-              <div class="list">
-                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
-                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
-                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
-                  <span>{(c.label)}</span>
-                </div>
-              </div>
+              <pre>{(categories.values | json)}</pre>
             </div>
           </div>
         </article>
