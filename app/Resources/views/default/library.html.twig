@@ -14,36 +14,12 @@
                 Catégories
               </div>
               <div class="list">
-                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
-                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
-                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
-                  <span>{(c.label)}</span>
-                </div>
+                  <checkbox ng-repeat='c in categories.elements'
+                            vg-model='categories.values[c.name]'
+                            vg-data='categories.elements[$index]'>
+                  </checkbox>
               </div>
-            </div>
-            <div id='' class="options-container">
-              <div class="type">
-                Autre
-              </div>
-              <div class="list">
-                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
-                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
-                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
-                  <span>{(c.label)}</span>
-                </div>
-              </div>
-            </div>
-            <div id='' class="options-container">
-              <div class="type">
-                Autre
-              </div>
-              <div class="list">
-                <div ng-repeat='c in categories' class="checkbox" ng-cloak>
-                  <input id='categorie{(c.id)}' type="checkbox" name="{(c.name)}">
-                  <label value='{(c.name)}' for="categorie{(c.id)}"></label>
-                  <span>{(c.label)}</span>
-                </div>
-              </div>
+              <pre>{(categories.values | json)}</pre>
             </div>
           </div>
         </article>
@@ -91,8 +67,8 @@
 
               <img src="/assets/quit.svg" class='closePopupWindow' alt="">
           </div>
-          <div class="content">
-              <div class="form-section" style='width: 450px'>
+          <div class="content" style='width: 900px'>
+              <div class="form-section" >
                 <div class="legend">
                   La recherche par titre va completer automatiquement les informations du livre
                 </div>
@@ -113,10 +89,6 @@
                 <token-form vg-model='AddBookForm.values.categories'
                             vg-data='AddBookForm.elements.categories'>
                 </token-form>
-                <text-form vg-model='AddBookForm.values.isbn'
-                            vg-data='AddBookForm.elements.isbn'
-                            ng-if='AddBookForm.bookFound'>
-                </text-form>
                 <text-form vg-model='AddBookForm.values.pages'
                             vg-data='AddBookForm.elements.pages'>
                 </text-form>
@@ -125,7 +97,7 @@
                 </rating-form>
                 <pre>{(AddBookForm.values | json)}</pre>
               </div><!--
-            --><div class="form-section" style='width: 400px' color>
+            --><div class="form-section" color>
                   <div class="book-form-preview">
                     <div class="input-form-wrap">
                       <div class="cover" ng-show='!coverLoaded && coverSearching'>
@@ -178,7 +150,7 @@
           </div>
           <div class="footer">
             <div class="bouton" design='blanc'>Annuler</div>
-            <div class="bouton" design='blanc' ng-click='AddBookForm.values = {categories:[]}'>Vider les champs</div>
+            <div class="bouton" design='blanc' ng-click='AddBookForm.reset()'>Vider les champs</div>
             <button class="bouton" type='submit' design='green'
             ng-disabled='AddBookFormX.$invalid'>Ajouter un livre</button>
 

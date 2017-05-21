@@ -4,23 +4,17 @@ MainApp.controller('header', function ($scope, $rootScope) {
 
   $scope.ConnexionForm = {
       values: {},
-      login: {
-        placeholder: "Login...",
-        type: 'text',
-        name: 'login',
-        required: true,
-      },
-      password: {
-        placeholder: "Mot de passe...",
-        type: 'password',
-        name: 'password',
-        required: true,
-      },
+      login: new textForm('Login..','login','text',true,null,null, null, null, false, null),
+      password: new textForm('Mot de passe..','password','password',true,null,null, null, null, false, null),
       souvenir: {
         label: "Se souvenir de moi",
         name: 'souvenir',
         required: false
+      },
+      submit: () => {
+
       }
+
     }
 
 
