@@ -1,7 +1,7 @@
+<ng-form name='searchForm'>
 <div class="input-form-wrap f-left h-auto w-100">
   <input type="{($ctrl.vgData.type)}"
           ng-model='$ctrl.vgModel'
-          ng-value='$ctrl.vgModel'
           class='input-form'
           placeholder="{($ctrl.vgData.placeholder)}"
           name='{($ctrl.vgData.name)}'
@@ -9,9 +9,13 @@
           ng-model-options='{debounce: 500}'
           ng-disabled='$ctrl.vgDisabled'
           ng-keydown='$ctrl.keydown($event, $this)'
+          ng-class='{
+            formError: (searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length),
+            formValid: (searchForm[$ctrl.vgData.name].$valid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length)
+          }'
           ng-trim="false"
          />
-  <div class="input-form-result" ng-show='$ctrl.search_result.data.length > 0 || $ctrl.error'>
+  <div class="input-form-result" ng-show='($ctrl.search_result.data.length > 0 || $ctrl.error) && $ctrl.vgModel.length > 0'>
     <ul ng-show='$ctrl.search_result.data.length > 0'>
       <li ng-repeat='result in $ctrl.search_result.data | limitTo: $ctrl.limit'
           ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
@@ -27,11 +31,19 @@
         </div>
       </li>
     </ul>
-    <ul>
+    <ul ng-show='$ctrl.error'>
       <div class="error_message">
-
+        {($ctrl.errorMessage)}
       </div>
     </ul>
   </div>
   <div ng-show='$ctrl.searching' class="loading-spinner"></div>
+  <div ng-show='searchForm[$ctrl.vgData.name].$valid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-valid"></div>
+  <div ng-show='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-invalid"></div>
+  <div ng-show='searchForm[$ctrl.vgData.name].$pristine' class="form-valid-icon form-required"></div>
 </div>
+<div class="errorMessage" ng-show='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty'>
+   <span ng-show='searchForm[$ctrl.vgData.name].$error[$ctrl.vgData.validator]'>{($ctrl.vgData.errors[$ctrl.vgData.validator])}</span>
+   <span ng-show='searchForm[$ctrl.vgData.name].$error.required'>{($ctrl.vgData.errors.required)}</span>
+</div>
+</ng-form>

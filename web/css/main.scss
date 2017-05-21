@@ -578,6 +578,7 @@ aside{
         position: relative;
         display: inline-block;
         height: auto;
+        width: 50%;
         overflow-y: auto;
         overflow-x: hidden;
         padding: 5px;
@@ -586,9 +587,13 @@ aside{
         max-height: calc(80vh - 90px);
 
         .legend{
+          position: relative;
+          float: left;
+          width: 100%;
           padding: 10px;
           font-size: 14px;
           text-align: center;
+          font-weight: bold;
           white-space: normal;
         }
 
