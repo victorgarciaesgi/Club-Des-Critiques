@@ -25,3 +25,20 @@ class textForm{
     }
   }
 }
+
+class searchForm{
+  constructor(placeholder, name, type, required, legend, source, validator, error, errorMessage){
+    this.placeholder = placeholder;
+    this.name = name;
+    this.type = type;
+    this.required = required;
+    if (legend) {this.legend = legend}
+    if (source) {this.source = source}
+    if (validator) {this.validator = validator}
+    if(error){
+      this.errors = {};
+      if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
+      if(validator){this.errors[validator] = map[validator]}
+    }
+  }
+}

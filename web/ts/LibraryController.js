@@ -1,17 +1,16 @@
 
 
-MainApp.controller('library', function ($scope, $rootScope, $q) {
+MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
   $scope.categories = {
     values: {},
-    elements: [
-      {id: 1,label: 'Roman Policier', name:'policier'},
-      {id: 2,label: 'Romance', name:'romance'},
-      {id: 3,label: 'Drame', name:'drame'},
-      {id: 4,label: 'Fantastique', name:'fantastique'},
-      {id: 5,label: 'Aventure', name:'aventure'},
-      {id: 6,label: 'Biographie', name:'biographie'}
-    ]
+    elements: []
   }
+
+  var promise = AjaxRequest.get('library_getCategories',null);
+  promise.then((result) => {
+    $scope.categories.elements = result;
+  })
+
   $scope.addBook = false;
   $scope.coverLoaded = false;
   $scope.coverSearching = false;
@@ -25,7 +24,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
       search: ""
     },
     elements: {
-      search: new textForm('Rechercher un livre..','search','text',true,null,'library_addSearch', null, null,true,null),
+      search: new searchForm('Rechercher un livre..','search','text',true,null,'library_addSearch', null,true,null),
       author: new textForm('Auteur..','author','text',true,null,null, null, null, true, null),
       illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'link', true,'L\'illustration du livre est obligatoire'),
       description: new textForm('Description','description','text',true,null,null, null, null, true, null),
@@ -33,9 +32,11 @@ MainApp.controller('library', function ($scope, $rootScope, $q) {
       pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),
       rating: new textForm('Votre note pour ce livre','rating','text',true,null,null, 0, null,true, 'Vous devez attribuer une note à ce livre'),
     },
-    submit: (values) => {},
-    reset: () => {
-      $scope.AddBookForm.values = {categories:[]};
+    submit: function(values) {
+      var promise = AjaxRequest.get('submit_book',this.values);
+    },
+    reset: function() {
+      this.values = {categories:[]};
       $scope.AddBookFormX.$setPristine();
     },
   }
