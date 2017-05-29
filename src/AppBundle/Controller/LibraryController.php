@@ -13,9 +13,18 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 
 class LibraryController extends Controller
 {
+    function __construct(){
+
+    }
+
     /**
      * @Route("/library", name="library")
      */
@@ -47,8 +56,6 @@ class LibraryController extends Controller
         $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);
         return new JsonResponse($error_data);
       }
-
-
     }
 
 
@@ -63,4 +70,32 @@ class LibraryController extends Controller
 
       return new JsonResponse($data);
     }
+
+    /**
+     * @Route("/library/GetCategories", options = { "expose" = true }, name="library_getCategories")
+     * @Method({"POST"})
+     */
+
+    public function GetCategoriesAction(Request $request){
+      $encoders = array(new XmlEncoder(), new JsonEncoder());
+      $normalizers = array(new ObjectNormalizer());
+      $serializer = new Serializer($normalizers, $encoders);
+      $repository = $this->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Category');
+      $content = $repository->findAll();
+      $categories = $serializer->serialize($content, 'json');
+
+      return new JsonResponse($categories);
+    }
+
+    // public function actuAction(Request $request)
+    // {
+    //     $repository = $this->getDoctrine()
+    //         ->getManager()
+    //         ->getRepository('AppBundle:Category');
+    //     $categories = $repository->findAll();
+    //
+    //     return new JsonResponse($categories);
+    // }
 }

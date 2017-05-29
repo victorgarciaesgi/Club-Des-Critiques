@@ -14,10 +14,11 @@
                 Catégories
               </div>
               <div class="list">
-                  <checkbox ng-repeat='c in categories.elements'
-                            vg-model='categories.values[c.name]'
-                            vg-data='categories.elements[$index]'>
-                  </checkbox>
+                  <div class="checkbox" ng-repeat='c in categories.elements' ng-cloak>
+                      <input id='{(c.idCategory)}' ng-model='categories.values[c.name]' type="checkbox"/>
+                      <label for="{(c.idCategory)}"></label>
+                      <span>{(c.name)}</span>
+                  </div>
               </div>
               <pre>{(categories.values | json)}</pre>
             </div>
