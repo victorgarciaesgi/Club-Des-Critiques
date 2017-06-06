@@ -1,5 +1,4 @@
 <ng-form name='ratingForm'>
-<div class='legend'>{($ctrl.vgData.placeholder)}</div>
 <div class="input-form-wrap">
   <div class="star-container" ng-mouseleave='$ctrl.leave()'>
     <div class="star-zero" ng-mouseenter="$ctrl.hover(0)" ng-click="$ctrl.set(0)"></div>
@@ -10,7 +9,7 @@
           empty: $index >= $ctrl.hoverCount
         }'
         ng-repeat='star in $ctrl.getNumber($ctrl.count) track by $index'
-        color='{((!$ctrl.hoverStar && ratingForm[$ctrl.vgData.name].$dirty)?"green":"brown")}'>
+        color='{((!$ctrl.hoverStar && ratingForm[$ctrl.vgName].$dirty)?"green":"brown")}'>
 
           <div class="part" ng-mouseenter="$ctrl.hover($index + 0.5)"
           ng-click="$ctrl.set($index + 0.5)"></div>
@@ -19,11 +18,11 @@
     </div>
 
   </div>
-  <input type="hidden" name='{($ctrl.vgData.name)}' ng-required='$ctrl.vgData.required'
+  <input type="hidden" name='{($ctrl.vgName)}' ng-required='$ctrl.vgRequired'
         ng-model='$ctrl.filled'>
-  <div ng-show='ratingForm[$ctrl.vgData.name].$pristine' class="form-valid-icon form-required"></div>
-  <div ng-show='ratingForm[$ctrl.vgData.name].$valid && ratingForm[$ctrl.vgData.name].$dirty' class="form-valid-icon form-valid"></div>
-  <div ng-show='ratingForm[$ctrl.vgData.name].$invalid && ratingForm[$ctrl.vgData.name].$dirty' class="form-valid-icon form-invalid"></div>
+  <div ng-show='ratingForm[$ctrl.vgName].$pristine' class="form-valid-icon form-required"></div>
+  <div ng-show='ratingForm[$ctrl.vgName].$valid && ratingForm[$ctrl.vgName].$dirty' class="form-valid-icon form-valid"></div>
+  <div ng-show='ratingForm[$ctrl.vgName].$invalid && ratingForm[$ctrl.vgName].$dirty' class="form-valid-icon form-invalid"></div>
 </div>
 <!-- <pre>{($ctrl.hoverCount | json)}</pre>
 <pre>{(ratingForm.rating | json)}</pre> -->
