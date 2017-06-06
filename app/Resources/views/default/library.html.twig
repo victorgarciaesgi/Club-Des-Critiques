@@ -8,19 +8,20 @@
           <div class="title">
             Filtrer
           </div>
-          <div class="options-tri">
+          <div class="options-tri" ng-cloak>
             <div id='library-categories' class="options-container">
               <div class="type">
                 Catégories
               </div>
               <div class="list">
                   <div class="checkbox" ng-repeat='c in categories.elements' ng-cloak>
-                      <input id='{(c.idCategory)}' ng-model='categories.values[c.name]' type="checkbox"/>
+                      <input id='{(c.idCategory)}' ng-model='categories.values[c.idCategory]' type="checkbox"/>
                       <label for="{(c.idCategory)}"></label>
                       <span>{(c.name)}</span>
                   </div>
               </div>
               <pre>{(categories.values | json)}</pre>
+              <pre>No one selected :{(categories.noSelected() | json)}</pre>
             </div>
           </div>
         </article>
@@ -46,10 +47,14 @@
               </div>
             </div>
           </div>
-          <div class="biblioteque">
+          <div class="library-list">
             <ul class="books-list">
-              <li ng-repeat='book in books' class='book-preview'>
-
+              <li ng-repeat='book in books.elements' class='book-preview'>
+                  <div class="cover" style=''></div>
+                  <div class="name info-book">{(book.name)}</div>
+                  <div class="author info-book">{(book.author)}</div>
+                  <rating-form vg-data=''>
+                  </rating-form>
               </li>
             </ul>
           </div>
@@ -59,9 +64,13 @@
 
     </div>
 
+
+
+<!-- Popups -->
+
     <div id='addBook-window' class="popup-window">
       <div class="window">
-        <form name='AddBookFormX' ng-submit=''>
+        <form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
 
           <div class="header">
               Ajouter un livre
@@ -93,8 +102,12 @@
                 <text-form vg-model='AddBookForm.values.pages'
                             vg-data='AddBookForm.elements.pages'>
                 </text-form>
+                <div class='legend'>Veuillez donner une note pour ce livre</div>
                 <rating-form vg-model='AddBookForm.values.rating'
-                              vg-data='AddBookForm.elements.rating'>
+                              vg-required='AddBookForm.elements.rating.required'
+                              vg-name='AddBookForm.elements.rating.name'
+                              vg-editable='AddBookForm.elements.rating.editable'
+                              vg-init='AddBookForm.elements.rating.init'>
                 </rating-form>
                 <pre>{(AddBookForm.values | json)}</pre>
               </div><!--
