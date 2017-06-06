@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Media / représente les livres, Film, musique... etc
  *
- * @ORM\Table(name="media", indexes={@ORM\Index(name="id_category", columns={"id_category"}), @ORM\Index(name="id_sub_category", columns={"id_sub_category"})})
+ * @ORM\Table(name="media")
  * @ORM\Entity
  */
 class Media
@@ -115,27 +115,6 @@ class Media
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
     private $isActive;
-
-    /**
-     * @var \Category
-     *
-     * @ORM\ManyToOne(targetEntity="Category")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_category", referencedColumnName="id_category")
-     * })
-     */
-    private $idCategory;
-
-    /**
-     * @var \SubCategory
-     *
-     * @ORM\ManyToOne(targetEntity="SubCategory")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_sub_category", referencedColumnName="id_sub_category")
-     * })
-     */
-    private $idSubCategory;
-
 
     /**
      * Get idMedia
@@ -425,53 +404,5 @@ class Media
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    /**
-     * Set idCategory
-     *
-     * @param \AppBundle\Entity\Category $idCategory
-     *
-     * @return Media
-     */
-    public function setIdCategory(\AppBundle\Entity\Category $idCategory = null)
-    {
-        $this->idCategory = $idCategory;
-
-        return $this;
-    }
-
-    /**
-     * Get idCategory
-     *
-     * @return \AppBundle\Entity\Category
-     */
-    public function getIdCategory()
-    {
-        return $this->idCategory;
-    }
-
-    /**
-     * Set idSubCategory
-     *
-     * @param \AppBundle\Entity\SubCategory $idSubCategory
-     *
-     * @return Media
-     */
-    public function setIdSubCategory(\AppBundle\Entity\SubCategory $idSubCategory = null)
-    {
-        $this->idSubCategory = $idSubCategory;
-
-        return $this;
-    }
-
-    /**
-     * Get idSubCategory
-     *
-     * @return \AppBundle\Entity\SubCategory
-     */
-    public function getIdSubCategory()
-    {
-        return $this->idSubCategory;
     }
 }
