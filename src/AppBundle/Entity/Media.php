@@ -86,6 +86,14 @@ class Media
     private $releaseDate;
 
     /**
+     * Code ISBN
+     *
+     * @var integer
+     * @ORM\Column(name="isbn", type="integer",nullable=false)
+     */
+    private $isbn;
+
+    /**
      * Date de sortie cinéma
      *
      * @var \DateTime
@@ -137,6 +145,22 @@ class Media
     public function getIdMedia()
     {
         return $this->idMedia;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIsbn()
+    {
+        return $this->isbn;
+    }
+
+    /**
+     * @param int $isbn
+     */
+    public function setIsbn($isbn)
+    {
+        $this->isbn = $isbn;
     }
 
     /**
