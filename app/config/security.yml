@@ -20,7 +20,7 @@ security:
                 csrf_token_generator: security.csrf.token_manager
             logout:
                   path: fos_user_security_logout
-                  target: homepage_lang
+                  target: homepage
             anonymous:    true
 
     access_control:

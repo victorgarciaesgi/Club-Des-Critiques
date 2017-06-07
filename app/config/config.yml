@@ -77,8 +77,11 @@ fos_user:
         address: admin@club-critique.com
         sender_name: "No reply | Club critique"
     registration:
+        form:
+            type: AppBundle\Form\RegistrationType
         confirmation:
             enabled: true
+            template:   '@FOSUser/Registration/email.txt.twig'
     resetting:
         email:
             from_email:
@@ -86,9 +89,3 @@ fos_user:
                 sender_name:    "Ressetting Password | Club critique"
     service:
         mailer: fos_user.mailer.twig_swift
-    resetting:
-        email:
-            template:   email/password_resetting.email.twig
-    registration:
-        confirmation:
-            template:   '@FOSUser/Registration/email.txt.twig'
