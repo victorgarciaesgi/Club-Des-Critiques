@@ -78,6 +78,14 @@ class Media
     private $valid;
 
     /**
+     * Note du livre - A supprimer
+     *
+     * @var int
+     * @ORM\Column(name="note", type="integer", nullable=false)
+     */
+    private $note;
+
+    /**
      * date de parution pour les livres ou date de sortie DVD Bluray
      *
      * @var \DateTime
@@ -114,6 +122,22 @@ class Media
     public function getBuyLink()
     {
         return $this->buyLink;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param int $note
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
     }
 
     /**

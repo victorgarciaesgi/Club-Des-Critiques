@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Contact
+ * Repertoire personnel de l'utilisateur
  *
  * @ORM\Table(name="contact", indexes={@ORM\Index(name="id_user", columns={"id"})}, indexes={@ORM\Index(name="id_user_contact", columns={"id"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ContactRepository")

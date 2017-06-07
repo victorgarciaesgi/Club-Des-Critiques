@@ -75,6 +75,31 @@ class User extends BaseUser
     private $keyword;
 
     /**
+     * Photo de profils
+     *
+     * @var string
+     *
+     * @ORM\Column(name="path_img", type="string", length=255,nullable=true)
+     */
+    private $pathImg;
+
+    /**
+     * @return string
+     */
+    public function getPathImg()
+    {
+        return $this->pathImg;
+    }
+
+    /**
+     * @param string $pathImg
+     */
+    public function setPathImg($pathImg)
+    {
+        $this->pathImg = $pathImg;
+    }
+
+    /**
      * Set note
      *
      * @param integer $note
