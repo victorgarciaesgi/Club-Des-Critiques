@@ -14,14 +14,14 @@
                 Catégories
               </div>
               <div class="list">
-                  <div class="checkbox" ng-repeat='c in categories.elements' ng-cloak>
-                      <input id='{(c.idCategory)}' ng-model='categories.values[c.idCategory]' type="checkbox"/>
+                  <div class="checkbox" ng-repeat='c in Library.categories.elements' ng-cloak>
+                      <input id='{(c.idCategory)}' ng-model='Library.categories.values[c.idCategory]' type="checkbox"/>
                       <label for="{(c.idCategory)}"></label>
                       <span>{(c.name)}</span>
                   </div>
               </div>
-              <pre>{(categories.values | json)}</pre>
-              <pre>No one selected :{(categories.noSelected() | json)}</pre>
+              <pre>{(Library.categories.values | json)}</pre>
+              <pre>No one selected :{(Library.categories.noSelected() | json)}</pre>
             </div>
           </div>
         </article>
@@ -49,11 +49,12 @@
           </div>
           <div class="library-list">
             <ul class="books-list">
-              <li ng-repeat='book in books.elements' class='book-preview'>
-                  <div class="cover" style=''></div>
+              <li ng-repeat='book in Library.books.elements' class='book-wrapper' ng-cloak
+                  ng-click='BookShow.show(book)'>
+                  <div class="cover" style='background-image: url("{(book.img)}")'></div>
                   <div class="name info-book">{(book.name)}</div>
                   <div class="author info-book">{(book.author)}</div>
-                  <rating-form vg-data=''>
+                  <rating-form vg-init='3.8' vg-editable='false'>
                   </rating-form>
               </li>
             </ul>
@@ -96,12 +97,15 @@
                 <area-form vg-model='AddBookForm.values.description'
                             vg-data='AddBookForm.elements.description'>
                 </area-form>
-                <token-form vg-model='AddBookForm.values.categories'
-                            vg-data='AddBookForm.elements.categories'>
-                </token-form>
+                <text-form vg-model='AddBookForm.values.date'
+                            vg-data='AddBookForm.elements.date'>
+                </text-form>
                 <text-form vg-model='AddBookForm.values.pages'
                             vg-data='AddBookForm.elements.pages'>
                 </text-form>
+                <token-form vg-model='AddBookForm.values.categories'
+                            vg-data='AddBookForm.elements.categories'>
+                </token-form>
                 <div class='legend'>Veuillez donner une note pour ce livre</div>
                 <rating-form vg-model='AddBookForm.values.rating'
                               vg-required='AddBookForm.elements.rating.required'
@@ -112,7 +116,8 @@
                 <pre>{(AddBookForm.values | json)}</pre>
               </div><!--
             --><div class="form-section" color>
-                  <div class="book-form-preview">
+                  <div class="book-form-preview" >
+                    <div class="book-blur" style='background-image: url({(AddBookForm.values.illustration)})'></div>
                     <div class="input-form-wrap">
                       <div class="cover" ng-show='!coverLoaded && coverSearching'>
                         <div class="loading-spinner"></div>
@@ -158,8 +163,13 @@
                       <div class="i-b-content">{(AddBookForm.values.description || '-')}</div>
                     </div>
 
-                  </div>
+                    <div class="info-book">
+                      <div class="i-b-title">Lien d'achat</div>
+                      <a class="i-b-content" ng-class='{link: AddBookForm.values.buyLink}' target='_blank'
+                      ng-href='{(AddBookForm.values.buyLink || "#")}'>{(AddBookForm.values.buyLink?'Lien Play Store':'-')}</a>
+                    </div>
 
+                  </div>
               </div>
           </div>
           <div class="footer">
@@ -171,6 +181,73 @@
           </div>
 
         </form>
+      </div>
+    </div>
+
+
+    <div id='bookshow-window' class="popup-window">
+      <div class="window">
+          <div class="header">
+              Aperçu d'un livre
+
+              <a href="#"><img src="/assets/link.svg" class='externalLink' alt="Ouvrir le lien de la page"></a>
+              <img src="/assets/quit.svg" class='closePopupWindow' alt="Fermer la fenêtre">
+          </div>
+          <div class="content">
+            <div class="book-form-preview">
+              <div class="book-blur" style='background-image: url({(BookShow.book.img)})'></div>
+              <div class="input-form-wrap">
+                <div class="cover" style='background-image: url({(BookShow.book.img.length > 10?BookShow.book.img:"/assets/no_thumbnail.jpg")})'>
+                </div>
+              </div>
+              <div class="input-form-wrap">
+                <div class="title-book">
+                  {(BookShow.book.name? (BookShow.book.name | cap) : 'Titre du livre')}
+                </div>
+              </div>
+            </div>
+            <div class="infos-book">
+              <div class="infos-header">
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/euro.svg">
+                  </div>
+                  <div class='i-h-text'>{(BookShow.book.price || '-')}</div>
+                </div>
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/book.svg">
+                  </div>
+                  <div class='i-h-text'>{(BookShow.book.numberPage || '-')} <span ng-if='BookShow.book.numberPage'>pages</span></div>
+                </div>
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/date.svg">
+                  </div>
+                  <div class='i-h-text'>{(BookShow.book.releaseDate.timestamp | date:'dd-MM-y' || '-')}</div>
+                </div>
+              </div>
+              <div class="info-book">
+                <div class="i-b-title">Autheur</div>
+                <div class="i-b-content">{(BookShow.book.author || '-')}</div>
+              </div>
+              <div class="info-book">
+                <div class="i-b-title">Description</div>
+                <div class="i-b-content">{(BookShow.book.description || '-')}</div>
+              </div>
+              <div class="info-book">
+                <div class="i-b-title">Lien d'achat</div>
+                <a class="i-b-content" ng-class='{link: BookShow.book}' target='_blank'
+                ng-href='{(BookShow.book || "#")}'>{(BookShow.book?'Lien Play Store':'-')}</a>
+              </div>
+
+            </div>
+          </div>
+          <div class="footer">
+            <div class="bouton" design='blanc'>Fermer</div>
+            <div class="bouton" design='green'>Créer un salon</div>
+
+          </div>
       </div>
     </div>
 

@@ -4,42 +4,43 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
 
   //Liste de categories
 
-  $scope.categories = {
-    values: {},
-    elements: [],
-    init: function(){
-      var promise = AjaxRequest.get('library_getCategories',null);
-      promise.then((result) => {
-        this.elements = result;
-      })
+  $scope.Library = {
+    categories: {
+      values: {},
+      elements: [],
+      noSelected: function(){
+        var obj = Object.values(this.values);
+        return obj.every(elem => !elem);
+      }
     },
-    noSelected: function(){
-      var obj = Object.values(this.values);
-      return obj.every(elem => !elem);
+    books: {
+      elements: [],
+    },
+    filter: function(){
+      // var promiseCateg = AjaxRequest.get('library_getCategories',null);
+      // promiseCateg.then((result) => {
+      // })
+    },
+    init: function(){
+      AjaxRequest.get('library_getCategories',null).then((result) => {
+        this.categories.elements = result;
+      })
+      AjaxRequest.get('library_getAllBooks',null).then((result) => {
+        this.books.elements = result;
+      })
+    }
+  };
+
+  $scope.BookShow = {
+    book: {},
+    show: function(book){
+      this.book = book;
+      $("#bookshow-window").show();
     }
   }
-  $scope.categories.init();
 
-  $scope.books = {
-    values: {},
-    elements: [],
-    init: function(){
-      var promise = AjaxRequest.get('library_getAllBooks',null);
-      promise.then((result) => {
-        this.elements = result;
-        console.log(result)
-      })
-    },
-    noSelected: function(){
-      var obj = Object.values(this.values);
-      return obj.every(elem => !elem);
-    }
-  }
-  $scope.books.init();
+  $scope.Library.init()
 
-  // $scope.$watch('categories.values', function(newValue, oldValue){
-  //
-  // }, true)
 
 
   // Ajout de livre
@@ -59,6 +60,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
       description: new textForm('Description','description','text',true,null,null, null, null, true, null),
       categories: new textForm('Catégories.. (Entrée pour ajouter)','categories','text',true,'Catégories de ce livre','library_addCategories', null, null, true, 'Veuillez rentrer au moins une catégorie'),
       pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),
+      date: new textForm('Date de sortie...', 'date','date', true,null,null, null, 'date', true, null),
       rating: new ratingForm('rating', true, 0, true),
     },
     submit: function() {
@@ -78,14 +80,14 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
 
   $scope.selectResult = (book) => {
     $scope.AddBookForm.values = {};
-    $scope.AddBookForm.values.author = $scope.AddBookForm.values.author?book.volumeInfo.authors.join(', '):null;
+    $scope.AddBookForm.values.author = (!!book.volumeInfo.authors)?book.volumeInfo.authors.join(', '):null;
     $scope.AddBookForm.values.search = book.volumeInfo.title;
     $scope.AddBookForm.values.illustration = (!!book.volumeInfo.imageLinks)?book.volumeInfo.imageLinks.thumbnail:null;
     $scope.AddBookForm.values.pages = (!!book.volumeInfo.pageCount)?book.volumeInfo.pageCount:null;
     $scope.AddBookForm.values.isbn = book.volumeInfo.industryIdentifiers;
     $scope.AddBookForm.values.description = (!!book.volumeInfo.description)?book.volumeInfo.description:null;;
-    $scope.AddBookForm.values.date = book.volumeInfo.publishedDate;
     $scope.AddBookForm.values.price = (!!book.saleInfo.retailPrice)?book.saleInfo.retailPrice.amount:null;
+    $scope.AddBookForm.values.buyLink = (!!book.saleInfo.buyLink)?book.saleInfo.buyLink:null;
 
     if((!!book.volumeInfo.illustration)){
       $scope.waitLoad(book.volumeInfo.imageLinks.thumbnail);

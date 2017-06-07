@@ -246,15 +246,17 @@ MainApp.component('ratingForm', {
     }
 
     $scope.$watch('$ctrl.vgModel', (newValue, oldValue, scope) => {
-      if (!!newValue) {
-        if ($scope.ratingForm[ctrl.vgName].$pristine) {
-          $scope.ratingForm[ctrl.vgName].$setDirty();
+      if(ctrl.vgEditable){
+        if (!!newValue) {
+          if ($scope.ratingForm[ctrl.vgName].$pristine) {
+            $scope.ratingForm[ctrl.vgName].$setDirty();
+          }
+          ctrl.filled = (newValue.length == 0?null:"filled");
         }
-        ctrl.filled = (newValue.length == 0?null:"filled");
-      }
-      else{
-        ctrl.hoverCount = (ctrl.vgInit?ctrl.vgInit:0);
-        ctrl.filled = "";
+        else{
+          ctrl.hoverCount = (ctrl.vgInit?ctrl.vgInit:0);
+          ctrl.filled = "";
+        }
       }
     }, true)
   },
