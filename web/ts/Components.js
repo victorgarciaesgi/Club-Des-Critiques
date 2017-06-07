@@ -28,14 +28,18 @@ MainApp.component('areaForm', {
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
-        scope.areaForm[ctrl.vgData.name].$setDirty();
+        scope.areaForm[ctrl.vgName].$setDirty();
       }
     }, true)
   },
   bindings: {
     vgModel: '=',
-    vgData: '<',
-    vgDisabled: '=?',
+    vgType: '<?',
+    vgName: '<?',
+    vgPlaceholder: '<?',
+    vgValidator: '<?',
+    vgErrors: '<?',
+    vgRequired: '<?',
   }
 });
 
@@ -46,14 +50,18 @@ MainApp.component('textForm', {
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
-        scope.textForm[ctrl.vgData.name].$setDirty();
+        scope.textForm[ctrl.vgName].$setDirty();
       }
     }, true)
   },
   bindings: {
     vgModel: '=',
-    vgData: '<',
-    vgDisabled: '=?',
+    vgType: '<?',
+    vgName: '<?',
+    vgPlaceholder: '<?',
+    vgValidator: '<?',
+    vgErrors: '<?',
+    vgRequired: '<?',
   }
 });
 
