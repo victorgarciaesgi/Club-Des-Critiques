@@ -35,7 +35,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
     book: {},
     show: function(book){
       this.book = book;
-      $("#bookshow-window").show();
+      $("#bookshow-window").show().find('.content').scrollTop(0);
     }
   }
 

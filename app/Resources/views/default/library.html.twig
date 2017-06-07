@@ -263,7 +263,7 @@
               <div class="info-book">
                 <div class="i-b-title">Lien d'achat</div>
                 <a class="i-b-content" ng-class='{link: BookShow.book}' target='_blank'
-                ng-href='{(BookShow.book || "#")}'>{(BookShow.book?'Lien Play Store':'-')}</a>
+                ng-href='{(BookShow.book.buyLink || "#")}'>{(BookShow.book.buyLink?'Lien Play Store':'-')}</a>
               </div>
 
             </div>
