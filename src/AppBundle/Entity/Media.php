@@ -63,11 +63,11 @@ class Media
     /**
      * Dans le cas d'un film mettre la durée en minute
      *
-     * @var integer
+     * @var float
      *
-     * @ORM\Column(name="duration", type="integer", nullable=true)
+     * @ORM\Column(name="price", type="float", nullable=false)
      */
-    private $duration;
+    private $price;
 
     /**
      * Validation du livre ajouter par les utilisateurs
@@ -94,20 +94,12 @@ class Media
     private $isbn;
 
     /**
-     * Date de sortie cinéma
+     * Lien d'achat du livre
      *
      * @var \DateTime
-     * @ORM\Column(name="release_date_cine", type="datetime", nullable=false)
+     * @ORM\Column(name="buy_link", type="string",length=500 , nullable=false)
      */
-    private $releaseDateCine;
-
-    /**
-     * Date de sortie cinéma
-     *
-     * @var integer
-     * @ORM\Column(name="note", type="integer", nullable=false)
-     */
-    private $note;
+    private $buyLink;
 
     /**
      * @var boolean
@@ -115,6 +107,22 @@ class Media
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
      */
     private $isActive;
+
+    /**
+     * @return \DateTime
+     */
+    public function getBuyLink()
+    {
+        return $this->buyLink;
+    }
+
+    /**
+     * @param \DateTime $buyLink
+     */
+    public function setBuyLink($buyLink)
+    {
+        $this->buyLink = $buyLink;
+    }
 
     /**
      * Get idMedia
@@ -263,27 +271,19 @@ class Media
     }
 
     /**
-     * Set duration
-     *
-     * @param integer $duration
-     *
-     * @return Media
+     * @return float
      */
-    public function setDuration($duration)
+    public function getPrice()
     {
-        $this->duration = $duration;
-
-        return $this;
+        return $this->price;
     }
 
     /**
-     * Get duration
-     *
-     * @return integer
+     * @param float $price
      */
-    public function getDuration()
+    public function setPrice($price)
     {
-        return $this->duration;
+        $this->price = $price;
     }
 
     /**
@@ -332,54 +332,6 @@ class Media
     public function getReleaseDate()
     {
         return $this->releaseDate;
-    }
-
-    /**
-     * Set releaseDateCine
-     *
-     * @param \DateTime $releaseDateCine
-     *
-     * @return Media
-     */
-    public function setReleaseDateCine($releaseDateCine)
-    {
-        $this->releaseDateCine = $releaseDateCine;
-
-        return $this;
-    }
-
-    /**
-     * Get releaseDateCine
-     *
-     * @return \DateTime
-     */
-    public function getReleaseDateCine()
-    {
-        return $this->releaseDateCine;
-    }
-
-    /**
-     * Set note
-     *
-     * @param integer $note
-     *
-     * @return Media
-     */
-    public function setNote($note)
-    {
-        $this->note = $note;
-
-        return $this;
-    }
-
-    /**
-     * Get note
-     *
-     * @return integer
-     */
-    public function getNote()
-    {
-        return $this->note;
     }
 
     /**
