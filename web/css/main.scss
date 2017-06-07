@@ -247,58 +247,6 @@ section{
       max-height: 270px;
       overflow-x: auto;
       white-space: nowrap;
-
-      .book-wrapper{
-        position: relative;
-        display: inline-block;
-        height: 100%;
-        width: 200px;
-        padding: 5px;
-        cursor: pointer;
-        border-radius: 3px;
-
-        .cover{
-          position: relative;
-          float: left;
-          height: 150px;
-          width: 100px;
-          margin-left: 50%;
-          box-shadow: 0 0 3px $w220;
-          @include bg-center;
-          @include translateX(-50%);
-        }
-
-        .info-book{
-          position: relative;
-          float: left;
-          height: auto;
-          text-align: center;
-          width: 100%;
-          font-size: 14px;
-          line-height: 20px;
-          white-space: nowrap;
-          overflow-x: hidden;
-          text-overflow: ellipsis;
-        }
-
-        .name{
-          font-size: 15px;
-          margin-top: 5px;
-          font-weight: bold;
-        }
-
-        .rating{
-          text-align: center;
-          img{
-            height: 20px;
-            width: 20px;
-          }
-        }
-
-        &:hover{
-          background-color: $w245;
-        }
-      }
     }
   }
 }
@@ -556,7 +504,18 @@ aside{
       font-size: 15px;
       overflow-y: auto;
 
-      img{
+
+      .externalLink{
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        height: 21px;
+        width: 21px;
+        @include translateY(-50%);
+        cursor: pointer;
+      }
+
+      .closePopupWindow{
         position: absolute;
         right: 5px;
         top: 50%;
@@ -746,11 +705,8 @@ aside{
         float: left;
         height: 100%;
         width: 100%;
-
-        li{
-          position: relative;
-          float: left;
-        }
+        text-align: center;
+        padding-top: 10px;
       }
     }
   }
@@ -773,6 +729,16 @@ aside{
       height: auto;
       text-align: center;
       background-color: $w230;
+
+      .book-blur{
+        position: absolute;
+        height: calc(100% + 30px);
+        width: calc(100% + 30px);
+        left: -15px;
+        top: -15px;
+        @include bg-center;
+        filter: blur(15px);
+      }
 
       .cover{
         position: relative;
@@ -799,6 +765,7 @@ aside{
         padding: 0 20px 0 20px;
         color: white;
         width: auto;
+        @include ellipsis;
         height: 40px;
         line-height: 40px;
         border-radius: 30px;
@@ -812,6 +779,7 @@ aside{
       width: 100%;
       padding: 5px 20px 5px 20px;
       text-align: center;
+      background-color: white;
 
       .infos-header{
         position: relative;
@@ -843,6 +811,9 @@ aside{
             float: left;
             width: 100%;
             font-size: 16px;
+            white-space: nowrap;
+            overflow-x: hidden;
+            text-overflow: ellipsis;
             height: 50%;
             text-align: center;
             line-height: 30px;
@@ -938,6 +909,218 @@ rating-form{
         height: 25px;
         width: 13px;
         cursor: pointer;
+      }
+    }
+  }
+}
+
+
+
+.book-wrapper{
+  position: relative;
+  display: inline-block;
+  height: auto;
+  width: 200px;
+  padding: 5px;
+  cursor: pointer;
+  border-radius: 3px;
+  margin: 3px;
+  border: 1px solid $w240;
+
+  .cover{
+    position: relative;
+    float: left;
+    height: 150px;
+    width: 100px;
+    margin-left: 50%;
+    box-shadow: 0 0 3px $w220;
+    @include bg-center;
+    @include translateX(-50%);
+  }
+
+  .info-book{
+    position: relative;
+    float: left;
+    height: auto;
+    text-align: center;
+    width: 100%;
+    font-size: 14px;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .name{
+    font-size: 13px;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+
+  .rating{
+    text-align: center;
+    img{
+      height: 20px;
+      width: 20px;
+    }
+  }
+
+  .starRating{
+    height: 20px!important;
+    width: 20px!important;
+    background-size: 23px 23px!important;
+  }
+
+  &:hover{
+    background-color: $w245;
+  }
+}
+
+
+#bookshow-window{
+  .window{
+    width: 500px;
+
+
+    .content{
+
+      overflow-y: auto;
+      max-height: calc(80vh - 89px);
+
+      .book-form-preview{
+        position: relative;
+        float: left;
+        padding: 10px;
+        width: 100%;
+        height: auto;
+        text-align: center;
+        background-color: $w230;
+
+        .book-blur{
+          position: absolute;
+          height: calc(100% + 30px);
+          width: calc(100% + 30px);
+          left: -15px;
+          top: -15px;
+          @include bg-center;
+          filter: blur(15px);
+        }
+
+        .cover{
+          position: relative;
+          display: inline-block;
+          height: 150px;
+          width: 100px;
+          @include bg-center;
+          margin: 5px;
+          background-color: white;
+
+          .loading-spinner{
+            left: 50%;
+            top: 50%;
+            @include translateX(-50%);
+          }
+        }
+
+        .title-book{
+          position: relative;
+          display: inline-block;
+          background-color: $mainGreen2;
+          min-width: 100px;
+          text-align: center;
+          padding: 0 20px 0 20px;
+          color: white;
+          width: auto;
+          @include ellipsis;
+          max-width: 100%;
+          height: 40px;
+          line-height: 40px;
+          border-radius: 30px;
+        }
+      }
+
+      .infos-book{
+        position:relative;
+        float: left;
+        height: auto;
+        width: 100%;
+        padding: 5px 20px 5px 20px;
+        text-align: center;
+        background-color: white;
+
+        .infos-header{
+          position: relative;
+          float: left;
+          width: 100%;
+          height: 80px;
+          padding: 5px 0 5px 0;
+          border-bottom: 1px solid $w240;
+          text-align: center;
+
+          .i-h-info{
+            position: relative;
+            display: inline-block;
+            height: 100%;
+            width: 115px;
+            min-width: 80px;
+            padding: 5px;
+
+            div.i-h-img{
+              position: relative;
+              float: left;
+              width: 100%;
+              height: 50%;
+              text-align: center;
+              line-height: 30px;
+            }
+            div.i-h-text{
+              position: relative;
+              float: left;
+              width: 100%;
+              font-size: 16px;
+              white-space: nowrap;
+              overflow-x: hidden;
+              text-overflow: ellipsis;
+              height: 50%;
+              text-align: center;
+              line-height: 30px;
+            }
+          }
+        }
+
+        .info-book{
+          position: relative;
+          float: left;
+          padding-top: 10px;
+          padding-bottom: 10px;
+          width: 100%;
+          height: auto;
+          word-wrap: break-word;
+          white-space: normal;
+          border-bottom: 1px solid $w240;
+          text-align: left;
+
+          .i-b-title{
+            position: relative;
+            float: left;
+            width: 100%;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 5px;
+          }
+
+          .i-b-content{
+            position: relative;
+            float: left;
+            width: 100%;
+            font-size: 13px;
+            font-style: italic;
+          }
+
+          .token{
+            display: inline-block;
+          }
+        }
       }
     }
   }
