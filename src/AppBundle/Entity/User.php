@@ -32,13 +32,13 @@ class User extends BaseUser
      *
      * @ORM\Column(name="note", type="integer", nullable=false)
      */
-    private $note;
+    private $note = 0;
 
     /**
      * Classement d'activité sur le site
      * @var integer
      *
-     * @ORM\Column(name="ranking", type="integer", nullable=false)
+     * @ORM\Column(name="ranking", type="integer", nullable=true)
      */
     private $ranking;
 
@@ -52,7 +52,7 @@ class User extends BaseUser
     /**
      * @var string
      *
-     * @ORM\Column(name="address_ip", type="string",length=50, nullable=false)
+     * @ORM\Column(name="address_ip", type="string",length=50, nullable=true)
      */
     private $addressIP;
 
@@ -63,14 +63,14 @@ class User extends BaseUser
      *
      * @ORM\Column(name="is_blocked", type="boolean", nullable=false)
      */
-    private $isBlocked;
+    private $isBlocked = 0;
 
     /**
      * Mot clé de l'utilisateur
      *
      * @var string
      *
-     * @ORM\Column(name="keyword", type="text", nullable=false)
+     * @ORM\Column(name="keyword", type="text", nullable=true)
      */
     private $keyword;
 
@@ -216,5 +216,16 @@ class User extends BaseUser
     public function getKeyword()
     {
         return $this->keyword;
+    }
+
+    /**
+     * Récupération de l'adresse IP du Client
+     * @ORM\PrePersist()
+     *
+     */
+    public function setCurrentAdressIP(){
+        $adressClient = $_SERVER['HTTP_CLIENT_IP'];
+        $this->setAddressIP($adressClient);
+
     }
 }
