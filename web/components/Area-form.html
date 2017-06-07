@@ -1,28 +1,27 @@
 <ng-form name='areaForm'>
-<div class="input-form-wrap"
-     ng-switch='$ctrl.vgData.validator'>
-  <textarea ng-switch-default='vg-password'
-          type="{($ctrl.vgData.type)}"
+<div class="input-form-wrap f-left h-auto w-100">
+  <textarea type="{($ctrl.vgType)}"
           ng-model='$ctrl.vgModel'
           class='input-form'
           ng-class='{
-            formError: (areaForm[$ctrl.vgData.name].$invalid && areaForm[$ctrl.vgData.name].$dirty),
-            formValid: (areaForm[$ctrl.vgData.name].$valid && areaForm[$ctrl.vgData.name].$dirty)
+            formError: (areaForm[$ctrl.vgName].$invalid && areaForm[$ctrl.vgName].$dirty),
+            formValid: (areaForm[$ctrl.vgName].$valid && areaForm[$ctrl.vgName].$dirty),
           }'
-          placeholder="{($ctrl.vgData.placeholder)}"
-          name='{($ctrl.vgData.name)}'
-          ng-required='$ctrl.vgData.required'
+          placeholder="{($ctrl.vgPlaceholder)}"
+          name='{($ctrl.vgName)}'
+          ng-required='$ctrl.vgRequired'
           ng-disabled='$ctrl.vgDisabled'
           ng-model-options="{'allowInvalid': true}"
           ng-trim="false"
-          >
+          vg-verificator='{($ctrl.vgValidator)}'>
   </textarea>
-  <div ng-show='areaForm[$ctrl.vgData.name].$valid && areaForm[$ctrl.vgData.name].$dirty' class="form-valid-icon form-valid"></div>
-  <div ng-show='areaForm[$ctrl.vgData.name].$invalid && areaForm[$ctrl.vgData.name].$dirty' class="form-valid-icon form-invalid"></div>
-  <div ng-show='areaForm[$ctrl.vgData.name].$pristine' class="form-valid-icon form-required"></div>
+   <div ng-show='areaForm[$ctrl.vgName].$valid && areaForm[$ctrl.vgName].$dirty' class="form-valid-icon form-valid"></div>
+   <div ng-show='areaForm[$ctrl.vgName].$invalid && areaForm[$ctrl.vgName].$dirty' class="form-valid-icon form-invalid"></div>
+   <div ng-show='areaForm[$ctrl.vgName].$pristine && $ctrl.vgRequired' class="form-valid-icon form-required"></div>
 </div>
-<div class="errorMessage" ng-show='textForm[$ctrl.vgData.name].$invalid && textForm[$ctrl.vgData.name].$dirty'>
-   <span ng-show='textForm[$ctrl.vgData.name].$error[$ctrl.vgData.validator]'>{($ctrl.vgData.errors[$ctrl.vgData.validator])}</span>
-   <span ng-show='textForm[$ctrl.vgData.name].$error.required'>{($ctrl.vgData.errors.required)}</span>
-</div>
+  <div class="errorMessage" ng-show='areaForm[$ctrl.vgName].$invalid && areaForm[$ctrl.vgName].$dirty'>
+     <span ng-if='areaForm[$ctrl.vgName].$error[$ctrl.vgValidator]'>{($ctrl.vgErrors[$ctrl.vgValidator])}</span>
+     <span ng-if='areaForm[$ctrl.vgName].$error.required && $ctrl.vgErrors.required'>{($ctrl.vgErrors.required)}</span>
+  </div>
+  <!-- <pre>{(textForm.illustration | json)}</pre> -->
 </ng-form>

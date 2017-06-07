@@ -94,10 +94,20 @@
             <div class="connexion">
 
                 <text-form vg-model='ConnexionForm.values.login'
-                            vg-data='ConnexionForm.login'>
+                            vg-type='ConnexionForm.login.type'
+                            vg-name='ConnexionForm.login.name'
+                            vg-placeholder='ConnexionForm.login.placeholder'
+                            vg-validator='ConnexionForm.login.validator'
+                            vg-errors='ConnexionForm.login.errors'
+                            vg-required='ConnexionForm.login.required'>
                 </text-form>
                 <text-form vg-model='ConnexionForm.values.password'
-                            vg-data='ConnexionForm.password'>
+                            vg-type='ConnexionForm.password.type'
+                            vg-name='ConnexionForm.password.name'
+                            vg-placeholder='ConnexionForm.password.placeholder'
+                            vg-validator='ConnexionForm.password.validator'
+                            vg-errors='ConnexionForm.password.errors'
+                            vg-required='ConnexionForm.password.required'>
                 </text-form>
 
                 <checkbox vg-model='ConnexionForm.values.souvenir'

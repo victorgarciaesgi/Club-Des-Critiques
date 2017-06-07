@@ -2,7 +2,7 @@
 <div class="input-form-wrap">
   <div class="star-container" ng-mouseleave='$ctrl.leave()'>
     <div class="star-zero" ng-mouseenter="$ctrl.hover(0)" ng-click="$ctrl.set(0)"></div>
-    <div class="starRating"
+    <div ng-if='$ctrl.vgEditable' class="starRating"
         ng-class='{
           full: $index < $ctrl.hoverCount,
           half: $index == $ctrl.hoverCount - 0.5,
@@ -15,6 +15,15 @@
           ng-click="$ctrl.set($index + 0.5)"></div>
           <div class="part" ng-mouseenter="$ctrl.hover($index + 1)"
           ng-click="$ctrl.set($index + 1)"></div>
+    </div>
+    <div ng-if='!$ctrl.vgEditable' class="starRating"
+        ng-class='{
+          full: $index + 1 <= $ctrl.hoverCount,
+          half: ($index + 1 > $ctrl.hoverCount) && ($index + 0.5 <= $ctrl.hoverCount),
+          empty: $index + 1 > $ctrl.hoverCount && ($index + 0.5 > $ctrl.hoverCount)
+        }'
+        ng-repeat='star in $ctrl.getNumber($ctrl.count) track by $index'
+        color='brown'>
     </div>
     <div class="star-zero"></div>
   </div>

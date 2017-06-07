@@ -204,7 +204,12 @@
                     Nous vous enverrons un mot de passe provisoire et un lien pour remplir votre profil</p>
                 <form name='mailRegisterX' ng-submit='mailRegister.submit(mailRegister.values)'>
                   <text-form vg-model='mailRegister.values.mail'
-                              vg-data='mailRegister.elements.mail'>
+                              vg-type='mailRegister.elements.mail.type'
+                              vg-name='mailRegister.elements.mail.name'
+                              vg-placeholder='mailRegister.elements.mail.placeholder'
+                              vg-validator='mailRegister.elements.mail.validator'
+                              vg-errors='mailRegister.elements.mail.errors'
+                              vg-required='mailRegister.elements.mail.required'>
                   </text-form>
                   <div class="footer">
                     <button class="bouton" type='submit' design='brown'

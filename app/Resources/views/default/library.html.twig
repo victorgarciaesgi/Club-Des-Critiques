@@ -54,7 +54,7 @@
                   <div class="cover" style='background-image: url("{(book.img)}")'></div>
                   <div class="name info-book">{(book.name)}</div>
                   <div class="author info-book">{(book.author)}</div>
-                  <rating-form vg-init='3.8' vg-editable='false'>
+                  <rating-form vg-init='3.7' vg-editable='false'>
                   </rating-form>
               </li>
             </ul>
@@ -89,19 +89,44 @@
                             on-select-result='selectResult(result)'>
                 </search-form>
                 <text-form vg-model='AddBookForm.values.author'
-                            vg-data='AddBookForm.elements.author'>
+                            vg-type='AddBookForm.elements.author.type'
+                            vg-name='AddBookForm.elements.author.name'
+                            vg-placeholder='AddBookForm.elements.author.placeholder'
+                            vg-validator='AddBookForm.elements.author.validator'
+                            vg-errors='AddBookForm.elements.author.errors'
+                            vg-required='AddBookForm.elements.author.required'>
                 </text-form>
                 <text-form vg-model='AddBookForm.values.illustration'
-                            vg-data='AddBookForm.elements.illustration'>
+                            vg-type='AddBookForm.elements.illustration.type'
+                            vg-name='AddBookForm.elements.illustration.name'
+                            vg-placeholder='AddBookForm.elements.illustration.placeholder'
+                            vg-validator='AddBookForm.elements.illustration.validator'
+                            vg-errors='AddBookForm.elements.illustration.errors'
+                            vg-required='AddBookForm.elements.illustration.required'>
                 </text-form>
                 <area-form vg-model='AddBookForm.values.description'
-                            vg-data='AddBookForm.elements.description'>
+                            vg-type='AddBookForm.elements.description.type'
+                            vg-name='AddBookForm.elements.description.name'
+                            vg-placeholder='AddBookForm.elements.description.placeholder'
+                            vg-validator='AddBookForm.elements.description.validator'
+                            vg-errors='AddBookForm.elements.description.errors'
+                            vg-required='AddBookForm.elements.description.required'>
                 </area-form>
                 <text-form vg-model='AddBookForm.values.date'
-                            vg-data='AddBookForm.elements.date'>
+                            vg-type='AddBookForm.elements.date.type'
+                            vg-name='AddBookForm.elements.date.name'
+                            vg-placeholder='AddBookForm.elements.date.placeholder'
+                            vg-validator='AddBookForm.elements.date.validator'
+                            vg-errors='AddBookForm.elements.date.errors'
+                            vg-required='AddBookForm.elements.date.required'>
                 </text-form>
                 <text-form vg-model='AddBookForm.values.pages'
-                            vg-data='AddBookForm.elements.pages'>
+                            vg-type='AddBookForm.elements.pages.type'
+                            vg-name='AddBookForm.elements.pages.name'
+                            vg-placeholder='AddBookForm.elements.pages.placeholder'
+                            vg-validator='AddBookForm.elements.pages.validator'
+                            vg-errors='AddBookForm.elements.pages.errors'
+                            vg-required='AddBookForm.elements.pages.required'>
                 </text-form>
                 <token-form vg-model='AddBookForm.values.categories'
                             vg-data='AddBookForm.elements.categories'>

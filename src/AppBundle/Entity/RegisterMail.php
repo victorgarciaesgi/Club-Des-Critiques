@@ -24,7 +24,7 @@ class RegisterMail
     /**
      * @var string
      *
-     * @ORM\Column(name="mail", type="string", length=255, unique=true)
+     * @ORM\Column(name="mail", type="string", length=150, unique=true)
      */
     private $mail;
 
@@ -45,7 +45,7 @@ class RegisterMail
     /**
      * @var string
      *
-     * @ORM\Column(name="access_permalink", type="string", length=1000, unique=true)
+     * @ORM\Column(name="access_permalink", type="string", length=255, unique=true)
      */
     private $accessPermalink;
 
@@ -147,4 +147,3 @@ class RegisterMail
         return $this->status;
     }
 }
-

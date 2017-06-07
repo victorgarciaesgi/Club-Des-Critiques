@@ -1,11 +1,11 @@
 
 
-MainApp.directive('vgValidator', function() {
+MainApp.directive('vgVerificator', function() {
   return {
     restrict: 'A',
     require: 'ngModel',
     link: function(scope, elm, attrs, ctrl) {
-      var validator = attrs.vgValidator;
+      var validator = attrs.vgVerificator;
       switch (validator) {
         case "link":
           var regxp = new RegExp("(https?:\/\/.*)")
