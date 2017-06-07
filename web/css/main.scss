@@ -713,7 +713,10 @@ aside{
     }
 
     .title{
+      position: relative;
+      float: left;
       text-align: left;
+      height: 40px;
       font-size: 15px;
       padding-left: 0;
       font-weight: normal;
@@ -727,6 +730,26 @@ aside{
         border-right: 1px solid $w240;
         span{
           margin-right: 5px;
+        }
+      }
+    }
+    .library-list{
+      position: relative;
+      float: left;
+      height: calc(100% - 40px);
+      width: 100%;
+      overflow-y: auto;
+      overflow-x: hidden;
+
+      ul{
+        position: relative;
+        float: left;
+        height: 100%;
+        width: 100%;
+
+        li{
+          position: relative;
+          float: left;
         }
       }
     }

@@ -27,10 +27,9 @@ class textForm{
 }
 
 class searchForm{
-  constructor(placeholder, name, type, required, legend, source, validator, error, errorMessage){
+  constructor(placeholder, name, required, legend, source, validator, error, errorMessage){
     this.placeholder = placeholder;
     this.name = name;
-    this.type = type;
     this.required = required;
     if (legend) {this.legend = legend}
     if (source) {this.source = source}
@@ -40,5 +39,14 @@ class searchForm{
       if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
       if(validator){this.errors[validator] = map[validator]}
     }
+  }
+}
+
+class ratingForm{
+  constructor(name, required, init, editable){
+    this.name = name;
+    this.editable = editable;
+    this.required = required;
+    if (init != null) {this.init = init}
   }
 }
