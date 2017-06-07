@@ -67,7 +67,10 @@ MainApp.component('searchForm', {
     ctrl.error = false;
     ctrl.errorMessage = "";
     ctrl.searching = false,
-    ctrl.search_result = {selected: {},data: {}}
+    ctrl.search_result = {selected: {},data: {}, reset: function(){
+      this.selected = {};
+      this.data = {};
+    }}
 
     ctrl.keydown = (event, element) => {
       if (event.which == 13) {event.preventDefault();}
@@ -89,14 +92,14 @@ MainApp.component('searchForm', {
         else if (event.which == 27) {
           ctrl.error = false;
           ctrl.selectBook = false;
-          ctrl.search_result = {selected: {},data: {}};
+          ctrl.search_result.reset();
         }
       }
     }
 
     ctrl.selectAction = (book) => {
       ctrl.onSelectResult({result: book});
-      ctrl.search_result = {selected: {},data: {}}
+      ctrl.search_result.reset();
       ctrl.bookFound = true;
       ctrl.selectBook = true;
     }
@@ -108,7 +111,7 @@ MainApp.component('searchForm', {
         console.log(result)
         if (result.error){
           ctrl.searching = false;
-          ctrl.search_result = {selected: {},data: {}}
+          ctrl.search_result.reset();
           ctrl.error = true;
           ctrl.errorMessage = result.error;
         }
@@ -118,7 +121,12 @@ MainApp.component('searchForm', {
           ctrl.search_result.selected = result[0];
           ctrl.search_result.selected["indexList"] = 0;
         }
-      })
+      },
+        (error) => {
+          console.log(error)
+          ctrl.searching = false;
+          ctrl.search_result.reset();
+        })
     }
 
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
@@ -133,7 +141,7 @@ MainApp.component('searchForm', {
       }
       else{
         ctrl.vgModel = "";
-        ctrl.search_result = {selected: {},data: {}}
+        ctrl.search_result.reset();
         ctrl.bookFound = false;
       }
     })
@@ -209,47 +217,53 @@ MainApp.component('ratingForm', {
     ctrl.hoverCount = 0;
 
     ctrl.$onInit = () => {
-      ctrl.vgModel = (ctrl.vgData.init?ctrl.vgData.init:0);
+      ctrl.vgModel = (ctrl.vgInit?ctrl.vgInit:0);
+      ctrl.hoverCount = (ctrl.vgInit?ctrl.vgInit:0);
     }
 
     ctrl.getNumber = (num) => {return new Array(num)}
 
     ctrl.hover = (value) => {
-      ctrl.hoverStar = true;
-      ctrl.hoverCount = value;
+      if(ctrl.vgEditable){
+        ctrl.hoverStar = true;
+        ctrl.hoverCount = value;
+      }
     }
 
     ctrl.leave = () => {
-      ctrl.hoverStar = false;
-      console.log(ctrl.vgData.init)
-      ctrl.hoverCount = ($scope.ratingForm[ctrl.vgData.name].$dirty?ctrl.rating:ctrl.vgData.init);
+      if(ctrl.vgEditable){
+        ctrl.hoverStar = false;
+        ctrl.hoverCount = ($scope.ratingForm[ctrl.vgName].$dirty?ctrl.rating:ctrl.vgInit);
+      }
     }
 
     ctrl.set = (value) => {
-      ctrl.hoverStar = false;
-      ctrl.vgModel = value;
-      ctrl.rating = value;
+      if(ctrl.vgEditable){
+        ctrl.hoverStar = false;
+        ctrl.vgModel = value;
+        ctrl.rating = value;
+      }
     }
 
     $scope.$watch('$ctrl.vgModel', (newValue, oldValue, scope) => {
       if (!!newValue) {
-        console.log($scope.ratingForm[ctrl.vgData.name])
-        if ($scope.ratingForm[ctrl.vgData.name].$pristine) {
-          $scope.ratingForm[ctrl.vgData.name].$setDirty();
+        if ($scope.ratingForm[ctrl.vgName].$pristine) {
+          $scope.ratingForm[ctrl.vgName].$setDirty();
         }
         ctrl.filled = (newValue.length == 0?null:"filled");
       }
       else{
-        ctrl.hoverCount = (ctrl.vgData.init?ctrl.vgData.init:0);
+        ctrl.hoverCount = (ctrl.vgInit?ctrl.vgInit:0);
         ctrl.filled = "";
       }
     }, true)
   },
   bindings: {
-    vgModel: '=',
-    vgData: '<',
-    vgSource: '=?',
-    vgDisabled: '=?',
+    vgModel: '=?',
+    vgRequired: '<?',
+    vgName: '<?',
+    vgEditable: '<?',
+    vgInit: '<?'
   }
 });
 

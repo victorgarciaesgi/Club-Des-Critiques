@@ -60,14 +60,44 @@ class LibraryController extends Controller
 
 
     /**
-     * @Route("/library/addCategories", options = { "expose" = true }, name="library_addCategories")
+     * @Route("/library/getAllBooks", options = { "expose" = true }, name="library_getAllBooks")
      * @Method({"POST"})
      */
 
-    public function AddCategoriesAction(Request $request)
+    public function GetAllBooks()
+    {
+      $encoders = array(new XmlEncoder(), new JsonEncoder());
+      $normalizers = array(new ObjectNormalizer());
+      $serializer = new Serializer($normalizers, $encoders);
+      $repository = $this->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Media');
+      $content = $repository->findAll();
+      $categories = $serializer->serialize($content, 'json');
+
+      return new JsonResponse($categories);
+    }
+
+    /**
+     * @Route("/library/getFilterBooks", options = { "expose" = true }, name="library_getFilterBooks")
+     * @Method({"POST"})
+     */
+
+    public function GetFilterBooks()
     {
       $data = json_decode($request->getContent(), true);
+      return new JsonResponse($data);
+    }
 
+
+    /**
+     * @Route("/library/searchCategories", options = { "expose" = true }, name="library_searchCategories")
+     * @Method({"POST"})
+     */
+
+    public function SearchCategoriesAction(Request $request)
+    {
+      $data = json_decode($request->getContent(), true);
       return new JsonResponse($data);
     }
 
@@ -89,13 +119,5 @@ class LibraryController extends Controller
       return new JsonResponse($categories);
     }
 
-    // public function actuAction(Request $request)
-    // {
-    //     $repository = $this->getDoctrine()
-    //         ->getManager()
-    //         ->getRepository('AppBundle:Category');
-    //     $categories = $repository->findAll();
-    //
-    //     return new JsonResponse($categories);
-    // }
+
 }
