@@ -82,6 +82,11 @@ a {
   text-decoration: none;
   color: inherit;
   cursor: pointer;
+
+  &.link{
+    text-decoration: underline;
+    color: $mainGreen2;
+  }
 }
 
 span {
