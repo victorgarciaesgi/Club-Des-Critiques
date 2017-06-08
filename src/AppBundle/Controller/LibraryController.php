@@ -129,7 +129,21 @@ class LibraryController extends Controller
     public function SearchCategoriesAction(Request $request)
     {
       $data = json_decode($request->getContent(), true);
-      return new JsonResponse($data);
+      $encoders = array(new XmlEncoder(), new JsonEncoder());
+      $normalizers = array(new ObjectNormalizer());
+      $serializer = new Serializer($normalizers, $encoders);
+
+      $repository = $this->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Category');
+      $content = $repository->createQueryBuilder('c')
+               ->where('c.name LIKE :name')
+               ->setParameter('name', '%'.$data['data'].'%')
+               ->setMaxResults(3)
+               ->getQuery();
+      $results = $content->getArrayResult();
+      // $categories = $serializer->serialize($content, 'json');
+      return new JsonResponse($results);
     }
 
     /**

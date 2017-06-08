@@ -326,7 +326,8 @@ ng-form{
     z-index: 3;
     background-color: white;
     box-shadow: 0 0 5px $w210;
-    display: none;
+    border-radius: 3px;
+    overflow: hidden;
 
     ul{
       position: relative;
@@ -337,19 +338,32 @@ ng-form{
       li{
         position: relative;
         float: left;
-        height: 70px;
         width: 100%;
         border-bottom: 1px solid $w230;
-        padding: 5px;
         cursor: pointer;
+
+        &:last-child{
+          border: none;
+        }
+
+        &[book]{
+          height: 70px;
+          padding: 5px;
+        }
+        &[list]{
+          height: 30px;
+          padding-left: 10px;
+          line-height: 30px;
+          font-size: 13px;
+        }
 
         &:hover{
           background-color: $w240;
         }
 
         &.selected{
-          background-color: $w235;
-          background-color: $mainGreen1;
+          background-color: $mainGreen2;
+          color: white;
           &:hover{
             background-color: $mainGreen1;
             }

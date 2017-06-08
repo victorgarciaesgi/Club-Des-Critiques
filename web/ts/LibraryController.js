@@ -96,14 +96,14 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       author: new textForm('Auteur..','author','text',true,null,null, null, null, true, null),
       illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'link', true,'L\'illustration du livre est obligatoire'),
       description: new textForm('Description','description','text',true,null,null, null, null, true, null),
-      categories: new textForm('Catégories.. (Entrée pour ajouter)','categories','text',true,'Catégories de ce livre','library_addCategories', null, null, true, 'Veuillez rentrer au moins une catégorie'),
+      categories: new textForm('Catégories.. (Entrée pour ajouter)','categories','text',true,'Catégories de ce livre','library_searchCategories', null, null, true, 'Veuillez rentrer au moins une catégorie'),
       pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),
       date: new textForm('Date de sortie...', 'date','date', true,null,null, null, 'date', true, null),
       rating: new ratingForm('rating', true, 0, true),
     },
     submit: function() {
-      AjaxRequest.get('submit_book',this.values).then((result) => {
-
+      AjaxRequest.get('library_submit_book',this.values).then((result) => {
+        console.log(result);
       });
     },
     reset: function() {

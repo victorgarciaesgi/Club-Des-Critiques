@@ -59,7 +59,7 @@
                   <div class="cover" style='background-image: url("{(book.img)}")'></div>
                   <div class="name info-book" ng-cloak>{(book.name)}</div>
                   <div class="author info-book" ng-cloak>{(book.author)}</div>
-                  <rating-form vg-init='3.7' vg-editable='false'>
+                  <rating-form vg-init='book.note' vg-editable='false'>
                   </rating-form>
               </li>
             </ul>
@@ -74,7 +74,7 @@
 
 <!-- Popups -->
 
-    <div id='addBook-window' class="popup-window" ng-if='UserConnected'>
+    <div id='addBook-window' class="popup-window">
       <div class="window">
         <form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
 
@@ -134,7 +134,8 @@
                             vg-required='AddBookForm.elements.pages.required'>
                 </text-form>
                 <token-form vg-model='AddBookForm.values.categories'
-                            vg-data='AddBookForm.elements.categories'>
+                            vg-data='AddBookForm.elements.categories'
+                            vg-source='AddBookForm.elements.categories.source'>
                 </token-form>
                 <div class='legend'>Veuillez donner une note pour ce livre</div>
                 <rating-form vg-model='AddBookForm.values.rating'

@@ -65,9 +65,12 @@ MainApp.component('searchForm', {
     ctrl.error = false;
     ctrl.errorMessage = "";
     ctrl.searching = false,
-    ctrl.search_result = {selected: {},data: {}, reset: function(){
-      this.selected = {};
-      this.data = {};
+    ctrl.search_result = {
+      selected: {},
+      data: {},
+      reset: function(){
+        this.selected = {};
+        this.data = {};
     }}
 
     ctrl.keydown = (event, element) => {
@@ -104,8 +107,7 @@ MainApp.component('searchForm', {
 
     ctrl.search = (source, value) => {
       ctrl.error = false;
-      var promise = AjaxRequest.get(source, value.replace(/ /g,'%20'));
-      promise.then((result) => {
+      AjaxRequest.get(source, value.replace(/ /g,'%20')).then((result) => {
         console.log(result)
         if (result.error){
           ctrl.searching = false;
@@ -160,23 +162,76 @@ MainApp.component('tokenForm', {
     ctrl.error = false;
     ctrl.errorMessage = "";
     ctrl.searching = false,
-    ctrl.search_result = {selected: {},data: {}}
+    ctrl.selectToken = false;
     ctrl.searchText = "";
     ctrl.filled = "";
+    ctrl.search_result = {
+      selected: {},
+      data: {},
+      reset: function(){
+        this.selected = {};
+        this.data = {};
+    }}
 
     ctrl.$onInit = () => {
       ctrl.vgModel = [];
     };
 
-    ctrl.keydown = (event, element) => {
-      if (event.which == 13){
-        event.preventDefault();
-        if(ctrl.searchText.length > 0){
-          ctrl.vgModel.push({label: ctrl.searchText});
+    ctrl.search = (source, value) => {
+      ctrl.error = false;
+      AjaxRequest.get(source, value).then((result) => {
+        console.log(result)
+        if (result.error){
+          ctrl.searching = false;
+          ctrl.search_result.reset();
+          ctrl.error = true;
+          ctrl.errorMessage = result.error;
         }
-        ctrl.searchText = "";
+        else{
+          ctrl.searching = false;
+          ctrl.search_result.data = result;
+          ctrl.search_result.selected = result[0];
+          ctrl.search_result.selected["indexList"] = 0;
+        }
+      },
+        (error) => {
+          console.log(error)
+          ctrl.searching = false;
+          ctrl.search_result.reset();
+        })
+    }
+
+    ctrl.selectAction = (category) => {
+      ctrl.vgModel.push({name: category.name, idCategory: category.idCategory});
+      ctrl.search_result.reset();
+      ctrl.searchText = "";
+      ctrl.selectToken = true;
+    }
+
+    ctrl.keydown = (event, element) => {
+      if (event.which == 13) {event.preventDefault();}
+      if (!ctrl.searching){
+        if (event.which == 13) {
+          event.preventDefault();
+          ctrl.selectAction(ctrl.search_result.selected);
+        }
+        else if (event.which == 38 || event.which == 40){
+          event.preventDefault();
+          var list = ctrl.search_result.data;
+          var index = ctrl.search_result.selected.indexList;
+          if((event.which == 38 && index > 0) || (event.which == 40 && index < ctrl.limit - 1)){
+            var direction = (- 39) + event.which;
+            ctrl.search_result.selected = list[index + direction];
+            ctrl.search_result.selected["indexList"] = index + direction;
+          }
+        }
+        else if (event.which == 27) {
+          ctrl.error = false;
+          ctrl.selectToken = false;
+          ctrl.search_result.reset();
+        }
       }
-    };
+    }
 
     ctrl.delete = (event,index, token) => {
       ctrl.vgModel.splice(index, 1);
@@ -193,11 +248,24 @@ MainApp.component('tokenForm', {
         ctrl.vgModel = [];
       }
     }, true)
+
+    $scope.$watch('$ctrl.searchText',(newValue, oldValue, scope) => {
+      if (!!newValue){
+        if (newValue.trim().length > 1){
+          ctrl.searching = true;
+          ctrl.search(ctrl.vgSource ,newValue);
+        }
+        else{
+          ctrl.selectToken = false;
+        }
+
+      }
+    })
   },
   bindings: {
     vgModel: '=',
     vgData: '<',
-    vgSource: '=?',
+    vgSource: '<?',
     vgDisabled: '=?',
   }
 });

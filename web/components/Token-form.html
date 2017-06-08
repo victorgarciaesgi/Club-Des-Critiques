@@ -16,9 +16,13 @@
         ng-model='$ctrl.filled'
         name='{($ctrl.vgData.name)}'
         ng-required='$ctrl.vgData.required'>
-  <div class="input-form-result" ng-show='$ctrl.search_result.data.length > 0 || $ctrl.error'>
+  <div class="input-form-result" ng-if='$ctrl.search_result.data.length > 0'>
     <ul ng-show='$ctrl.search_result.data.length > 0'>
-      <li ng-repeat='result in $ctrl.search_result.data | limitTo: 4'></li>
+      <li ng-repeat='result in $ctrl.search_result.data'
+          ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
+          ng-mousedown='$ctrl.selectAction(result)' list>
+        {(result.name)}
+      </li>
     </ul>
     <ul>
       <div class="error_message">
@@ -33,7 +37,7 @@
 </div>
 <div class="token-container">
   <li ng-repeat='token in $ctrl.vgModel' class='token'>
-    <span>{(token.label)}</span>
+    <span>{(token.name)}</span>
     <img class='t-u-delete' ng-click='$ctrl.delete($event,$index,token)' src='/assets/delete.svg' height='18' width= '18'>
   </li>
 </div>
