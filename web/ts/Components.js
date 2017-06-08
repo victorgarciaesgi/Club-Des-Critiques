@@ -10,16 +10,6 @@ MainApp.component('checkbox', {
   }
 });
 
-// Composant select <dropdown></dropdown>
-MainApp.component('dropdown', {
-  templateUrl: '../components/Dropdown.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
-  },
-  bindings: {
-    vgModel: '=',
-    vgData: '<',
-  }
-});
 
 // composant textarea
 MainApp.component('areaForm', {
@@ -218,16 +208,16 @@ MainApp.component('ratingForm', {
   templateUrl: '../components/Rating-form.html',
   controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
-    ctrl.count = 5;
-    ctrl.hoverStar = false;
-    ctrl.filled = "";
-    ctrl.rating = 0;
-    ctrl.hoverCount = 0;
+    ctrl.count = 5; // Nombre d'étoiles
+    ctrl.hoverStar = false; // Etat hover du block d'étoiles
+    ctrl.filled = ""; // Placeholder qui rempli le champs input hidden
+    ctrl.rating = 0; // Alternive variable pour garder la valeur d'avant lors d'un hover
+    ctrl.hoverCount = 0; // Valeur de la note affichée
 
     ctrl.$onInit = () => {
       ctrl.vgModel = (ctrl.vgInit?ctrl.vgInit:0);
       ctrl.hoverCount = (ctrl.vgInit?ctrl.vgInit:0);
-    }
+    }// Initialisation du composant
 
     ctrl.getNumber = (num) => {return new Array(num)}
 

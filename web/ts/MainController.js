@@ -1,5 +1,5 @@
 
-var MainApp = angular.module('mainApp',[])
+var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash'])
 .config(function($interpolateProvider){
     $interpolateProvider.startSymbol('{(');
     $interpolateProvider.endSymbol(')}');
@@ -7,6 +7,8 @@ var MainApp = angular.module('mainApp',[])
 
 MainApp.run(function($rootScope) {
     $rootScope.Rootview = '';
+    $rootScope.UserConnected = (!!window.nohomo)?true:false;
+    $rootScope.UserAdmin = (!!window.rocketleague)?true:false;
 });
 
 MainApp.filter('cap', function() {
@@ -32,7 +34,6 @@ MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
   // required -> champs requis pour les formulaire
   // error-> affiche les messages erreurs ou non
   // errorMessage -> message personnalisé d'erreur de required
-
 
   $scope.mailRegister = {
     values: {},

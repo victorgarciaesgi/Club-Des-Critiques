@@ -14,46 +14,51 @@
                 Catégories
               </div>
               <div class="list">
+                <div class="loader-content" ng-if='Library.categories.loading'><div size='20' class="loading-spinner"></div></div>
                   <div class="checkbox" ng-repeat='c in Library.categories.elements' ng-cloak>
                       <input id='{(c.idCategory)}' ng-model='Library.categories.values[c.idCategory]' type="checkbox"/>
                       <label for="{(c.idCategory)}"></label>
                       <span>{(c.name)}</span>
                   </div>
               </div>
-              <pre>{(Library.categories.values | json)}</pre>
-              <pre>No one selected :{(Library.categories.noSelected() | json)}</pre>
+              <!-- <pre>{(Library.categories.values | json)}</pre>
+              <pre>No one selected :{(Library.categories.noSelected() | json)}</pre> -->
             </div>
           </div>
         </article>
 
         <article id="book-library">
           <div class="title">
-            <div class="group">
+            <div class="group" ng-cloak>
               <span>Résultats</span>
-              <select class="" name="">
-                <option value="">20 par page</option>
+              <select ng-model='$ctrl.vgModel'
+                      ng-options='option.label for option in $ctrl.vgData.list'
+                      ng-init='$ctrl.vgModel = $ctrl.vgData.list[0]'>
               </select>
             </div>
-            <div class="group">
+            <div class="group" ng-cloak>
               <span>Trier par</span>
-              <select class="" name="">
-                <option value="">Genre</option>
-                <option value="">Prix</option>
+              <select ng-model='Library.order.value'
+                      ng-options='option.label for option in Library.order.elements'
+                      ng-init='Library.order.value = Library.order.elements[0]'
+                      ng-change='Library.orderBooks()' >
               </select>
             </div>
             <div class="group">
-              <div class="bouton openPopupWindow" target='addBook-window' popup='addBook' design='blanc'>
+              <div ng-if='UserConnected' class="bouton openPopupWindow" target='addBook-window' popup='addBook' design='blanc'>
                 <img src="/assets/add.svg" alt="">Ajouter un livre
               </div>
             </div>
           </div>
           <div class="library-list">
             <ul class="books-list">
-              <li ng-repeat='book in Library.books.elements' class='book-wrapper' ng-cloak
-                  ng-click='BookShow.show(book)'>
+              <div class="loader-content" ng-if='Library.books.loading'><div taille='big' class="loading-spinner"></div></div>
+              <li ng-repeat='book in Library.books.elements track by book.idMedia'
+                  class='book-wrapper'
+                  ng-click='Library.books.show(book)'>
                   <div class="cover" style='background-image: url("{(book.img)}")'></div>
-                  <div class="name info-book">{(book.name)}</div>
-                  <div class="author info-book">{(book.author)}</div>
+                  <div class="name info-book" ng-cloak>{(book.name)}</div>
+                  <div class="author info-book" ng-cloak>{(book.author)}</div>
                   <rating-form vg-init='3.7' vg-editable='false'>
                   </rating-form>
               </li>
@@ -69,7 +74,7 @@
 
 <!-- Popups -->
 
-    <div id='addBook-window' class="popup-window">
+    <div id='addBook-window' class="popup-window" ng-if='UserConnected'>
       <div class="window">
         <form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
 
@@ -220,14 +225,14 @@
           </div>
           <div class="content">
             <div class="book-form-preview">
-              <div class="book-blur" style='background-image: url({(BookShow.book.img)})'></div>
+              <div class="book-blur" style='background-image: url({(Library.books.bookShow.img)})'></div>
               <div class="input-form-wrap">
-                <div class="cover" style='background-image: url({(BookShow.book.img.length > 10?BookShow.book.img:"/assets/no_thumbnail.jpg")})'>
+                <div class="cover" style='background-image: url({(Library.books.bookShow.img.length > 10?Library.books.bookShow.img:"/assets/no_thumbnail.jpg")})'>
                 </div>
               </div>
               <div class="input-form-wrap">
                 <div class="title-book">
-                  {(BookShow.book.name? (BookShow.book.name | cap) : 'Titre du livre')}
+                  {(Library.books.bookShow.name? (Library.books.bookShow.name | cap) : 'Titre du livre')}
                 </div>
               </div>
             </div>
@@ -237,40 +242,41 @@
                   <div class="i-h-img">
                     <img src="/assets/euro.svg">
                   </div>
-                  <div class='i-h-text'>{(BookShow.book.price || '-')}</div>
+                  <div class='i-h-text'>{(Library.books.bookShow.price || '-')}</div>
                 </div>
                 <div class="i-h-info">
                   <div class="i-h-img">
                     <img src="/assets/book.svg">
                   </div>
-                  <div class='i-h-text'>{(BookShow.book.numberPage || '-')} <span ng-if='BookShow.book.numberPage'>pages</span></div>
+                  <div class='i-h-text'>{(Library.books.bookShow.numberPage || '-')} <span ng-if='Library.books.bookShow.numberPage'>pages</span></div>
                 </div>
                 <div class="i-h-info">
                   <div class="i-h-img">
                     <img src="/assets/date.svg">
                   </div>
-                  <div class='i-h-text'>{(BookShow.book.releaseDate.timestamp | date:'dd-MM-y' || '-')}</div>
+                  <div class='i-h-text'>{(Library.books.bookShow.releaseDate.timestamp | date:'dd-MM-y' || '-')}</div>
                 </div>
               </div>
               <div class="info-book">
                 <div class="i-b-title">Autheur</div>
-                <div class="i-b-content">{(BookShow.book.author || '-')}</div>
+                <div class="i-b-content">{(Library.books.bookShow.author || '-')}</div>
               </div>
               <div class="info-book">
                 <div class="i-b-title">Description</div>
-                <div class="i-b-content">{(BookShow.book.description || '-')}</div>
+                <div class="i-b-content">{(Library.books.bookShow.description || '-')}</div>
               </div>
-              <div class="info-book">
+              <div class="info-book" ng-if='Library.books.bookShow.buyLink'>
                 <div class="i-b-title">Lien d'achat</div>
-                <a class="i-b-content" ng-class='{link: BookShow.book}' target='_blank'
-                ng-href='{(BookShow.book.buyLink || "#")}'>{(BookShow.book.buyLink?'Lien Play Store':'-')}</a>
+                <a class="i-b-content" ng-class='{link: Library.books.bookShow}' target='_blank'
+                ng-href='{(Library.books.bookShow.buyLink || "#")}'>{(Library.books.bookShow.buyLink?'Lien Play Store':'-')}</a>
               </div>
 
             </div>
           </div>
           <div class="footer">
             <div class="bouton" design='blanc'>Fermer</div>
-            <div class="bouton" design='green'>Créer un salon</div>
+            <div class="bouton" design='blanc'>Signaler</div>
+            <div ng-if='UserConnected' class="bouton" design='green'>Créer un salon</div>
 
           </div>
       </div>
