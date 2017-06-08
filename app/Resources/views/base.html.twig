@@ -162,6 +162,9 @@
 
     </div>
 
+
+    {% if connected %}
+
     <div id='popup-user' class="popup-box" style='width: 200px' state='false'>
         <img id='pin' src="/assets/up.png" alt="">
         <div class="user">
@@ -176,7 +179,7 @@
             <a href="/app_dev.php/logout"><li class='user-option'>Deconnexion</li></a>
         </ul>
     </div>
-
+    {% endif %}
 
     <div id='popup-search' class="popup-box" style='width: 400px' state='false'>
         <img id='pin' src="/assets/up.png" alt="">
@@ -189,6 +192,7 @@
           </div>
         </div>
     </div>
+
 </header>
 {% block body %}{% endblock %}
 {% block footer %}{% endblock %}

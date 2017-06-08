@@ -151,8 +151,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
   $scope.promiseLoad = function(link){
     return $q(function(resolve, reject){
       var img = new Image();
-      img.onload = function(event){resolve(img);
-        console.log(img)
+      img.onload = function(event){
+        resolve(img);
       }
       img.onerror = function(){
         reject(false);
