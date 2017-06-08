@@ -1,6 +1,4 @@
-
-
-MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
+MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, lodash) {
 
   //Liste de categories
 
@@ -8,6 +6,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
     categories: {
       values: {},
       elements: [],
+      loading: true,
       noSelected: function(){
         var obj = Object.values(this.values);
         return obj.every(elem => !elem);
@@ -15,31 +14,70 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
     },
     books: {
       elements: [],
+      bookShow: {},
+      loading: true,
+      show: function(book){
+        this.bookShow = book;
+        $("#bookshow-window").show().find('.content').scrollTop(0);
+      }
+    },
+    order: {
+      value: {},
+      elements: [
+        {label: 'Titre', value:'name'},
+        {label: 'Date de publication', value:'releaseDate'},
+        {label: 'Auteur', value:'author'},
+        {label: 'Note', value:'note'},
+        {label: 'Prix', value:'price'},
+      ],
+    },
+    orderBooks: function(){
+      this.books.loading = true;
+      this.books.elements = [];
+      AjaxRequest.get('library_getOrderBooks',this.order.value).then((result) => {
+        let loader = result;
+        let promises = [];
+        $.each(loader, function(index, el) {
+          promises.push($scope.promiseLoad(el.img));
+        })
+        $q.all(promises).then((data) => {
+          this.books.loading = false;
+          this.books.elements = loader;
+        })
+      })
     },
     filter: function(){
-      // var promiseCateg = AjaxRequest.get('library_getCategories',null);
-      // promiseCateg.then((result) => {
-      // })
+      if(this.categories.noSelected()){
+        AjaxRequest.get('library_getAllBooks',null).then((result) => {
+          this.books.elements = result;
+        })
+      }
+      else{
+        AjaxRequest.get('library_filterBooks',this.categories.values).then((result) => {
+
+        })
+      }
     },
     init: function(){
       AjaxRequest.get('library_getCategories',null).then((result) => {
+        this.categories.loading = false;
         this.categories.elements = result;
       })
       AjaxRequest.get('library_getAllBooks',null).then((result) => {
-        this.books.elements = result;
+        let loader = result;
+        let promises = [];
+        $.each(loader, function(index, el) {
+          promises.push($scope.promiseLoad(el.img));
+        })
+        $q.all(promises).then((data) => {
+          this.books.loading = false;
+          this.books.elements = loader;
+        })
       })
     }
   };
-
-  $scope.BookShow = {
-    book: {},
-    show: function(book){
-      this.book = book;
-      $("#bookshow-window").show().find('.content').scrollTop(0);
-    }
-  }
-
   $scope.Library.init()
+
 
 
 
@@ -64,7 +102,9 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
       rating: new ratingForm('rating', true, 0, true),
     },
     submit: function() {
-      var promise = AjaxRequest.get('submit_book',this.values);
+      AjaxRequest.get('submit_book',this.values).then((result) => {
+
+      });
     },
     reset: function() {
       this.values = {categories:[],search: ""};
@@ -111,7 +151,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, AjaxRequest) {
   $scope.promiseLoad = function(link){
     return $q(function(resolve, reject){
       var img = new Image();
-      img.onload = function(event){resolve(img.src = link);
+      img.onload = function(event){resolve(img);
+        console.log(img)
       }
       img.onerror = function(){
         reject(false);

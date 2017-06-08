@@ -30,11 +30,28 @@
     animation-fill-mode: backwards;
   }
   &::before {
+    z-index: 2;
     border-color: $mainGreen2 transparent transparent transparent;
   }
   &::after {
+    z-index: 1;
     border-color: transparent lighten($mainGreen2, 15%) transparent transparent;
     animation-delay: 0.6s;
+  }
+
+  &[taille='big']{
+    height: 40px;
+    width: 40px;
+
+    &::after{
+      border-width: 2px;
+      border-radius: 40px;
+    }
+    &::before{
+      border-width: 2px;
+      border-radius: 40px;
+    }
+
   }
 
   &.inline-block {
@@ -60,19 +77,7 @@ body {
   min-width: 800px;
 }
 
-// [ng\:cloak], [ng-cloak], .ng-cloak {
-//     text-align: center;
-//
-//     &::after{
-//       content:"";
-//       display: block!important;
-//       position: relative;
-//       height: 30px;
-//       width: 30px;
-//       background-image: url('../assets/load.gif');
-//       @include bg-center;
-//     }
-// }
+
 
 *{
   box-sizing: border-box;
@@ -395,6 +400,26 @@ ng-form{
     }
   }
 }
+
+.loader-content{
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  min-height: 40px;
+  z-index: 100;
+  background-color: rgba(255,255,255,0.8);
+
+  .loading-spinner{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    @include translate(-50%, -50%);
+  }
+
+}
+
 
 textarea.input-form {
   height: 80px;

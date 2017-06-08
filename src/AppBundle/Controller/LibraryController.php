@@ -73,9 +73,32 @@ class LibraryController extends Controller
           ->getManager()
           ->getRepository('AppBundle:Media');
       $content = $repository->findAll();
-      $categories = $serializer->serialize($content, 'json');
+      $books = $serializer->serialize($content, 'json');
 
-      return new JsonResponse($categories);
+      return new JsonResponse($books);
+    }
+
+    /**
+     * @Route("/library/getOrderBooks", options = { "expose" = true }, name="library_getOrderBooks")
+     * @Method({"POST"})
+     */
+
+    public function GetOrderBooks(Request $request)
+    {
+      $encoders = array(new XmlEncoder(), new JsonEncoder());
+      $normalizers = array(new ObjectNormalizer());
+      $serializer = new Serializer($normalizers, $encoders);
+
+      $data = json_decode($request->getContent(), true);
+
+      $repository = $this->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Media');
+      $content = $repository->findBy(array(), array($data['data']['value'] => 'asc'));
+      $books = $serializer->serialize($content, 'json');
+
+      return new JsonResponse($books);
+
     }
 
     /**
@@ -83,8 +106,16 @@ class LibraryController extends Controller
      * @Method({"POST"})
      */
 
-    public function GetFilterBooks()
+    public function GetFilterBooks(Request $request)
     {
+      $encoders = array(new XmlEncoder(), new JsonEncoder());
+      $normalizers = array(new ObjectNormalizer());
+      $serializer = new Serializer($normalizers, $encoders);
+      $repository = $this->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Category');
+      $content = $repository->findAll();
+      $categories = $serializer->serialize($content, 'json');
       $data = json_decode($request->getContent(), true);
       return new JsonResponse($data);
     }

@@ -6,8 +6,16 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
     <script type="text/javascript" src='/lib/angular.min.js'></script>
+    <script type="text/javascript" src='/lib/angular-animate.js'></script>
     <script type="text/javascript" src='/lib/jquery.min.js'></script>
+    <script type="text/javascript" src='/lib/lodash.js'></script>
     <script type="text/javascript" src='/ts/Functions.js'></script>
+    <script type="text/javascript">
+      window.nohomo = {{ is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?'true':'false' }};
+      window.rocketleague = {{ is_granted('ROLE_SUPER_ADMIN')==1?'true':'false' }}
+    </script>
+    {% set connected = is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?true:false %}
+    {% set admin = is_granted('ROLE_SUPER_ADMIN') == 1?true:false %}
 
     <script type="text/javascript" src='/ts/MainController.js'></script>
     <script type="text/javascript" src='/ts/Ajax.js'></script>
@@ -18,10 +26,8 @@
     <script type="text/javascript" src='/ts/Directives.js'></script>
     <script type="text/javascript" src='/ts/Classes.js'></script>
 
-
-    </script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
-<script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% block javascript %}{% endblock %}
     <link href="/css/main.css" rel="stylesheet">
     <link href="/css/tools.css" rel="stylesheet">
@@ -60,8 +66,29 @@
                 <input type="text" class="input-search" name="content" placeholder="Recherche de livres...">
             </li>
         </ul>
-        <ul class="header-menus">
-            <li id='connexion' popup="popup-connexion" class='menu popup-bouton'>Connexion</li>
+        <ul class="header-menus" ng-cloak>
+          {% if not connected %}
+            <li id='connexion' popup="popup-connexion" class='menu popup-bouton'>
+              Connexion
+            </li>
+            <a href="#">
+              <li id='aide' class='menu popup-bouton'>
+                Aide
+              </li>
+            </a>
+          {% endif %}
+
+          {% if admin %}
+
+            <a href="#">
+              <li id='aide' class='menu popup-bouton'>
+                admin
+              </li>
+            </a>
+          {% endif %}
+
+
+            {% if connected %}
             <li id='notifications' state='' class='menu popup-bouton' popup="popup-notification">
                 <img src='/assets/notifications.svg' only class="icon">
                 <div class="counter">
@@ -69,11 +96,16 @@
                 </div>
             </li>
             <li id='user' class='menu popup-bouton' popup="popup-user">
-                <span class="name">Victor Garcia</span>
+                <span class="name">{{app.user.username}}</span>
                 <div class="picture" style='background-image: url(/assets/profil.jpg)'></div>
             </li>
+            {% endif %}
         </ul>
     </nav>
+
+
+    <!--  Popups -->
+
     <div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
         <img id='pin' src="/assets/up.png" alt="">
         <div class="header">
@@ -134,14 +166,14 @@
         <img id='pin' src="/assets/up.png" alt="">
         <div class="user">
             <div class="user-picture" style='background-image: url(/assets/profil.jpg)'></div>
-            <div class="user-name">Victor Garcia</div>
+            <div class="user-name">{{app.user.username}}</div>
         </div>
         <ul class='user-option-list'>
             <li class='user-option'>Mon profil</li>
             <li class='user-option'>Éditer mes infos</li>
             <li class='user-option'>Réglages</li>
             <li class='user-option'>Aide</li>
-            <li class='user-option'>Deconnexion</li>
+            <a href="/app_dev.php/logout"><li class='user-option'>Deconnexion</li></a>
         </ul>
     </div>
 
