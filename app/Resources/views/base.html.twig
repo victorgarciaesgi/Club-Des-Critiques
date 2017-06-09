@@ -2,7 +2,7 @@
 <html lang="fr" ng-app='mainApp'>
 <head>
     <meta charset="UTF-8" />
-    <title>{% block title %}Welcome!{% endblock %}</title>
+    <title>{% block title %}{{app.request.attributes.get('_route')}}{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
     <script type="text/javascript" src='/lib/angular.min.js'></script>

@@ -31,10 +31,17 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         {label: 'Prix', value:'price'},
       ],
     },
+    tri: {
+      value: {label: 'Ordre croissant', value:'asc'},
+      elements: [
+        {label: 'Ordre croissant', value:'asc'},
+        {label: 'Ordre décroissant', value:'desc'}
+      ],
+    },
     orderBooks: function(){
       this.books.loading = true;
       this.books.elements = [];
-      AjaxRequest.get('library_getOrderBooks',this.order.value).then((result) => {
+      AjaxRequest.get('library_getOrderBooks',{key: this.order.value, tri: this.tri.value}).then((result) => {
         let loader = result;
         let promises = [];
         $.each(loader, function(index, el) {
@@ -93,12 +100,12 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     },
     elements: {
       search: new searchForm('Rechercher un livre..','search', true, null,'library_addSearch', null,true,null),
-      author: new textForm('Auteur..','author','text',true,null,null, null, null, true, null),
+      author: new textForm('Auteur..','author','text',true,'Autheur(s) du livre',null, null, null, true, null),
       illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'link', true,'L\'illustration du livre est obligatoire'),
       description: new textForm('Description','description','text',true,null,null, null, null, true, null),
       categories: new textForm('Catégories.. (Entrée pour ajouter)','categories','text',true,'Catégories de ce livre','library_searchCategories', null, null, true, 'Veuillez rentrer au moins une catégorie'),
       pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),
-      date: new textForm('Date de sortie...', 'date','date', true,null,null, null, 'date', true, null),
+      date: new textForm('Date de sortie...', 'date','date', true,'Date de publication',null, null, 'date', true, null),
       rating: new ratingForm('rating', true, 0, true),
     },
     submit: function() {

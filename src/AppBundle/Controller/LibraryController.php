@@ -94,7 +94,7 @@ class LibraryController extends Controller
       $repository = $this->getDoctrine()
           ->getManager()
           ->getRepository('AppBundle:Media');
-      $content = $repository->findBy(array(), array($data['data']['value'] => 'asc'));
+      $content = $repository->findBy(array(), array($data['data']['key']['value'] => $data['data']['tri']['value']));
       $books = $serializer->serialize($content, 'json');
 
       return new JsonResponse($books);

@@ -30,17 +30,18 @@
         <article id="book-library">
           <div class="title">
             <div class="group" ng-cloak>
-              <span>Résultats</span>
-              <select ng-model='$ctrl.vgModel'
-                      ng-options='option.label for option in $ctrl.vgData.list'
-                      ng-init='$ctrl.vgModel = $ctrl.vgData.list[0]'>
-              </select>
-            </div>
-            <div class="group" ng-cloak>
               <span>Trier par</span>
               <select ng-model='Library.order.value'
                       ng-options='option.label for option in Library.order.elements'
                       ng-init='Library.order.value = Library.order.elements[0]'
+                      ng-change='Library.orderBooks()' >
+              </select>
+            </div>
+            <div class="group">
+              <span>Ordre</span>
+              <select ng-model='Library.tri.value'
+                      ng-options='option.label for option in Library.tri.elements'
+                      ng-init='Library.tri.value = Library.tri.elements[0]'
                       ng-change='Library.orderBooks()' >
               </select>
             </div>
@@ -59,7 +60,8 @@
                   <div class="cover" style='background-image: url("{(book.img)}")'></div>
                   <div class="name info-book" ng-cloak>{(book.name)}</div>
                   <div class="author info-book" ng-cloak>{(book.author)}</div>
-                  <rating-form vg-init='book.note' vg-editable='false'>
+                  <rating-form vg-init='book.note' vg-editable='false'
+                                vg-displaynote='false'>
                   </rating-form>
               </li>
             </ul>
@@ -109,6 +111,14 @@
                             vg-errors='AddBookForm.elements.illustration.errors'
                             vg-required='AddBookForm.elements.illustration.required'>
                 </text-form>
+                <text-form vg-model='AddBookForm.values.pages'
+                            vg-type='AddBookForm.elements.pages.type'
+                            vg-name='AddBookForm.elements.pages.name'
+                            vg-placeholder='AddBookForm.elements.pages.placeholder'
+                            vg-validator='AddBookForm.elements.pages.validator'
+                            vg-errors='AddBookForm.elements.pages.errors'
+                            vg-required='AddBookForm.elements.pages.required'>
+                </text-form>
                 <area-form vg-model='AddBookForm.values.description'
                             vg-type='AddBookForm.elements.description.type'
                             vg-name='AddBookForm.elements.description.name'
@@ -123,15 +133,8 @@
                             vg-placeholder='AddBookForm.elements.date.placeholder'
                             vg-validator='AddBookForm.elements.date.validator'
                             vg-errors='AddBookForm.elements.date.errors'
-                            vg-required='AddBookForm.elements.date.required'>
-                </text-form>
-                <text-form vg-model='AddBookForm.values.pages'
-                            vg-type='AddBookForm.elements.pages.type'
-                            vg-name='AddBookForm.elements.pages.name'
-                            vg-placeholder='AddBookForm.elements.pages.placeholder'
-                            vg-validator='AddBookForm.elements.pages.validator'
-                            vg-errors='AddBookForm.elements.pages.errors'
-                            vg-required='AddBookForm.elements.pages.required'>
+                            vg-required='AddBookForm.elements.date.required'
+                            vg-legend='AddBookForm.elements.date.legend'>
                 </text-form>
                 <token-form vg-model='AddBookForm.values.categories'
                             vg-data='AddBookForm.elements.categories'
@@ -142,9 +145,11 @@
                               vg-required='AddBookForm.elements.rating.required'
                               vg-name='AddBookForm.elements.rating.name'
                               vg-editable='AddBookForm.elements.rating.editable'
-                              vg-init='AddBookForm.elements.rating.init'>
+                              vg-init='AddBookForm.elements.rating.init'
+                              vg-displaynote='false'>
                 </rating-form>
-                <pre>{(AddBookForm.values | json)}</pre>
+                <input type="checkbox" ng-init='debugForm = false' ng-model='debugForm'> Afficher valeurs de debug
+                <pre ng-if='debugForm'>{(AddBookForm.values | json)}</pre>
               </div><!--
             --><div class="form-section" color>
                   <div class="book-form-preview" >
@@ -184,6 +189,11 @@
                         </div>
                         <div class='i-h-text'>{(AddBookForm.values.date || '-')}</div>
                       </div>
+                    </div>
+                    <div class="info-book">
+                      <rating-form vg-init='AddBookForm.values.rating' vg-editable='false'
+                                    vg-displaynote='true'>
+                      </rating-form>
                     </div>
                     <div class="info-book">
                       <div class="i-b-title">Autheur</div>
@@ -257,6 +267,13 @@
                   </div>
                   <div class='i-h-text'>{(Library.books.bookShow.releaseDate.timestamp | date:'dd-MM-y' || '-')}</div>
                 </div>
+              </div>
+
+              <div class="info-book">
+                <rating-form vg-init='Library.books.bookShow.note'
+                             vg-editable='false'
+                             vg-displaynote='true'>
+                </rating-form>
               </div>
               <div class="info-book">
                 <div class="i-b-title">Autheur</div>

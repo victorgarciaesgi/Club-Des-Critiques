@@ -52,6 +52,7 @@ MainApp.component('textForm', {
     vgValidator: '<?',
     vgErrors: '<?',
     vgRequired: '<?',
+    vgLegend: '<?'
   }
 });
 
@@ -174,20 +175,20 @@ MainApp.component('tokenForm', {
     }}
 
     ctrl.$onInit = () => {
+      console.log(ctrl.vgData)
       ctrl.vgModel = [];
     };
 
     ctrl.search = (source, value) => {
       ctrl.error = false;
       AjaxRequest.get(source, value).then((result) => {
-        console.log(result)
         if (result.error){
           ctrl.searching = false;
           ctrl.search_result.reset();
           ctrl.error = true;
           ctrl.errorMessage = result.error;
         }
-        else{
+        else if(result.length > 0){
           ctrl.searching = false;
           ctrl.search_result.data = result;
           ctrl.search_result.selected = result[0];
@@ -202,8 +203,8 @@ MainApp.component('tokenForm', {
     }
 
     ctrl.selectAction = (category) => {
-      ctrl.vgModel.push({name: category.name, idCategory: category.idCategory});
       ctrl.search_result.reset();
+      ctrl.vgModel.push({name: category.name, idCategory: category.idCategory});
       ctrl.searchText = "";
       ctrl.selectToken = true;
     }
@@ -219,7 +220,7 @@ MainApp.component('tokenForm', {
           event.preventDefault();
           var list = ctrl.search_result.data;
           var index = ctrl.search_result.selected.indexList;
-          if((event.which == 38 && index > 0) || (event.which == 40 && index < ctrl.limit - 1)){
+          if((event.which == 38 && index > 0) || (event.which == 40 && index < list.length - 1)){
             var direction = (- 39) + event.which;
             ctrl.search_result.selected = list[index + direction];
             ctrl.search_result.selected["indexList"] = index + direction;
@@ -251,14 +252,23 @@ MainApp.component('tokenForm', {
 
     $scope.$watch('$ctrl.searchText',(newValue, oldValue, scope) => {
       if (!!newValue){
-        if (newValue.trim().length > 1){
+        if (newValue.trim().length > 0){
           ctrl.searching = true;
+          ctrl.search_result.reset();
+          console.log(newValue)
           ctrl.search(ctrl.vgSource ,newValue);
         }
         else{
+          console.log(newValue)
+          ctrl.searching = false;
+          ctrl.search_result.reset();
           ctrl.selectToken = false;
         }
-
+      }
+      else{
+        ctrl.searching = false;
+        ctrl.search_result.reset();
+        ctrl.selectToken = false;
       }
     })
   },
@@ -325,13 +335,20 @@ MainApp.component('ratingForm', {
         }
       }
     }, true)
+
+    $scope.$watch('$ctrl.vgInit', (newValue, oldValue, scope) => {
+      if(!ctrl.vgEditable){
+        ctrl.hoverCount = (!!newValue?newValue:0);
+      }
+    }, true)
   },
   bindings: {
     vgModel: '=?',
     vgRequired: '<?',
     vgName: '<?',
     vgEditable: '<?',
-    vgInit: '<?'
+    vgInit: '<?',
+    vgDisplaynote: '<?'
   }
 });
 

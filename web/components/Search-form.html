@@ -37,10 +37,10 @@
       </div>
     </ul>
   </div>
-  <div ng-show='$ctrl.searching' class="loading-spinner"></div>
-  <div ng-show='searchForm[$ctrl.vgData.name].$valid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-valid"></div>
-  <div ng-show='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-invalid"></div>
-  <div ng-show='searchForm[$ctrl.vgData.name].$pristine' class="form-valid-icon form-required"></div>
+  <div ng-if='$ctrl.searching' class="loading-spinner"></div>
+  <div ng-if='searchForm[$ctrl.vgData.name].$valid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-valid"></div>
+  <div ng-if='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-invalid"></div>
+  <div ng-if='searchForm[$ctrl.vgData.name].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
 </div>
 <div class="errorMessage" ng-show='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty'>
    <span ng-show='searchForm[$ctrl.vgData.name].$error[$ctrl.vgData.validator]'>{($ctrl.vgData.errors[$ctrl.vgData.validator])}</span>

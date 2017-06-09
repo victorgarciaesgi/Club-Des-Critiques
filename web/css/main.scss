@@ -549,9 +549,9 @@ aside{
           position: relative;
           float: left;
           width: 100%;
-          padding: 10px;
+          padding: 10px 10px 0px 5px;
           font-size: 14px;
-          text-align: center;
+          text-align: left;
           font-weight: bold;
           white-space: normal;
         }
@@ -627,7 +627,7 @@ aside{
     .options-tri{
       position: relative;
       float: left;
-      height: auto;
+      height: calc(100% - 40px);
       width: 100%;
 
       .options-container{
@@ -655,7 +655,9 @@ aside{
           float: left;
           height: auto;
           width: 100%;
+          max-height: 300px;
           padding: 5px 0 5px 0;
+          overflow-y: auto;
         }
       }
     }
@@ -689,6 +691,7 @@ aside{
         border-right: 1px solid $w240;
         span{
           margin-right: 5px;
+          font-size: 14px;
         }
       }
     }
@@ -873,7 +876,6 @@ rating-form{
         float: left;
         height: 25px;
         width: 25px;
-        cursor: pointer;
         background-position: center center;
         background-size: 30px 30px;
 
@@ -896,6 +898,10 @@ rating-form{
           background-image: url('../assets/star_empty_green.svg');
         }
 
+        &[editable]{
+          cursor: pointer;
+        }
+
         .part{
           position: relative;
           float: left;
@@ -909,6 +915,18 @@ rating-form{
         height: 25px;
         width: 13px;
         cursor: pointer;
+      }
+
+      .star-displayNumber{
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        @include translateY(-50%);
+        color: white;
+        padding: 3px 10px 3px 10px;
+        border-radius: 30px;
+        font-size: 14px;
+        background-color: $mainMarron;
       }
     }
   }
