@@ -18,7 +18,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       loading: true,
       show: function(book){
         this.bookShow = book;
-        $("#bookshow-window").show().find('.content').scrollTop(0);
+        $("#bookshow-window").show()
+        .find('.content').scrollTop(0);
       }
     },
     order: {
@@ -42,15 +43,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       this.books.loading = true;
       this.books.elements = [];
       AjaxRequest.get('library_getOrderBooks',{key: this.order.value, tri: this.tri.value}).then((result) => {
-        let loader = result;
-        let promises = [];
-        $.each(loader, function(index, el) {
-          promises.push($scope.promiseLoad(el.img));
-        })
-        $q.all(promises).then((data) => {
-          this.books.loading = false;
-          this.books.elements = loader;
-        })
+        this.loadBooks(result);
       })
     },
     filter: function(){
@@ -126,7 +119,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
   })
 
   $scope.selectResult = (book) => {
-    $scope.AddBookForm.values = {};
     $scope.AddBookForm.values.author = (!!book.volumeInfo.authors)?book.volumeInfo.authors.join(', '):null;
     $scope.AddBookForm.values.search = book.volumeInfo.title;
     $scope.AddBookForm.values.illustration = (!!book.volumeInfo.imageLinks)?book.volumeInfo.imageLinks.thumbnail:null;

@@ -50,7 +50,14 @@ class LibraryController extends Controller
       $response = curl_exec($ch);
       $data = json_decode($response);
       if (isset($data->items)) {
-        return new JsonResponse($data->items);
+        $array = array_slice($data->items,0,4);
+        foreach ($array as $key => $value) {
+          // print_r(str_replace('&edge=curl','',$value->volumeInfo->imageLinks->thumbnail));
+          $value->volumeInfo->imageLinks->thumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->thumbnail);
+          $value->volumeInfo->imageLinks->smallThumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->smallThumbnail);
+
+        }
+        return new JsonResponse($array);
       }
       else {
         $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);

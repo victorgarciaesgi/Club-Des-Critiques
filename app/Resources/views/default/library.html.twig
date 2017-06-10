@@ -57,12 +57,17 @@
               <li ng-repeat='book in Library.books.elements track by book.idMedia'
                   class='book-wrapper'
                   ng-click='Library.books.show(book)'>
-                  <div class="cover" style='background-image: url("{(book.img)}")'></div>
-                  <div class="name info-book" ng-cloak>{(book.name)}</div>
-                  <div class="author info-book" ng-cloak>{(book.author)}</div>
-                  <rating-form vg-init='book.note' vg-editable='false'
-                                vg-displaynote='false'>
-                  </rating-form>
+                  <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div>
+                  <div class="cover-wrap">
+                    <div class="cover" ng-cloak style='background-image: url("{(book.img)}")'></div>
+                  </div>
+                  <div class="book-info-wrapper">
+                    <div class="name info-book" ng-cloak>{(book.name)}</div>
+                    <div class="author info-book" ng-cloak>{(book.author)}</div>
+                    <rating-form vg-init='book.note' vg-editable='false'
+                                  vg-displaynote='false'>
+                    </rating-form>
+                  </div>
               </li>
             </ul>
           </div>

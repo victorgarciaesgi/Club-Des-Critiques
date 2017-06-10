@@ -175,7 +175,6 @@ MainApp.component('tokenForm', {
     }}
 
     ctrl.$onInit = () => {
-      console.log(ctrl.vgData)
       ctrl.vgModel = [];
     };
 

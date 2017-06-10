@@ -482,7 +482,7 @@ aside{
     min-width : 400px;
     color: rgb(100,100,100);
     min-height: 150px;
-    max-height: 80%;
+    max-height: 90%;
     z-index: 1001;
     @include translate(-50%, -50%);
     overflow: hidden;
@@ -543,7 +543,7 @@ aside{
         padding: 5px;
         white-space: normal;
         vertical-align: top;
-        max-height: calc(80vh - 90px);
+        max-height: calc(90vh - 90px);
 
         .legend{
           position: relative;
@@ -558,6 +558,7 @@ aside{
 
         &:first-child{
           padding: 15px;
+          padding-top: 5px;
         }
       }
     }
@@ -720,7 +721,7 @@ aside{
 
     &[color]{
       background-color: white;
-      height: calc(80vh - 90px);
+      height: calc(90vh - 90px);
       padding: 0;
     }
 
@@ -778,7 +779,6 @@ aside{
     .infos-book{
       position:relative;
       float: left;
-      height: auto;
       width: 100%;
       padding: 5px 20px 5px 20px;
       text-align: center;
@@ -876,6 +876,7 @@ rating-form{
         float: left;
         height: 25px;
         width: 25px;
+        margin-bottom: -4px;
         background-position: center center;
         background-size: 30px 30px;
 
@@ -938,28 +939,92 @@ rating-form{
   position: relative;
   display: inline-block;
   height: auto;
-  width: 200px;
-  padding: 5px;
+  width: 180px;
   cursor: pointer;
   border-radius: 3px;
-  margin: 3px;
-  border: 1px solid $w240;
+  margin: 5px;
+  box-shadow: 0 0 8px transparentize($g90, 0.7);
   @include transition(all 0.3s);
+  overflow: hidden;
 
-  &.ng-move {
-    opacity: 0;
-    top: -20px;
+  .cover-blur{
+    position: absolute;
+    height: 280px;
+    width: calc(100% + 20px);
+    left: -10px;
+    top: -10px;
+    @include bg-center;
+    filter: blur(15px);
   }
 
-  &.ng-move.ng-move-active {
-    opacity: 1;
-    top: 0px;
+
+  .cover-wrap{
+    position: relative;
+    float: left;
+    height: auto;
+    width: 100%;
+    background-color: transparentize($g0, 0.8);
+    .cover{
+      position: relative;
+      float: left;
+      height: 150px;
+      width: 100px;
+      margin: 10px 0 10px 50%;
+      @include bg-center;
+      @include translateX(-50%);
+    }
   }
 
-  &.ng-move-stagger {
-    transition-delay: 0.05s;
-    transition-duration: 0s;
+  .book-info-wrapper{
+    position: relative;
+    float: left;
+    width: 100%;
+    height: auto;
+    background-color: rgba(255,255,255,0.85);
+    padding: 5px;
+
+    .info-book{
+      position: relative;
+      float: left;
+      text-align: center;
+      height: 20px;
+      line-height: 20px;
+      width: 100%;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .name{
+      font-size: 14px;
+    }
+    .author{
+      color: rgb(130,130,130);
+    }
+
+    .rating{
+      text-align: center;
+      img{
+        height: 20px;
+        width: 20px;
+      }
+    }
+
+    .starRating{
+      height: 20px!important;
+      width: 20px!important;
+      background-size: 23px 23px!important;
+    }
   }
+
+  &:hover{
+    transform: scale(1.05);
+  }
+  &:active{
+    transform: scale(0.9);
+  }
+
 
   &.ng-enter {
     opacity: 0;
@@ -986,53 +1051,9 @@ rating-form{
     top: -10px;
   }
 
-
-  .cover{
-    position: relative;
-    float: left;
-    height: 150px;
-    width: 100px;
-    margin-left: 50%;
-    box-shadow: 0 0 3px $w220;
-    @include bg-center;
-    @include translateX(-50%);
-  }
-
-  .info-book{
-    position: relative;
-    float: left;
-    height: auto;
-    text-align: center;
-    width: 100%;
-    font-size: 14px;
-    line-height: 20px;
-    white-space: nowrap;
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .name{
-    font-size: 13px;
-    margin-top: 5px;
-    font-weight: bold;
-  }
-
-  .rating{
-    text-align: center;
-    img{
-      height: 20px;
-      width: 20px;
-    }
-  }
-
-  .starRating{
-    height: 20px!important;
-    width: 20px!important;
-    background-size: 23px 23px!important;
-  }
-
-  &:hover{
-    background-color: $w245;
+  &.ng-leave-stagger {
+    transition-delay: 0.05s;
+    transition-duration: 0s;
   }
 }
 

@@ -81,7 +81,7 @@ class Media
      * Note du livre - A supprimer
      *
      * @var int
-     * @ORM\Column(name="note", type="integer", nullable=false)
+     * @ORM\Column(name="note", type="float", nullable=false)
      */
     private $note;
 

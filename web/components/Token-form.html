@@ -36,6 +36,10 @@
   <div ng-if='tokenForm[$ctrl.vgData.name].$pristine && $ctrl.vgData.required && !$ctrl.searching' class="form-valid-icon form-required"></div>
 
 </div>
+<div class="errorMessage" ng-if='tokenForm[$ctrl.vgData.name].$invalid && tokenForm[$ctrl.vgData.name].$dirty'>
+   <span ng-if='tokenForm[$ctrl.vgData.name].$error[$ctrl.vgData.validator]'>{($ctrl.vgData.errors[$ctrl.vgData.validator])}</span>
+   <span ng-if='tokenForm[$ctrl.vgData.name].$error.required && $ctrl.vgData.errors.required'>{($ctrl.vgData.errors.required)}</span>
+</div>
 <div class="token-container">
   <li ng-repeat='token in $ctrl.vgModel' class='token'>
     <span>{(token.name)}</span>
