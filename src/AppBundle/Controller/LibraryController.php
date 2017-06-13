@@ -52,10 +52,10 @@ class LibraryController extends Controller
       if (isset($data->items)) {
         $array = array_slice($data->items,0,4);
         foreach ($array as $key => $value) {
-          // print_r(str_replace('&edge=curl','',$value->volumeInfo->imageLinks->thumbnail));
-          $value->volumeInfo->imageLinks->thumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->thumbnail);
-          $value->volumeInfo->imageLinks->smallThumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->smallThumbnail);
-
+          if (isset($value->volumeInfo->imageLinks)) {
+            $value->volumeInfo->imageLinks->thumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->thumbnail);
+            $value->volumeInfo->imageLinks->smallThumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->smallThumbnail);
+          }
         }
         return new JsonResponse($array);
       }
@@ -120,11 +120,14 @@ class LibraryController extends Controller
       $serializer = new Serializer($normalizers, $encoders);
       $repository = $this->getDoctrine()
           ->getManager()
-          ->getRepository('AppBundle:Category');
-      $content = $repository->findAll();
-      $categories = $serializer->serialize($content, 'json');
-      $data = json_decode($request->getContent(), true);
-      return new JsonResponse($data);
+          ->getRepository('AppBundle:Media');
+      $content = $repository->createQueryBuilder('m')
+               ->where('m.')
+               ->setParameter('name', '%'.$data['data'].'%')
+               ->setMaxResults(3)
+               ->getQuery();
+      $results = $content->getArrayResult();
+      return new JsonResponse($results);
     }
 
 

@@ -21,24 +21,3 @@ MainApp.factory('AjaxRequest', function($http) {
       get : get,
     };
 });
-
-
-// function AjaxGet(route, data){
-//   $.ajax({
-//     url: Routing.generate(route),
-//     dataType:'json',
-//     method: "POST",
-//     data: {data: data},
-//     crossDomain: true,
-//     async: true,
-//     success:function(data){
-//       try{
-//          var returnData = JSON.parse(data);
-//       }
-//       catch(e){
-//         var returnData = data;
-//       }
-//       return returnData;
-//     }
-//   });
-// }

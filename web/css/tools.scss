@@ -277,6 +277,78 @@ ng-form{
   }
 }
 
+rating-form{
+
+  .input-form-wrap{
+    text-align: center;
+
+    .star-container{
+      display: inline-block;
+      width: auto;
+      height: auto;
+      padding: 5px 0 5px 0;
+      .starRating{
+        position: relative;
+        float: left;
+        height: 25px;
+        width: 25px;
+        margin-bottom: -4px;
+        background-position: center center;
+        background-size: 30px 30px;
+
+        &.full[color='brown']{
+          background-image: url('../assets/star_plain.svg');
+        }
+        &.half[color='brown']{
+          background-image: url('../assets/star_half.svg');
+        }
+        &.empty[color='brown']{
+          background-image: url('../assets/star_empty.svg');
+        }
+        &.full[color='green']{
+          background-image: url('../assets/star_plain_green.svg');
+        }
+        &.half[color='green']{
+          background-image: url('../assets/star_half_green.svg');
+        }
+        &.empty[color='green']{
+          background-image: url('../assets/star_empty_green.svg');
+        }
+
+        &[editable]{
+          cursor: pointer;
+        }
+
+        .part{
+          position: relative;
+          float: left;
+          height: 100%;
+          width: 50%;
+        }
+      }
+      .star-zero{
+        position: relative;
+        float: left;
+        height: 25px;
+        width: 13px;
+        cursor: pointer;
+      }
+
+      .star-displayNumber{
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        @include translateY(-50%);
+        color: white;
+        padding: 3px 10px 3px 10px;
+        border-radius: 30px;
+        font-size: 14px;
+        background-color: $mainMarron;
+      }
+    }
+  }
+}
+
 
 .input-form-wrap{
   position: relative;
@@ -284,11 +356,38 @@ ng-form{
   width: 100%;
   height: auto;
 
-  .loading-spinner{
+  .form-searching{
     position: absolute;
     right: 10px;
     top: 50%;
     @include translateY(-50%);
+    height: 20px;
+    width: 20px;
+
+    .loading-spinner{
+      position: absolute;
+      right: 0px;
+      top: 50%;
+      @include translateY(-50%);
+    }
+
+    &::after{
+      content:"Searching";
+      background-color: $mainGreen2;
+      color: white;
+      position: absolute;
+      width: auto;
+      height: auto;
+      text-align: center;
+      vertical-align: text-top;
+      top: 50%;
+      @include translateY(-50%);
+      right: 25px;
+      border-radius: 20px;
+      font-size: 11px;
+      opacity: 1;
+      padding: 5px 8px 5px 8px;
+    }
   }
 
   .form-valid-icon{
@@ -301,8 +400,6 @@ ng-form{
     @include bg-center;
     cursor: pointer;
 
-
-
     &.form-valid{
       background-image: url('../assets/form-valid-green.svg');
     }
@@ -314,15 +411,16 @@ ng-form{
       height: 15px;
       width: 15px;
       &:hover:after{
-        content:"Requis";
-        background-color: $g90;
+        content:"Champs requis";
+        background-color: $g70;
         color: white;
         position: absolute;
         width: auto;
         height: auto;
         left: 50%;
         @include translateX(-50%);
-        top: calc(-100% - 10px);
+        text-align: center;
+        top: calc(-100% - 20px);
         border-radius: 3px;
         font-size: 11px;
         opacity: 1;

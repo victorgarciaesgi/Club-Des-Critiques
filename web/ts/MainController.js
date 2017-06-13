@@ -41,7 +41,6 @@ MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
       mail: new textForm('Votre email..','mail','email',true,null,null, null, 'email', true, null),
     },
     submit: function(){
-      console.log(this.values)
       var promise = AjaxRequest.get('mail_register',this.values);
     }
   }

@@ -57,28 +57,6 @@ MainApp.controller('header', function ($scope, $rootScope) {
       event.stopPropagation();
     })
 
-    // Evenements Jquery globaux
-
-
-    // ouvrir les popup-window
-    $(document).on('click','.openPopupWindow', function(event){
-      var target = $(this).attr('target');
-      $("#" + target).show();
-    })
-
-    // Fermer les popup-window avec bouton
-    $('.closePopupWindow').click(function(event){
-      $(this).parents('.popup-window').hide();
-    })
-
-    // Fermer les popup-window on blur
-    $(document).on('click','.popup-window', function(event){
-      $(this).hide();
-    })
-
-    $(document).on('click','.window', function(event){
-      event.stopPropagation();
-    })
 
   })
 

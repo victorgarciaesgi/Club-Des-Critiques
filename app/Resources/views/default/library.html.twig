@@ -46,8 +46,8 @@
               </select>
             </div>
             <div class="group">
-              <div ng-if='UserConnected' class="bouton openPopupWindow" target='addBook-window' popup='addBook' design='blanc'>
-                <img src="/assets/add.svg" alt="">Ajouter un livre
+              <div ng-if='UserConnected' class="bouton openPopupWindow" ng-click='AddBookForm.show()' design='blanc'>
+                <img src="/assets/add.svg" alt="Ajouter un livre" >Ajouter un livre
               </div>
             </div>
           </div>
@@ -57,7 +57,7 @@
               <li ng-repeat='book in Library.books.elements track by book.idMedia'
                   class='book-wrapper'
                   ng-click='Library.books.show(book)'>
-                  <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div>
+                  <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
                   <div class="cover-wrap">
                     <div class="cover" ng-cloak style='background-image: url("{(book.img)}")'></div>
                   </div>
@@ -81,14 +81,14 @@
 
 <!-- Popups -->
 
-    <div id='addBook-window' class="popup-window">
-      <div class="window">
-        <form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
+    <div id='addBook-window' class="ng-cloak popup-window" ng-show='AddBookForm.display' ng-click='AddBookForm.hide()'>
+      <div class="window" ng-click='$event.stopPropagation();'>
+        <ng-form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
 
           <div class="header">
               Ajouter un livre
 
-              <img src="/assets/quit.svg" class='closePopupWindow' alt="">
+              <img src="/assets/quit.svg" class='closePopupWindow' alt="Fermer la fenêtre" ng-click='AddBookForm.hide()'>
           </div>
           <div class="content" style='width: 900px'>
               <div class="form-section" >
@@ -153,8 +153,8 @@
                               vg-init='AddBookForm.elements.rating.init'
                               vg-displaynote='false'>
                 </rating-form>
-                <input type="checkbox" ng-init='debugForm = false' ng-model='debugForm'> Afficher valeurs de debug
-                <pre ng-if='debugForm'>{(AddBookForm.values | json)}</pre>
+                <!-- <input type="checkbox" ng-init='debugForm = false' ng-model='debugForm'> Afficher valeurs de debug
+                <pre ng-if='debugForm'>{(AddBookForm.values | json)}</pre> -->
               </div><!--
             --><div class="form-section" color>
                   <div class="book-form-preview" >
@@ -226,18 +226,19 @@
 
           </div>
 
-        </form>
+        </ng-form>
       </div>
     </div>
 
 
-    <div id='bookshow-window' class="popup-window">
-      <div class="window">
+    <div id='bookshow-window' class="ng-cloak popup-window" ng-if='Library.books.display'
+          ng-click='Library.books.hide()'>
+      <div class="window" ng-click='$event.stopPropagation();'>
           <div class="header">
               Aperçu d'un livre
 
               <a href="#"><img src="/assets/link.svg" class='externalLink' alt="Ouvrir le lien de la page"></a>
-              <img src="/assets/quit.svg" class='closePopupWindow' alt="Fermer la fenêtre">
+              <img src="/assets/quit.svg" class='closePopupWindow' ng-click='Library.books.hide()' alt="Fermer la fenêtre">
           </div>
           <div class="content">
             <div class="book-form-preview">
@@ -297,7 +298,7 @@
             </div>
           </div>
           <div class="footer">
-            <div class="bouton" design='blanc'>Fermer</div>
+            <div class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</div>
             <div class="bouton" design='blanc'>Signaler</div>
             <div ng-if='UserConnected' class="bouton" design='green'>Créer un salon</div>
 

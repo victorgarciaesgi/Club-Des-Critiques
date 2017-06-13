@@ -175,7 +175,9 @@ MainApp.component('tokenForm', {
     }}
 
     ctrl.$onInit = () => {
-      ctrl.vgModel = [];
+      if (!ctrl.vgModel){
+        ctrl.vgModel = [];
+      }
     };
 
     ctrl.search = (source, value) => {
@@ -292,8 +294,13 @@ MainApp.component('ratingForm', {
     ctrl.hoverCount = 0; // Valeur de la note affichée
 
     ctrl.$onInit = () => {
-      ctrl.vgModel = (ctrl.vgInit?ctrl.vgInit:0);
-      ctrl.hoverCount = (ctrl.vgInit?ctrl.vgInit:0);
+      if (!ctrl.vgModel){
+        ctrl.vgModel = (ctrl.vgInit?ctrl.vgInit:0);
+        ctrl.hoverCount = (ctrl.vgInit?ctrl.vgInit:0);
+      }
+      else{
+        ctrl.hoverCount = ctrl.vgModel;
+      }
     }// Initialisation du composant
 
     ctrl.getNumber = (num) => {return new Array(num)}

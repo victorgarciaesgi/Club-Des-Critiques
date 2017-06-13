@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div id="chatroom">
+      <section>
+        <article id="Salons" Ftype=''>
+          <div class="header">
+            Salons
+          </div>
+          <ul class="list-salons">
+            <li class='salons' ng-repeat='salon in Chatroom track by $index'></li>
+          </ul>
+        </article>
+
+        <article id="Messages">
+          <div class="header" ng-cloak>
+            Nom du salon
+          </div>
+          <div class="messages-container">
+              <div class="message" ng-repeat='message in Chatroom.messages track by $index'
+                    self='{(message.id == 1)}'
+                    ng-class='{
+                      top: Chatroom.messages[$index - 1].id != message.id && Chatroom.messages[$index + 1].id == message.id,
+                      middle: Chatroom.messages[$index - 1].id == message.id && Chatroom.messages[$index + 1].id == message.id,
+                      bottom: Chatroom.messages[$index - 1].id == message.id && Chatroom.messages[$index + 1].id != message.id,
+                    }'>
+                    <div class="user">
+                      <div style='background-image: url("./assets/{(m.idUser)}.jpg")'></div>
+
+                    </div>
+                  <div class='text'>{(message.text)}</div>
+                  <div class="time">
+                    <div>18:12</div>
+                  </div>
+              </div>
+          </div>
+          <div class="footer">
+            <input id='sendMessage' type="text" name="message" value="" placeholder='Your message...'>
+          </div>
+        </article>
+
+      </section>
+
+    </div>
+
+{% endblock %}

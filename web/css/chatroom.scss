@@ -1,0 +1,226 @@
+@import "_variables.scss";
+
+
+#chatroom{
+  position: relative;
+  float: left;
+  height: 100%;
+  width: 100%;
+  color: rgb(80,80,80);
+  z-index: 1001;
+
+  section{
+    height: 100%;
+    margin-bottom: 0;
+    box-shadow: none;
+    border-top: 1px solid $w230;
+  }
+
+  article{
+    position: relative;
+    float: left;
+    height: 100%;
+
+    .header{
+      position: relative;
+      float: left;
+      padding-left: 10px;
+      height: 35px;
+      line-height: 35px;
+      width: 100%;
+      color: rgb(100,100,100);
+      background-color: $w245;
+      box-shadow: 0 1px 3px $w200;
+      font-weight: bold;
+      font-size: 15px;
+      overflow-y: auto;
+    }
+  }
+}
+
+
+
+#Salons{
+  position: relative;
+  float: left;
+  height: 100%;
+  width: 300px;
+  overflow: hidden;
+  border-right: 1px solid rgb(220,220,220);
+
+  ul.list-salons{
+    position: relative;
+    float: left;
+    width:100%;
+    height: 100%;
+    overflow-y: auto;
+
+    li.salons{
+      position: relative;
+      float: left;
+      padding: 5px;
+      width: 100%;
+      height: 90px;
+      border-bottom: 1px solid rgb(230,230,230);
+      color: white;
+      cursor: pointer;
+    }
+  }
+
+}
+
+
+#Messages{
+  position: relative;
+  float: left;
+  height: 100%;
+  width: calc(100% - 300px);
+  overflow: hidden;
+
+  .footer{
+    position: absolute;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    padding: 5px;
+    border-top: 1px solid $w230;
+
+    input{
+      height: 100%;
+      width: 100%;
+      line-height: 50px;
+      border-radius: 5px;
+      border: none;
+      padding-left: 10px;
+      font-size: 15px;
+      outline: none;
+      background-color: white;
+    }
+  }
+
+
+  .messages-container{
+    position: absolute;
+    width: 100%;
+    max-height: calc(100% - 85px);
+    height: auto;
+    overflow: auto;
+    bottom: 50px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+
+    .message{
+      position: relative;
+      float: left;
+      height: auto;
+      display: flex;
+      width: 100%;
+      word-wrap: break-word;
+      padding: 5px;
+      text-align: left;
+      font-size: 13px;
+      margin-bottom: 10px;
+
+      &.top{
+        margin-bottom: 2px;
+        padding-bottom: 0;
+        &[self='false'] .text{
+          border-radius: 20px 20px 20px 4px;
+        }
+        &[self='true'] .text{
+          border-radius: 20px 20px 4px 20px;
+        }
+      }
+
+      &.middle{
+        margin-bottom: 2px;
+        padding-bottom: 0;
+        padding-top: 0;
+        .user{
+          visibility: hidden;
+        }
+        &[self='false'] .text{
+          border-radius: 4px 20px 20px 4px;
+        }
+        &[self='true'] .text{
+          border-radius: 20px 4px 4px 20px;
+        }
+      }
+
+      &.bottom{
+        margin-bottom: 2px;
+        padding-top: 0;
+        .user{
+          visibility: hidden;
+        }
+        &[self='false'] .text{
+          border-radius: 4px 20px 20px 20px;
+        }
+        &[self='true'] .text{
+          border-radius: 20px 4px 20px 20px;
+        }
+      }
+
+      .text{
+        display: block;
+        position: relative;
+        float: left;
+        width: auto;
+        padding: 5px 13px 5px 13px;
+        min-height: 20px;
+        max-width: 500px;
+        color: rgb(60,60,60);
+        line-height: 20px;
+        background-color: rgb(240,240,240);
+        border-radius: 20px;
+        word-wrap: break-word;
+        word-break: break-all;
+      }
+
+      .time{
+        position: relative;
+        float: left;
+        width: 50px;
+        color: rgb(200,200,200);
+        font-size: 10px;
+        padding: 0 10px 0 10px;
+
+        div{
+          position: absolute;
+          top: 50%;
+          @include translateY(-50%);
+        }
+      }
+
+      .user{
+        display: block;
+        position: relative;
+        float: left;
+        height: auto;
+
+        div{
+          height: 25px;
+          width: 25px;
+          min-width: 25px;
+          border: 1px solid rgb(230,230,230);
+          margin: 3px 5px 0 5px;
+          background-size: cover;
+          background-position: center center;
+          background-repeat: no-repeat;
+          border-radius: 30px;
+        }
+      }
+
+      &[self='true']{
+        float: right;
+        display: flex;
+        flex-direction: row-reverse;
+
+        .text{
+          background-color: $mainGreen2;
+          color: white;
+        }
+      }
+    }
+  }
+}

@@ -25,12 +25,16 @@
     <script type="text/javascript" src='/ts/Components.js'></script>
     <script type="text/javascript" src='/ts/Directives.js'></script>
     <script type="text/javascript" src='/ts/Classes.js'></script>
+    <script type="text/javascript" src='/ts/Chatroom2.js'></script>
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     {% block javascript %}{% endblock %}
     <link href="/css/main.css" rel="stylesheet">
     <link href="/css/tools.css" rel="stylesheet">
+    <link href="/css/header.css" rel="stylesheet">
+    <link href="/css/library.css" rel="stylesheet">
+    <link href="/css/chatroom.css" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
 </head>
 <body ng-controller='{{app.request.attributes.get('_route')}}'>
@@ -122,7 +126,7 @@
             Connexion
         </div>
         <div class="content">
-          <form name='ConnexionFormX' ng-submit='ConnexionAction'>
+          <ng-form name='ConnexionFormX' ng-submit='ConnexionAction'>
             <div class="connexion">
 
                 <text-form vg-model='ConnexionForm.values.login'
@@ -157,7 +161,7 @@
                 Connexion
               </button>
             </div>
-          </form>
+          </ng-form>
         </div>
 
     </div>
