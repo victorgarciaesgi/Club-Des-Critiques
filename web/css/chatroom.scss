@@ -112,6 +112,10 @@ article#Salons{
         background-color: $w240;
       }
 
+      &:active{
+        background-color: $w220;
+      }
+
       .salon-cover{
         position: relative;
         float: left;

@@ -8,6 +8,7 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, moment) {
       selectedSalon: {id: 1},
       select(salon){
         // click sur un salon
+        this.selectedSalon = salon;
         console.log(salon)
       },
       create(){
@@ -19,8 +20,7 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, moment) {
       inputMessage: "",
       send(){
         // Envoie un nouveau message contenu dans this.inputMessage
-        this.elements.push({id: this.elements.length + 1, user: 1 , text: this.inputMessage});
-
+        this.elements.push({id: this.elements.length + 1, user: 1 , text: this.inputMessage}); // Juste pour le test
         this.inputMessage = "";   //pour remettre à 0 le champs
       }
     },
@@ -28,8 +28,10 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, moment) {
       title: ""
     },
     infos:{
-      open: true
-    },
+      open: true,
+      users: [],
+      book: {},
+    }, // infos contiendra toutes les infos du salon affiché
     scroll(){
       $('.messages-container').scrollTop(90000)
     }

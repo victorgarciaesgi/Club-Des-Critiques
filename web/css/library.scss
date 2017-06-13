@@ -8,12 +8,14 @@
   float: left;
   height: 100%;
   width: 100%;
-  padding: 15px 10px 5px 10px;
   color: rgb(80,80,80);
+  z-index: 1003;
 
   section{
     height: 100%;
     margin-bottom: 0;
+    box-shadow: none;
+    border-top: 1px solid $w230;
 
     .title{
       text-align: center;
@@ -26,6 +28,10 @@
     position: relative;
     float: left;
     height: 100%;
+
+    .header{
+      z-index: 2;
+    }
   }
 
 
