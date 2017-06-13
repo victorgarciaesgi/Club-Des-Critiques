@@ -30,9 +30,11 @@
       width: 100%;
       color: rgb(100,100,100);
       background-color: $w245;
-      box-shadow: 0 1px 3px $w200;
+      box-shadow: 0 1px 5px transparentize($g0,0.8);
       font-weight: bold;
       font-size: 15px;
+      text-align: center;
+      z-index: 2;
       overflow-y: auto;
     }
   }
@@ -51,8 +53,8 @@
   ul.list-salons{
     position: relative;
     float: left;
-    width:100%;
-    height: 100%;
+    width: 100%;
+    height: calc(100% - 35px);
     overflow-y: auto;
 
     li.salons{
@@ -60,10 +62,57 @@
       float: left;
       padding: 5px;
       width: 100%;
-      height: 90px;
-      border-bottom: 1px solid rgb(230,230,230);
+      height: 70px;
       color: white;
       cursor: pointer;
+      padding-left: 10px;
+
+      &:hover{
+        background-color: $w240;
+      }
+
+      .salon-cover{
+        position: relative;
+        float: left;
+        height: 100%;
+        width: 60px;
+        padding: 5px;
+
+        div{
+          height: 100%;
+          width: 100%;
+          border-radius: 100%;
+          @include bg-center;
+        }
+      }
+
+      .salon-infos{
+        position: relative;
+        float: left;
+        height: 100%;
+        padding: 5px;
+        width: calc(100% - 60px);
+
+        div{
+          position: relative;
+          height: 50%;
+          width: 100%;
+          overflow-x: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+
+        .s-i-title{
+          line-height: 32px;
+          font-size: 14px;
+          color: $g90;
+        }
+        .s-i-interval{
+          line-height: 22px;
+          font-size: 13px;
+          color: rgb(160,160,160);
+        }
+      }
     }
   }
 
@@ -113,12 +162,12 @@
       position: relative;
       float: left;
       height: auto;
-      display: flex;
       width: 100%;
       word-wrap: break-word;
       padding: 5px;
       text-align: left;
       font-size: 13px;
+      z-index: 1;
       margin-bottom: 10px;
 
       &.top{
@@ -139,6 +188,9 @@
         .user{
           visibility: hidden;
         }
+        .user-name{
+          display: none;
+        }
         &[self='false'] .text{
           border-radius: 4px 20px 20px 4px;
         }
@@ -153,6 +205,9 @@
         .user{
           visibility: hidden;
         }
+        .user-name{
+          display: none;
+        }
         &[self='false'] .text{
           border-radius: 4px 20px 20px 20px;
         }
@@ -161,64 +216,85 @@
         }
       }
 
-      .text{
-        display: block;
-        position: relative;
-        float: left;
-        width: auto;
-        padding: 5px 13px 5px 13px;
-        min-height: 20px;
-        max-width: 500px;
-        color: rgb(60,60,60);
-        line-height: 20px;
-        background-color: rgb(240,240,240);
-        border-radius: 20px;
-        word-wrap: break-word;
-        word-break: break-all;
-      }
-
-      .time{
-        position: relative;
-        float: left;
-        width: 50px;
-        color: rgb(200,200,200);
-        font-size: 10px;
-        padding: 0 10px 0 10px;
-
-        div{
-          position: absolute;
-          top: 50%;
-          @include translateY(-50%);
-        }
-      }
-
-      .user{
-        display: block;
-        position: relative;
-        float: left;
-        height: auto;
-
-        div{
-          height: 25px;
-          width: 25px;
-          min-width: 25px;
-          border: 1px solid rgb(230,230,230);
-          margin: 3px 5px 0 5px;
-          background-size: cover;
-          background-position: center center;
-          background-repeat: no-repeat;
-          border-radius: 30px;
-        }
-      }
-
       &[self='true']{
         float: right;
-        display: flex;
-        flex-direction: row-reverse;
 
+        .user-name{
+          text-align: right;
+        }
+        .message-content{
+          flex-direction: row-reverse;
+
+          .text{
+            background-color: $mainGreen2;
+            color: white;
+          }
+        }
+
+
+      }
+
+      .user-name{
+        height: 20px;
+        line-height: 20px;
+        width: 100%;
+        color: rgb(150,150,150);
+        font-size: 11px;
+        padding-left: 35px;
+      }
+
+      .message-content{
+        height: auto;
+        width: auto;
+        display: flex;
         .text{
-          background-color: $mainGreen2;
-          color: white;
+          display: block;
+          position: relative;
+          float: left;
+          width: auto;
+          padding: 5px 13px 5px 13px;
+          min-height: 20px;
+          max-width: 500px;
+          color: rgb(60,60,60);
+          line-height: 20px;
+          background-color: rgb(240,240,240);
+          border-radius: 20px;
+          word-wrap: break-word;
+          word-break: break-all;
+        }
+
+        .time{
+          position: relative;
+          float: left;
+          width: 50px;
+          color: rgb(200,200,200);
+          font-size: 10px;
+          padding: 0 10px 0 10px;
+
+          div{
+            position: absolute;
+            top: 50%;
+            @include translateY(-50%);
+          }
+        }
+
+        .user{
+          display: block;
+          position: relative;
+          float: left;
+          height: auto;
+
+          div{
+            height: 25px;
+            width: 25px;
+            min-width: 25px;
+            border: 1px solid rgb(230,230,230);
+            margin: 3px 5px 0 5px;
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
+            border-radius: 30px;
+          }
         }
       }
     }

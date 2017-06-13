@@ -1,4 +1,6 @@
 
+// Validateurs
+
 
 MainApp.directive('vgVerificator', function() {
   return {
@@ -29,4 +31,21 @@ MainApp.directive('vgVerificator', function() {
       }
     }
   };
+});
+
+
+
+// Evenements
+
+MainApp.directive('vgEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+              event.preventDefault();
+                scope.$apply(function (){
+                    scope.$eval(attrs.vgEnter);
+                });
+            }
+        });
+    };
 });

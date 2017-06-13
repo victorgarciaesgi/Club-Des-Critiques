@@ -7,7 +7,25 @@
             Salons
           </div>
           <ul class="list-salons">
-            <li class='salons' ng-repeat='salon in Chatroom track by $index'></li>
+            <div class="salons-search">
+              <input type="text" ng-model='Chatroom.filter'>
+            </div>
+            <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements track by $index'
+                ng-click='Chatroom.salons.select(salon)'>
+              <div class="salon-cover">
+                  <div style='background-image: url("http://lorempixel.com/100/100")'>
+
+                  </div>
+              </div>
+              <div class="salon-infos">
+                <div class="s-i-title">
+                  {(salon.title)}
+                </div>
+                <div class="s-i-interval">
+                  19/06/2017 - 21/06/2017
+                </div>
+              </div>
+            </li>
           </ul>
         </article>
 
@@ -16,25 +34,31 @@
             Nom du salon
           </div>
           <div class="messages-container">
-              <div class="message" ng-repeat='message in Chatroom.messages track by $index'
+              <div class=" ng-cloak message" ng-repeat='message in Chatroom.messages.elements track by $index'
                     self='{(message.id == 1)}'
                     ng-class='{
                       top: Chatroom.messages[$index - 1].id != message.id && Chatroom.messages[$index + 1].id == message.id,
                       middle: Chatroom.messages[$index - 1].id == message.id && Chatroom.messages[$index + 1].id == message.id,
                       bottom: Chatroom.messages[$index - 1].id == message.id && Chatroom.messages[$index + 1].id != message.id,
                     }'>
+                  <div class="user-name">
+                    User {(message.id)}
+                  </div>
+                  <div class="message-content">
                     <div class="user">
-                      <div style='background-image: url("./assets/{(m.idUser)}.jpg")'></div>
-
+                      <div style='background-image: url("http://lorempixel.com/100/100")'></div>
                     </div>
-                  <div class='text'>{(message.text)}</div>
-                  <div class="time">
-                    <div>18:12</div>
+                    <div class='text'>{(message.text)}</div>
+                    <div class="time">
+                      <div>18:12</div>
+                    </div>
                   </div>
               </div>
           </div>
           <div class="footer">
-            <input id='sendMessage' type="text" name="message" value="" placeholder='Your message...'>
+            <input id='sendMessage' type="text" name="message" value="" placeholder='Your message...'
+                    ng-model='Chatroom.messages.inputMessage'
+                    vg-enter='Chatroom.messages.send()'>
           </div>
         </article>
 
