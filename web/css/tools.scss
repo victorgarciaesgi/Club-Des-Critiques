@@ -198,10 +198,6 @@ pre{
   font-size: 13px;
   border-radius: 4px;
 
-  // &:hover{
-  //   border: 1px solid darken($mainGreen1, 10%);
-  // }
-
   &:focus{
     border: 1px solid darken($w200, 20%);
     & + .input-form-result{

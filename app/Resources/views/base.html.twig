@@ -5,11 +5,15 @@
     <title>{% block title %}{{app.request.attributes.get('_route')}}{% endblock %}</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
-    <script type="text/javascript" src='/lib/angular.min.js'></script>
-    <script type="text/javascript" src='/lib/angular-animate.js'></script>
-    <script type="text/javascript" src='/lib/jquery.min.js'></script>
-    <script type="text/javascript" src='/lib/lodash.js'></script>
-    <script type="text/javascript" src='/ts/Functions.js'></script>
+    <!-- <script data-main="scripts/main" src="/scripts/require.js"></script>
+    <script type="text/javascript" src='/scripts/main.js'></script> -->
+    <script type="text/javascript" src='/scripts/lib/angular.min.js'></script>
+    <script type="text/javascript" src='/scripts/lib/angular-animate.js'></script>
+    <script type="text/javascript" src='/scripts/lib/jquery.min.js'></script>
+    <script type="text/javascript" src='/scripts/lib/lodash.js'></script>
+    <script type="text/javascript" src='/scripts/lib/moment.js'></script>
+    <script type="text/javascript" src='/scripts/lib/angular-moment.js'></script>
+    <script type="text/javascript" src='/scripts/ts/Functions.js'></script>
     <script type="text/javascript">
       window.nohomo = {{ is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?'true':'false' }};
       window.rocketleague = {{ is_granted('ROLE_SUPER_ADMIN')==1?'true':'false' }}
@@ -17,15 +21,15 @@
     {% set connected = is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?true:false %}
     {% set admin = is_granted('ROLE_SUPER_ADMIN') == 1?true:false %}
 
-    <script type="text/javascript" src='/ts/MainController.js'></script>
-    <script type="text/javascript" src='/ts/Ajax.js'></script>
+    <script type="text/javascript" src='/scripts/ts/MainController.js'></script>
+    <script type="text/javascript" src='/scripts/ts/Factories.js'></script>
 
-    <script type="text/javascript" src='/ts/HeaderController.js'></script>
-    <script type="text/javascript" src='/ts/LibraryController.js'></script>
-    <script type="text/javascript" src='/ts/Components.js'></script>
-    <script type="text/javascript" src='/ts/Directives.js'></script>
-    <script type="text/javascript" src='/ts/Classes.js'></script>
-    <script type="text/javascript" src='/ts/Chatroom2.js'></script>
+    <script type="text/javascript" src='/scripts/ts/HeaderController.js'></script>
+    <script type="text/javascript" src='/scripts/ts/LibraryController.js'></script>
+    <script type="text/javascript" src='/scripts/ts/Chatroom2Controller.js'></script>
+    <script type="text/javascript" src='/scripts/ts/Components.js'></script>
+    <script type="text/javascript" src='/scripts/ts/Directives.js'></script>
+    <script type="text/javascript" src='/scripts/ts/Classes.js'></script>
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
@@ -110,94 +114,94 @@
 
     <!--  Popups -->
 
-    <div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
-        <img id='pin' src="/assets/up.png" alt="">
-        <div class="header">
-            Notifications
-        </div>
-        <div class="content">
-
-        </div>
-    </div>
-
-    <div id='popup-connexion' class="popup-box" style='width: 350px' state='false'>
-        <img id='pin' src="/assets/up.png" alt="">
-        <div class="header">
-            Connexion
-        </div>
-        <div class="content">
-          <ng-form name='ConnexionFormX' ng-submit='ConnexionAction'>
-            <div class="connexion">
-
-                <text-form vg-model='ConnexionForm.values.login'
-                            vg-type='ConnexionForm.login.type'
-                            vg-name='ConnexionForm.login.name'
-                            vg-placeholder='ConnexionForm.login.placeholder'
-                            vg-validator='ConnexionForm.login.validator'
-                            vg-errors='ConnexionForm.login.errors'
-                            vg-required='ConnexionForm.login.required'>
-                </text-form>
-                <text-form vg-model='ConnexionForm.values.password'
-                            vg-type='ConnexionForm.password.type'
-                            vg-name='ConnexionForm.password.name'
-                            vg-placeholder='ConnexionForm.password.placeholder'
-                            vg-validator='ConnexionForm.password.validator'
-                            vg-errors='ConnexionForm.password.errors'
-                            vg-required='ConnexionForm.password.required'>
-                </text-form>
-
-                <checkbox vg-model='ConnexionForm.values.souvenir'
-                vg-data='ConnexionForm.souvenir'>
-                </checkbox>
-                <pre class='f-left'>{(ConnexionForm.values | json)}</pre>
-
-            </div>
-            <div class="footer">
-              <div class="bouton" design='blanc'>
-                Mot de passe oublié
-              </div>
-              <button class="bouton" type='submit' design='green'
-                      ng-disabled='ConnexionFormX.$invalid'>
-                Connexion
-              </button>
-            </div>
-          </ng-form>
-        </div>
-
-    </div>
-
-
-    {% if connected %}
-
-    <div id='popup-user' class="popup-box" style='width: 200px' state='false'>
-        <img id='pin' src="/assets/up.png" alt="">
-        <div class="user">
-            <div class="user-picture" style='background-image: url(/assets/profil.jpg)'></div>
-            <div class="user-name">{{app.user.username}}</div>
-        </div>
-        <ul class='user-option-list'>
-            <li class='user-option'>Mon profil</li>
-            <li class='user-option'>Éditer mes infos</li>
-            <li class='user-option'>Réglages</li>
-            <li class='user-option'>Aide</li>
-            <a href="/app_dev.php/logout"><li class='user-option'>Deconnexion</li></a>
-        </ul>
-    </div>
-    {% endif %}
-
-    <div id='popup-search' class="popup-box" style='width: 400px' state='false'>
-        <img id='pin' src="/assets/up.png" alt="">
-        <div class="header">
-            Contenus
-        </div>
-        <div class="content">
-          <div class="search-content">
-
-          </div>
-        </div>
-    </div>
 
 </header>
+
+<div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="header">
+        Notifications
+    </div>
+    <div class="content">
+
+    </div>
+</div>
+
+<div id='popup-connexion' class="popup-box" style='width: 350px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="header">
+        Connexion
+    </div>
+    <div class="content">
+      <ng-form name='ConnexionFormX' ng-submit='ConnexionAction'>
+        <div class="connexion">
+
+            <text-form vg-model='ConnexionForm.values.login'
+                        vg-type='ConnexionForm.login.type'
+                        vg-name='ConnexionForm.login.name'
+                        vg-placeholder='ConnexionForm.login.placeholder'
+                        vg-validator='ConnexionForm.login.validator'
+                        vg-errors='ConnexionForm.login.errors'
+                        vg-required='ConnexionForm.login.required'>
+            </text-form>
+            <text-form vg-model='ConnexionForm.values.password'
+                        vg-type='ConnexionForm.password.type'
+                        vg-name='ConnexionForm.password.name'
+                        vg-placeholder='ConnexionForm.password.placeholder'
+                        vg-validator='ConnexionForm.password.validator'
+                        vg-errors='ConnexionForm.password.errors'
+                        vg-required='ConnexionForm.password.required'>
+            </text-form>
+
+            <checkbox vg-model='ConnexionForm.values.souvenir'
+            vg-data='ConnexionForm.souvenir'>
+            </checkbox>
+            <pre class='f-left'>{(ConnexionForm.values | json)}</pre>
+
+        </div>
+        <div class="footer">
+          <div class="bouton" design='blanc'>
+            Mot de passe oublié
+          </div>
+          <button class="bouton" type='submit' design='green'
+                  ng-disabled='ConnexionFormX.$invalid'>
+            Connexion
+          </button>
+        </div>
+      </ng-form>
+    </div>
+</div>
+
+{% if connected %}
+
+<div id='popup-user' class="popup-box" style='width: 200px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="user">
+        <div class="user-picture" style='background-image: url(/assets/profil.jpg)'></div>
+        <div class="user-name">{{app.user.username}}</div>
+    </div>
+    <ul class='user-option-list'>
+        <li class='user-option'>Mon profil</li>
+        <li class='user-option'>Éditer mes infos</li>
+        <li class='user-option'>Réglages</li>
+        <li class='user-option'>Aide</li>
+        <a href="/app_dev.php/logout"><li class='user-option'>Deconnexion</li></a>
+    </ul>
+</div>
+{% endif %}
+
+<div id='popup-search' class="popup-box" style='width: 400px' state='false'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="header">
+        Contenus
+    </div>
+    <div class="content">
+      <div class="search-content">
+
+      </div>
+    </div>
+</div>
+
 {% block body %}{% endblock %}
 {% block footer %}{% endblock %}
 

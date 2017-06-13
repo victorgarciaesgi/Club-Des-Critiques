@@ -166,8 +166,6 @@ aside{
     }
   }
 }
-
-
 .popup-box{
   position: fixed;
   left: calc(100% - 350px);
@@ -181,7 +179,7 @@ aside{
   min-width : 200px;
   color: rgb(100,100,100);
   min-height: 150px;
-  z-index: 1001;
+  z-index: 2000;
   @include userselect;
 
   #pin{
@@ -189,7 +187,7 @@ aside{
     top: -9px;
     left: 50%;
     margin-left: -10px;
-    z-index: 1002;
+    z-index: 2001;
   }
 
   .header{
@@ -296,6 +294,138 @@ aside{
 
       &:active{
         background-color: $w210;
+      }
+    }
+  }
+}
+
+
+
+// popups
+
+.popup-window{
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  width: 100vw;
+  height: 100vh;
+  z-index: 2000;
+
+  .window{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    background-color: $w250;
+    border-radius: 3px;
+    box-shadow: 0 0 20px rgba(50, 50, 50, 0.4);
+    width: auto;
+    height: auto;
+    min-width : 400px;
+    color: rgb(100,100,100);
+    min-height: 150px;
+    max-height: 90%;
+    z-index: 1001;
+    @include translate(-50%, -50%);
+    overflow: hidden;
+
+
+    .header{
+      position: relative;
+      float: left;
+      padding-left: 10px;
+      height: 35px;
+      line-height: 35px;
+      text-align: center;
+      width: 100%;
+      border-radius: 3px 3px 0 0;
+      color: rgb(100,100,100);
+      background-color: $w245;
+      box-shadow: 0 1px 3px $w200;
+      font-weight: bold;
+      font-size: 15px;
+      overflow-y: auto;
+
+      &.double{
+        span{
+          display: block;
+          float: left;
+          width: 50%;
+        }
+      }
+
+
+      .externalLink{
+        position: absolute;
+        right: 30px;
+        top: 50%;
+        height: 21px;
+        width: 21px;
+        @include translateY(-50%);
+        cursor: pointer;
+      }
+
+      .closePopupWindow{
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        @include translateY(-50%);
+        cursor: pointer;
+      }
+    }
+
+    .content{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: auto;
+      overflow: hidden;
+      white-space: nowrap;
+
+
+      .form-section{
+        position: relative;
+        display: inline-block;
+        height: auto;
+        width: 50%;
+        overflow-y: auto;
+        overflow-x: hidden;
+        padding: 5px;
+        white-space: normal;
+        vertical-align: top;
+        max-height: calc(90vh - 90px);
+
+        .legend{
+          position: relative;
+          float: left;
+          width: 100%;
+          padding: 10px 10px 0px 5px;
+          font-size: 14px;
+          text-align: center;
+          white-space: normal;
+          color: $g40;
+        }
+
+        &:first-child{
+          padding: 15px;
+          padding-top: 5px;
+        }
+      }
+    }
+
+    .footer{
+      position: relative;
+      float: left;
+      height: 100%;
+      padding: 5px;
+      width: 100%;
+      z-index: 2;
+      text-align: center;
+      border-top: 1px solid $w240;
+
+      .bouton{
+        display: inline-block;
+        float: none;
       }
     }
   }

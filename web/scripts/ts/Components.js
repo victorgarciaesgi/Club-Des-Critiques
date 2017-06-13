@@ -256,11 +256,9 @@ MainApp.component('tokenForm', {
         if (newValue.trim().length > 0){
           ctrl.searching = true;
           ctrl.search_result.reset();
-          console.log(newValue)
           ctrl.search(ctrl.vgSource ,newValue);
         }
         else{
-          console.log(newValue)
           ctrl.searching = false;
           ctrl.search_result.reset();
           ctrl.selectToken = false;

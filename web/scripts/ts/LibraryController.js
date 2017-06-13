@@ -1,4 +1,4 @@
-MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, lodash) {
+MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage) {
 
   //Liste de categories
 
@@ -69,11 +69,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       let loader = result;
       let promises = [];
       $.each(loader, function(index, el) {
-        promises.push($scope.promiseLoad(el.img));
+        promises.push(PromiseImage.load(el.img));
       })
       $q.all(promises).then((data) => {
         this.books.loading = false;
         this.books.elements = loader;
+      },(error) => {
+        console.log(error);
       })
     },
     init(){
@@ -93,10 +95,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
 
   // Ajout de livre
 
-  $scope.addBook = false;
-  $scope.coverLoaded = false;
-  $scope.coverSearching = false;
-
   $scope.AddBookForm = {
     values: {
       search: ""
@@ -112,69 +110,56 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       rating: new ratingForm('rating', true, 0, true),
     },
     display: false,
-    show(){
-      this.display = true;
-    },
-    hide(){
-      this.display = false;
-    },
+    coverLoaded: false,
+    coverSearching: false,
+    show(){this.display = true},
+    hide(){this.display = false},
     submit() {
       AjaxRequest.get('library_submit_book',this.values).then((result) => {
         console.log(result);
       });
     },
-    reset() {
+    reset(){
       this.values = {categories:[],search: ""};
       $scope.AddBookFormX.$setPristine();
     },
+    annul(){
+      this.reset();
+      this.hide();
+    },
+    selectResult(book) {
+      this.values.author = (!!book.volumeInfo.authors)?book.volumeInfo.authors.join(', '):null;
+      this.values.search = book.volumeInfo.title;
+      this.values.illustration = (!!book.volumeInfo.imageLinks)?book.volumeInfo.imageLinks.thumbnail:null;
+      this.values.pages = (!!book.volumeInfo.pageCount)?book.volumeInfo.pageCount:null;
+      this.values.isbn = book.volumeInfo.industryIdentifiers;
+      // this.values.date = (!!book.volumeInfo.publishedDate)?book.volumeInfo.publishedDate:null;
+      this.values.description = (!!book.volumeInfo.description)?book.volumeInfo.description:null;
+      this.values.price = (!!book.saleInfo.retailPrice)?book.saleInfo.retailPrice.amount:null;
+      this.values.buyLink = (!!book.saleInfo.buyLink)?book.saleInfo.buyLink:null;
+
+      if((!!book.volumeInfo.illustration)){
+        this.waitLoad(book.volumeInfo.imageLinks.thumbnail);
+      }
+    },
+    waitLoad(link){
+      if(link.length > 10){
+        this.coverSearching = true;
+        PromiseImage.load(link).then((data) => {
+          console.log(data)
+          this.coverSearching = false;
+          this.coverLoaded = true;
+        },(reason) => {
+          this.coverSearching = false;
+          this.coverLoaded = false;
+        });
+      }
+    }
   }
 
   $scope.$watch('AddBookForm.values.illustration', function(newValue, oldValue, scope){
     if(!!newValue){
-      $scope.waitLoad(newValue);
+      $scope.AddBookForm.waitLoad(newValue);
     }
   })
-
-  $scope.selectResult = (book) => {
-    $scope.AddBookForm.values.author = (!!book.volumeInfo.authors)?book.volumeInfo.authors.join(', '):null;
-    $scope.AddBookForm.values.search = book.volumeInfo.title;
-    $scope.AddBookForm.values.illustration = (!!book.volumeInfo.imageLinks)?book.volumeInfo.imageLinks.thumbnail:null;
-    $scope.AddBookForm.values.pages = (!!book.volumeInfo.pageCount)?book.volumeInfo.pageCount:null;
-    $scope.AddBookForm.values.isbn = book.volumeInfo.industryIdentifiers;
-    $scope.AddBookForm.values.date = (!!book.volumeInfo.publishedDate)?book.volumeInfo.publishedDate:null;
-    $scope.AddBookForm.values.description = (!!book.volumeInfo.description)?book.volumeInfo.description:null;
-    $scope.AddBookForm.values.price = (!!book.saleInfo.retailPrice)?book.saleInfo.retailPrice.amount:null;
-    $scope.AddBookForm.values.buyLink = (!!book.saleInfo.buyLink)?book.saleInfo.buyLink:null;
-
-    if((!!book.volumeInfo.illustration)){
-      $scope.waitLoad(book.volumeInfo.imageLinks.thumbnail);
-    }
-  }
-
-  $scope.waitLoad = function(link){
-    if(link.length > 10){
-      $scope.coverSearching = true;
-      var promise = $scope.promiseLoad(link);
-      promise.then(function(data) {
-        $scope.coverSearching = false;
-        $scope.coverLoaded = true;
-      }, function(reason) {
-        $scope.coverSearching = false;
-        $scope.coverLoaded = false;
-      });
-    }
-  }
-
-  $scope.promiseLoad = function(link){
-    return $q(function(resolve, reject){
-      var img = new Image();
-      img.onload = function(event){
-        resolve(img);
-      }
-      img.onerror = function(){
-        reject(false);
-      }
-      img.src = link;
-    })
-  }
 });

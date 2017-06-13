@@ -21,3 +21,22 @@ MainApp.factory('AjaxRequest', function($http) {
       get : get,
     };
 });
+
+
+MainApp.factory('PromiseImage', function($q) {
+  var load = function(ImgLink){
+    return $q(function(resolve, reject){
+      var img = new Image();
+      img.onload = function(event){
+        resolve(img);
+      }
+      img.onerror = function(){
+        reject(false);
+      }
+      img.src = ImgLink;
+    })
+  }
+  return {
+    load: load
+  }
+});

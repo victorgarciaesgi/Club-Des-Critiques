@@ -14,12 +14,23 @@
     margin-bottom: 0;
     box-shadow: none;
     border-top: 1px solid $w230;
+
+    &.infos{
+      article#Messages{
+        width: calc(100% - 600px);
+      }
+
+      article#Infos{
+        display: block;
+      }
+    }
   }
 
   article{
     position: relative;
     float: left;
     height: 100%;
+    overflow: hidden;
 
     .header{
       position: relative;
@@ -29,7 +40,7 @@
       line-height: 35px;
       width: 100%;
       color: rgb(100,100,100);
-      background-color: $w245;
+      background-color: $w250;
       box-shadow: 0 1px 5px transparentize($g0,0.8);
       font-weight: bold;
       font-size: 15px;
@@ -42,12 +53,9 @@
 
 
 
-#Salons{
-  position: relative;
-  float: left;
+article#Salons{
   height: 100%;
   width: 300px;
-  overflow: hidden;
   border-right: 1px solid rgb(220,220,220);
 
   ul.list-salons{
@@ -56,6 +64,35 @@
     width: 100%;
     height: calc(100% - 35px);
     overflow-y: auto;
+
+    div.salons-search{
+      position: relative;
+      float: left;
+      height: 50px;
+      width: 100%;
+      padding: 10px 15px 10px 15px;
+      left: 0;
+
+      input.s-search{
+        height: 100%;
+        width: 100%;
+        background-color: $w240;
+        padding-left: 35px;
+        padding-right: 20px;
+        line-height: 30px;
+        border-radius: 4px;
+        font-size: 13px;
+      }
+      div.s-icon{
+        position: absolute;
+        height: 20px;
+        width: 20px;
+        top: 15px;
+        left: 25px;
+        background-image: url('../assets/search.svg');
+        @include bg-center;
+      }
+    }
 
     li.salons{
       position: relative;
@@ -66,6 +103,10 @@
       color: white;
       cursor: pointer;
       padding-left: 10px;
+
+      &.selected{
+        background-color: $w235;
+      }
 
       &:hover{
         background-color: $w240;
@@ -119,12 +160,10 @@
 }
 
 
-#Messages{
-  position: relative;
-  float: left;
+article#Messages{
   height: 100%;
   width: calc(100% - 300px);
-  overflow: hidden;
+  border-right: 1px solid rgb(220,220,220);
 
   .footer{
     position: absolute;
@@ -169,6 +208,17 @@
       font-size: 13px;
       z-index: 1;
       margin-bottom: 10px;
+      @include transition(all, 0.3s);
+
+      &.ng-enter {
+        opacity: 0;
+        bottom: -20px;
+      }
+
+      &.ng-enter.ng-enter-active {
+        opacity: 1;
+        bottom: 0px;
+      }
 
       &.top{
         margin-bottom: 2px;
@@ -220,7 +270,7 @@
         float: right;
 
         .user-name{
-          text-align: right;
+          display: none;
         }
         .message-content{
           flex-direction: row-reverse;
@@ -240,7 +290,8 @@
         width: 100%;
         color: rgb(150,150,150);
         font-size: 11px;
-        padding-left: 35px;
+        padding-left: 38px;
+        padding-right: 38px;
       }
 
       .message-content{
@@ -299,4 +350,9 @@
       }
     }
   }
+}
+
+
+#Infos{
+  width: 300px;
 }

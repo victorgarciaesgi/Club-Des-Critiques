@@ -1,5 +1,5 @@
 
-var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash'])
+var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment'])
 .config(function($interpolateProvider){
     $interpolateProvider.startSymbol('{(');
     $interpolateProvider.endSymbol(')}');

@@ -85,9 +85,9 @@
       <div class="window" ng-click='$event.stopPropagation();'>
         <ng-form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
 
-          <div class="header">
-              Ajouter un livre
-
+          <div class="header double">
+              <span>Ajouter un livre</span>
+              <span>Aperçu du livre</span>
               <img src="/assets/quit.svg" class='closePopupWindow' alt="Fermer la fenêtre" ng-click='AddBookForm.hide()'>
           </div>
           <div class="content" style='width: 900px'>
@@ -98,7 +98,7 @@
                 <search-form vg-model='AddBookForm.values.search'
                             vg-data='AddBookForm.elements.search'
                             vg-source='{(AddBookForm.elements.search.source)}'
-                            on-select-result='selectResult(result)'>
+                            on-select-result='AddBookForm.selectResult(result)'>
                 </search-form>
                 <text-form vg-model='AddBookForm.values.author'
                             vg-type='AddBookForm.elements.author.type'
@@ -160,12 +160,12 @@
                   <div class="book-form-preview" >
                     <div class="book-blur" style='background-image: url({(AddBookForm.values.illustration)})'></div>
                     <div class="input-form-wrap">
-                      <div class="cover" ng-show='!coverLoaded && coverSearching'>
+                      <div class="cover" ng-show='!AddBookForm.coverLoaded && AddBookForm.coverSearching'>
                         <div class="loading-spinner"></div>
                       </div>
-                      <div class="cover" ng-show='!coverLoaded && !coverSearching' style='background-image: url("/assets/no_thumbnail.jpg")'>
+                      <div class="cover" ng-show='!AddBookForm.coverLoaded && !AddBookForm.coverSearching' style='background-image: url("/assets/no_thumbnail.jpg")'>
                       </div>
-                      <div class="cover" ng-show='coverLoaded && !coverSearching' style='background-image: url({(AddBookForm.values.illustration.length > 10?AddBookForm.values.illustration:"/assets/no_thumbnail.jpg")})'>
+                      <div class="cover" ng-show='AddBookForm.coverLoaded && !AddBookForm.coverSearching' style='background-image: url({(AddBookForm.values.illustration.length > 10?AddBookForm.values.illustration:"/assets/no_thumbnail.jpg")})'>
                       </div>
                     </div>
                     <div class="input-form-wrap">
@@ -219,7 +219,7 @@
               </div>
           </div>
           <div class="footer">
-            <div class="bouton" design='blanc'>Annuler</div>
+            <div class="bouton" design='blanc' ng-click='AddBookForm.annul()'>Annuler</div>
             <div class="bouton" design='blanc' ng-click='AddBookForm.reset()'>Vider les champs</div>
             <button class="bouton" type='submit' design='green'
             ng-disabled='AddBookFormX.$invalid'>Ajouter un livre</button>
