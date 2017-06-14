@@ -86,6 +86,28 @@ class LibraryController extends Controller
     }
 
     /**
+     * @Route("/library/getOneBook", options = { "expose" = true }, name="library_getOneBook")
+     * @Method({"POST"})
+     */
+
+    public function GetOneBook(Request $request)
+    {
+      $encoders = array(new XmlEncoder(), new JsonEncoder());
+      $normalizers = array(new ObjectNormalizer());
+      $serializer = new Serializer($normalizers, $encoders);
+
+      $data = json_decode($request->getContent(), true);
+
+      $repository = $this->getDoctrine()
+          ->getManager()
+          ->getRepository('AppBundle:Media');
+      $content = $repository->find($data['data']);
+      $book = $serializer->serialize($content, 'json');
+
+      return new JsonResponse($book);
+    }
+
+    /**
      * @Route("/library/getOrderBooks", options = { "expose" = true }, name="library_getOrderBooks")
      * @Method({"POST"})
      */

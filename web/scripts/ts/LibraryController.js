@@ -76,6 +76,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         this.books.elements = loader;
       },(error) => {
         console.log(error);
+      },(progress) => {
+        console.log(progress);
       })
     },
     init(){

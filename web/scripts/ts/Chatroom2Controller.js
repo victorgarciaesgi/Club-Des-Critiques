@@ -1,15 +1,15 @@
 
 
-MainApp.controller('chatroom2', function ($scope, $rootScope, moment) {
+MainApp.controller('chatroom2', function ($scope, $rootScope, AjaxRequest, moment) {
 
   $scope.Chatroom = {
     salons: {
       elements: [],
       selectedSalon: {id: 1},
+      loading: true,
       select(salon){
         // click sur un salon
         this.selectedSalon = salon;
-        console.log(salon)
       },
       create(){
 
@@ -17,11 +17,13 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, moment) {
     },
     messages: {
       elements: [],
+      loading: true,
       inputMessage: "",
       send(){
-        // Envoie un nouveau message contenu dans this.inputMessage
-        this.elements.push({id: this.elements.length + 1, user: 1 , text: this.inputMessage}); // Juste pour le test
-        this.inputMessage = "";   //pour remettre à 0 le champs
+        if (this.inputMessage.length > 0) {
+          this.elements.push({id: this.elements.length + 1, user: 1 , text: this.inputMessage});
+        }
+        this.inputMessage = "";
       }
     },
     filter: {
@@ -29,13 +31,21 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, moment) {
     },
     infos:{
       open: true,
+      details: false,
       users: [],
       book: {},
-    }, // infos contiendra toutes les infos du salon affiché
+    },// Contient toutes les infos du salon selectionné
     scroll(){
       $('.messages-container').scrollTop(90000)
+    },
+    init(){
+      AjaxRequest.get('library_getOneBook', 3).then((result) => {
+        this.infos.book = result;
+      })
     }
   }
+
+  $scope.Chatroom.init();
 
   $scope.userID = 1; // a deplacer dans un $rootscope, recuperer par le controlleur
 

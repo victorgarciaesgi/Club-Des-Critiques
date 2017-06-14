@@ -1,5 +1,6 @@
 @import "_variables.scss";
 
+$infosWidth: 350px;
 
 #chatroom{
   position: relative;
@@ -17,7 +18,7 @@
 
     &.infos{
       article#Messages{
-        width: calc(100% - 600px);
+        width: calc(100% - 300px - #{$infosWidth});
       }
 
       article#Infos{
@@ -358,5 +359,11 @@ article#Messages{
 
 
 #Infos{
-  width: 300px;
+  width: $infosWidth;
+
+  .content{
+    padding: 0;
+    max-height: calc(100% - 35px);
+    overflow-y: auto;
+  }
 }
