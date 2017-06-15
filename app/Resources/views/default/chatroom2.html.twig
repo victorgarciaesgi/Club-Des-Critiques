@@ -13,9 +13,9 @@
             </div>
             <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id'
                 ng-click='Chatroom.salons.select(salon)'
-                ng-class='{selected: salon.id == Chatroom.salons.selectedSalon.id}'>
+                ng-class='{selected: salon.id == Chatroom.selectedSalon.id}'>
               <div class="salon-cover">
-                  <div style='background-image: url("http://lorempixel.com/100/100")'>
+                  <div style='background-image: url("http://lorempixel.com/200/200")'>
 
                   </div>
               </div>
@@ -32,10 +32,10 @@
         </article>
 
         <article id="Messages">
-          <div class="header" ng-cloak>
-            Nom du salon
+          <div class="header" >
+            <span ng-cloak>{(Chatroom.selectedSalon.title)}</span>
           </div>
-          <div class="messages-container">
+          <div id="messages-container">
               <div class=" ng-cloak message" ng-repeat='message in Chatroom.messages.elements track by message.id'
                     self='{(message.user == userID)}'
                     ng-class='{
@@ -126,9 +126,31 @@
                 <a class="i-b-content" ng-class='{link: Chatroom.infos.book}' target='_blank'
                 ng-href='{(Chatroom.infos.book.buyLink || "#")}'>{(Chatroom.infos.book.buyLink?'Lien Play Store':'-')}</a>
               </div>
-
             </div>
-          </div>
+
+            <div class="salon-list">
+              <div class="s-l-title">
+                Options
+              </div>
+              <ul>
+                <li class='ng-cloak' ng-repeat='option in Chatroom.options' ng-click='Chatroom.execute(option.action)'>
+                  <img class='icon' src='/assets/{(option.icon)}.svg'>
+                  <span>{(option.text)}</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="salon-list">
+              <div class="s-l-title">
+                Personnes
+              </div>
+              <ul>
+                <li ng-repeat='user in Chatroom.infos.users'>
+                  <div class="profil" style='background-image: url("http://lorempixel.com/100/100?{(user.name)}")'></div>
+                  <span>{(user.name)}</span>
+                </li>
+              </ul>
+            </div>
           </div>
         </article>
 

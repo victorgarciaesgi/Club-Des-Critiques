@@ -36,7 +36,8 @@ $infosWidth: 350px;
     .header{
       position: relative;
       float: left;
-      padding-left: 10px;
+      padding-left: 15px;
+      padding-right: 15px;
       height: 35px;
       line-height: 35px;
       width: 100%;
@@ -47,7 +48,7 @@ $infosWidth: 350px;
       font-size: 15px;
       text-align: center;
       z-index: 2;
-      overflow-y: auto;
+      @include ellipsis;
     }
   }
 }
@@ -192,13 +193,12 @@ article#Messages{
   }
 
 
-  .messages-container{
+  #messages-container{
     position: absolute;
     width: 100%;
-    max-height: calc(100% - 85px);
-    height: auto;
+    height: calc(100% - 85px);
     overflow: auto;
-    bottom: 50px;
+    top: 35px;
     padding-top: 10px;
     padding-bottom: 5px;
 
@@ -217,12 +217,12 @@ article#Messages{
 
       &.ng-enter {
         opacity: 0;
-        bottom: -20px;
+        right: -20px;
       }
 
       &.ng-enter.ng-enter-active {
         opacity: 1;
-        bottom: 0px;
+        right: 0px;
       }
 
       &.top{
@@ -365,5 +365,65 @@ article#Messages{
     padding: 0;
     max-height: calc(100% - 35px);
     overflow-y: auto;
+
+    .title-book{
+      background-color: $mainMarron;
+    }
+
+
+    .salon-list{
+      position: relative;
+      float: left;
+      height: auto;
+      width: 100%;
+      padding: 10px;
+      padding-bottom: 5px;
+
+      .s-l-title{
+        height: 30px;
+        font-size: 15px;
+        line-height: 30px;
+        color: rgb(150,150,150);
+      }
+
+      ul{
+        position: relative;
+        float: left;
+        width: 100%;
+        height: auto;
+
+        li{
+          position: relative;
+          float: left;
+          height: 35px;
+          line-height: 35px;
+          width: 100%;
+          padding-left: 40px;
+          font-size: 13px;
+          cursor: pointer;
+          @include ellipsis;
+
+          .profil{
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            height: 25px;
+            width: 25px;
+            @include bg-center;
+            border-radius: 100%;
+          }
+
+          .icon{
+            position: absolute;
+            left: 7px;
+            top: 7px;
+            height: 23px;
+            width: 23px;
+          }
+        }
+      }
+    }
   }
+
+
 }
