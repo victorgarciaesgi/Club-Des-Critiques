@@ -76,7 +76,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: 50px;
-  min-width: 800px;
+  // min-width: 800px;
   // -webkit-font-smoothing: antialiased;
 }
 
@@ -598,6 +598,7 @@ select{
   margin: 5px;
   text-align: center;
   cursor: pointer;
+  outline: none;
   border: 1px solid transparent;
   font-weight: normal;
   color: white;

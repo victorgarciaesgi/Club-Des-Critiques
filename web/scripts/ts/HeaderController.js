@@ -3,33 +3,18 @@
 MainApp.controller('header', function ($scope, $rootScope) {
 
   $scope.ConnexionForm = {
-      values: {},
-      login: new textForm('Login..','login','text',true,null,null, null, null, false, null),
-      password: new textForm('Mot de passe..','password','password',true,null,null, null, null, false, null),
-      souvenir: {
-        label: "Se souvenir de moi",
-        name: 'souvenir',
-        required: false
-      },
-      submit: () => {
-
-      }
-
+    values: {},
+    login: new textForm('Login..','login','text',true,null,null, null, null, false, null),
+    password: new textForm('Mot de passe..','password','password',true,null,null, null, null, false, null),
+    souvenir: {
+      label: "Se souvenir de moi",
+      name: 'souvenir',
+      required: false
+    },
+    submit() {
+      console.log(this.values)
     }
-
-
-    // Actions
-
-    $scope.ConnexionAction = function(form){
-
-    }
-
-
-
-
-
-
-
+  }
 
 
 

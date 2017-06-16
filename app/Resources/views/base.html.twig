@@ -43,7 +43,9 @@
     {% block stylesheets %}{% endblock %}
 </head>
 <body ng-controller='{{app.request.attributes.get('_route')}}'>
-<header ng-controller='header'>
+
+<ng-controller>
+<header>
     <nav>
         <img class='logo' src="/assets/logoSimple.png" alt="logo">
         <div class="header-separation"></div>
@@ -116,6 +118,7 @@
     <!--  Popups -->
 
 
+
 </header>
 
 <div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
@@ -134,7 +137,7 @@
         Connexion
     </div>
     <div class="content">
-      <ng-form name='ConnexionFormX' ng-submit='ConnexionAction'>
+      <form name='ConnexionFormX' ng-submit='ConnexionForm.submit()'>
         <div class="connexion">
 
             <text-form vg-model='ConnexionForm.values.login'
@@ -155,7 +158,7 @@
             </text-form>
 
             <checkbox vg-model='ConnexionForm.values.souvenir'
-            vg-data='ConnexionForm.souvenir'>
+                      vg-data='ConnexionForm.souvenir'>
             </checkbox>
             <pre class='f-left'>{(ConnexionForm.values | json)}</pre>
 
@@ -169,7 +172,7 @@
             Connexion
           </button>
         </div>
-      </ng-form>
+      </form>
     </div>
 </div>
 
@@ -202,6 +205,9 @@
       </div>
     </div>
 </div>
+
+
+</ng-controller>
 
 {% block body %}{% endblock %}
 {% block footer %}{% endblock %}

@@ -12,7 +12,7 @@
               <div class="s-icon"></div>
             </div>
             <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id'
-                ng-click='Chatroom.salons.select(salon)'
+                ng-click='Chatroom.selectSalon(salon)'
                 ng-class='{selected: salon.id == Chatroom.selectedSalon.id}'>
               <div class="salon-cover">
                   <div style='background-image: url("http://lorempixel.com/200/200")'>
@@ -34,6 +34,10 @@
         <article id="Messages">
           <div class="header" >
             <span ng-cloak>{(Chatroom.selectedSalon.title)}</span>
+            <div class="icons" ng-click='Chatroom.infos.open = !Chatroom.infos.open'>
+              <img show src="/assets/infos.svg" alt="">
+              <img hide src="/assets/infos_close.svg" alt="">
+            </div>
           </div>
           <div id="messages-container">
               <div class=" ng-cloak message" ng-repeat='message in Chatroom.messages.elements track by message.id'
@@ -43,7 +47,7 @@
                       middle: Chatroom.messages.elements[$index - 1].user == message.user && Chatroom.messages.elements[$index + 1].user == message.user,
                       bottom: Chatroom.messages.elements[$index - 1].user == message.user && Chatroom.messages.elements[$index + 1].user != message.user,
                     }' on-finish-render='Chatroom.scroll()'>
-                  <div class="user-name">
+                  <div ng-if='Chatroom.messages.elements[$index - 1].user != message.user && Chatroom.messages.elements[$index + 1].user == message.user' class="user-name">
                     User {(message.user)}
                   </div>
                   <div class="message-content">
@@ -58,7 +62,7 @@
               </div>
           </div>
           <div class="footer">
-            <input id='sendMessage' type="text" name="message" value="" placeholder='Your message...'
+            <input id='sendMessage' type="text" name="message" value="" placeholder='Votre message...'
                     ng-model='Chatroom.messages.inputMessage'
                     vg-enter='Chatroom.messages.send()'>
           </div>

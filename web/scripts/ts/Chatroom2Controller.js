@@ -6,12 +6,8 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, AjaxRequest, momen
     salons: {
       elements: [],
       loading: true,
-      select(salon){
-        // click sur un salon
-        this.selectedSalon = salon;
-      },
       create(){
-
+        // Creer un nouveau salon
       }
     },
     messages: {
@@ -20,9 +16,13 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, AjaxRequest, momen
       inputMessage: "",
       send(){
         if (this.inputMessage.length > 0) {
+          // Seulement pour le test
           this.elements.push({id: this.elements.length + 1, user: 1 , text: this.inputMessage});
+
+          // Envoi du message ici
+          // id du salon: this.selectedSalon.id
         }
-        this.inputMessage = "";
+        this.inputMessage = ""; // remet a 0 le champs
       }
     },
     filter: {
@@ -39,6 +39,9 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, AjaxRequest, momen
       {text: 'Inviter un contact dans ce salon', action:'invite', icon:'add_contact'},
       {text: 'Signaler un contenu inapproprié', action:'reportSalon', icon:'signaler'},
     ],
+    selectSalon(salon){
+      this.selectedSalon = salon;
+    },
     execute(method){
       this[method]();
     },
@@ -68,8 +71,8 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, AjaxRequest, momen
   $scope.userID = 1; // a deplacer dans un $rootscope, recuperé par le controlleur
 
   for (var i = 0; i < 8; i++) {
-    $scope.Chatroom.salons.elements.push({id: i + 1, title: loremIpsum()})
-    $scope.Chatroom.messages.elements.push({id: i + 1, user: randomNumber(1, 4), text: loremIpsum()});
+    $scope.Chatroom.salons.elements.push({id: i + 1, title: loremIpsum(5)})
+    $scope.Chatroom.messages.elements.push({id: i + 1, user: randomNumber(1, 4), text: loremIpsum(10)});
     $scope.Chatroom.infos.users.push({id: i + 1, name: chance.name()});
   }
 
