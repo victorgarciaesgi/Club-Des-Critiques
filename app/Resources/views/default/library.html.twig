@@ -81,7 +81,7 @@
 
     <div id='addBook-window' class="ng-cloak popup-window" ng-show='AddBookForm.display' ng-click='AddBookForm.hide()'>
       <div class="window" ng-click='$event.stopPropagation();'>
-        <ng-form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
+        <form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
 
           <div class="header double">
               <span>Ajouter un livre</span>
@@ -193,21 +193,21 @@
                         <div class='i-h-text'>{(AddBookForm.values.date || '-')}</div>
                       </div>
                     </div>
-                    <div class="info-book">
+                    <div class="info-book" ng-if='AddBookForm.values.rating'>
                       <rating-form vg-init='AddBookForm.values.rating' vg-editable='false'
                                     vg-displaynote='true'>
                       </rating-form>
                     </div>
-                    <div class="info-book">
+                    <div class="info-book" ng-if='AddBookForm.values.author'>
                       <div class="i-b-title">Autheur</div>
                       <div class="i-b-content">{(AddBookForm.values.author || '-')}</div>
                     </div>
-                    <div class="info-book">
+                    <div class="info-book" ng-if='AddBookForm.values.description'>
                       <div class="i-b-title">Description</div>
                       <div class="i-b-content">{(AddBookForm.values.description || '-')}</div>
                     </div>
 
-                    <div class="info-book">
+                    <div class="info-book" ng-if='AddBookForm.values.buyLink'>
                       <div class="i-b-title">Lien d'achat</div>
                       <a class="i-b-content" ng-class='{link: AddBookForm.values.buyLink}' target='_blank'
                       ng-href='{(AddBookForm.values.buyLink || "#")}'>{(AddBookForm.values.buyLink?'Lien Play Store':'-')}</a>
@@ -224,7 +224,7 @@
 
           </div>
 
-        </ng-form>
+        </form>
       </div>
     </div>
 

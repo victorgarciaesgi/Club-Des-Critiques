@@ -76,8 +76,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         this.books.elements = loader;
       },(error) => {
         console.log(error);
-      },(progress) => {
-        console.log(progress);
       })
     },
     init(){
@@ -117,6 +115,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     show(){this.display = true},
     hide(){this.display = false},
     submit() {
+      console.log(this.values);
       AjaxRequest.get('library_submit_book',this.values).then((result) => {
         console.log(result);
       });
@@ -148,7 +147,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       if(link.length > 10){
         this.coverSearching = true;
         PromiseImage.load(link).then((data) => {
-          console.log(data)
           this.coverSearching = false;
           this.coverLoaded = true;
         },(reason) => {

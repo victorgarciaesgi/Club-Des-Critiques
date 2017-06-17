@@ -41,6 +41,10 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, AjaxRequest, momen
     ],
     selectSalon(salon){
       this.selectedSalon = salon;
+      this.messages.elements.forEach(function(element) {
+        element.text = loremIpsum(10);
+        element.user = randomNumber(1, 4);
+      }, this)
     },
     execute(method){
       this[method]();

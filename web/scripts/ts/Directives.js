@@ -2,7 +2,7 @@
 // Validateurs
 
 
-MainApp.directive('vgVerificator', function() {
+MainApp.directive('vgVerificator', function($q, PromiseImage) {
   return {
     restrict: 'A',
     require: 'ngModel',
@@ -11,19 +11,25 @@ MainApp.directive('vgVerificator', function() {
       switch (validator) {
         case "link":
           var regxp = new RegExp("(https?:\/\/.*)")
-          ctrl.$validators.link = (modelValue, viewValue) => {
+          ctrl.$asyncValidators.link = (modelValue, viewValue) => {
+            var def = $q.defer();
             if(!!modelValue){
               var verif = regxp.test(modelValue)
               if(verif){
-                return true;
+                PromiseImage.load(modelValue).then((result) =>{
+                  def.resolve();
+                }, (error) => {
+                  def.reject();
+                })
               }
               else{
-                return false;
+                def.reject();
               }
             }
             else{
-              return true;
+              def.reject();
             }
+            return def.promise;
           };
           break;
         default:

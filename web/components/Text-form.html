@@ -24,4 +24,7 @@
      <span ng-if='textForm[$ctrl.vgName].$error[$ctrl.vgValidator]'>{($ctrl.vgErrors[$ctrl.vgValidator])}</span>
      <span ng-if='textForm[$ctrl.vgName].$error.required && $ctrl.vgErrors.required'>{($ctrl.vgErrors.required)}</span>
   </div>
+  <div class="infoMessage" ng-show='textForm[$ctrl.vgName].$pending'>
+    <span ng-if='textForm[$ctrl.vgName].$pending[$ctrl.vgValidator]'>Verification...</span>
+  </div>
 </ng-form>

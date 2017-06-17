@@ -6,19 +6,29 @@ function displayPopup(element, event){
 
   if (state == 'false') {
     $('.popup-box').hide().attr('state','false');
-    var width= element.outerWidth();
-    var position = Math.round(element.offset().left);
+    var width = element.outerWidth();
+    var height = element.outerHeight();
+    var position = {
+      left: Math.round(element.offset().left),
+      top: Math.round(element.offset().top)
+    }
     var popupWidth = $("#" + popupName).width();
-    var outputLeft = position + width / 2 - popupWidth / 2;
+    var outputLeft = position.left + width / 2 - popupWidth / 2;
+    var outputTop = position.top + height + 10;
     var windowWidth = $(window).width();
 
     if((outputLeft + popupWidth) > (windowWidth - 10)){
       outputLeft = windowWidth - popupWidth - 10;
-      var left = position - outputLeft + (width/2)
-      $("#" + popupName).find('#pin').css({left: left})
     }
+    else if((outputLeft < 10) ){
+      outputLeft = 10;
+    }
+    var left = position.left - outputLeft + (width/2);
+    $("#" + popupName).find('#pin').css({left: left})
+
     $("#" + popupName).css({
       left: outputLeft,
+      top: outputTop,
       display: 'block'
     }).attr('state','true')
   }

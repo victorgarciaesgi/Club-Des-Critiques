@@ -274,6 +274,10 @@ ng-form{
       padding: 5px;
     }
   }
+  .infoMessage{
+    @extend .errorMessage;
+    color: #ea730b;
+  }
 }
 
 rating-form{

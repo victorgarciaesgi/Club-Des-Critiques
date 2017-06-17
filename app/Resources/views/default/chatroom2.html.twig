@@ -1,10 +1,11 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div id="chatroom">
-      <section ng-class='{infos: Chatroom.infos.open}'>
+      <section ng-class='{infos: Chatroom.infos.open, close: !Chatroom.infos.open}'>
         <article id="Salons" Ftype=''>
           <div class="header">
-            Salons
+            <span>Salons</span>
+            <img class='createSalon popup-bouton' popup="popup-createSalon" src="/assets/add.svg" alt="Ajouter un Salon">
           </div>
           <ul class="list-salons">
             <div class="salons-search">
@@ -160,6 +161,16 @@
 
       </section>
 
+    </div>
+
+    <div id='popup-createSalon' class="popup-box" style='width: 300px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Ajouter un salon
+        </div>
+        <div class="content">
+
+        </div>
     </div>
 
 {% endblock %}

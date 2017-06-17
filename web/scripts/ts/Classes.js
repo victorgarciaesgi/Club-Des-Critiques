@@ -2,7 +2,7 @@
 
 var map = {
   required: 'Ce champs est obligatoire',
-  link: 'Le lien de l\'illustration doit être valide',
+  link: 'Le lien de l\'illustration doit être une image',
   number: 'Ce champs doit être un nombre',
   email: 'Ce champs doit être une adresse valide',
   date: 'La date doit être valide'
