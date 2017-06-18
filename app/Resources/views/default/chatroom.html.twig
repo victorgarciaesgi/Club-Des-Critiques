@@ -25,53 +25,47 @@
         </section>
         <script>
 
-            // Connexion à socket.io
             var socket = io.connect('http://localhost:8124');
+            var room = prompt('Quelle room ?')
+            socket.emit('createRoom', room);
 
-            // On demande le pseudo, on l'envoie au serveur et on l'affiche dans le titre
-            var pseudo = prompt('Quel est votre pseudo ?');
-            socket.emit('nouveau_client', pseudo);
-            document.title = pseudo + ' - ' + document.title;
+            var room = prompt('Quel pseudo ?')
+            socket.emit('createUser', room);
 
-//            findRooms();
+           // Ajoute un message dans la page
+           function insereMessage(username, message) {
+               $('#zone_chat').prepend('<p><strong>' + username + '</strong> ' + message + '</p>');
+           }
 
-            // Quand on reçoit un message, on l'insère dans la page
-            socket.on('updatechat', function(username, message) {
-                //IMPOSSIBLE DE RECUPERER LEVENT UPDATECHAT ENVOYE PAR NODE
-                console.log(username);
-                console.log(message);
-                insereMessage(username, message);
-            })
-
-            // Quand un nouveau client se connecte, on affiche l'information
-            socket.on('nouveau_client', function(pseudo) {
-                $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
-            })
-
-            // Lorsqu'on envoie le formulaire, on transmet le message et on l'affiche sur la page
+            // Lorsqu'on envoie le formulaire, on transmet le message
             $('#formulaire_chat').submit(function () {
                 var message = $('#message').val();
-                console.log(message);
                 socket.emit('message', message); // Transmet le message aux autres
-//                insereMessage(pseudo, message); // Affiche le message aussi sur notre page
                 $('#message').val('').focus(); // Vide la zone de Chat et remet le focus dessus
-                return false; // Permet de bloquer l'envoi "classique" du formulaire
+                return false;
             });
 
-            // Ajoute un message dans la page
-            function insereMessage(pseudo, message) {
-                $('#zone_chat').prepend('<p><strong>' + pseudo + '</strong> ' + message + '</p>');
-            }
+            // Quand on reçoit un message, on l'insère dans la page
+            socket.on('updateChat', function(username, message) {
+                insereMessage(username, message);
+            });
+
+            socket.on('welcome', function(pseudo) {
+                $('#zone_chat').prepend('<p><em>' + pseudo + ' a rejoint le Chat !</em></p>');
+            })
 
             function switchRoom(room){
                 socket.emit('switchRoom', room);
             }
 
             socket.on('updaterooms', function(rooms, current_room) {
+                console.log(rooms);
                 console.log(current_room);
                 $('#zone_chat').empty();
                 $('#rooms').empty();
                 $.each(rooms, function(key, value) {
+                    console.log(key);
+                    console.log(value);
                     if(value == current_room){
                         $('#rooms').append('<div>' + value + '</div>');
                     }
