@@ -223,6 +223,14 @@ pre{
   float: left;
   height: auto;
   width: 100%;
+
+  &.center{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 0;
+  }
 }
 
 .token{
@@ -235,10 +243,19 @@ pre{
   border-radius: 3px;
   box-shadow: 0 0 4px transparentize($g30, 0.7);
   margin-right: 10px;
-  margin-bottom: 5px;
+  margin-bottom: 3px;
   *{
      display: inline-block;
      vertical-align: middle;
+  }
+
+  &:not(.editable){
+    padding-right: 10px;
+    margin-top: 3px;
+    float: none;
+    img{
+      display: none;
+    }
   }
 
   img{
@@ -249,13 +266,13 @@ pre{
        background-color: $w230;
      }
   }
-  &.ng-enter {
+  &.editable.ng-enter {
     @include transition(all 0.3s);
     opacity: 0;
     top: -10px;
   }
 
-  &.ng-enter.ng-enter-active {
+  &.editable.ng-enter.ng-enter-active {
     opacity: 1;
     top: 0px;
   }

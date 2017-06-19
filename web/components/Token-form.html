@@ -41,7 +41,7 @@
    <span ng-if='tokenForm[$ctrl.vgData.name].$error.required && $ctrl.vgData.errors.required'>{($ctrl.vgData.errors.required)}</span>
 </div>
 <div class="token-container">
-  <li ng-repeat='token in $ctrl.vgModel' class='token'>
+  <li ng-repeat='token in $ctrl.vgModel' class='token editable'>
     <span>{(token.name)}</span>
     <img class='t-u-delete' ng-click='$ctrl.delete($event,$index,token)' src='/assets/quit.svg' height='16' width= '16'>
   </li>

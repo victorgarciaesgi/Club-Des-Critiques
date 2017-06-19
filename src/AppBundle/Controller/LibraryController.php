@@ -77,12 +77,23 @@ class LibraryController extends Controller
       $encoders = array(new XmlEncoder(), new JsonEncoder());
       $normalizers = array(new ObjectNormalizer());
       $serializer = new Serializer($normalizers, $encoders);
+      $em = $this->getDoctrine()->getManager();
       $repository = $this->getDoctrine()
           ->getManager()
           ->getRepository('AppBundle:Media');
       $content = $repository->findAll();
-      $books = $serializer->serialize($content, 'json');
+      $books = $serializer->normalize($content, 'null');
 
+      foreach ($books as $key => $value) {
+        $query = $em->createQuery("SELECT c
+                                   FROM AppBundle:Media m, AppBundle:Category c, AppBundle:CategoryAffiliation mc
+                                   WHERE m.idMedia = ".$value['idMedia']."
+                                   AND mc.idMedia = m.idMedia
+                                   AND mc.idCategory = c.idCategory");
+        $result = $query->getResult();
+        array_push($books[$key], ['categories', []]);
+        $books[$key]['categories'] = json_decode($serializer->serialize($result, 'json'));
+      }
       return new JsonResponse($books);
     }
 

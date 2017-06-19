@@ -95,6 +95,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         this.categories.elements = result;
       })
       AjaxRequest.get('library_getAllBooks',null).then((result) => {
+        console.log(result)
         this.loadBooks(result);
       })
     }

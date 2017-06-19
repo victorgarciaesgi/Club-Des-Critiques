@@ -204,6 +204,13 @@
                                     vg-displaynote='true'>
                       </rating-form>
                     </div>
+                    <div class="info-book" ng-if='AddBookForm.values.categories.length'>
+                      <ul class='token-container center'>
+                        <li class='token' ng-repeat='token in AddBookForm.values.categories'>
+                          <span>{(token.name)}</span>
+                        </li>
+                      </ul>
+                    </div>
                     <div class="info-book" ng-if='AddBookForm.values.author'>
                       <div class="i-b-title">Autheur</div>
                       <div class="i-b-content">{(AddBookForm.values.author || '-')}</div>
@@ -284,6 +291,13 @@
                              vg-editable='false'
                              vg-displaynote='true'>
                 </rating-form>
+              </div>
+              <div class="info-book" ng-if='Library.books.bookShow.categories.length'>
+                <ul class='token-container center'>
+                  <li class='token' ng-repeat='token in Library.books.bookShow.categories'>
+                    <span>{(token.name)}</span>
+                  </li>
+                </ul>
               </div>
               <div class="info-book">
                 <div class="i-b-title">Autheur</div>
