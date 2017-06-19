@@ -311,11 +311,12 @@ aside{
   width: 100vw;
   height: 100vh;
   z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   .window{
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    position: relative;
     background-color: $w250;
     border-radius: 3px;
     box-shadow: 0 0 20px rgba(50, 50, 50, 0.4);
@@ -326,7 +327,6 @@ aside{
     min-height: 150px;
     max-height: 90%;
     z-index: 1001;
-    @include translate(-50%, -50%);
     overflow: hidden;
 
 

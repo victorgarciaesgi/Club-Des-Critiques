@@ -58,3 +58,19 @@ function loremIpsum(maxSize) {
 function randomNumber(min, max){
   return Math.floor(Math.random()*(max-min+1)+min)
 }
+
+function mergeBooks(array){
+  var final_array = [];
+  $.each(array, function(index, o) {
+      var good = true;
+      $.each(final_array, function(index2, f) {
+        if(f.idMedia == o.idMedia){
+          good = false;
+        }
+      });
+      if (good) {
+        final_array.push(o);
+      }
+  });
+  return final_array;
+}

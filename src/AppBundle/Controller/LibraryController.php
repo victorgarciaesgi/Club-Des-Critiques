@@ -17,6 +17,7 @@ use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Doctrine\ORM\EntityManagerInterface;
 
 
 class LibraryController extends Controller
@@ -140,16 +141,26 @@ class LibraryController extends Controller
       $encoders = array(new XmlEncoder(), new JsonEncoder());
       $normalizers = array(new ObjectNormalizer());
       $serializer = new Serializer($normalizers, $encoders);
-      $repository = $this->getDoctrine()
-          ->getManager()
-          ->getRepository('AppBundle:Media');
-      $content = $repository->createQueryBuilder('m')
-               ->where('m.')
-               ->setParameter('name', '%'.$data['data'].'%')
-               ->setMaxResults(3)
-               ->getQuery();
-      $results = $content->getArrayResult();
-      return new JsonResponse($results);
+      $data = json_decode($request->getContent(), true);
+      $em = $this->getDoctrine()->getManager();
+
+      $books = [];
+
+      foreach ($data as $categ){
+        foreach ($categ as $key => $value) {
+          $query = $em->createQuery("SELECT m
+                                     FROM AppBundle:Media m, AppBundle:Category c, AppBundle:CategoryAffiliation mc
+                                     WHERE m.idMedia = mc.idMedia
+                                     AND mc.idCategory = ".$key."
+                                     GROUP by m.idMedia");
+          $result = $query->getResult();
+          foreach ($result as $book) {
+            array_push($books, $book);
+          }
+        }
+      }
+      $result = $serializer->serialize($books, 'json');
+      return new JsonResponse($result);
     }
 
 
@@ -174,7 +185,6 @@ class LibraryController extends Controller
                ->setMaxResults(3)
                ->getQuery();
       $results = $content->getArrayResult();
-      // $categories = $serializer->serialize($content, 'json');
       return new JsonResponse($results);
     }
 

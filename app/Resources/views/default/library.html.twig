@@ -13,8 +13,9 @@
               </div>
               <div class="list">
                 <div class="loader-content" ng-if='Library.categories.loading'><div size='20' class="loading-spinner"></div></div>
-                  <div class="checkbox" ng-repeat='c in Library.categories.elements' ng-cloak>
-                      <input id='{(c.idCategory)}' ng-model='Library.categories.values[c.idCategory]' type="checkbox"/>
+                  <div class="ng-cloak checkbox" ng-show='!Library.categories.loading' ng-repeat='c in Library.categories.elements' >
+                      <input id='{(c.idCategory)}' ng-model='Library.categories.values[c.idCategory]'
+                      ng-change='Library.filter()' ng-true-value='{(c.idCategory)}' ng-false-value='undefined' type="checkbox"/>
                       <label for="{(c.idCategory)}"></label>
                       <span>{(c.name)}</span>
                   </div>
@@ -51,7 +52,12 @@
           </div>
           <div class="library-list">
             <ul class="books-list">
-              <div class="loader-content" ng-if='Library.books.loading'><div taille='big' class="loading-spinner"></div></div>
+              <div class="ng-cloak loader-content" ng-if='Library.books.loading || Library.books.error'>
+                <div ng-show='!Library.books.error && Library.books.loading' taille='big' class="loading-spinner"></div>
+                <div class='error' ng-show='Library.books.error'>
+                  {(Library.books.error)}
+                </div>
+              </div>
               <li ng-repeat='book in Library.books.elements track by book.idMedia'
                   class='book-wrapper'
                   ng-click='Library.books.show(book)'>
@@ -80,7 +86,7 @@
 <!-- Popups -->
 
     <div id='addBook-window' class="ng-cloak popup-window" ng-show='AddBookForm.display' ng-click='AddBookForm.hide()'>
-      <div class="window" ng-click='$event.stopPropagation();'>
+      <div class="window" ng-click='$event.stopPropagation();' style='width: 900px'>
         <form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
 
           <div class="header double">
@@ -88,7 +94,7 @@
               <span>Aperçu du livre</span>
               <img src="/assets/quit.svg" class='closePopupWindow' alt="Fermer la fenêtre" ng-click='AddBookForm.hide()'>
           </div>
-          <div class="content" style='width: 900px'>
+          <div class="content">
               <div class="form-section" >
                 <div class="legend">
                   La recherche par titre va completer automatiquement les informations du livre

@@ -539,14 +539,11 @@ rating-form{
   width: 100%;
   min-height: 40px;
   z-index: 100;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background-color: rgba(255,255,255,0.8);
-
-  .loading-spinner{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    @include translate(-50%, -50%);
-  }
 
 }
 

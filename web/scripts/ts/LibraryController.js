@@ -16,6 +16,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       elements: [],
       bookShow: {},
       display: false,
+      error: null,
       loading: true,
       show(book){
         this.bookShow = book;
@@ -60,27 +61,37 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         })
       }
       else{
-        AjaxRequest.get('library_filterBooks',this.categories.values).then((result) => {
-          this.loadBooks(result);
+        AjaxRequest.get('library_getFilterBooks',this.categories.values).then((result) => {
+          var finalResult = mergeBooks(result);
+          this.loadBooks(finalResult);
         })
       }
     },
     loadBooks(result){
-      let loader = result;
-      let promises = [];
-      $.each(loader, function(index, el) {
-        promises.push(PromiseImage.load(el.img));
-      })
-      $q.all(promises).then((data) => {
+      if (result.length > 0) {
+        let loader = result;
+        let promises = [];
+        $.each(loader, function(index, el) {
+          promises.push(PromiseImage.load(el.img));
+        })
+        $q.all(promises).then((data) => {
+          this.books.loading = false;
+          this.categories.loading = false;
+          this.books.error = null;
+          this.books.elements = loader;
+
+        },(error) => {
+          this.books.loading = false;
+          this.books.error = 'Impossible de charger les livres';
+        })
+      }
+      else{
         this.books.loading = false;
-        this.books.elements = loader;
-      },(error) => {
-        console.log(error);
-      })
+        this.books.error = 'Aucun livre trouvé pour cette recherche';
+      }
     },
     init(){
       AjaxRequest.get('library_getCategories',null).then((result) => {
-        this.categories.loading = false;
         this.categories.elements = result;
       })
       AjaxRequest.get('library_getAllBooks',null).then((result) => {
