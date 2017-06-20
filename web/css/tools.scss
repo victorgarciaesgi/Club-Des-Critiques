@@ -242,8 +242,7 @@ pre{
   color: $g90;
   border-radius: 3px;
   box-shadow: 0 0 4px transparentize($g30, 0.7);
-  margin-right: 10px;
-  margin-bottom: 3px;
+  margin: 3px 10px 3px 0;
   *{
      display: inline-block;
      vertical-align: middle;
@@ -251,7 +250,6 @@ pre{
 
   &:not(.editable){
     padding-right: 10px;
-    margin-top: 3px;
     float: none;
     img{
       display: none;
@@ -754,6 +752,10 @@ select{
       background-color: $mainGreen2;
       background-image: url('../assets/done.svg');
       border: 1px solid transparent;
+
+      & + span{
+        color: $mainGreen2;
+      }
     }
     // &:focus + label{
     //   border: 1px solid $mainGreen2;

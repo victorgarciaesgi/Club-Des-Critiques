@@ -29,7 +29,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       }
     },
     order: {
-      value: {},
+      value: {label: 'Titre', value:'name'},
       elements: [
         {label: 'Titre', value:'name'},
         {label: 'Date de publication', value:'releaseDate'},
@@ -45,27 +45,20 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         {label: 'Ordre décroissant', value:'desc'}
       ],
     },
-    orderBooks(){
-      this.books.loading = true;
-      this.books.elements = [];
-      AjaxRequest.get('library_getOrderBooks',{key: this.order.value, tri: this.tri.value}).then((result) => {
-        this.loadBooks(result);
-      })
-    },
     filter(){
       this.books.loading = true;
       this.books.elements = [];
-      if(this.categories.noSelected()){
-        AjaxRequest.get('library_getAllBooks',null).then((result) => {
-          this.loadBooks(result);
-        })
+      var data = {
+        categories: this.categories.noSelected()?null:this.categories.values,
+        column: this.order.value,
+        tri: this.tri.value
       }
-      else{
-        AjaxRequest.get('library_getFilterBooks',this.categories.values).then((result) => {
-          var finalResult = mergeBooks(result);
-          this.loadBooks(finalResult);
-        })
-      }
+      AjaxRequest.get('library_getFilterBooks',data).then((result) => {
+
+        // var finalResult = mergeBooks(result);
+        console.log(result)
+        this.loadBooks(result);
+      })
     },
     loadBooks(result){
       if (result.length > 0) {
@@ -94,8 +87,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       AjaxRequest.get('library_getCategories',null).then((result) => {
         this.categories.elements = result;
       })
-      AjaxRequest.get('library_getAllBooks',null).then((result) => {
-        console.log(result)
+      AjaxRequest.get('library_getAllBooks',{categories: null, column: this.order.value, tri: this.tri.value})
+      .then((result) => {
         this.loadBooks(result);
       })
     }

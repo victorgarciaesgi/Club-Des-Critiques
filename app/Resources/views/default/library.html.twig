@@ -33,7 +33,7 @@
               <select ng-model='Library.order.value'
                       ng-options='option.label for option in Library.order.elements'
                       ng-init='Library.order.value = Library.order.elements[0]'
-                      ng-change='Library.orderBooks()' >
+                      ng-change='Library.filter()' >
               </select>
             </div>
             <div class="group">
@@ -41,7 +41,7 @@
               <select ng-model='Library.tri.value'
                       ng-options='option.label for option in Library.tri.elements'
                       ng-init='Library.tri.value = Library.tri.elements[0]'
-                      ng-change='Library.orderBooks()' >
+                      ng-change='Library.filter()' >
               </select>
             </div>
             <div ng-if='UserConnected' class="group">
