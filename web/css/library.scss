@@ -15,8 +15,6 @@
     height: 100%;
     margin-bottom: 0;
     box-shadow: none;
-    border-top: 1px solid $w230;
-
     .title{
       text-align: center;
       font-size: 17px;
@@ -42,37 +40,62 @@
 
     .options-tri{
       position: relative;
-      float: left;
       height: calc(100% - 40px);
       width: 100%;
+      display: flex;
+
+      div.list-search{
+        position: relative;
+        height: 50px;
+        width: 100%;
+        padding: 10px 15px 10px 15px;
+        left: 0;
+
+        input.s-search{
+          height: 100%;
+          width: 100%;
+          background-color: $w240;
+          padding-left: 35px;
+          padding-right: 20px;
+          line-height: 30px;
+          border-radius: 4px;
+          font-size: 13px;
+        }
+        div.s-icon{
+          position: absolute;
+          height: 20px;
+          width: 20px;
+          top: 15px;
+          left: 25px;
+          background-image: url('../assets/search.svg');
+          @include bg-center;
+        }
+      }
 
       .options-container{
         position: relative;
-        float: left;
         height: auto;
         width: 100%;
         border-bottom: 1px solid $w220;
+        max-height: 100%;
+        padding: 5px 5px 0 5px;
 
         .type{
           position: relative;
-          float: left;
-          height: 30px;
+          height: 25px;
           width: 100%;
-          font-size: 14px;
-          padding-left: 5px;
-          background-color: $w240;
-          line-height: 30px;
-          text-align: left;
-          box-shadow: 0 1px 3px $w210;
+          font-size: 15px;
+          line-height: 25px;
+          padding-left: 10px;
+          color: rgb(150,150,150);
         }
 
         .list{
           position: relative;
-          float: left;
           height: auto;
           width: 100%;
           min-height: 200px;
-          max-height: 300px;
+          max-height: calc(100% - 75px);
           padding: 5px 10px 5px 10px;
           overflow-y: auto;
         }
@@ -123,10 +146,15 @@
       ul{
         position: relative;
         float: left;
-        height: 100%;
+        height: auto;
+        min-height: 100%;
         width: 100%;
-        text-align: center;
         padding-top: 10px;
+        padding-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        flex-flow: row wrap;
       }
     }
   }
@@ -147,7 +175,6 @@
 
 .book-wrapper{
   position: relative;
-  display: inline-block;
   height: auto;
   width: 180px;
   cursor: pointer;
@@ -166,7 +193,6 @@
   //   overflow: hidden;
   //   top: -10px;
   //   @include bg-center;
-  //   filter: blur(15px);
   // }
 
 
@@ -176,7 +202,7 @@
     height: auto;
     width: 100%;
     border-radius: 3px 3px 0 0;
-    background-color: transparentize($g0, 0.8);
+    background-color: $mainMarron;
     .cover{
       position: relative;
       float: left;

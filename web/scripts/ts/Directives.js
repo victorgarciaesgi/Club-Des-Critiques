@@ -63,9 +63,26 @@ MainApp.directive('vgEnter', function () {
                   scope.$apply(function (){
                       scope.$eval(attrs.onFinishRender);
                   });
-
                 });
             }
         }
     }
+})
+
+
+MainApp.directive('lazyload', function(){
+  return function (scope, element, attrs) {
+    element.scroll(function(){
+       var container = element[0];
+       var scrollTop = container.scrollTop + container.offsetHeight;
+       var scrollHeight = container.scrollHeight;
+       if (scrollTop >= scrollHeight) {
+         event.preventDefault();
+         event.stopPropagation();
+         scope.$apply(function(){
+            scope.$eval(attrs.lazyload);
+        });
+      }
+    })
+  }
 })

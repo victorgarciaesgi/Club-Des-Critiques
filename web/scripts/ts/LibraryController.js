@@ -3,9 +3,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
   //Liste de categories
 
   $scope.Library = {
+    lazyPage: 0,
+    lazyProcessing: false,
+    endOfContent: false,
     categories: {
       values: {},
       elements: [],
+      filter: {},
       loading: true,
       noSelected(){
         var obj = Object.values(this.values);
@@ -48,15 +52,15 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     filter(){
       this.books.loading = true;
       this.books.elements = [];
+      this.lazyPage = 0;
+      this.endOfContent = false;
       var data = {
         categories: this.categories.noSelected()?null:this.categories.values,
         column: this.order.value,
-        tri: this.tri.value
+        tri: this.tri.value,
+        limit: this.lazyPage
       }
       AjaxRequest.get('library_getFilterBooks',data).then((result) => {
-
-        // var finalResult = mergeBooks(result);
-        console.log(result)
         this.loadBooks(result);
       })
     },
@@ -71,23 +75,45 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
           this.books.loading = false;
           this.categories.loading = false;
           this.books.error = null;
-          this.books.elements = loader;
+          this.books.elements = this.books.elements.concat(loader);
+          this.lazyPage += 20;
 
         },(error) => {
           this.books.loading = false;
+          this.lazyPage = 0;
           this.books.error = 'Impossible de charger les livres';
         })
       }
       else{
         this.books.loading = false;
+        this.lazyPage = 0;
         this.books.error = 'Aucun livre trouvé pour cette recherche';
+      }
+    },
+    loadNext(){
+      if (this.lazyProcessing == false){
+        this.lazyProcessing = true;
+        var data = {
+          categories: this.categories.noSelected()?null:this.categories.values,
+          column: this.order.value,
+          tri: this.tri.value,
+          limit: this.lazyPage
+        }
+        AjaxRequest.get('library_getFilterBooks',data).then((result) => {
+          if (result.length){
+            this.loadBooks(result);
+          }
+          else{
+            this.endOfContent = true;
+          }
+        })
       }
     },
     init(){
       AjaxRequest.get('library_getCategories',null).then((result) => {
         this.categories.elements = result;
       })
-      AjaxRequest.get('library_getAllBooks',{categories: null, column: this.order.value, tri: this.tri.value})
+      AjaxRequest.get('library_getFilterBooks',{categories: null, column: this.order.value, tri: this.tri.value, limit: this.lazyPage})
       .then((result) => {
         this.loadBooks(result);
       })

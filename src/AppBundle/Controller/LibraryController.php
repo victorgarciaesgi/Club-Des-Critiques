@@ -34,9 +34,13 @@ class LibraryController extends Controller
       return $data['data'];
     }
 
-    function returnAllBooks($column, $tri){
+    function returnAllBooks($column, $tri, $limit){
+      $em = $this->getDoctrine()->getManager();
       $content = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media')
+      ->setMaxResults(15)
+      ->setFirstResult($limit)
       ->findBy(array(), array($column => $tri));
+
 
       $books = $this->getSerializer()->normalize($content, 'null');
       return $books;
@@ -82,7 +86,7 @@ class LibraryController extends Controller
       $data = $this->decodeAjaxRequest($request);
       $querry = $request->request->get('querry');
       $ch = curl_init();
-      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/books/v1/volumes?q='.$data['data']);
+      curl_setopt($ch, CURLOPT_URL, 'https://www.googleapis.com/books/v1/volumes?q='.$data);
       curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json')); // Assuming you're requesting JSON
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       $response = curl_exec($ch);
@@ -133,21 +137,6 @@ class LibraryController extends Controller
     }
 
     /**
-     * @Route("/library/getOrderBooks", options = { "expose" = true }, name="library_getOrderBooks")
-     * @Method({"POST"})
-     */
-
-    public function GetOrderBooks(Request $request) {
-      $data = $this->decodeAjaxRequest($request);
-
-      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
-      $content = $repository->findBy(array(), array($data['key']['value'] => $data['tri']['value']));
-      $books = $this->getSerializer()->serialize($content, 'json');
-
-      return new JsonResponse($books);
-    }
-
-    /**
      * @Route("/library/getFilterBooks", options = { "expose" = true }, name="library_getFilterBooks")
      * @Method({"POST"})
      */
@@ -165,10 +154,17 @@ class LibraryController extends Controller
                            AND mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
                            GROUP by m.idMedia
                            ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
+        $query->setMaxResults(20)
+        ->setFirstResult($data['limit']);
         $books = $query->getResult();
       }
       else{
-        $books = $this->returnAllBooks($data['column']['value'], $data['tri']['value']);
+        $query = $em->createQuery("SELECT m
+                           FROM AppBundle:Media m
+                           ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
+        $query->setMaxResults(20)
+        ->setFirstResult($data['limit']);
+        $books = $query->getResult();
       }
 
       $books = $this->getSerializer()->normalize($books, 'null');
@@ -190,7 +186,7 @@ class LibraryController extends Controller
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Category');
       $content = $repository->createQueryBuilder('c')
                ->where('c.name LIKE :name')
-               ->setParameter('name', '%'.$data['data'].'%')
+               ->setParameter('name', '%'.$data.'%')
                ->setMaxResults(3)
                ->getQuery();
       $results = $content->getArrayResult();
@@ -204,7 +200,7 @@ class LibraryController extends Controller
 
     public function GetCategoriesAction(Request $request){
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Category');
-      $content = $repository->findAll();
+      $content = $repository->findBy(array(), array('name' => 'asc'));;
       $categories = $this->getSerializer()->serialize($content, 'json');
 
       return new JsonResponse($categories);

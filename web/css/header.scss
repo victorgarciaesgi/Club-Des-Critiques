@@ -11,7 +11,8 @@ header{
   width: 100%;
   background-color: white;
   z-index: 1001;
-  box-shadow: 0 2px 3px $w230;
+  // box-shadow: 0 2px 3px $w230;
+  border-bottom: 1px solid $w235;
   padding: 5px;
   color: $mainGreen2;
 

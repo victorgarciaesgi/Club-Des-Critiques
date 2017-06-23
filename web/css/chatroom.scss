@@ -16,7 +16,6 @@ $desktop: "(min-width: 1001px)";
     height: 100%;
     margin-bottom: 0;
     box-shadow: none;
-    border-top: 1px solid $w230;
 
     &.close{
       @media #{$mini} {

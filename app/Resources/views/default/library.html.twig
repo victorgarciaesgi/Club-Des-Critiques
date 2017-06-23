@@ -8,12 +8,17 @@
           </div>
           <div class="options-tri" ng-cloak>
             <div id='library-categories' class="options-container">
+              <div class="list-search">
+                <input class='s-search' type="text" ng-model='Library.categories.filter.name' placeholder="Filtrer les catégories">
+                <div class="s-icon"></div>
+              </div>
               <div class="type">
                 Catégories
               </div>
               <div class="list">
                 <div class="loader-content" ng-if='Library.categories.loading'><div size='20' class="loading-spinner"></div></div>
-                  <div class="ng-cloak checkbox" ng-show='!Library.categories.loading' ng-repeat='c in Library.categories.elements' >
+                  <div class="ng-cloak checkbox" ng-show='!Library.categories.loading'
+                      ng-repeat='c in Library.categories.elements | filter: Library.categories.filter track by c.idCategory' >
                       <input id='{(c.idCategory)}' ng-model='Library.categories.values[c.idCategory]'
                       ng-change='Library.filter()' ng-true-value='{(c.idCategory)}' ng-false-value='undefined' type="checkbox"/>
                       <label for="{(c.idCategory)}"></label>
@@ -50,7 +55,7 @@
               </div>
             </div>
           </div>
-          <div class="library-list">
+          <div class="library-list" lazyload='Library.loadNext()'>
             <ul class="books-list">
               <div class="ng-cloak loader-content" ng-if='Library.books.loading || Library.books.error'>
                 <div ng-show='!Library.books.error && Library.books.loading' taille='big' class="loading-spinner"></div>
@@ -58,12 +63,13 @@
                   {(Library.books.error)}
                 </div>
               </div>
-              <li ng-repeat='book in Library.books.elements track by book.idMedia'
-                  class='book-wrapper'
-                  ng-click='Library.books.show(book)'>
+              <li ng-repeat='book in Library.books.elements track by $index'
+                  class='ng-cloak book-wrapper'
+                  ng-click='Library.books.show(book)'
+                  on-finish-render='Library.lazyProcessing = false'>
                   <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
                   <div class="cover-wrap">
-                    <div class="cover" ng-cloak style='background-image: url("{(book.img)}")'></div>
+                    <div class="ng-cloak cover" style='background-image: url("{(book.img)}")'></div>
                   </div>
                   <div class="book-info-wrapper">
                     <div class="name info-book" ng-cloak>{(book.name)}</div>
@@ -73,6 +79,9 @@
                     </rating-form>
                   </div>
               </li>
+              <div ng-if='Library.lazyProcessing && !Library.endOfContent' class="ng-cloak padding-lazyContent">
+                <div class="loading-spinner" taille='medium'></div>
+              </div>
             </ul>
           </div>
         </article>
@@ -87,7 +96,7 @@
 
     <div id='addBook-window' class="ng-cloak popup-window" ng-show='AddBookForm.display' ng-click='AddBookForm.hide()'>
       <div class="window" ng-click='$event.stopPropagation();' style='width: 900px'>
-        <form name='AddBookFormX' ng-submit='AddBookForm.submit()'>
+        <form name='AddBookFormX' ng-submit='AddBookForm.submit()' autocomplete="off">
 
           <div class="header double">
               <span>Ajouter un livre</span>
