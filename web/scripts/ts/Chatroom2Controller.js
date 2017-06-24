@@ -40,11 +40,13 @@ MainApp.controller('chatroom2', function ($scope, $rootScope, AjaxRequest, momen
       {text: 'Signaler un contenu inapproprié', action:'reportSalon', icon:'signaler'},
     ],
     selectSalon(salon){
-      this.selectedSalon = salon;
-      this.messages.elements.forEach(function(element) {
-        element.text = loremIpsum(10);
-        element.user = randomNumber(1, 4);
-      }, this)
+      if(this.selectedSalon.id != salon.id){
+        this.selectedSalon = salon;
+        this.messages.elements = [];
+        for (var i = 0; i < 8; i++) {
+          $scope.Chatroom.messages.elements.push({id: i + 1, user: randomNumber(1, 4), text: loremIpsum(10)});
+        }
+      }
     },
     execute(method){
       this[method]();

@@ -48,7 +48,7 @@
                       middle: Chatroom.messages.elements[$index - 1].user == message.user && Chatroom.messages.elements[$index + 1].user == message.user,
                       bottom: Chatroom.messages.elements[$index - 1].user == message.user && Chatroom.messages.elements[$index + 1].user != message.user,
                     }' on-finish-render='Chatroom.scroll()'>
-                  <div ng-if='Chatroom.messages.elements[$index - 1].user != message.user && Chatroom.messages.elements[$index + 1].user == message.user' class="user-name">
+                  <div ng-if='Chatroom.messages.elements[$index - 1].user != message.user' class="user-name">
                     User {(message.user)}
                   </div>
                   <div class="message-content">
