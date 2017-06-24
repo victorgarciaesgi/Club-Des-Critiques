@@ -54,6 +54,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       this.books.elements = [];
       this.lazyPage = 0;
       this.endOfContent = false;
+      $('.library-list').scrollTop(0);
       var data = {
         categories: this.categories.noSelected()?null:this.categories.values,
         column: this.order.value,

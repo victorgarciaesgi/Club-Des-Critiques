@@ -56,13 +56,13 @@
             </div>
           </div>
           <div class="library-list" lazyload='Library.loadNext()'>
-            <ul class="books-list">
-              <div class="ng-cloak loader-content" ng-if='Library.books.loading || Library.books.error'>
-                <div ng-show='!Library.books.error && Library.books.loading' taille='big' class="loading-spinner"></div>
-                <div class='error' ng-show='Library.books.error'>
-                  {(Library.books.error)}
-                </div>
+            <div class="ng-cloak loader-content" ng-if='Library.books.loading || Library.books.error'>
+              <div ng-show='!Library.books.error && Library.books.loading' taille='big' class="loading-spinner"></div>
+              <div class='error' ng-show='Library.books.error'>
+                {(Library.books.error)}
               </div>
+            </div>
+            <ul class="books-list">
               <li ng-repeat='book in Library.books.elements track by $index'
                   class='ng-cloak book-wrapper'
                   ng-click='Library.books.show(book)'
