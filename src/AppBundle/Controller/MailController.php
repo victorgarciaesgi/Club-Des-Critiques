@@ -18,6 +18,8 @@ class MailController extends Controller
     {
         $data = json_decode($request->getContent(), true);
 
+        dump($data);
+
 
         $currentDate = new \Datetime("now");
         $timestamp = $currentDate->getTimestamp();
@@ -38,7 +40,7 @@ class MailController extends Controller
 
         $message = \Swift_Message::newInstance()
             ->setSubject('Hello Email Symfony 3')
-            ->setFrom('clu_critique@gmail.com') // Changer de mail
+            ->setFrom('club_critique@gmail.com') // Changer de mail
             ->setTo($data['data']['mail'])
             ->setBody(
                 $this->renderView(

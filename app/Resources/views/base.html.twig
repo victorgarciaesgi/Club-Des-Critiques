@@ -89,9 +89,9 @@
             </a>
           {% endif %}
 
-          {% if admin %}
+          {% if is_granted('ROLE_SUPER_ADMIN') %}
 
-            <a href="#">
+            <a href="/admin">
               <li id='aide' class='menu popup-bouton'>
                 admin
               </li>
