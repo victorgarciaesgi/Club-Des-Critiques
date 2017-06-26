@@ -9,6 +9,12 @@ MainApp.run(function($rootScope) {
     $rootScope.Rootview = '';
     $rootScope.UserConnected = (!!window.nohomo)?true:false;
     $rootScope.UserAdmin = (!!window.rocketleague)?true:false;
+    if ($rootScope.UserConnected){
+      $rootScope.UserInfos = {
+        id: (!!window.php)?window.php:false,
+        name: (!!window.javaEE)?window.javaEE:false,
+      }
+    }
 });
 
 MainApp.filter('cap', function() {

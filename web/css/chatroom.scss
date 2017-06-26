@@ -300,15 +300,24 @@ article#Messages{
       font-size: 13px;
       z-index: 1;
       margin-bottom: 10px;
-      @include transition(right 0.3s);
+      @include transition(left 0.3s, right 0.3s);
 
-      &.ng-enter {
+      &[self='true'].ng-enter {
         right: -20px;
       }
 
-      &.ng-enter.ng-enter-active {
+      &[self='true'].ng-enter.ng-enter-active {
         right: 0px;
       }
+
+      &[self='false'].ng-enter {
+        left: -20px;
+      }
+
+      &[self='false'].ng-enter.ng-enter-active {
+        left: 0px;
+      }
+
 
       &.top{
         margin-bottom: 2px;

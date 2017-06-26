@@ -18,6 +18,8 @@
     <script type="text/javascript">
       window.nohomo = {{ is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?'true':'false' }};
       window.rocketleague = {{ is_granted('ROLE_SUPER_ADMIN')==1?'true':'false' }}
+      window.javaEE = '{{ (app.user.username is defined)?app.user.username:null}}';
+      window.php = {{(app.user.id is defined)?app.user.id:null}};
     </script>
     {% set connected = is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?true:false %}
     {% set admin = is_granted('ROLE_SUPER_ADMIN') == 1?true:false %}
@@ -27,11 +29,10 @@
 
     <script type="text/javascript" src='/scripts/ts/HeaderController.js'></script>
     <script type="text/javascript" src='/scripts/ts/LibraryController.js'></script>
-    <script type="text/javascript" src='/scripts/ts/Chatroom2Controller.js'></script>
+    <script type="text/javascript" src='/scripts/ts/ChatroomController.js'></script>
     <script type="text/javascript" src='/scripts/ts/Components.js'></script>
     <script type="text/javascript" src='/scripts/ts/Directives.js'></script>
     <script type="text/javascript" src='/scripts/ts/Classes.js'></script>
-    <script type="text/javascript" src='/ts/Chatroom.js'></script>
     <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js'></script>
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>

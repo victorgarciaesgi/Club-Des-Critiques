@@ -60,7 +60,7 @@ class LibraryController extends Controller
 
     function returnOneBookInfos($idMedia){
       $content = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media')->find($idMedia);
-      $book = $this->getSerializer()->serialize($content, 'json');
+      $book = $this->getSerializer()->normalize($content, 'null');
       return $book;
     }
 
@@ -132,6 +132,8 @@ class LibraryController extends Controller
       $data = $this->decodeAjaxRequest($request);
 
       $book = $this->returnOneBookInfos($data);
+
+      $book['categories'] = $this->returnCategoriesByBook($book['idMedia']);
 
       return new JsonResponse($book);
     }
