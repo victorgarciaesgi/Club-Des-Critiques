@@ -34,6 +34,14 @@ MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
   // required -> champs requis pour les formulaire
   // error-> affiche les messages erreurs ou non
   // errorMessage -> message personnalisé d'erreur de required
+  $scope.BooksUne = {
+    elements: new Array(10),
+    show(book){
+
+    }
+  }
+
+
 
   $scope.mailRegister = {
     values: {},

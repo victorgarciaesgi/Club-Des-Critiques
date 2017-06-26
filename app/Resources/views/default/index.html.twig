@@ -32,91 +32,22 @@
             </div>
             <div class="content">
                 <ul id='books-une' class='list-books'>
+                  <li ng-repeat='book in BooksUne.elements track by $index'
+                  class='ng-cloak book-wrapper'
+                  ng-click='BooksUne.show(book)'>
+                  <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
+                  <div class="cover-wrap">
+                    <div class="ng-cloak cover" style='background-image: url("http://lorempixel.com/200/200")'></div>
+                  </div>
+                  <div class="book-info-wrapper">
+                    <div class="name info-book" ng-cloak>Lorem Ipsum</div>
+                    <div class="author info-book" ng-cloak>Atheur</div>
+                    <rating-form vg-init='3.5' vg-editable='false'
+                                  vg-displaynote='false'>
+                    </rating-form>
+                  </div>
+              </li>
 
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">Harry Potter et l'enfant maudit</div>
-                        <div class="author info-book">J.K Rowling</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_half.svg" alt="star">
-                            <img src="/assets/star_empty.svg" alt="star">
-                        </div>
-                    </li>
                 </ul>
             </div>
         </section>
