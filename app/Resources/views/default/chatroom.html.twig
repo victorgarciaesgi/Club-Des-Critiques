@@ -40,13 +40,20 @@
               <img hide src="/assets/infos_close.svg" alt="">
             </div>
           </div>
-          <div id="messages-container">
+          <div id="messages-container" ng-show='!Chatroom.rendering'>
+              <div class="ng-cloak loader-content" ng-if='Chatroom.messages.loading || Chatroom.messages.error'>
+                <div ng-show='!Chatroom.messages.error && Chatroom.messages.loading' taille='big' class="loading-spinner"></div>
+                <div class='error' ng-show='Chatroom.messages.error'>
+                  {(Chatroom.messages.error)}
+                </div>
+              </div>
               <div class=" ng-cloak message" ng-repeat='message in Chatroom.messages.elements track by $index'
                     self='{(message.user.id == UserInfos.id)}'
+                    new='{(message.new)}'
                     ng-class='{
-                      top: Chatroom.messages.elements[$index - 1].user.id != message.user.id && Chatroom.messages.elements[$index + 1].user.id == message.user.id,
-                      middle: Chatroom.messages.elements[$index - 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1].user.id == message.user.id,
-                      bottom: Chatroom.messages.elements[$index - 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1].user.id != message.user.id,
+                      top: Chatroom.messages.elements[$index + 1].user.id == message.user.id && (Chatroom.messages.elements[$index - 1].user.id != message.user.id || !Chatroom.messages.elements[$index - 1]) && Chatroom.messages.elements[$index + 1],
+                      middle: Chatroom.messages.elements[$index - 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1] && Chatroom.messages.elements[$index - 1],
+                      bottom: Chatroom.messages.elements[$index - 1].user.id == message.user.id && (Chatroom.messages.elements[$index + 1].user.id != message.user.id || !Chatroom.messages.elements[$index + 1]),
                     }' on-finish-render='Chatroom.scroll()'>
                   <div ng-if='Chatroom.messages.elements[$index - 1].user.id != message.user.id' class="user-name">
                     {(message.user.name)}

@@ -300,21 +300,22 @@ article#Messages{
       font-size: 13px;
       z-index: 1;
       margin-bottom: 10px;
-      @include transition(left 0.3s, right 0.3s);
 
-      &[self='true'].ng-enter {
+      &[self='true'][new='true'].ng-enter {
+        @include transition(right 0.3s);
         right: -20px;
       }
 
-      &[self='true'].ng-enter.ng-enter-active {
+      &[self='true'][new='true'].ng-enter.ng-enter-active {
         right: 0px;
       }
 
-      &[self='false'].ng-enter {
+      &[self='false'][new='true'].ng-enter {
+        @include transition(left 0.3s);
         left: -20px;
       }
 
-      &[self='false'].ng-enter.ng-enter-active {
+      &[self='false'][new='true'].ng-enter.ng-enter-active {
         left: 0px;
       }
 
