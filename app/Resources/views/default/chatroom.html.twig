@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div id="chatroom">
+      <section ng-class='{infos: Chatroom.infos.open, close: !Chatroom.infos.open}'>
+        <article id="Salons" Ftype=''>
+          <div class="header">
+            <span>Salons</span>
+            <img class='createSalon popup-bouton' popup="popup-createSalon" src="/assets/add.svg" alt="Ajouter un Salon">
+          </div>
+          <ul class="list-salons">
+            <div class="salons-search">
+              <input class='s-search' type="text" ng-model='Chatroom.filter.title' placeholder="Rechercher un salon">
+              <div class="s-icon"></div>
+            </div>
+            <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id'
+                ng-click='Chatroom.selectSalon(salon)'
+                ng-class='{selected: salon.id == Chatroom.selectedSalon.id}'>
+              <div class="salon-cover">
+                  <div style='background-image: url("http://lorempixel.com/200/200")'>
+
+                  </div>
+              </div>
+              <div class="salon-infos">
+                <div class="s-i-title">
+                  {(salon.title)}
+                </div>
+                <div class="s-i-interval">
+                  19/06/2017 - 21/06/2017
+                </div>
+              </div>
+            </li>
+          </ul>
+        </article>
+
+        <article id="Messages">
+          <div class="header" >
+            <span ng-cloak>{(Chatroom.selectedSalon.title)}</span>
+            <div class="icons" ng-click='Chatroom.infos.open = !Chatroom.infos.open'>
+              <img show src="/assets/infos.svg" alt="">
+              <img hide src="/assets/infos_close.svg" alt="">
+            </div>
+          </div>
+          <div id="messages-container">
+              <div class=" ng-cloak message" ng-repeat='message in Chatroom.messages.elements track by $index'
+                    self='{(message.user.id == UserInfos.id)}'
+                    ng-class='{
+                      top: Chatroom.messages.elements[$index - 1].user.id != message.user.id && Chatroom.messages.elements[$index + 1].user.id == message.user.id,
+                      middle: Chatroom.messages.elements[$index - 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1].user.id == message.user.id,
+                      bottom: Chatroom.messages.elements[$index - 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1].user.id != message.user.id,
+                    }' on-finish-render='Chatroom.scroll()'>
+                  <div ng-if='Chatroom.messages.elements[$index - 1].user.id != message.user.id' class="user-name">
+                    {(message.user.name)}
+                  </div>
+                  <div class="message-content">
+                    <div class="user">
+                      <div style='background-image: url("http://lorempixel.com/100/100")'></div>
+                    </div>
+                    <div class='text'>{(message.text)}</div>
+                    <div class="time">
+                      <div>18:12</div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          <div class="footer">
+            <input id='sendMessage' type="text" name="message" value="" placeholder='Votre message...'
+                    ng-model='Chatroom.messages.inputMessage'
+                    vg-enter='Chatroom.messages.send()'>
+          </div>
+        </article>
+
+        <article id='Infos'>
+          <div class="header">
+            Informations
+          </div>
+          <div class="ng-cloak content">
+            <div class="book-form-preview">
+              <div class="book-blur" style='background-image: url({(Chatroom.infos.book.img)})'></div>
+              <div class="input-form-wrap">
+                <div class="cover" style='background-image: url({(Chatroom.infos.book.img.length > 10?Chatroom.infos.book.img:"/assets/no_thumbnail.jpg")})'>
+                </div>
+              </div>
+              <div class="input-form-wrap">
+                <div class="title-book">
+                  {(Chatroom.infos.book.name? (Chatroom.infos.book.name | cap) : 'Titre du livre')}
+                </div>
+              </div>
+            </div>
+            <div class="show-details" ng-click='Chatroom.infos.details = !Chatroom.infos.details'>
+              {(Chatroom.infos.details?'Cacher':'Afficher')} les details du livre
+              <img src="/assets/expand_down.svg" alt="" ng-class='{rotate: Chatroom.infos.details}'>
+            </div>
+            <div class="infos-book" ng-if='Chatroom.infos.details'>
+              <div class="infos-header">
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/euro.svg">
+                  </div>
+                  <div class='i-h-text'>{(Chatroom.infos.book.price || '-')}</div>
+                </div>
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/book.svg">
+                  </div>
+                  <div class='i-h-text'>{(Chatroom.infos.book.numberPage || '-')} <span ng-if='Chatroom.infos.book.numberPage'>pages</span></div>
+                </div>
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/date.svg">
+                  </div>
+                  <div class='i-h-text'>{(Chatroom.infos.book.releaseDate.timestamp | date:'dd-MM-y' || '-')}</div>
+                </div>
+              </div>
+
+              <div class="info-book">
+                <rating-form vg-init='Chatroom.infos.book.note'
+                             vg-editable='false'
+                             vg-displaynote='true'>
+                </rating-form>
+              </div>
+              <div class="info-book" ng-if='Chatroom.infos.book.categories.length'>
+                <ul class='token-container center'>
+                  <li class='token' ng-repeat='token in Chatroom.infos.book.categories'>
+                    <span>{(token.name)}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="info-book">
+                <div class="i-b-title">Autheur</div>
+                <div class="i-b-content">{(Chatroom.infos.book.author || '-')}</div>
+              </div>
+              <div class="info-book">
+                <div class="i-b-title">Description</div>
+                <div class="i-b-content">{(Chatroom.infos.book.description || '-')}</div>
+              </div>
+              <div class="info-book" ng-if='Chatroom.infos.book.buyLink'>
+                <div class="i-b-title">Lien d'achat</div>
+                <a class="i-b-content" ng-class='{link: Chatroom.infos.book}' target='_blank'
+                ng-href='{(Chatroom.infos.book.buyLink || "#")}'>{(Chatroom.infos.book.buyLink?'Lien Play Store':'-')}</a>
+              </div>
+            </div>
+
+            <div class="salon-list">
+              <div class="s-l-title">
+                Options
+              </div>
+              <ul>
+                <li class='ng-cloak' ng-repeat='option in Chatroom.options' ng-click='Chatroom.execute(option.action)'>
+                  <img class='icon' src='/assets/{(option.icon)}.svg'>
+                  <span>{(option.text)}</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="salon-list">
+              <div class="s-l-title">
+                Personnes
+              </div>
+              <ul>
+                <li ng-repeat='user in Chatroom.infos.users'>
+                  <div class="profil" style='background-image: url("http://lorempixel.com/100/100?{(user.name)}")'></div>
+                  <span>{(user.name)}</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+      </section>
+
+    </div>
+
+    <div id='popup-createSalon' class="popup-box" style='width: 300px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Ajouter un salon
+        </div>
+        <div class="content">
+
+        </div>
+    </div>
+
+{% endblock %}

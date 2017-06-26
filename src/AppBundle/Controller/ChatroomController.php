@@ -19,18 +19,18 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 
-class Chatroom2Controller extends Controller
+class ChatroomController extends Controller
 {
     function __construct(){
 
     }
 
     /**
-     * @Route("/chatroom2", name="chatroom2")
+     * @Route("/chatroom", name="chatroom")
      */
-    public function ChatRoom2Action()
+    public function ChatRoomAction()
     {
-        return $this->render('default/chatroom2.html.twig');
+        return $this->render('default/chatroom.html.twig');
     }
 
 
