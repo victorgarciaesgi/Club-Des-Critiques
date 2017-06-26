@@ -6,6 +6,7 @@ use AppBundle\Entity\ContactUS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 class DefaultController extends Controller
 {
@@ -14,9 +15,15 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $contextRepo = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AppBundle:Website');
+        $resultContext = $contextRepo->find(1);
+
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'context' => $resultContext
         ]);
     }
 
@@ -43,5 +50,17 @@ class DefaultController extends Controller
         $em->flush();
 
         return new Response('Envoi formulaire de contact OK');
+    }
+
+    /**
+     * Route pour le formulaire de contact
+     *
+     * @Route("/login-ajax/", name="login_ajax", options = { "expose" = true })
+     */
+    public function loginAction(Request $request)
+    {
+        return $this->render('default/login_content.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+        ]);
     }
 }
