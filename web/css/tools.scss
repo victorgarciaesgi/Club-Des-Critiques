@@ -895,6 +895,7 @@ select{
     display: inline-block;
     background-color: $mainGreen2;
     min-width: 100px;
+    max-width: calc(100% - 30px);
     text-align: center;
     padding: 0 20px 0 20px;
     color: white;

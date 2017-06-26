@@ -65,8 +65,8 @@
               </li>
             </a>
 
-            <a href="">
-              <li class='menu' active='{{app.request.attributes.get('_route') == 'salons'?'true':'false'}}'>
+            <a href="{{ path('chatroom') }}">
+              <li class='menu' active='{{app.request.attributes.get('_route') == 'chatroom'?'true':'false'}}'>
                   <img false src='/assets/salons.svg' class="icon">
                   <img true src='/assets/salons_active.svg' class="icon">
                   <span class='titre'>Salons</span>
