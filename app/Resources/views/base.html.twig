@@ -31,6 +31,8 @@
     <script type="text/javascript" src='/scripts/ts/Components.js'></script>
     <script type="text/javascript" src='/scripts/ts/Directives.js'></script>
     <script type="text/javascript" src='/scripts/ts/Classes.js'></script>
+    <script type="text/javascript" src='/ts/Chatroom.js'></script>
+    <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.2/socket.io.js'></script>
 
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
@@ -65,8 +67,8 @@
               </li>
             </a>
 
-            <a href="">
-              <li class='menu' active='{{app.request.attributes.get('_route') == 'salons'?'true':'false'}}'>
+            <a href="{{ path('chatroom') }}">
+              <li class='menu' active='{{app.request.attributes.get('_route') == 'chatroom'?'true':'false'}}'>
                   <img false src='/assets/salons.svg' class="icon">
                   <img true src='/assets/salons_active.svg' class="icon">
                   <span class='titre'>Salons</span>
