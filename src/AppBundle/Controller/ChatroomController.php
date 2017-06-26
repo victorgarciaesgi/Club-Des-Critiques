@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: cyriaque_maldat
+ * Date: 27/12/2016
+ * Time: 11:20
+ */
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -22,7 +28,7 @@ class ChatroomController extends Controller
     /**
      * @Route("/chatroom", name="chatroom")
      */
-    public function LibraryAction()
+    public function ChatRoomAction()
     {
         return $this->render('default/chatroom.html.twig');
     }
