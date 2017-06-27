@@ -13,7 +13,7 @@
           ng-disabled='$ctrl.vgDisabled'
           ng-keydown='$ctrl.keydown($event, $this)'
           ng-class='{
-            formError: (searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.displayResult),
+            formError: (searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && (!$ctrl.displayResult || !search_result.data.length)),
             formValid: (searchForm[$ctrl.vgData.name].$valid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.displayResult)
           }'
           ng-trim="false"
@@ -84,7 +84,7 @@
       name='{($ctrl.vgData.name)}'
       ng-required='$ctrl.vgData.required'>
 
-<div class="errorMessage" ng-show='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.displayResult'>
+<div class="errorMessage" ng-show='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && (!$ctrl.displayResult || !search_result.data.length)'>
   <span ng-repeat='(key, value) in searchForm[$ctrl.vgData.name].$error' ng-if='searchForm[$ctrl.vgData.name].$error && key != "required"'>
     <span>{($ctrl.vgData.errors[key])}</span>
   </span>

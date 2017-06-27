@@ -1018,6 +1018,10 @@ select{
     border-bottom: 1px solid $w240;
     text-align: left;
 
+    &:last-child{
+      border: none;
+    }
+
     .i-b-title{
       position: relative;
       float: left;
