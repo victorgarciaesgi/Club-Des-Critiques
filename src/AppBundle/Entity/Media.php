@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Media / représente les livres, Film, musique... etc
@@ -25,6 +26,7 @@ class Media
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $name;
 
@@ -34,6 +36,7 @@ class Media
      * @var string
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=false)
+     * @Assert\NotBlank()
      */
     private $author;
 
@@ -96,8 +99,8 @@ class Media
     /**
      * Code ISBN
      *
-     * @var integer
-     * @ORM\Column(name="isbn", type="integer",nullable=false)
+     * @var string
+     * @ORM\Column(name="isbn", type="string", length=13, nullable=false)
      */
     private $isbn;
 
