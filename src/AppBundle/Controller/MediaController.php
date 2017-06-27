@@ -23,6 +23,11 @@ use AppBundle\Repository\CategoryAffiliationRepository;
 class MediaController extends Controller
 {
 
+    function decodeAjaxRequest($request){
+      $data = json_decode($request->getContent(), true);
+      return $data['data'];
+    }
+
     /**
      * @Route("/library/addBook", options = { "expose" = true }, name="library_addBook")
      * @Method({"POST"})
@@ -31,7 +36,7 @@ class MediaController extends Controller
 
         $media = new Media();
 
-        $data = json_decode($request->getContent(), true);
+        $data = $this->decodeAjaxRequest($request);
 
         $media->setName($data['search']);
         $media->setAuthor($data['author']);
@@ -76,7 +81,8 @@ class MediaController extends Controller
         $this->setCategories($media, $data['categories']);
         $em->clear();
 
-        return new Response('Media bien créé');
+        $success = json_encode(array('success' => "Media Créé"), JSON_FORCE_OBJECT);
+        return new JsonResponse($success);
     }
 
     public function findIsbn($array){

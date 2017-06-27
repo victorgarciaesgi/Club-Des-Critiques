@@ -81,12 +81,14 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
 
         },(error) => {
           this.books.loading = false;
+          this.categories.loading = false;
           this.lazyPage = 0;
           this.books.error = 'Impossible de charger les livres';
         })
       }
       else{
         this.books.loading = false;
+        this.categories.loading = false;
         this.lazyPage = 0;
         this.books.error = 'Aucun livre trouvé pour cette recherche';
       }
@@ -114,10 +116,10 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       AjaxRequest.get('library_getCategories',null).then((result) => {
         this.categories.elements = result;
       })
-      AjaxRequest.get('library_getFilterBooks',{categories: null, column: this.order.value, tri: this.tri.value, limit: this.lazyPage})
-      .then((result) => {
+      AjaxRequest.get('library_getFilterBooks',{categories: null, column: this.order.value, tri: this.tri.value, limit: this.lazyPage}).then((result) => {
         this.loadBooks(result);
       })
+
     }
   };
   $scope.Library.init()
@@ -144,17 +146,28 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     display: false,
     coverLoaded: false,
     coverSearching: false,
+    submitting: false,
     show(){this.display = true},
     hide(){this.display = false},
     submit() {
       console.log(this.values);
-      AjaxRequest.get('library_submit_book',this.values).then((result) => {
+      this.submitting = true;
+      AjaxRequest.get('library_addBook',this.values).then((result) => {
         console.log(result);
+        if (result.success){
+          this.display = false;
+          $scope.Library.filter();
+          this.reset();
+        }
+        else{
+
+        }
       });
     },
     reset(){
       this.values = {categories:[],search: ""};
       $scope.AddBookFormX.$setPristine();
+      this.submitting = false;
     },
     annul(){
       this.reset();

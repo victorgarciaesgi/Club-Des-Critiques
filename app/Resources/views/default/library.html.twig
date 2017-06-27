@@ -245,7 +245,10 @@
             <div class="bouton" design='blanc' ng-click='AddBookForm.annul()'>Annuler</div>
             <div class="bouton" design='blanc' ng-click='AddBookForm.reset()'>Vider les champs</div>
             <button class="bouton" type='submit' design='green'
-            ng-disabled='AddBookFormX.$invalid'>Ajouter un livre</button>
+                ng-disabled='AddBookFormX.$invalid || AddBookForm.submitting'
+                ng-class='{submitting: AddBookForm.submitting}'>Ajouter un livre
+              <div class="loading-spinner inline-block white"></div>
+            </button>
 
           </div>
 
