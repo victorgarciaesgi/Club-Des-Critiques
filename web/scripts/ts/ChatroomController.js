@@ -21,7 +21,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
             this.inputMessage = ""; // remet a 0 le champs
           }
           else{
-            
+
           }
         }
       }
@@ -82,8 +82,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     values: {},
     elements: {
       search: new searchForm('Rechercher un livre... (Google Books)','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
-      dateStart: new textForm('Date de début...', 'dateStart','date', true,'Date de début du salon ',null, null, 'date', true, null),
-      dateEnd: new textForm('Date de fin du salon', 'dateEnd','date', true,'Date de fin du salon',null, null, 'date', true, null),
+      dateStart: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null)
     },
     submit(){
 
