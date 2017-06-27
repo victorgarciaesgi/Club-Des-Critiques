@@ -218,7 +218,13 @@ class LibraryController extends Controller
                ->setMaxResults(3)
                ->getQuery();
       $results = $content->getArrayResult();
-      return new JsonResponse($results);
+      if (sizeof($results) > 0) {
+        return new JsonResponse($results);
+      }
+      else {
+        $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);
+        return new JsonResponse($error_data);
+      }
     }
 
     /**

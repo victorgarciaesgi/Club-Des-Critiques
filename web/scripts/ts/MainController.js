@@ -53,7 +53,7 @@ MainApp.filter('isSalonOpen', function(moment) {
       if ((!!input)) {
         var today = Date.now();
         if (input.start > today){
-          return false;
+          return 'notyet';
         }
         else if(input.start < today && input.end > today){
           return true;

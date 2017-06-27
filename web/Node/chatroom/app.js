@@ -2,7 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 rooms = [
-  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 21:00'},
+  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-27 15:55'},
   {id: 2, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-27 19:00'},
   {id: 3, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00'},
   {id: 4, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-27 21:00'},

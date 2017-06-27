@@ -15,7 +15,7 @@
           ng-blur='$ctrl.displayResult = false'
           ng-focus='$ctrl.displayResult = true'
          />
-  <div class="input-form-result" ng-if='$ctrl.search_result.data.length > 0 && $ctrl.searchText.length > 0 && $ctrl.displayResult'>
+  <div class="input-form-result" ng-if='($ctrl.search_result.data.length > 0 || $ctrl.error) && $ctrl.searchText.length > 0 && $ctrl.displayResult'>
     <ul ng-show='$ctrl.search_result.data.length > 0'>
       <li ng-repeat='result in $ctrl.search_result.data'
           ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
@@ -23,9 +23,9 @@
         {(result.name)}
       </li>
     </ul>
-    <ul>
+    <ul ng-show='$ctrl.error'>
       <div class="error_message">
-
+        {($ctrl.errorMessage)}
       </div>
     </ul>
   </div>
@@ -33,6 +33,7 @@
         ng-model='$ctrl.filled'
         name='{($ctrl.vgData.name)}'
         ng-required='$ctrl.vgData.required'>
+
   <div class="form-searching" ng-if='$ctrl.searching'><div class="loading-spinner"></div></div>
   <div ng-if='tokenForm[$ctrl.vgData.name].$valid && tokenForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-valid"></div>
   <div ng-if='tokenForm[$ctrl.vgData.name].$invalid && tokenForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-invalid"></div>

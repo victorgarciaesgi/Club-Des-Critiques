@@ -20,7 +20,7 @@
       window.nohomo = {{ is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?'true':'false' }};
       window.rocketleague = {{ is_granted('ROLE_SUPER_ADMIN')==1?'true':'false' }}
       window.javaEE = '{{ (app.user.username is defined)?app.user.username:null}}';
-      window.php = {{(app.user.id is defined)?app.user.id:null}};
+      window.php = {{(app.user.id is defined)?app.user.id:"null"}};
     </script>
     {% set connected = is_granted('IS_AUTHENTICATED_REMEMBERED') == 1?true:false %}
     {% set admin = is_granted('ROLE_SUPER_ADMIN') == 1?true:false %}
@@ -46,7 +46,7 @@
     <link href="/css/chatroom.css" rel="stylesheet">
     {% block stylesheets %}{% endblock %}
 </head>
-<body ng-controller='{{app.request.attributes.get('_route')}}'>
+<body>
 
 <ng-controller ng-controller='header'>
 <header>

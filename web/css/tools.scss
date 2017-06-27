@@ -461,13 +461,13 @@ rating-form{
 
   .input-form-result{
     position: absolute;
-    top: calc(100% - 5px);
+    top: calc(100% - 6px);
     left: 0;
     width: 100%;
     height: auto;
     z-index: 3;
     background-color: white;
-    box-shadow: 0 0 5px $w210;
+    box-shadow: 0 0 5px transparentize($g30, 0.7);
     border-radius: 3px;
     overflow: hidden;
 
