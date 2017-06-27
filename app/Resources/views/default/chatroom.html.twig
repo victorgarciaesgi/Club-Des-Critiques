@@ -196,6 +196,9 @@
                         vg-origin='"base"'
                         on-select-result='createSalon.selectResult(result)'>
             </search-form>
+            <date-between-form vg-model-start='createSalon.values.date_start'
+                        vg-model-end='createSalon.values.date_end'>
+            </date-between-form>
 
           <pre>{(createSalon.values | json)}</pre>
         </div>

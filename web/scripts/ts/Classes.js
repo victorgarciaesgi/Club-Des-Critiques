@@ -71,16 +71,16 @@ class ratingForm{
 
 
 class dateBetweenForm{
-  constructor(startName,Endname, required, error, errorMessage){
+  constructor(startName, endName, legend1, legend2, required, error, errorMessage){
     this.startName = startName;
     this.endName = endName;
+    this.legend1 = legend1;
+    this.legend2 = legend2;
     this.required = required;
     this.validator = 'dateBetween';
     if(error){
       this.errors = {};
-      if(validator){
-        this.errors = map[validator];
-      }
+      this.errors = map[this.validator];
       if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
     }
   }
