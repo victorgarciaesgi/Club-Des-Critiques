@@ -10,7 +10,7 @@ function displayPopup(element, event){
     var height = element.outerHeight();
     var position = {
       left: Math.round(element.offset().left),
-      top: Math.round(element.offset().top)
+      top: Math.round(element.offset().top - $(window).scrollTop())
     }
     var popupWidth = $("#" + popupName).width();
     var outputLeft = position.left + width / 2 - popupWidth / 2;

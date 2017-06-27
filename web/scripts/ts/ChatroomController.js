@@ -15,8 +15,10 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       loading: true,
       inputMessage: "",
       send(){
-        socket.emit('message', this.inputMessage);
-        this.inputMessage = ""; // remet a 0 le champs
+        if (this.inputMessage.trim().length > 0) {
+          socket.emit('message', this.inputMessage);
+          this.inputMessage = ""; // remet a 0 le champs
+        }
       }
     },
     filter: {
@@ -24,7 +26,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     selectedSalon: {},
     infos:{
-      open: false,
+      open: true,
       details: false,
       users: [],
       book: {},
@@ -49,7 +51,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       console.log('invite');
     },
     reportSalon(){
-      console.log('report:' + this.selectedSalon.id)
+      console.log('report:' + this.selectedSalon.id);
     },
     scroll(){
       var container = $('#messages-container');
@@ -71,19 +73,56 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
   $scope.Chatroom.init();
 
 
+  $scope.createSalon = {
+    values: {},
+    elements: {
+      search: new searchForm('Rechercher un livre... (Google Books)','search', true, null,'library_searchBooks', null,true,null),
+      dateStart: new textForm('Date de début...', 'date','date', true,'Date de début du salon ',null, null, 'date', true, null),
+      dateEnd: new textForm('Date de fin du salon', 'date','date', true,'Date de fin du salon',null, null, 'date', true, null),
+    },
+    submit(){
 
-  // Quand on reçoit un message, on l'insère dans la page
+    },
+    reset(){
+      this.values = {};
+      $scope.createSalonX.$setPristine();
+    },
+    selectResult(book){
+
+    }
+  }
+
+
+
+
   socket.on('updateChat', function(user, message) {
+    $scope.Chatroom.messages.error = null;
     $scope.Chatroom.messages.elements = $scope.Chatroom.messages.elements.concat([{user: user, text: message, new: true}]);
   });
 
-  socket.on('welcome', function(pseudo) {
-  })
-
   socket.on('updaterooms', function(rooms, current_room) {
+
+    rooms.forEach(function(element){
+      element.dates = {
+        end: new Date(element.date_end),
+        start: new Date(element.date_start)
+      };
+      element.datesend = new Date(element.date_end);
+    })
+
     $scope.Chatroom.salons.elements = rooms;
-    $scope.Chatroom.messages.elements = current_room.messages;
     $scope.Chatroom.selectedSalon = $scope.Chatroom.salons.elements[0];
+
+    if (current_room.messages.length == 0){
+      $scope.Chatroom.messages.loading = false;
+      $scope.Chatroom.messages.error = 'Aucun message';
+    }
+    else{
+      $scope.Chatroom.messages.elements = current_room.messages;
+    }
+
+
+
   });
 
   socket.on('update:messages', function(room) {
@@ -91,8 +130,14 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       $scope.Chatroom.messages.loading = false;
       $scope.Chatroom.messages.error = 'Aucun message';
     }
-    $scope.Chatroom.messages.elements = room.messages;
+    else{
+      $scope.Chatroom.messages.elements = room.messages;
+    }
   });
+
+  var interval = setInterval(()=>{
+    $scope.$apply();
+  }, 10000)
 
 
   for (var i = 0; i < 8; i++) {

@@ -19,9 +19,16 @@
    <div ng-show='areaForm[$ctrl.vgName].$invalid && areaForm[$ctrl.vgName].$dirty' class="form-valid-icon form-invalid"></div>
    <div ng-show='areaForm[$ctrl.vgName].$pristine && $ctrl.vgRequired' class="form-valid-icon form-required"></div>
 </div>
-  <div class="errorMessage" ng-show='areaForm[$ctrl.vgName].$invalid && areaForm[$ctrl.vgName].$dirty'>
-     <span ng-if='areaForm[$ctrl.vgName].$error[$ctrl.vgValidator]'>{($ctrl.vgErrors[$ctrl.vgValidator])}</span>
-     <span ng-if='areaForm[$ctrl.vgName].$error.required && $ctrl.vgErrors.required'>{($ctrl.vgErrors.required)}</span>
-  </div>
-  <!-- <pre>{(textForm.illustration | json)}</pre> -->
+<div class="errorMessage" ng-show='areaForm[$ctrl.vgName].$invalid && areaForm[$ctrl.vgName].$dirty'>
+  <span ng-repeat='(key, value) in areaForm[$ctrl.vgName].$error' ng-if='areaForm[$ctrl.vgName].$error && key != "required"'>
+    <span>{($ctrl.vgErrors[key])}</span>
+  </span>
+   <span ng-if='areaForm[$ctrl.vgName].$error.required && $ctrl.vgErrors.required'>{($ctrl.vgErrors.required)}</span>
+</div>
+<div class="infoMessage" ng-show='areaForm[$ctrl.vgName].$pending'>
+  <span ng-repeat='(key, value) in areaForm[$ctrl.vgName].$pending'>
+    <span>Verification...</span>
+  </span>
+</div>
+  <!-- <pre>{(areaForm.illustration | json)}</pre> -->
 </ng-form>

@@ -5,7 +5,8 @@ var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment']
     $interpolateProvider.endSymbol(')}');
 });
 
-MainApp.run(function($rootScope) {
+MainApp.run(function($rootScope, amMoment) {
+    amMoment.changeLocale('fr');
     $rootScope.Rootview = '';
     $rootScope.UserConnected = (!!window.nohomo)?true:false;
     $rootScope.UserAdmin = (!!window.rocketleague)?true:false;
@@ -25,6 +26,57 @@ MainApp.filter('cap', function() {
         }
         else{
           return input.charAt(0).toUpperCase() + input.substr(1).toLowerCase();
+        }
+      }
+    }
+});
+
+MainApp.filter('dateUntilSalon', function(moment) {
+    return function(input) {
+      if ((!!input)) {
+        var today = Date.now();
+        if (input.start > today){
+          return 'Ouvre ' + moment(input.start).fromNow();
+        }
+        else if(input.start < today && input.end > today){
+          return 'Fin ' + moment(input.end).fromNow();
+        }
+        else if(input.end < today){
+          return 'Fini ' + moment(input.end).fromNow();
+        }
+      }
+    }
+});
+
+MainApp.filter('isSalonOpen', function(moment) {
+    return function(input) {
+      if ((!!input)) {
+        var today = Date.now();
+        if (input.start > today){
+          return false;
+        }
+        else if(input.start < today && input.end > today){
+          return true;
+        }
+        else if(input.end < today){
+          return false;
+        }
+      }
+    }
+});
+
+MainApp.filter('dateVerboseSalon', function(moment) {
+    return function(input) {
+      if ((!!input)) {
+        var today = Date.now();
+        if (input.start > today){
+          return 'Ouvre ' + moment(input.start).fromNow();
+        }
+        else if(input.start < today && input.end > today){
+          return 'Fin ' + moment(input.end).fromNow();
+        }
+        else if(input.end < today){
+          return 'Fini ' + moment(input.end).fromNow();
         }
       }
     }

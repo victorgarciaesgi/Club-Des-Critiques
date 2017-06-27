@@ -5,7 +5,7 @@
         <article id="Salons" Ftype=''>
           <div class="header">
             <span>Salons</span>
-            <img class='createSalon popup-bouton' popup="popup-createSalon" src="/assets/add.svg" alt="Ajouter un Salon">
+            <img class='createSalon popup-bouton' popup="popup-createSalon" src="/assets/add_green.svg" alt="Ajouter un Salon">
           </div>
           <ul class="list-salons">
             <div class="salons-search">
@@ -25,9 +25,10 @@
                   {(salon.title)}
                 </div>
                 <div class="s-i-interval">
-                  19/06/2017 - 21/06/2017
+                  {(salon.dates | dateUntilSalon)}
                 </div>
               </div>
+              <div class="salonState" state='{(salon.dates | isSalonOpen)}'></div>
             </li>
           </ul>
         </article>
@@ -70,9 +71,12 @@
               </div>
           </div>
           <div class="footer">
-            <input id='sendMessage' type="text" name="message" value="" placeholder='Votre message...'
+            <input id='sendMessage' autocomplete='off' type="text" name="message" value="" placeholder='Votre message...'
                     ng-model='Chatroom.messages.inputMessage'
                     vg-enter='Chatroom.messages.send()'>
+            <div class="bouton-send" ng-click='Chatroom.messages.send()'>
+              <img src="/assets/send.svg" alt="Envoyer le message">
+            </div>
           </div>
         </article>
 
@@ -151,9 +155,9 @@
               <div class="s-l-title">
                 Options
               </div>
-              <ul>
-                <li class='ng-cloak' ng-repeat='option in Chatroom.options' ng-click='Chatroom.execute(option.action)'>
-                  <img class='icon' src='/assets/{(option.icon)}.svg'>
+              <ul class='ng-cloak'>
+                <li ng-repeat='option in Chatroom.options' ng-click='Chatroom.execute(option.action)'>
+                  <img class='ng-cloak icon' src='/assets/{(option.icon)}.svg'>
                   <span>{(option.text)}</span>
                 </li>
               </ul>
@@ -165,7 +169,7 @@
               </div>
               <ul>
                 <li ng-repeat='user in Chatroom.infos.users'>
-                  <div class="profil" style='background-image: url("http://lorempixel.com/100/100?{(user.name)}")'></div>
+                  <div class="ng-cloak profil" style='background-image: url("http://lorempixel.com/100/100?{(user.name)}")'></div>
                   <span>{(user.name)}</span>
                 </li>
               </ul>
@@ -177,12 +181,28 @@
 
     </div>
 
-    <div id='popup-createSalon' class="popup-box" style='width: 300px' state='false'>
+    <div id='popup-createSalon' class="popup-box" style='width: 400px' state='false'>
         <img id='pin' src="/assets/up.png" alt="">
         <div class="header">
             Ajouter un salon
         </div>
         <div class="content">
+          <form name='createSalonX' ng-submit='createSalon.submit()' autocomplete="off">
+            <search-form vg-model='createSalon.values.search'
+                        vg-data='createSalon.elements.search'
+                        vg-source='{(createSalon.elements.search.source)}'
+                        vg-only-select='true'
+                        vg-origin='"base"'
+                        on-select-result='createSalon.selectResult(result)'>
+            </search-form>
+          </form>
+          <pre>{(createSalon.values | json)}</pre>
+        </div>
+        <div class="footer">
+          <div class="bouton" design='blanc' ng-click='AddBookForm.annul()'>Annuler</div>
+          <div class="bouton" design='blanc' ng-click='AddBookForm.reset()'>Vider les champs</div>
+          <button class="bouton" type='submit' design='green'
+          ng-disabled='AddBookFormX.$invalid'>Créer le salon</button>
 
         </div>
     </div>

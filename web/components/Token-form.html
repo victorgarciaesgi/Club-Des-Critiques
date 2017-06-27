@@ -11,8 +11,11 @@
           }'
           ng-disabled='$ctrl.vgDisabled'
           ng-keydown='$ctrl.keydown($event, $this)'
+          ng-trim="false"
+          ng-blur='$ctrl.displayResult = false'
+          ng-focus='$ctrl.displayResult = true'
          />
-  <div class="input-form-result" ng-if='$ctrl.search_result.data.length > 0 && $ctrl.searchText.length > 0'>
+  <div class="input-form-result" ng-if='$ctrl.search_result.data.length > 0 && $ctrl.searchText.length > 0 && $ctrl.displayResult'>
     <ul ng-show='$ctrl.search_result.data.length > 0'>
       <li ng-repeat='result in $ctrl.search_result.data'
           ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
