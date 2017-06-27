@@ -16,8 +16,13 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       inputMessage: "",
       send(){
         if (this.inputMessage.trim().length > 0) {
-          socket.emit('message', this.inputMessage);
-          this.inputMessage = ""; // remet a 0 le champs
+          if($rootScope.UserConnected){
+            socket.emit('message', this.inputMessage);
+            this.inputMessage = ""; // remet a 0 le champs
+          }
+          else{
+            
+          }
         }
       }
     },
@@ -76,9 +81,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
   $scope.createSalon = {
     values: {},
     elements: {
-      search: new searchForm('Rechercher un livre... (Google Books)','search', true, null,'library_searchBooks', null,true,null),
-      dateStart: new textForm('Date de début...', 'date','date', true,'Date de début du salon ',null, null, 'date', true, null),
-      dateEnd: new textForm('Date de fin du salon', 'date','date', true,'Date de fin du salon',null, null, 'date', true, null),
+      search: new searchForm('Rechercher un livre... (Google Books)','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
+      dateStart: new textForm('Date de début...', 'dateStart','date', true,'Date de début du salon ',null, null, 'date', true, null),
+      dateEnd: new textForm('Date de fin du salon', 'dateEnd','date', true,'Date de fin du salon',null, null, 'date', true, null),
     },
     submit(){
 

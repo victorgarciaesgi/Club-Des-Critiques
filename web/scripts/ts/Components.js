@@ -60,25 +60,34 @@ MainApp.component('searchForm', {
   templateUrl: '../components/Search-form.html',
   controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
-    ctrl.limit = 4;
-    ctrl.bookFound = false;
-    ctrl.selectBook = false;
-    ctrl.error = false;
-    ctrl.errorMessage = "";
-    ctrl.searching = false;
-    ctrl.searchText = "";
-    ctrl.filled = "";
-    ctrl.search_result = {
-      selected: {},
-      data: {},
-      reset: function(){
-        this.selected = {};
-        this.data = {};
-    }}
+    ctrl.init = function(){
+      this.limit = 4;
+      this.selectBook = false;
+      this.error = false;
+      this.errorMessage = "";
+      this.searching = false;
+      this.searchText = "";
+      this.filled = "";
+      this.search_result = {
+        selected: {},
+        data: {},
+        reset: function(){
+          this.selected = {};
+          this.data = {};
+      }}
+    }
+
+    ctrl.$onInit = () => {
+      ctrl.init();
+      // if (!ctrl.vgModel && ctrl.vgOnlySelect){
+      //   ctrl.vgModel = {};
+      // }
+    };
+
     ctrl.keydown = (event, element) => {
       if (event.which == 13) {event.preventDefault();}
-      if (!ctrl.searching && ctrl.vgModel.length > 1 && ctrl.vgModel != undefined){
-        if (event.which == 13) {
+      if (!ctrl.searching && (ctrl.vgModel.length > 1 || ctrl.searchText.length > 1) && (ctrl.vgModel != undefined || ctrl.searchText != undefined)){
+        if (event.which == 13 && !ctrl.error) {
           event.preventDefault();
           ctrl.selectAction(ctrl.search_result.selected);
         }
@@ -95,16 +104,29 @@ MainApp.component('searchForm', {
         else if (event.which == 27) {
           ctrl.error = false;
           ctrl.selectBook = false;
-          ctrl.search_result.reset();
+          ctrl.displayResult = false;
         }
       }
     }
 
     ctrl.selectAction = (book) => {
-      ctrl.onSelectResult({result: book});
-      ctrl.search_result.reset();
-      ctrl.bookFound = true;
-      ctrl.selectBook = true;
+      if (ctrl.vgOnlySelect) {
+        var bookFormated = {
+          idMedia: book.idMedia,
+          name: book.name
+        }
+        ctrl.searchText = book.name;
+        ctrl.vgModel = bookFormated;
+        ctrl.search_result.reset();
+        ctrl.displayResult = false;
+        ctrl.selectBook = true;
+      }
+      else{
+        ctrl.onSelectResult({result: book});
+        ctrl.search_result.reset();
+        ctrl.displayResult = false;
+        ctrl.selectBook = true;
+      }
     }
 
     ctrl.search = (source, value) => {
@@ -115,36 +137,74 @@ MainApp.component('searchForm', {
           ctrl.searching = false;
           ctrl.search_result.reset();
           ctrl.error = true;
+          ctrl.displayResult = true;
           ctrl.errorMessage = result.error;
         }
         else{
           ctrl.searching = false;
           ctrl.search_result.data = result;
+          ctrl.displayResult = true;
           ctrl.search_result.selected = result[0];
           ctrl.search_result.selected["indexList"] = 0;
         }
       },
         (error) => {
-          console.log(error)
           ctrl.searching = false;
+          ctrl.displayResult = false;
           ctrl.search_result.reset();
         })
     }
 
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
-      if (!!newValue){
-        if (newValue.trim().length > 1 && !ctrl.selectBook){
-          ctrl.searching = true;
-          ctrl.search(ctrl.vgSource ,newValue);
+      if (!ctrl.vgOnlySelect) {
+        if (!!newValue){
+          if (newValue.trim().length > 1 && !ctrl.selectBook){
+            ctrl.searching = true;
+            ctrl.search(ctrl.vgSource ,newValue);
+          }
+          else{
+            ctrl.selectBook = false;
+          }
         }
         else{
-          ctrl.selectBook = false;
+          ctrl.vgModel = "";
+          ctrl.init();
         }
       }
       else{
-        ctrl.vgModel = "";
-        ctrl.search_result.reset();
-        ctrl.bookFound = false;
+        if (!!newValue){
+          if ($scope.searchForm[ctrl.vgData.name].$pristine && Object.keys(ctrl.vgModel).length > 0) {
+            $scope.searchForm[ctrl.vgData.name].$setDirty();
+          }
+          ctrl.filled = (Object.keys(ctrl.vgModel).length == 0?null:"filled");
+        }
+        else{
+          ctrl.init();
+          ctrl.vgModel = {};
+        }
+      }
+    })
+    $scope.$watch('$ctrl.searchText',(newValue, oldValue, scope) => {
+      if (ctrl.vgOnlySelect) {
+        if (!!newValue){
+          if (newValue.trim().length > 0 && !ctrl.selectBook){
+            if ($scope.searchForm[ctrl.vgData.name].$pristine) {
+              $scope.searchForm[ctrl.vgData.name].$setDirty();
+            }
+            ctrl.searching = true;
+            ctrl.search(ctrl.vgSource ,newValue);
+          }
+          else{
+            ctrl.selectBook = false;
+          }
+        }
+        else{
+          ctrl.searchText = "";
+          ctrl.vgModel = {};
+          ctrl.filled = "";
+          ctrl.displayResult = false;
+          ctrl.search_result.reset();
+        }
       }
     })
   },
@@ -163,21 +223,24 @@ MainApp.component('tokenForm', {
   templateUrl: '../components/Token-form.html',
   controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
-    ctrl.error = false;
-    ctrl.errorMessage = "";
-    ctrl.searching = false,
-    ctrl.selectToken = false;
-    ctrl.searchText = "";
-    ctrl.filled = "";
-    ctrl.search_result = {
-      selected: {},
-      data: {},
-      reset: function(){
-        this.selected = {};
-        this.data = {};
-    }}
+    ctrl.init = function(){
+      this.error = false;
+      this.errorMessage = "";
+      this.searching = false,
+      this.selectToken = false;
+      this.searchText = "";
+      this.filled = "";
+      this.search_result = {
+        selected: {},
+        data: {},
+        reset(){
+          this.selected = {};
+          this.data = {};
+      }}
+    }
 
     ctrl.$onInit = () => {
+      ctrl.init();
       if (!ctrl.vgModel){
         ctrl.vgModel = [];
       }
@@ -190,6 +253,7 @@ MainApp.component('tokenForm', {
           ctrl.searching = false;
           ctrl.search_result.reset();
           ctrl.error = true;
+          ctrl.displayResult = true;
           ctrl.errorMessage = result.error;
         }
         else if(result.length > 0){
@@ -238,7 +302,7 @@ MainApp.component('tokenForm', {
       }
     }
 
-    ctrl.delete = (event,index, token) => {
+    ctrl.delete = (event, index, token) => {
       ctrl.vgModel.splice(index, 1);
     }
 
@@ -247,9 +311,13 @@ MainApp.component('tokenForm', {
         if ($scope.tokenForm[ctrl.vgData.name].$pristine && newValue.length > 0) {
           $scope.tokenForm[ctrl.vgData.name].$setDirty();
         }
+        else if(!newValue.length){
+          ctrl.init();
+        }
         ctrl.filled = (newValue.length == 0?null:"filled");
       }
       else{
+        ctrl.init();
         ctrl.vgModel = [];
       }
     }, true)

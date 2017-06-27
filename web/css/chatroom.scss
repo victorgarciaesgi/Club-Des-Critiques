@@ -191,8 +191,8 @@ article#Salons{
         position: relative;
         float: left;
         height: 100%;
-        width: 60px;
-        padding: 5px;
+        width: 70px;
+        padding: 5px 5px 5px 15px;
 
         div{
           height: 100%;
@@ -206,8 +206,8 @@ article#Salons{
         position: relative;
         float: left;
         height: 100%;
-        padding: 5px 15px 5px 5px;
-        width: calc(100% - 60px);
+        padding: 5px;
+        width: calc(100% - 70px);
 
         div{
           position: relative;
@@ -231,7 +231,7 @@ article#Salons{
       }
       .salonState{
         position: absolute;
-        right: 5px;
+        right: left;
         top: 50%;
         height: 8px;
         width: 8px;
@@ -239,7 +239,10 @@ article#Salons{
         @include translateY(-50%);
 
         &[state='false']{
-          background-color: $red1
+          background-color: $w200;
+        }
+        &[state='notyet']{
+          background-color: $mainMarron;
         }
         &[state='true']{
           background-color: $mainGreen2;

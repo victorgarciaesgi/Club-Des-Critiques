@@ -34,10 +34,10 @@ class textForm{
     if (validator) {this.validator = validator}
     if(error){
       this.errors = {};
-      if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
       if(validator){
         this.errors = map[validator];
       }
+      if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
     }
   }
 }
@@ -52,10 +52,10 @@ class searchForm{
     if (validator) {this.validator = validator}
     if(error){
       this.errors = {};
-      if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
       if(validator){
         this.errors = map[validator];
       }
+      if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
     }
   }
 }
@@ -66,5 +66,22 @@ class ratingForm{
     this.editable = editable;
     this.required = required;
     if (init != null) {this.init = init}
+  }
+}
+
+
+class dateBetweenForm{
+  constructor(startName,Endname, required, error, errorMessage){
+    this.startName = startName;
+    this.endName = endName;
+    this.required = required;
+    this.validator = 'dateBetween';
+    if(error){
+      this.errors = {};
+      if(validator){
+        this.errors = map[validator];
+      }
+      if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
+    }
   }
 }

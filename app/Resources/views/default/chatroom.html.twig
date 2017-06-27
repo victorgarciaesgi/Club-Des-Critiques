@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 {% block body %}
+<ng-controller ng-controller='chatroom'>
     <div id="chatroom">
       <section ng-class='{infos: Chatroom.infos.open, close: !Chatroom.infos.open}'>
         <article id="Salons" Ftype=''>
@@ -186,8 +187,8 @@
         <div class="header">
             Ajouter un salon
         </div>
+        <form name='createSalonX' ng-submit='createSalon.submit()' autocomplete="off">
         <div class="content">
-          <form name='createSalonX' ng-submit='createSalon.submit()' autocomplete="off">
             <search-form vg-model='createSalon.values.search'
                         vg-data='createSalon.elements.search'
                         vg-source='{(createSalon.elements.search.source)}'
@@ -195,16 +196,17 @@
                         vg-origin='"base"'
                         on-select-result='createSalon.selectResult(result)'>
             </search-form>
-          </form>
+
           <pre>{(createSalon.values | json)}</pre>
         </div>
         <div class="footer">
-          <div class="bouton" design='blanc' ng-click='AddBookForm.annul()'>Annuler</div>
-          <div class="bouton" design='blanc' ng-click='AddBookForm.reset()'>Vider les champs</div>
+          <div class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</div>
           <button class="bouton" type='submit' design='green'
-          ng-disabled='AddBookFormX.$invalid'>Créer le salon</button>
-
+          ng-disabled='createSalonX.$invalid'>Créer le salon</button>
         </div>
+        </form>
     </div>
+
+</ng-controller>
 
 {% endblock %}

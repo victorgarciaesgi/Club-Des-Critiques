@@ -59,6 +59,7 @@ function randomNumber(min, max){
   return Math.floor(Math.random()*(max-min+1)+min)
 }
 
+
 function mergeBooks(array){
   var final_array = [];
   $.each(array, function(index, o) {
