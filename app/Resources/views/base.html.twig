@@ -211,6 +211,16 @@
 </div>
 
 
+<!-- Alertes  -->
+
+<ul id="alertes-container" class='ng-cloak'>
+  <li ng-repeat='alert in Alerts.list track by alert.id' type='{(alert.type)}'>
+    <span>{(alert.message)}</span>
+    <img src="/assets/{(alert.type == 'success'?'form-valid-green.svg':'form-invalid-red.svg')}" alt="">
+  </li>
+</ul>
+
+
 </ng-controller>
 
 {% block body %}{% endblock %}

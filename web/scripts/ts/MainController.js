@@ -5,7 +5,7 @@ var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment']
     $interpolateProvider.endSymbol(')}');
 });
 
-MainApp.run(function($rootScope, amMoment) {
+MainApp.run(function($rootScope, amMoment, $timeout) {
     amMoment.changeLocale('fr');
     $rootScope.Rootview = '';
     $rootScope.UserConnected = (!!window.nohomo)?true:false;
@@ -14,6 +14,28 @@ MainApp.run(function($rootScope, amMoment) {
       $rootScope.UserInfos = {
         id: (!!window.php)?window.php:false,
         name: (!!window.javaEE)?window.javaEE:false,
+      }
+    }
+
+    $rootScope.Alerts = {
+      count: 0,
+      list: [],
+      delete(alert){
+        var index = this.list.findIndex(element => element.id == alert.id);
+        this.list.splice(index, 1);
+      },
+      add(type, message, actions){
+        var alert = {
+          id: this.count,
+          type: type,
+          message: message,
+          actions: actions
+        }
+        this.count++;
+        this.list.push(alert);
+        $timeout(() => {
+          this.delete(alert);
+        },5000)
       }
     }
 });
