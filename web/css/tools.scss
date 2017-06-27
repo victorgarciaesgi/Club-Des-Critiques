@@ -394,12 +394,12 @@ rating-form{
     @include translateY(-50%);
     height: 20px;
     width: 20px;
+    display: flex;
+    justify-content: center;
 
     .loading-spinner{
       position: absolute;
       right: 0px;
-      top: 50%;
-      @include translateY(-50%);
     }
 
     &::after{
@@ -411,8 +411,6 @@ rating-form{
       height: auto;
       text-align: center;
       vertical-align: text-top;
-      top: 50%;
-      @include translateY(-50%);
       right: 25px;
       border-radius: 20px;
       font-size: 11px;
@@ -478,6 +476,14 @@ rating-form{
       float: left;
       height: auto;
       width: 100%;
+
+      div.error_message{
+        height: 50px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
 
       li{
         position: relative;
@@ -895,6 +901,7 @@ select{
     display: inline-block;
     background-color: $mainGreen2;
     min-width: 100px;
+    max-width: calc(100% - 30px);
     text-align: center;
     padding: 0 20px 0 20px;
     color: white;

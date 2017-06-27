@@ -9,28 +9,29 @@ MainApp.directive('vgVerificator', function($q, PromiseImage) {
     link: function(scope, elm, attrs, ctrl) {
       var validator = attrs.vgVerificator;
       switch (validator) {
-        case "link":
-          var regxp = new RegExp("(https?:\/\/.*)")
-          ctrl.$asyncValidators.link = (modelValue, viewValue) => {
-            var def = $q.defer();
+        case "linkImage":
+          var regxp = new RegExp("(https?:\/\/.*)");
+
+          ctrl.$validators.link = (modelValue, viewValue) => {
             if(!!modelValue){
-              var verif = regxp.test(modelValue)
+              var verif = regxp.test(modelValue);
               if(verif){
-                PromiseImage.load(modelValue).then((result) =>{
-                  def.resolve();
-                }, (error) => {
-                  def.reject();
-                })
+                ctrl.$asyncValidators.image = (modelValue, viewValue) => {
+                  var def = $q.defer();
+                  if(!!modelValue){
+                    PromiseImage.load(modelValue).then((result) =>{
+                      def.resolve();
+                    }, (error) => {def.reject()})
+                  }
+                  else{def.reject()}
+                  return def.promise;
+                };
+                return true;
               }
-              else{
-                def.reject();
-              }
+              else{return false}
             }
-            else{
-              def.reject();
-            }
-            return def.promise;
-          };
+            else{return true}
+          }
           break;
         default:
 
@@ -58,13 +59,13 @@ MainApp.directive('onFinishRender', function ($timeout) {
   return {
       restrict: 'A',
       link: function (scope, element, attrs) {
-          if (scope.$last === true) {
-              $timeout(function () {
-                scope.$apply(function (){
-                    scope.$eval(attrs.onFinishRender);
-                });
+        if (scope.$last === true) {
+            $timeout(function () {
+              scope.$apply(function (){
+                  scope.$eval(attrs.onFinishRender);
               });
-          }
+            });
+        }
       }
   }
 })

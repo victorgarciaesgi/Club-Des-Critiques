@@ -65,7 +65,9 @@ MainApp.component('searchForm', {
     ctrl.selectBook = false;
     ctrl.error = false;
     ctrl.errorMessage = "";
-    ctrl.searching = false,
+    ctrl.searching = false;
+    ctrl.searchText = "";
+    ctrl.filled = "";
     ctrl.search_result = {
       selected: {},
       data: {},
@@ -73,7 +75,6 @@ MainApp.component('searchForm', {
         this.selected = {};
         this.data = {};
     }}
-
     ctrl.keydown = (event, element) => {
       if (event.which == 13) {event.preventDefault();}
       if (!ctrl.searching && ctrl.vgModel.length > 1 && ctrl.vgModel != undefined){
@@ -152,6 +153,8 @@ MainApp.component('searchForm', {
     vgData: '<',
     vgDisabled: '=?',
     vgSource: '@',
+    vgOrigin: '<?',
+    vgOnlySelect: '<?',
     onSelectResult: '&'
   }
 });

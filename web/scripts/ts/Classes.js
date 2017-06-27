@@ -2,10 +2,23 @@
 
 var map = {
   required: 'Ce champs est obligatoire',
-  link: 'Le lien de l\'illustration doit être une image',
-  number: 'Ce champs doit être un nombre',
-  email: 'Ce champs doit être une adresse valide',
-  date: 'La date doit être valide'
+  linkImage: {
+    link: 'Le lien de l\'illustration doit être valide',
+    image: 'Le lien de l\'illustration doit renvoyer une image'
+  },
+  number: {
+    number: 'Ce champs doit être un nombre'
+  },
+  email: {
+    email: 'Ce champs doit être une adresse valide'
+  },
+  date: {
+    date: 'La date doit être valide'
+  },
+  dateBetween: {
+    start: 'La date de début doit être dans le futur',
+    end: 'La date de fin'
+  },
 }
 
 
@@ -22,7 +35,9 @@ class textForm{
     if(error){
       this.errors = {};
       if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
-      if(validator){this.errors[validator] = map[validator]}
+      if(validator){
+        this.errors = map[validator];
+      }
     }
   }
 }
@@ -38,7 +53,9 @@ class searchForm{
     if(error){
       this.errors = {};
       if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
-      if(validator){this.errors[validator] = map[validator]}
+      if(validator){
+        this.errors = map[validator];
+      }
     }
   }
 }

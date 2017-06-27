@@ -134,7 +134,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     elements: {
       search: new searchForm('Rechercher un livre... (Google Books)','search', true, null,'library_addSearch', null,true,null),
       author: new textForm('Auteur..','author','text',true,'Autheur(s) du livre',null, null, null, true, null),
-      illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'link', true,'L\'illustration du livre est obligatoire'),
+      illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'linkImage', true,'L\'illustration du livre est obligatoire'),
       description: new textForm('Description','description','text',true,null,null, null, null, true, null),
       categories: new textForm('Catégories.. (Entrée pour ajouter un élément)','categories','text',true,'Catégories de ce livre','library_searchCategories', null, null, true, 'Veuillez rentrer au moins une catégorie'),
       pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),

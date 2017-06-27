@@ -60,7 +60,7 @@ class LibraryController extends Controller
 
     function returnOneBookInfos($idMedia){
       $content = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media')->find($idMedia);
-      $book = $this->getSerializer()->serialize($content, 'json');
+      $book = $this->getSerializer()->normalize($content, 'null');
       return $book;
     }
 
@@ -133,6 +133,8 @@ class LibraryController extends Controller
 
       $book = $this->returnOneBookInfos($data);
 
+      $book['categories'] = $this->returnCategoriesByBook($book['idMedia']);
+
       return new JsonResponse($book);
     }
 
@@ -173,6 +175,32 @@ class LibraryController extends Controller
       }
       return new JsonResponse($books);
     }
+
+    /**
+     * @Route("/library/searchBaseBooks", options = { "expose" = true }, name="library_searchBooks")
+     * @Method({"POST"})
+     */
+
+    public function SearchBooksAction(Request $request) {
+      $data = $this->decodeAjaxRequest($request);
+
+      $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
+      $content = $repository->createQueryBuilder('m')
+               ->where('m.name LIKE :name')
+               ->setParameter('name', '%'.$data.'%')
+               ->setMaxResults(4)
+               ->getQuery();
+      $results = $content->getArrayResult();
+      if (sizeof($results) > 0) {
+        return new JsonResponse($results);
+      }
+      else {
+        $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);
+        return new JsonResponse($error_data);
+      }
+    }
+
+
 
 
     /**

@@ -82,13 +82,19 @@ section{
 
     .list-books{
       position: relative;
-      float: left;
       height: 100%;
       width: auto;
       max-width: 100%;
       max-height: 270px;
-      overflow-x: auto;
-      white-space: nowrap;
+      display: flex;
+      padding: 10px;
+      justify-content: flex-start;
+      flex-wrap: nowrap;
+      overflow: auto;
+
+      .book-wrapper{
+        flex: 10 0 auto;
+      }
     }
   }
 }

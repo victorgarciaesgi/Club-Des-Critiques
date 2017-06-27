@@ -21,10 +21,15 @@
    <div ng-show='textForm[$ctrl.vgName].$pristine && $ctrl.vgRequired' class="form-valid-icon form-required"></div>
 </div>
   <div class="errorMessage" ng-show='textForm[$ctrl.vgName].$invalid && textForm[$ctrl.vgName].$dirty'>
-     <span ng-if='textForm[$ctrl.vgName].$error[$ctrl.vgValidator]'>{($ctrl.vgErrors[$ctrl.vgValidator])}</span>
+    <span ng-repeat='(key, value) in textForm[$ctrl.vgName].$error' ng-if='textForm[$ctrl.vgName].$error && key != "required"'>
+      <span>{($ctrl.vgErrors[key])}</span>
+    </span>
      <span ng-if='textForm[$ctrl.vgName].$error.required && $ctrl.vgErrors.required'>{($ctrl.vgErrors.required)}</span>
   </div>
   <div class="infoMessage" ng-show='textForm[$ctrl.vgName].$pending'>
-    <span ng-if='textForm[$ctrl.vgName].$pending[$ctrl.vgValidator]'>Verification...</span>
+    <span ng-repeat='(key, value) in textForm[$ctrl.vgName].$pending'>
+      <span>Verification...</span>
+    </span>
   </div>
+  <!-- <pre>{(textForm[$ctrl.vgName].$pending)}</pre> -->
 </ng-form>

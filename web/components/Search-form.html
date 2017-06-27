@@ -1,12 +1,15 @@
 <ng-form name='searchForm'>
 <div class="input-form-wrap f-left h-auto w-100">
-  <input type="{($ctrl.vgData.type)}"
+  <input type="{($ctrl.vgData.type)}" ng-if='!$ctrl.vgOnlySelect'
           ng-model='$ctrl.vgModel'
           class='input-form'
           placeholder="{($ctrl.vgData.placeholder)}"
           name='{($ctrl.vgData.name)}'
           ng-required='$ctrl.vgData.required'
-          ng-model-options='{debounce: 500}'
+          ng-model-options="{
+            updateOn: 'default blur',
+            debounce: { 'default': 500, 'blur': 0 }
+          }"
           ng-disabled='$ctrl.vgDisabled'
           ng-keydown='$ctrl.keydown($event, $this)'
           ng-class='{
@@ -17,8 +20,26 @@
           ng-blur='$ctrl.displayResult = false'
           ng-focus='$ctrl.displayResult = true'
          />
+   <input type="{($ctrl.vgData.type)}" ng-if='$ctrl.vgOnlySelect'
+           ng-model='$ctrl.vgModel'
+           class='input-form'
+           placeholder="{($ctrl.vgData.placeholder)}"
+           ng-model-options="{
+             updateOn: 'default blur',
+             debounce: { 'default': 300, 'blur': 0 }
+           }"
+           ng-disabled='$ctrl.vgDisabled'
+           ng-keydown='$ctrl.keydown($event, $this)'
+           ng-class='{
+             formError: (searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length),
+             formValid: (searchForm[$ctrl.vgData.name].$valid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length)
+           }'
+           ng-trim="false"
+           ng-blur='$ctrl.displayResult = false'
+           ng-focus='$ctrl.displayResult = true'
+          />
   <div class="input-form-result" ng-if='($ctrl.search_result.data.length > 0 || $ctrl.error) && $ctrl.vgModel.length > 0 && $ctrl.displayResult'>
-    <ul ng-show='$ctrl.search_result.data.length > 0'>
+    <ul ng-show='$ctrl.search_result.data.length > 0' ng-if='$ctrl.vgOrigin == "google"'>
       <li ng-repeat='result in $ctrl.search_result.data | limitTo: $ctrl.limit'
           ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
           ng-mousedown='$ctrl.selectAction(result)' book>
@@ -29,6 +50,20 @@
           <span class='title'>{(result.volumeInfo.title)}</span>
           <span class='author'>{(result.volumeInfo.authors[0])}</span>
           <span class='description'>{(result.volumeInfo.description)}</span>
+        </div>
+      </li>
+    </ul>
+    <ul ng-show='$ctrl.search_result.data.length > 0' ng-if='$ctrl.vgOrigin == "base"'>
+      <li ng-repeat='result in $ctrl.search_result.data | limitTo: $ctrl.limit'
+          ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
+          ng-mousedown='$ctrl.selectAction(result)' book>
+        <div class="cover"
+        style='background-image: url({(result.img?result.img:"/assets/no_thumbnail.jpg")})'>
+        </div>
+        <div class="infos">
+          <span class='title'>{(result.name)}</span>
+          <span class='author'>{(result.author)}</span>
+          <span class='description'>{(result.description)}</span>
         </div>
       </li>
     </ul>
@@ -43,8 +78,21 @@
   <div ng-if='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty && !$ctrl.searching && !$ctrl.search_result.data.length' class="form-valid-icon form-invalid"></div>
   <div ng-if='searchForm[$ctrl.vgData.name].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
 </div>
-<div class="errorMessage" ng-if='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty'>
-   <span ng-show='searchForm[$ctrl.vgData.name].$error[$ctrl.vgData.validator]'>{($ctrl.vgData.errors[$ctrl.vgData.validator])}</span>
-   <span ng-show='searchForm[$ctrl.vgData.name].$error.required'>{($ctrl.vgData.errors.required)}</span>
+
+<input ng-if='$ctrl.vgOnlySelect' type="hidden" class='input-form'
+      ng-model='$ctrl.filled'
+      name='{($ctrl.vgData.name)}'
+      ng-required='$ctrl.vgData.required'>
+
+<div class="errorMessage" ng-show='searchForm[$ctrl.vgData.name].$invalid && searchForm[$ctrl.vgData.name].$dirty'>
+  <span ng-repeat='(key, value) in searchForm[$ctrl.vgData.name].$error' ng-if='searchForm[$ctrl.vgData.name].$error && key != "required"'>
+    <span>{($ctrl.vgData.errors[key])}</span>
+  </span>
+   <span ng-if='searchForm[$ctrl.vgData.name].$error.required && $ctrl.vgData.errors.required'>{($ctrl.vgData.errors.required)}</span>
+</div>
+<div class="infoMessage" ng-show='searchForm[$ctrl.vgData.name].$pending'>
+  <span ng-repeat='(key, value) in searchForm[$ctrl.vgData.name].$pending'>
+    <span>Verification...</span>
+  </span>
 </div>
 </ng-form>

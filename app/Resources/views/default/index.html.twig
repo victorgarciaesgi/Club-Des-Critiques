@@ -11,17 +11,7 @@
                 </p>
                 <br>
                 <p>
-                    Afin de comprendre au mieux les usages et les besoins des utilisateurs ainsi que les objectifs du projet, il est important d’analyser l’environnement et la cible de ce dernier.
-                    <br><br>
-                    En prenant en compte la modification des pratiques culturelles, malgré certaines idées reçues, nous avons constaté que la lecture de livres est une pratique très stable (source : ministère de la culture). Le nombre d’exemplaires vendus a même augmenté d’environ 150 millions entre les années 1990 et 2011. De ce fait, il n’existe pas de crise majeure du livre.
-                    <br><br>
-                    D’après une étude de l’INSEE, les plus gros lecteurs sont les cadres supérieurs et les professions intermédiaires. Nous pouvons donc inclure cette part de la population dans notre cible.
-                    <br><br>
-                    Cependant, l’émergence de la culture du book Hall 1 et des clubs de lecture en ligne ont fait apparaitre de nouvelles façons d’appréhender et de partager la lecture, ce qui nous amène à prendre en compte une cible plus jeune. Contrairement aux cadres, ils disposent également de plus de temps et privilégient particulièrement l’utilisation du Web et des sites communautaires. Ces derniers lisent plus qu’avant, même si la part de gros lecteurs à diminuée. Ils sont particulièrement attirés par des genres destinés à leur public (science-fiction, fantastique, bandes dessinées ou encore jeux-vidéo).
-                    <br><br>
-                    Une étude de l’INSEE, l’Institut National de la Statistique et des Etudes Economiques, démontre l’évolution des supports de lecture. En effet, les gens lisent davantage sur le Web. Ce qui peut laisser penser qu’ils utilisent le web pour orienter et partager leur lecture. Mark Zuckerberg, fondateur de Facebook, a lui-même mis en place un club de lecture en ligne sur son réseau social en 2015 afin de partager à sa communauté ses lectures hebdomadaires.
-                    <br><br>
-                    En tenant compte des usages actuels (Web, réseaux sociaux, usage collaboratif...),nous pouvons toucher une cible importante et variée, d’autant plus si le projet évolue et s’étend à la critique d’oeuvres diversifiées.
+                    
                 </p>
             </div>
         </section>
@@ -32,91 +22,22 @@
             </div>
             <div class="content">
                 <ul id='books-une' class='list-books'>
+                  <li ng-repeat='book in BooksUne.elements track by $index'
+                  class='ng-cloak book-wrapper'
+                  ng-click='BooksUne.show(book)'>
+                  <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
+                  <div class="cover-wrap">
+                    <div class="ng-cloak cover" style='background-image: url("http://lorempixel.com/200/200")'></div>
+                  </div>
+                  <div class="book-info-wrapper">
+                    <div class="name info-book" ng-cloak>Lorem Ipsum</div>
+                    <div class="author info-book" ng-cloak>Atheur</div>
+                    <rating-form vg-init='3.5' vg-editable='false'
+                                  vg-displaynote='false'>
+                    </rating-form>
+                  </div>
+              </li>
 
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">Harry Potter et l'enfant maudit</div>
-                        <div class="author info-book">J.K Rowling</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_plain.svg" alt="">
-                            <img src="/assets/star_half.svg" alt="">
-                            <img src="/assets/star_empty.svg" alt="">
-                        </div>
-                    </li>
-                    <li class='book-wrapper'>
-                        <div class="cover" style=''></div>
-                        <div class="name info-book">The Sellout</div>
-                        <div class="author info-book">Paul Beatty</div>
-                        <div class="rating info-book">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_half.svg" alt="star">
-                            <img src="/assets/star_empty.svg" alt="star">
-                        </div>
-                    </li>
                 </ul>
             </div>
         </section>

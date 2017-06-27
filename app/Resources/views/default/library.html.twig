@@ -63,7 +63,7 @@
               </div>
             </div>
             <ul class="books-list">
-              <li ng-repeat='book in Library.books.elements track by $index'
+              <li ng-repeat='book in Library.books.elements track by book.idMedia'
                   class='ng-cloak book-wrapper'
                   ng-click='Library.books.show(book)'
                   on-finish-render='Library.lazyProcessing = false'>
@@ -111,6 +111,8 @@
                 <search-form vg-model='AddBookForm.values.search'
                             vg-data='AddBookForm.elements.search'
                             vg-source='{(AddBookForm.elements.search.source)}'
+                            vg-only-select='false'
+                            vg-origin='"google"'
                             on-select-result='AddBookForm.selectResult(result)'>
                 </search-form>
                 <text-form vg-model='AddBookForm.values.author'
@@ -166,8 +168,8 @@
                               vg-init='AddBookForm.elements.rating.init'
                               vg-displaynote='false'>
                 </rating-form>
-                <!-- <input type="checkbox" ng-init='debugForm = false' ng-model='debugForm'> Afficher valeurs de debug
-                <pre ng-if='debugForm'>{(AddBookForm.values | json)}</pre> -->
+                <input type="checkbox" ng-init='debugForm = false' ng-model='debugForm'> Afficher valeurs de debug
+                <pre ng-if='debugForm'>{(AddBookForm.values | json)}</pre>
               </div><!--
             --><div class="form-section" color>
                   <div class="book-form-preview" >

@@ -106,7 +106,7 @@ $desktop: "(min-width: 1001px)";
       font-weight: bold;
       font-size: 15px;
       text-align: center;
-      z-index: 2;
+      z-index: 102;
       @include ellipsis;
     }
   }
@@ -206,7 +206,7 @@ article#Salons{
         position: relative;
         float: left;
         height: 100%;
-        padding: 5px;
+        padding: 5px 15px 5px 5px;
         width: calc(100% - 60px);
 
         div{
@@ -229,6 +229,22 @@ article#Salons{
           color: rgb(160,160,160);
         }
       }
+      .salonState{
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        height: 8px;
+        width: 8px;
+        border-radius: 100%;
+        @include translateY(-50%);
+
+        &[state='false']{
+          background-color: $red1
+        }
+        &[state='true']{
+          background-color: $mainGreen2;
+        }
+      }
     }
   }
 
@@ -241,7 +257,8 @@ article#Messages{
   border-right: 1px solid rgb(220,220,220);
 
   .header{
-    padding: 0 40px 0 40px;
+    padding: 0 40px 0 10px;
+    text-align: left;
 
     div.icons{
       position: absolute;
@@ -273,9 +290,22 @@ article#Messages{
       border-radius: 5px;
       border: none;
       padding-left: 10px;
+      padding-right: 40px;
       font-size: 15px;
       outline: none;
       background-color: white;
+    }
+
+    .bouton-send{
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      width: 40px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
     }
   }
 
@@ -300,15 +330,25 @@ article#Messages{
       font-size: 13px;
       z-index: 1;
       margin-bottom: 10px;
-      @include transition(right 0.3s);
 
-      &.ng-enter {
+      &[self='true'][new='true'].ng-enter {
+        @include transition(right 0.3s);
         right: -20px;
       }
 
-      &.ng-enter.ng-enter-active {
+      &[self='true'][new='true'].ng-enter.ng-enter-active {
         right: 0px;
       }
+
+      &[self='false'][new='true'].ng-enter {
+        @include transition(left 0.3s);
+        left: -20px;
+      }
+
+      &[self='false'][new='true'].ng-enter.ng-enter-active {
+        left: 0px;
+      }
+
 
       &.top{
         margin-bottom: 2px;
