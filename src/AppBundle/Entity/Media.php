@@ -68,7 +68,7 @@ class Media
      *
      * @var float
      *
-     * @ORM\Column(name="price", type="float", nullable=false)
+     * @ORM\Column(name="price", type="float", nullable=true)
      */
     private $price;
 
