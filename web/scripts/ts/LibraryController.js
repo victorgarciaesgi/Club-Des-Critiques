@@ -33,13 +33,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       }
     },
     order: {
-      value: {label: 'Titre', value:'name'},
+      value: {label: 'Titre', value:'m.name'},
       elements: [
-        {label: 'Titre', value:'name'},
-        {label: 'Date de publication', value:'releaseDate'},
-        {label: 'Auteur', value:'author'},
+        {label: 'Titre', value:'m.name'},
+        {label: 'Date de publication', value:'m.releaseDate'},
+        {label: 'Auteur', value:'m.author'},
         {label: 'Note', value:'note'},
-        {label: 'Prix', value:'price'},
+        {label: 'Prix', value:'m.price'},
       ],
     },
     tri: {
@@ -158,10 +158,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     show(){this.display = true},
     hide(){this.display = false},
     submit() {
-      console.log(this.values);
       this.submitting = true;
       AjaxRequest.get('library_addBook',this.values).then((result) => {
-        console.log(result);
         if (result.success){
           this.display = false;
           $scope.Library.filter();
@@ -169,8 +167,11 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
           this.reset();
         }
         else{
-          $rootScope.Alerts.add('error', result.error,'');
+          $rootScope.Alerts.add('error', result.error);
         }
+      },(error) => {
+        $rootScope.Alerts.add('error','Erreur lors de l\'ajout');
+        this.submitting = false;
       });
     },
     reset(){

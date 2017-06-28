@@ -169,10 +169,11 @@ class LibraryController extends Controller
                            FROM AppBundle:Media m
                            INNER JOIN AppBundle:CategoryAffiliation mc
                            WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
+                           AND mc.idMedia = m.idMedia
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
                            GROUP by m.idMedia
-                           ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
+                           ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
         ->setFirstResult($data['limit']);
         $books = $query->getResult();
@@ -183,7 +184,7 @@ class LibraryController extends Controller
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
                            GROUP by m.idMedia
-                           ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
+                           ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
         ->setFirstResult($data['limit']);
         $books = $query->getResult();

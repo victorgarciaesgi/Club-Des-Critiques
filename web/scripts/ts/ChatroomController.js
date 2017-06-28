@@ -81,7 +81,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       socket.emit('createRoom', 1);
       socket.emit('createUser', $rootScope.UserInfos);
 
-      AjaxRequest.get('library_getOneBook', 63).then((result) => {
+      AjaxRequest.get('library_getOneBook', 69).then((result) => {
         this.infos.book = result;
       });
       return this;
@@ -98,7 +98,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     preview: {},
     submit(){
-
+      socket.emit('New:Room',this.values);
     },
     reset(){
       this.values = {};
