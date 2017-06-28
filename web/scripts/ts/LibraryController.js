@@ -124,9 +124,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
   };
   $scope.Library.init()
 
-  // $timeout(function(){
-  //   $rootScope.Alerts.add('success','Le livre a bien été ajouté à la bibliotèque','');
-  // },2000)
+  $rootScope.Alerts.add('success','Test de la notif');
+  $rootScope.Alerts.add('error','Test de la notif');
+
+
+  $timeout(function(){
+    $rootScope.Alerts.add('success','Test de la notif');
+  },2000)
 
 
 
@@ -160,11 +164,11 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         if (result.success){
           this.display = false;
           $scope.Library.filter();
-          $rootScope.Alerts.add('success','Le livre a bien été ajouté à la bibliotèque','');
+          $rootScope.Alerts.add('success',result.success);
           this.reset();
         }
         else{
-
+          $rootScope.Alerts.add('error', result.error,'');
         }
       });
     },

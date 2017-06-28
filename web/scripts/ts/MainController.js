@@ -24,12 +24,11 @@ MainApp.run(function($rootScope, amMoment, $timeout) {
         var index = this.list.findIndex(element => element.id == alert.id);
         this.list.splice(index, 1);
       },
-      add(type, message, actions){
+      add(type, message){
         var alert = {
           id: this.count,
           type: type,
           message: message,
-          actions: actions
         }
         this.count++;
         this.list.push(alert);
