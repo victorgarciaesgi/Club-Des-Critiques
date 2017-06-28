@@ -101,7 +101,7 @@ class Media
      * Lien d'achat du livre
      *
      * @var \DateTime
-     * @ORM\Column(name="buy_link", type="string",length=500 , nullable=false)
+     * @ORM\Column(name="buy_link", type="string",length=500 , nullable=true)
      */
     private $buyLink;
 

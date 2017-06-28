@@ -44,7 +44,9 @@ class MediaController extends Controller
         $media->setDescription($data['description']);
         $media->setNumberPage($data['pages']);
         $media->setImg($data['illustration']);
-        $media->setBuyLink($data['buyLink']);
+
+        if(!empty($data['buyLink']))
+            $media->setBuyLink($data['buyLink']);
 
         //verifie si un isbn 13 est présent, sinon verifie pour l'isbn 10
         //renvoi 0 si aucun des 2 n'est trouvé
