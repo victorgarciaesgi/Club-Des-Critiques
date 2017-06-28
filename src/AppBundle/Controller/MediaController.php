@@ -49,9 +49,14 @@ class MediaController extends Controller
 
         //verifie si un isbn 13 est présent, sinon verifie pour l'isbn 10
         //renvoi 0 si aucun des 2 n'est trouvé
-        $isbn = $this->findIsbn($data['isbn']);
+        if(!empty($data['isbn']))
+            $isbn = $this->findIsbn($data['isbn']);
+        else
+            $isbn = "0";
+
         $media->setIsbn($isbn);
         $media->setPrice($data['price']);
+
 
         //si l'isbn est à 0 le livre n'est pas validé
         $valid = $this->isValid($isbn);
@@ -82,7 +87,7 @@ class MediaController extends Controller
         $this->setNote($media, $data['rating']);
         $em->clear();
 
-        $success = json_encode(array('success' => $media->getName() . " bien ajouté à la librairie"), JSON_FORCE_OBJECT);
+        $success = json_encode(array('success' => $media->getName() . " a bien été ajouté à la librairie"), JSON_FORCE_OBJECT);
         return new JsonResponse($success);
     }
 
