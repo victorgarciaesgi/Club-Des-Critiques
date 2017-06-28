@@ -41,7 +41,6 @@ class LibraryController extends Controller
       ->setFirstResult($limit)
       ->findBy(array(), array($column => $tri));
 
-
       $books = $this->getSerializer()->normalize($content, 'null');
       return $books;
     }
@@ -53,6 +52,17 @@ class LibraryController extends Controller
                                  WHERE m.idMedia = :idMedia
                                  AND mc.idMedia = m.idMedia
                                  AND mc.idCategory = c.idCategory"
+      )->setParameter('idMedia',$idMedia);
+      $result = $query->getResult();
+      return json_decode($this->getSerializer()->serialize($result, 'json'));
+    }
+
+    function returnNoteByBook($idMedia){
+      $em = $this->getDoctrine()->getManager();
+      $query = $em->createQuery("SELECT avg(n.note)
+                                 FROM AppBundle:Media m, AppBundle:Note n
+                                 WHERE m.idMedia = :idMedia
+                                 AND n.idMedia = m.idMedia"
       )->setParameter('idMedia',$idMedia);
       $result = $query->getResult();
       return json_decode($this->getSerializer()->serialize($result, 'json'));
@@ -120,6 +130,10 @@ class LibraryController extends Controller
       foreach ($listBooks as $key => $value) {
         $listBooks[$key]['categories'] = $this->returnCategoriesByBook($value['idMedia']);
       }
+
+      foreach ($listBooks as $key => $value) {
+        $listBooks[$key]['note'] = $this->returnNoteByBook($value['idMedia']);
+      }
       return new JsonResponse($listBooks);
     }
 
@@ -134,6 +148,7 @@ class LibraryController extends Controller
       $book = $this->returnOneBookInfos($data);
 
       $book['categories'] = $this->returnCategoriesByBook($book['idMedia']);
+      $book['note'] = $this->returnNoteByBook($book['idMedia']);
 
       return new JsonResponse($book);
     }
@@ -150,10 +165,12 @@ class LibraryController extends Controller
 
       $books = [];
       if (isset($data['categories'])) {
-        $query = $em->createQuery("SELECT m
-                           FROM AppBundle:Media m, AppBundle:Category c, AppBundle:CategoryAffiliation mc
-                           WHERE m.idMedia = mc.idMedia
-                           AND mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note
+                           FROM AppBundle:Media m
+                           INNER JOIN AppBundle:CategoryAffiliation mc
+                           WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
+                           LEFT JOIN AppBundle:Note n
+                           WITH m.idMedia = n.idMedia
                            GROUP by m.idMedia
                            ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -161,8 +178,11 @@ class LibraryController extends Controller
         $books = $query->getResult();
       }
       else{
-        $query = $em->createQuery("SELECT m
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note
                            FROM AppBundle:Media m
+                           LEFT JOIN AppBundle:Note n
+                           WITH m.idMedia = n.idMedia
+                           GROUP by m.idMedia
                            ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
         ->setFirstResult($data['limit']);
@@ -170,10 +190,23 @@ class LibraryController extends Controller
       }
 
       $books = $this->getSerializer()->normalize($books, 'null');
-      foreach ($books as $key => $value) {
-        $books[$key]['categories'] = $this->returnCategoriesByBook($value['idMedia']);
+      if (isset($books[0]['media'])){
+        foreach ($books as $key => $value) {
+          $media = $value['media'];
+          $media['note'] = $value['note'];
+          $books[$key] = $media;
+        }
+        foreach ($books as $key => $value) {
+          $books[$key]['categories'] = $this->returnCategoriesByBook($value['idMedia']);
+        }
       }
+      else{
+        $books = [];
+      }
+
       return new JsonResponse($books);
+
+
     }
 
     /**
