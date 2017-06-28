@@ -86,7 +86,8 @@ MainApp.component('searchForm', {
 
     ctrl.keydown = (event, element) => {
       if (event.which == 13) {event.preventDefault();}
-      if (!ctrl.searching && (ctrl.vgModel.length > 1 || ctrl.searchText.length > 1) && (ctrl.vgModel != undefined || ctrl.searchText != undefined)){
+      var model = ctrl.vgModel?ctrl.vgModel:"";
+      if (!ctrl.searching && (model.length > 1 || ctrl.searchText.length > 1) && (model != undefined || ctrl.searchText != undefined)){
         if (event.which == 13 && !ctrl.error) {
           event.preventDefault();
           ctrl.selectAction(ctrl.search_result.selected);
@@ -111,12 +112,8 @@ MainApp.component('searchForm', {
 
     ctrl.selectAction = (book) => {
       if (ctrl.vgOnlySelect) {
-        var bookFormated = {
-          idMedia: book.idMedia,
-          name: book.name
-        }
         ctrl.searchText = book.name;
-        ctrl.vgModel = bookFormated;
+        ctrl.vgModel = book;
         ctrl.search_result.reset();
         ctrl.displayResult = false;
         ctrl.selectBook = true;
@@ -200,8 +197,8 @@ MainApp.component('searchForm', {
         }
         else{
           ctrl.searchText = "";
-          ctrl.vgModel = {};
           ctrl.filled = "";
+          ctrl.vgModel = {};
           ctrl.displayResult = false;
           ctrl.search_result.reset();
         }
@@ -424,6 +421,30 @@ MainApp.component('ratingForm', {
     vgEditable: '<?',
     vgInit: '<?',
     vgDisplaynote: '<?'
+  }
+});
+
+
+MainApp.component('dateBetweenForm', {
+  templateUrl: '../components/DateBetween-form.html',
+  controller: function($scope, $element, $attrs, AjaxRequest){
+    var ctrl = this;
+    $scope.$watch('$ctrl.vgModelStart',(newValue, oldValue, scope) => {
+      if (!!newValue) {
+        scope.dateForm1[ctrl.vgData.startName].$setDirty();
+      }
+    }, true)
+
+    $scope.$watch('$ctrl.vgModelEnd',(newValue, oldValue, scope) => {
+      if (!!newValue) {
+        scope.dateForm2[ctrl.vgData.endName].$setDirty();
+      }
+    }, true)
+  },
+  bindings: {
+    vgModelStart: '=',
+    vgModelEnd: '=',
+    vgData: '<?',
   }
 });
 

@@ -419,17 +419,6 @@ aside{
         vertical-align: top;
         max-height: calc(90vh - 90px);
 
-        .legend{
-          position: relative;
-          float: left;
-          width: 100%;
-          padding: 10px 10px 0px 5px;
-          font-size: 14px;
-          text-align: center;
-          white-space: normal;
-          color: $g40;
-        }
-
         &:first-child{
           padding: 15px;
           padding-top: 5px;

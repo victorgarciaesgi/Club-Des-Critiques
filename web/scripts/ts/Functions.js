@@ -75,3 +75,18 @@ function mergeBooks(array){
   });
   return final_array;
 }
+
+function stateSalon(start, end){
+  start = new Date(start);
+  end = new Date(end);
+  var today = Date.now();
+  if (start > today){
+    return 'notyet'
+  }
+  else if(start < today && end > today){
+    return 'open';
+  }
+  else if(end < today){
+    return 'ended';
+  }
+}

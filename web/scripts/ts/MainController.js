@@ -55,14 +55,14 @@ MainApp.filter('cap', function() {
 MainApp.filter('dateUntilSalon', function(moment) {
     return function(input) {
       if ((!!input)) {
-        var today = Date.now();
-        if (input.start > today){
+        var state = stateSalon(input.start, input.end);
+        if (state == 'notyet'){
           return 'Ouvre ' + moment(input.start).fromNow();
         }
-        else if(input.start < today && input.end > today){
+        else if(state == 'open'){
           return 'Fin ' + moment(input.end).fromNow();
         }
-        else if(input.end < today){
+        else if(state == 'ended'){
           return 'Fini ' + moment(input.end).fromNow();
         }
       }
@@ -72,14 +72,14 @@ MainApp.filter('dateUntilSalon', function(moment) {
 MainApp.filter('isSalonOpen', function(moment) {
     return function(input) {
       if ((!!input)) {
-        var today = Date.now();
-        if (input.start > today){
+        var state = stateSalon(input.start, input.end);
+        if (state == 'notyet'){
           return 'notyet';
         }
-        else if(input.start < today && input.end > today){
+        else if(state == 'open'){
           return true;
         }
-        else if(input.end < today){
+        else if(state == 'ended'){
           return false;
         }
       }
