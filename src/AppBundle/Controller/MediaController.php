@@ -18,6 +18,7 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 use AppBundle\Entity\Media;
 use AppBundle\Entity\Category;
+use AppBundle\Entity\Note;
 use AppBundle\Repository\CategoryAffiliationRepository;
 
 class MediaController extends Controller
@@ -78,10 +79,10 @@ class MediaController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($media);
         $em->flush();
-        $this->setCategories($media, $data['categories']);
+        $this->setNote($media, $data['rating']);
         $em->clear();
 
-        $success = json_encode(array('success' => "Media Créé"), JSON_FORCE_OBJECT);
+        $success = json_encode(array('success' => $media->getName() . " bien ajouté à la librairie"), JSON_FORCE_OBJECT);
         return new JsonResponse($success);
     }
 
@@ -117,6 +118,19 @@ class MediaController extends Controller
             $category->setIdCategory($findCategory);
             $em->persist($category);
         }
+        $em->flush();
+        $em->clear();
+    }
+
+    public function setNote($media, $note){
+        $em = $this->getDoctrine()->getManager();
+
+        $noteObject = new Note();
+        $noteObject->setIdMedia($media);
+        $noteObject->setIdUsers($this->getUser());
+        $noteObject->setNote($note);
+
+        $em->persist($noteObject);
         $em->flush();
         $em->clear();
     }

@@ -106,5 +106,22 @@ class Note
     {
         return $this->idMedia;
     }
+
+    /**
+     * @return float
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param float $note
+     */
+    public function setNote($note)
+    {
+        $this->note = $note;
+    }
+
 }
 
