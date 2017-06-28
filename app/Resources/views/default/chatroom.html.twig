@@ -189,19 +189,31 @@
         </div>
         <form name='createSalonX' ng-submit='createSalon.submit()' autocomplete="off">
         <div class="content">
-            <search-form vg-model='createSalon.values.search'
+            <search-form vg-model='createSalon.values.book'
                         vg-data='createSalon.elements.search'
                         vg-source='{(createSalon.elements.search.source)}'
                         vg-only-select='true'
                         vg-origin='"base"'
                         on-select-result='createSalon.selectResult(result)'>
             </search-form>
+            <div class='previewBook' ng-if='createSalon.values.book.idMedia'>
+              <div class="cover"
+              style='background-image: url({(createSalon.values.book.img?createSalon.values.book.img:"/assets/no_thumbnail.jpg")})'>
+              </div>
+              <div class="infos">
+                <span class='title'>{(createSalon.values.book.name)}</span>
+                <span class='author'>{(createSalon.values.book.author)}</span>
+                <span class='description'>{(createSalon.values.book.description)}</span>
+              </div>
+            </div>
             <date-between-form vg-model-start='createSalon.values.date_start'
                                vg-model-end='createSalon.values.date_end'
-                               vg-data=''>
+                               vg-data='createSalon.elements.dates'>
             </date-between-form>
 
-          <pre>{(createSalon.values | json)}</pre>
+          <pre>{(createSalon.values.date_start | json)}</pre>
+          <pre>{(createSalon.values.date_end | json)}</pre>
+
         </div>
         <div class="footer">
           <div class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</div>

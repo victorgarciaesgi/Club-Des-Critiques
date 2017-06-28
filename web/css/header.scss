@@ -179,7 +179,7 @@ ul#alertes-container{
     height: auto;
     width: 100%;
     margin-top: 5px;
-    padding: 10px 10px 10px 30px;
+    padding: 15px 10px 15px 35px;
     box-shadow: 0 0 10px rgba(20,20,20,0.2);
     font-size: 14px;
     color: $w250;
@@ -187,13 +187,13 @@ ul#alertes-container{
     align-content: center;
     border-radius: 3px;
     background-color: $g90;
-    line-height: 20px;
+    line-height: 17px;
 
     img{
       position: absolute;
       top: 50%;
       @include translateY(-50%);
-      left: 10px;
+      left: 5px;
     }
 
     &.ng-enter {

@@ -17,11 +17,21 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       send(){
         if (this.inputMessage.trim().length > 0) {
           if($rootScope.UserConnected){
-            socket.emit('message', this.inputMessage);
-            this.inputMessage = ""; // remet a 0 le champs
+
+            var state = stateSalon(this.Parent.selectedSalon.date_start, this.Parent.selectedSalon.date_end);
+            if (state == 'ended'){
+              $rootScope.Alerts.add('error', 'Le salon est terminé, vous ne pouvez plus envoyer de message');
+            }
+            else if (state == 'notyet'){
+              $rootScope.Alerts.add('error', 'Le salon n\'est pas encore ouvert');
+            }
+            else{
+              socket.emit('message', this.inputMessage);
+            }
+            this.inputMessage = "";
           }
           else{
-
+            $rootScope.Alerts.add('error', 'Vous devez être connecté pour envoyer un message');
           }
         }
       }
@@ -67,12 +77,14 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
     },
     init(){
+      this.messages.Parent = this
       socket.emit('createRoom', 1);
       socket.emit('createUser', $rootScope.UserInfos);
 
       AjaxRequest.get('library_getOneBook', 63).then((result) => {
         this.infos.book = result;
       });
+      return this;
     }
   }
   $scope.Chatroom.init();
@@ -82,8 +94,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     values: {},
     elements: {
       search: new searchForm('Rechercher un livre... (Google Books)','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
-      dateStart: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null)
+      dates: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null)
     },
+    preview: {},
     submit(){
 
     },
@@ -92,7 +105,6 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       $scope.createSalonX.$setPristine();
     },
     selectResult(book){
-
     }
   }
 
@@ -108,16 +120,17 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
     rooms.forEach(function(element){
       element.dates = {
-        end: new Date(element.date_end),
-        start: new Date(element.date_start)
+        end: element.date_end,
+        start: element.date_start
       };
-      element.datesend = new Date(element.date_end);
     })
-
-    console.log(current_room);
+    current_room.dates = {
+      end: this.date_end,
+      start: this.date_start
+    };
 
     $scope.Chatroom.salons.elements = rooms;
-    $scope.Chatroom.selectedSalon = $scope.Chatroom.salons.elements[0];
+    $scope.Chatroom.selectedSalon = current_room;
 
     if (current_room.messages.length == 0){
       $scope.Chatroom.messages.loading = false;
@@ -132,6 +145,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
   });
 
   socket.on('update:messages', function(room) {
+    console.log(room)
     if (room.messages.length == 0){
       $scope.Chatroom.messages.loading = false;
       $scope.Chatroom.messages.error = 'Aucun message';

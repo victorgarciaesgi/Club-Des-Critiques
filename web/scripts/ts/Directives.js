@@ -33,6 +33,16 @@ MainApp.directive('vgVerificator', function($q, PromiseImage) {
             else{return true}
           }
           break;
+          case "dateStart":
+            ctrl.$validators.start = (modelValue, viewValue) => {
+              return true;
+            }
+            break;
+          case "dateEnd":
+            ctrl.$validators.end = (modelValue, viewValue) => {
+              return true;
+            }
+            break;
         default:
 
       }

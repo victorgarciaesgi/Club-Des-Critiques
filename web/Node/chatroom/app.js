@@ -2,18 +2,18 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 rooms = [
-  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-28 09:50'},
-  {id: 2, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-27 19:00'},
-  {id: 3, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00'},
-  {id: 4, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-27 21:00'},
-  {id: 5, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00'},
-  {id: 6, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-27 13:00'},
-  {id: 7, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 21:00'},
-  {id: 8, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00'},
-  {id: 9, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00'},
-  {id: 10, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 21:00'},
-  {id: 11, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00'},
-  {id: 12, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00'}
+  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-30', date_end:'2017-06-31 21:00', users: []},
+  {id: 2, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-27 19:00', users: []},
+  {id: 3, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00', users: []},
+  {id: 4, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-29', date_end:'2017-06-30 21:00', users: []},
+  {id: 5, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00', users: []},
+  {id: 6, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-27 13:00', users: []},
+  {id: 7, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 21:00', users: []},
+  {id: 8, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00', users: []},
+  {id: 9, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00', users: []},
+  {id: 10, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 21:00', users: []},
+  {id: 11, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00', users: []},
+  {id: 12, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00', users: []}
 ]
 messageCount = 0;
 server.listen(8124);
