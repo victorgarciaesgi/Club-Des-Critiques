@@ -82,8 +82,10 @@ class MediaController extends Controller
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($media);
+        $this->setCategories($media, $data['categories']);
         $em->flush();
         $this->setNote($media, $data['rating']);
+        $em->flush();
         $em->clear();
 
         $success = json_encode(array('success' => $media->getName() . " a bien été ajouté à la librairie"), JSON_FORCE_OBJECT);
@@ -122,8 +124,6 @@ class MediaController extends Controller
             $category->setIdCategory($findCategory);
             $em->persist($category);
         }
-        $em->flush();
-        $em->clear();
     }
 
     public function setNote($media, $note){
@@ -135,7 +135,5 @@ class MediaController extends Controller
         $noteObject->setNote($note);
 
         $em->persist($noteObject);
-        $em->flush();
-        $em->clear();
     }
 }
