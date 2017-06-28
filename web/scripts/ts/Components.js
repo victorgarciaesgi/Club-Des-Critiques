@@ -134,13 +134,11 @@ MainApp.component('searchForm', {
           ctrl.searching = false;
           ctrl.search_result.reset();
           ctrl.error = true;
-          ctrl.displayResult = true;
           ctrl.errorMessage = result.error;
         }
         else{
           ctrl.searching = false;
           ctrl.search_result.data = result;
-          ctrl.displayResult = true;
           ctrl.search_result.selected = result[0];
           ctrl.search_result.selected["indexList"] = 0;
         }

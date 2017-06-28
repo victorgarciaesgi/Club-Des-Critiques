@@ -44,7 +44,7 @@ class Note
     /**
      * @var float
      *
-     * @ORM\Column(name="name", type="float", nullable=false)
+     * @ORM\Column(name="note", type="float", nullable=false)
      */
     private $note;
 
@@ -124,4 +124,3 @@ class Note
     }
 
 }
-

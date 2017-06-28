@@ -34,7 +34,7 @@ MainApp.run(function($rootScope, amMoment, $timeout) {
         this.list.push(alert);
         $timeout(() => {
           this.delete(alert);
-        },5000)
+        },3000)
       }
     }
 });

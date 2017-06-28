@@ -117,6 +117,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         this.categories.elements = result;
       })
       AjaxRequest.get('library_getFilterBooks',{categories: null, column: this.order.value, tri: this.tri.value, limit: this.lazyPage}).then((result) => {
+        console.log(result)
         this.loadBooks(result);
       })
 
@@ -124,13 +125,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
   };
   $scope.Library.init()
 
-  $rootScope.Alerts.add('success','Test de la notif');
-  $rootScope.Alerts.add('error','Test de la notif');
-
-
-  $timeout(function(){
-    $rootScope.Alerts.add('success','Test de la notif');
-  },2000)
+  // $rootScope.Alerts.add('success','Test de la notif');
+  // $rootScope.Alerts.add('error','Test de la notif');
+  //
+  //
+  // $timeout(function(){
+  //   $rootScope.Alerts.add('success','Test de la notif');
+  // },2000)
 
 
 
