@@ -70,7 +70,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       socket.emit('createRoom', 1);
       socket.emit('createUser', $rootScope.UserInfos);
 
-      AjaxRequest.get('library_getOneBook', 3).then((result) => {
+      AjaxRequest.get('library_getOneBook', 63).then((result) => {
         this.infos.book = result;
       });
     }
@@ -113,6 +113,8 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       };
       element.datesend = new Date(element.date_end);
     })
+
+    console.log(current_room);
 
     $scope.Chatroom.salons.elements = rooms;
     $scope.Chatroom.selectedSalon = $scope.Chatroom.salons.elements[0];
