@@ -25,13 +25,15 @@ class SuccessHandlerController implements AuthenticationSuccessHandlerInterface
                 'success'=> 1,
             )));
             $response->headers->set('Content-Type', 'application/json');
-            return $response;
+            //return $response;
+
+            return new RedirectResponse($this->router->generate('fos_user_security_login'));
         }else{
             if ($token->getUser()->isSuperAdmin()) {
                 return new RedirectResponse($this->router->generate('admin'));
             }
             else {
-                return new RedirectResponse($this->router->generate('MyAppmondeUserBundle_homepage'));
+                return new RedirectResponse($this->router->generate('homepage'));
             }
         }
     }

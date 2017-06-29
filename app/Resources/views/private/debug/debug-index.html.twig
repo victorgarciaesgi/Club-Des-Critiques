@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="textCenter">
+    <h2>Espace Debug</h2>
+    <h3>Authentification mobile</h3>
+        {{ include('@FOSUser/Security/login_content.html.twig') }}
+        <p> ID de l'utilisateur courant : </p> {{ id_user }}
+    </div>
+{% endblock %}

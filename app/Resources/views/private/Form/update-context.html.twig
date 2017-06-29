@@ -1,0 +1,29 @@
+{% block javascript %}
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+    <script src="/js/bootstrap.min.js"></script>
+{% endblock %}
+{% block stylesheets %}
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <legend>Page d'accueil</legend>
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.concept,{'label': 'Le concept : ','id': 'editor1'}) }}
+            <br>
+            <div class="text-center">
+                {{ form_row(form.save, {'label': 'Mise à jour du context'}) }}
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor1');
+</script>
+{% endblock %}
