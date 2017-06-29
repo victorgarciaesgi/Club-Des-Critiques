@@ -146,7 +146,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       author: new textForm('Auteur..','author','text',true,'Autheur(s) du livre',null, null, null, true, null),
       illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'linkImage', true,'L\'illustration du livre est obligatoire'),
       description: new textForm('Description','description','text',true,null,null, null, null, true, null),
-      categories: new textForm('Catégories.. (Entrée pour ajouter un élément)','categories','text',true,'Catégories de ce livre','library_searchCategories', null, null, true, 'Veuillez ajouter au moins une catégorie'),
+      categories: new textForm('Catégories.. (Entrée pour ajouter un élément)','categories','text',true,'Catégories de ce livre','library_searchCategories', null, null, true, 'Veuillez rentrer au moins une catégorie'),
       pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),
       date: new textForm('Date de sortie...', 'date','date', true,'Date de publication',null, null, 'date', true, null),
       rating: new ratingForm('rating', true, 0, true),
@@ -158,24 +158,21 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     show(){this.display = true},
     hide(){this.display = false},
     submit() {
-      if ($scope.AddBookFormX.$valid){
-        this.submitting = true;
-        AjaxRequest.get('library_addBook',this.values).then((result) => {
-          if (result.success){
-            this.display = false;
-            $scope.Library.filter();
-            $rootScope.Alerts.add('success',result.success);
-            this.reset();
-          }
-          else{
-            $rootScope.Alerts.add('error', result.error);
-            this.submitting = false;
-          }
-        },(error) => {
-          $rootScope.Alerts.add('error','Erreur lors de l\'ajout');
-          this.submitting = false;
-        });
-      }
+      this.submitting = true;
+      AjaxRequest.get('library_addBook',this.values).then((result) => {
+        if (result.success){
+          this.display = false;
+          $scope.Library.filter();
+          $rootScope.Alerts.add('success',result.success);
+          this.reset();
+        }
+        else{
+          $rootScope.Alerts.add('error', result.error);
+        }
+      },(error) => {
+        $rootScope.Alerts.add('error','Erreur lors de l\'ajout');
+        this.submitting = false;
+      });
     },
     reset(){
       this.values = {categories:[],search: ""};

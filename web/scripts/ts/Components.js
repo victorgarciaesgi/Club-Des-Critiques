@@ -106,11 +106,7 @@ MainApp.component('searchForm', {
           ctrl.error = false;
           ctrl.selectBook = false;
           ctrl.displayResult = false;
-          event.target.blur();
         }
-      }
-      else{
-        ctrl.displayResult = true;
       }
     }
 
@@ -149,6 +145,7 @@ MainApp.component('searchForm', {
       },
         (error) => {
           ctrl.searching = false;
+          ctrl.displayResult = false;
           ctrl.search_result.reset();
         })
     }
@@ -200,6 +197,7 @@ MainApp.component('searchForm', {
           ctrl.searchText = "";
           ctrl.filled = "";
           ctrl.vgModel = {};
+          ctrl.displayResult = false;
           ctrl.search_result.reset();
         }
       }
@@ -255,19 +253,9 @@ MainApp.component('tokenForm', {
         }
         else if(result.length > 0){
           ctrl.searching = false;
-          var newResult = result.filter((element) => ctrl.vgModel.findIndex((elem) => elem.idCategory == element.idCategory) == -1);
-
-          if (newResult.length > 0){
-            ctrl.search_result.data = newResult;
-            ctrl.search_result.selected = newResult[0];
-            ctrl.search_result.selected["indexList"] = 0;
-          }
-          else{
-            ctrl.search_result.reset();
-            ctrl.error = true;
-            ctrl.displayResult = true;
-            ctrl.errorMessage = 'Aucun résultat';
-          }
+          ctrl.search_result.data = result;
+          ctrl.search_result.selected = result[0];
+          ctrl.search_result.selected["indexList"] = 0;
         }
       },
         (error) => {
@@ -278,18 +266,16 @@ MainApp.component('tokenForm', {
     }
 
     ctrl.selectAction = (category) => {
-      if (ctrl.vgModel.findIndex((element) => element.idCategory == category.idCategory) == -1){
-        ctrl.search_result.reset();
-        ctrl.vgModel.push({name: category.name, idCategory: category.idCategory});
-        ctrl.searchText = "";
-        ctrl.selectToken = true;
-      }
+      ctrl.search_result.reset();
+      ctrl.vgModel.push({name: category.name, idCategory: category.idCategory});
+      ctrl.searchText = "";
+      ctrl.selectToken = true;
     }
 
     ctrl.keydown = (event, element) => {
       if (event.which == 13) {event.preventDefault();}
       if (!ctrl.searching){
-        if (event.which == 13 && ctrl.search_result.data.length > 0) {
+        if (event.which == 13) {
           event.preventDefault();
           ctrl.selectAction(ctrl.search_result.selected);
         }
@@ -336,7 +322,6 @@ MainApp.component('tokenForm', {
         if (newValue.trim().length > 0){
           ctrl.searching = true;
           ctrl.search_result.reset();
-          ctrl.error = false;
           ctrl.search(ctrl.vgSource ,newValue);
         }
         else{
