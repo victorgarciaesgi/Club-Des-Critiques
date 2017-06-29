@@ -221,7 +221,7 @@ class LibraryController extends Controller
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
       $content = $repository->createQueryBuilder('m')
                ->where('m.name LIKE :name')
-               ->setParameter('name', '%'.$data.'%')
+               ->setParameter('name', $data.'%')
                ->setMaxResults(4)
                ->getQuery();
       $results = $content->getArrayResult();
@@ -248,7 +248,7 @@ class LibraryController extends Controller
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Category');
       $content = $repository->createQueryBuilder('c')
                ->where('c.name LIKE :name')
-               ->setParameter('name', '%'.$data.'%')
+               ->setParameter('name',$data.'%')
                ->setMaxResults(3)
                ->getQuery();
       $results = $content->getArrayResult();

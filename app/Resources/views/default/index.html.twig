@@ -12,7 +12,7 @@
                 </p>
                 <br>
                 <p>
-
+                    {{ context.concept | raw }}
                 </p>
             </div>
         </section>
@@ -135,11 +135,14 @@
                   </text-form>
                   <div class="footer">
                     <button class="bouton" type='submit' design='brown'
-                        ng-disabled='mailRegisterX.$invalid'>S'inscrire</button>
+                        ng-disabled='mailRegisterX.$invalid || mailRegister.submitting'
+                        ng-class='{submitting: mailRegister.submitting}'>S'inscrire
+                      <div class="loading-spinner inline-block white"></div>
+                    </button>
                   </div>
                 </form>
 
-                <pre>{(mailRegister.values | json)}</pre>
+                <!-- <pre>{(mailRegister.values | json)}</pre> -->
             </div>
         </section>
     </aside>
