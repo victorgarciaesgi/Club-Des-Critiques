@@ -56,10 +56,10 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     ],
     selectSalon(salon){
       if(this.selectedSalon.id != salon.id){
-        $scope.Chatroom.messages.elements = [];
         this.selectedSalon = salon;
         this.messages.loading = true;
         $scope.Chatroom.messages.error = null;
+        $scope.Chatroom.messages.elements = [];
         socket.emit('Switch:room', salon);
         this.infos.init();
       }
@@ -78,7 +78,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     //   $rootScope.Alerts.add('success', 'Le message a été signalé à un modérateur');
     },
     deleteMessage(message){
-      console.log(this.selectedSalon);
+      message.deleted = true;
       socket.emit('Delete:message', {messageId: message.id, roomId: this.selectedSalon.id});
       $rootScope.Alerts.add('success', 'Le message est supprimé du salon');
     },

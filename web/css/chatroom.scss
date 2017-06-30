@@ -354,25 +354,29 @@ article#Messages{
       }
 
       &[self='true'].ng-leave {
-        @include transition(right 0.8s, opacity 0.8s);
+        @include transition(right 0.8s, opacity 0.8s, max-height 0.8s);
         right: 0px;
         opacity: 1;
+        max-height: 2000px;
       }
 
       &[self='true'].ng-leave.ng-leave-active {
         right: -70%;
         opacity: 0;
+        max-height: 0px;
       }
 
       &[self='false'].ng-leave {
-        @include transition(left 0.8s, opacity 0.8s);
+        @include transition(left 0.8s, opacity 0.8s, max-height 0.8s);
         left: 0px;
         opacity: 1;
+        max-height: 2000px;
       }
 
       &[self='false'].ng-leave.ng-leave-active {
         left: -70%;
         opacity: 0;
+        max-height: 0px;
       }
 
 
