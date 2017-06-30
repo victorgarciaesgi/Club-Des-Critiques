@@ -2,18 +2,18 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 rooms = [
-  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-30', date_end:'2017-06-31 21:00', users: []},
-  {id: 2, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-27 19:00', users: []},
-  {id: 3, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00', users: []},
-  {id: 4, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-29', date_end:'2017-06-30 21:00', users: []},
-  {id: 5, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00', users: []},
-  {id: 6, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-27 13:00', users: []},
-  {id: 7, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 21:00', users: []},
-  {id: 8, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00', users: []},
-  {id: 9, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00', users: []},
-  {id: 10, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 21:00', users: []},
-  {id: 11, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-06-26', date_end:'2017-06-26 19:00', users: []},
-  {id: 12, title: 'Salon sur Titeuf', messages:[], date_start:'2017-06-28', date_end:'2017-06-29 20:00', users: []}
+  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-29 11:50', date_end:'2017-06-30 21:00', users: [], book:75},
+  {id: 2, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-26', date_end:'2017-06-27 19:00', users: [], book:76},
+  {id: 3, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-28', date_end:'2017-06-29 20:00', users: [], book:77},
+  {id: 4, title: 'Salon Harry Potter', messages:[], date_start:'2017-07-01', date_end:'2017-06-30 21:00', users: [], book:78},
+  {id: 5, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:79},
+  {id: 6, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-27 13:00', users: [], book:80},
+  {id: 7, title: 'Salon Harry Potter', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 21:00', users: [], book:81},
+  {id: 8, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:82},
+  {id: 9, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-29 20:00', users: [], book:83},
+  {id: 10, title: 'Salon Harry Potter', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 21:00', users: [], book:84},
+  {id: 11, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:85},
+  {id: 12, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-29 20:00', users: [], book:86}
 ]
 messageCount = 0;
 server.listen(8124);
@@ -24,7 +24,7 @@ app.get('/', function (req, res) {
 
 io.on('connection', function (socket) {
 
-    socket.on('createRoom', function (roomId) {
+    socket.on('Create:room', function (roomId) {
         socket.join(roomId);
         rooms.forEach(function(element){
             if (element.id == roomId){
@@ -32,27 +32,42 @@ io.on('connection', function (socket) {
                 socket.room = element;
             }
         })
-        socket.emit('updaterooms', rooms, socket.room);
+        socket.emit('Update:rooms', rooms, socket.room);
     });
 
-    socket.on('createUser', function (user) {
+    socket.on('Create:user', function (user) {
         socket.user = user;
         io.to(socket.room.id).emit('welcome', socket.user);
     });
 
-    socket.on('message', function (message) {
+    socket.on('New:message', function (message) {
         //message = ent.encode(message);
+        var date = new Date;
+        var dateSend = (date.getHours()<10?'0':'') + date.getHours() + ':' + (date.getMinutes()<10?'0':'') + date.getMinutes();
+        var formatedMessage = {id: messageCount, user: socket.user, text: message, date_send: dateSend};
         rooms.forEach(function(element){
             if (element.id == socket.room.id){
-                element.messages.push({id: messageCount, user: socket.user, text: message});
+                element.messages.push(formatedMessage);
             }
         })
-        message.id = messageCount;
+        formatedMessage.id = messageCount;
         messageCount++;
-        io.to(socket.room.id).emit('updateChat', socket.user, message);
+        io.to(socket.room.id).emit('Update:newMessage',formatedMessage);
     });
 
-    socket.on('switchRoom', function(newroom){
+    socket.on('Delete:message', function (data) {
+      console.log(data);
+      rooms.forEach(function(element){
+          if (element.id == data.roomId){
+              var index = element.messages.findIndex((elem) => elem.id == data.messageId);
+              element.messages.splice(index, 1);
+              socket.room = element;
+          }
+      })
+      io.to(socket.room.id).emit('Update:room:messages',socket.room);
+    });
+
+    socket.on('Switch:room', function(newroom){
 
         rooms.forEach(function(element){
             if (element.id == socket.room.id){
@@ -73,7 +88,8 @@ io.on('connection', function (socket) {
             }
         })
 
-        socket.emit('update:messages', socket.room, rooms);
+        socket.emit('Update:currentRoom', socket.room);
+        socket.emit('Update:book',socket.room.book)
     });
 
 });

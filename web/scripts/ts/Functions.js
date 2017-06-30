@@ -23,6 +23,7 @@ function displayPopup(element, event){
     else if((outputLeft < 10) ){
       outputLeft = 10;
     }
+    
     var left = position.left - outputLeft + (width/2);
     $("#" + popupName).find('#pin').css({left: left})
 

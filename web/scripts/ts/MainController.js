@@ -136,6 +136,7 @@ MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
           this.values = {};
           $rootScope.Alerts.add('success',result.success);
           this.submitting = false;
+          $scope.mailRegisterX.$setPristine();
         }
         else{
           $rootScope.Alerts.add('error', result.error);

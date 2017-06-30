@@ -208,7 +208,7 @@
                         <div class="i-h-img">
                           <img src="/assets/date.svg">
                         </div>
-                        <div class='i-h-text'>{(AddBookForm.values.date || '-')}</div>
+                        <div class='i-h-text'>{( (AddBookForm.values.date | date:'yyyy-MM-dd') || '-')}</div>
                       </div>
                     </div>
                     <div class="info-book" ng-if='AddBookForm.values.rating'>

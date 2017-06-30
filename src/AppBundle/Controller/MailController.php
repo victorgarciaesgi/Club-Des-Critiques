@@ -35,7 +35,7 @@ class MailController extends Controller
         $uniqueMail = $em->persist($RegisterMail);
         $em->flush();
 
-        if(!$uniqueMail){
+        if($uniqueMail){
             $error = json_encode(array('error' => "Mail déja existant"), JSON_FORCE_OBJECT);
             return new JsonResponse($error);
         }
@@ -63,7 +63,7 @@ class MailController extends Controller
             return new JsonResponse($success);
         }
         else{
-            $error = json_encode(array('error' => "Une erreur est survenu lors de l'envoie du mail"), JSON_FORCE_OBJECT);
+            $error = json_encode(array('error' => "Une erreur est survenu lors de l'envoi du mail"), JSON_FORCE_OBJECT);
             return new JsonResponse($error);
         }
     }
