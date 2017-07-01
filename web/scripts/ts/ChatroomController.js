@@ -93,8 +93,10 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     init(){
       this.messages.Parent = this
-      socket.emit('Create:room', 1);
-      socket.emit('Create:user', $rootScope.UserInfos);
+      if ($rootScope.UserConnected){
+        socket.emit('Create:room', 1);
+        socket.emit('Create:user', $rootScope.UserInfos);
+      }
 
       return this;
     }

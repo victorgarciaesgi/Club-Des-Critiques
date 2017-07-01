@@ -22,7 +22,12 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
     list: [],
     display: false,
     init(){
-      notifications.emit('sync', $rootScope.UserInfos);
+      if ($rootScope.UserConnected){
+        notifications.emit('sync', $rootScope.UserInfos);
+      }
+      else{
+        
+      }
     },
     add(notif){
       this.list.push(notif);
