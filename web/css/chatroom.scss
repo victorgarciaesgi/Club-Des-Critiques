@@ -1,8 +1,7 @@
 @import "_variables.scss";
 
 $infosWidth: 350px;
-$mini: "(max-width: 1000px)";
-$desktop: "(min-width: 1001px)";
+
 
 #chatroom{
   position: relative;
@@ -354,10 +353,10 @@ article#Messages{
       }
 
       &[self='true'].ng-leave {
-        @include transition(right 0.8s, opacity 0.8s, max-height 0.8s);
+        @include transition(right 0.5s, opacity 0.5s, max-height 0.5s);
         right: 0px;
         opacity: 1;
-        max-height: 2000px;
+        max-height: 200px;
       }
 
       &[self='true'].ng-leave.ng-leave-active {
@@ -367,10 +366,10 @@ article#Messages{
       }
 
       &[self='false'].ng-leave {
-        @include transition(left 0.8s, opacity 0.8s, max-height 0.8s);
+        @include transition(left 0.5s, opacity 0.5s, max-height 0.5s);
         left: 0px;
         opacity: 1;
-        max-height: 2000px;
+        max-height: 200px;
       }
 
       &[self='false'].ng-leave.ng-leave-active {

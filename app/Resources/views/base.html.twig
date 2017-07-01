@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>{% block title %}{{app.request.attributes.get('_route')}}{% endblock %}</title>
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    <link rel="icon" type="image/x-icon" href="/assets/logoSimple.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable = no">
     <!-- <script data-main="scripts/main" src="/scripts/require.js"></script>
     <script type="text/javascript" src='/scripts/main.js'></script> -->
@@ -31,6 +31,7 @@
     <script type="text/javascript" src='/scripts/ts/HeaderController.js'></script>
     <script type="text/javascript" src='/scripts/ts/LibraryController.js'></script>
     <script type="text/javascript" src='/scripts/ts/ChatroomController.js'></script>
+    <script type="text/javascript" src='/scripts/ts/ProfilController.js'></script>
     <script type="text/javascript" src='/scripts/ts/Components.js'></script>
     <script type="text/javascript" src='/scripts/ts/Directives.js'></script>
     <script type="text/javascript" src='/scripts/ts/Classes.js'></script>
@@ -95,19 +96,20 @@
 
           {% if is_granted('ROLE_SUPER_ADMIN') %}
 
-            <a href="/admin">
+            <a href="{{path('homepage_admin')}}">
               <li id='aide' class='menu popup-bouton'>
-                admin
+                Admin
               </li>
             </a>
           {% endif %}
 
 
             {% if connected %}
-            <li id='notifications' state='' class='menu popup-bouton' popup="popup-notification">
+            <li id='notifications' state='false' class='menu popup-bouton' popup="popup-notification"
+              ng-click='Notifications.show()'>
                 <img src='/assets/notifications.svg' only class="icon">
                 <div class="counter">
-                    <span>5</span>
+                    <span ng-if='Notifications.number > 0'>{(Notifications.number)}</span>
                 </div>
             </li>
             <li id='user' class='menu popup-bouton' popup="popup-user">
@@ -125,13 +127,28 @@
 
 </header>
 
-<div id='popup-notification' class="popup-box" style='width: 300px' state='false'>
+<div id='popup-notification' state='false' class='popup-box' style='width: 300px'
+  ng-blur='Notification.hide()' ng-show='Notifications.display'>
     <img id='pin' src="/assets/up.png" alt="">
     <div class="header">
         Notifications
     </div>
     <div class="content">
-
+      <ul ng-if='Notifications.list.length > 0'>
+        <li ng-repeat='notif in Notifications.list| limitTo: 10'>
+          <div>{(notif.message)}</div>
+          <div class='date' am-time-ago='notif.date'></div>
+          <ng-switch on="notif.type">
+            <img src="/assets/form-valid-green.svg" alt="" ng-switch-when='success'>
+            <img src="/assets/form-invalid-red.svg" alt="" ng-switch-when='error'>
+            <img src="/assets/warning.svg" alt="" ng-switch-when='alert'>
+            <img src="/assets/info_close.svg" alt="" ng-switch-when='warning'>
+          </ng-switch>
+        </li>
+      </ul>
+      <div class="no-content" ng-if='Notifications.list.length == 0'>
+        <span>Aucune notification</span>
+      </div>
     </div>
 </div>
 
@@ -189,7 +206,7 @@
         <div class="user-name">{{app.user.username}}</div>
     </div>
     <ul class='user-option-list'>
-        <li class='user-option'>Mon profil</li>
+        <a href="{{path('fos_user_profile_show')}}"><li class='user-option'>Mon profil</li></a>
         <li class='user-option'>Éditer mes infos</li>
         <li class='user-option'>Réglages</li>
         <li class='user-option'>Aide</li>
@@ -216,7 +233,12 @@
 <ul id="alertes-container" class='ng-cloak'>
   <li ng-repeat='alert in Alerts.list track by alert.id' type='{(alert.type)}'>
     <span>{(alert.message)}</span>
-    <img src="/assets/{(alert.type == 'success'?'form-valid-green.svg':'form-invalid-red.svg')}" alt="">
+    <ng-switch on="alert.type">
+      <img src="/assets/form-valid-green.svg" alt="" ng-switch-when='success'>
+      <img src="/assets/form-invalid-red.svg" alt="" ng-switch-when='error'>
+      <img src="/assets/warning.svg" alt="" ng-switch-when='alert'>
+      <img src="/assets/info_close.svg" alt="" ng-switch-when='warning'>
+    </ng-switch>
   </li>
 </ul>
 

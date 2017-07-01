@@ -85,3 +85,12 @@ class dateBetweenForm{
     }
   }
 }
+
+
+class Notification{
+  constructor(type, message, date){
+    this.type = type;
+    this.message = message;
+    this.date = date;
+  }
+}

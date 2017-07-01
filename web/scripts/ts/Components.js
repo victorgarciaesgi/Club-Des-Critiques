@@ -1,4 +1,4 @@
-
+'use strict'
 
 // Composant checkbox <checkbox></checkbox>
 MainApp.component('checkbox', {

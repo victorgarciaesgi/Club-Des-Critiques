@@ -2,7 +2,7 @@ var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 rooms = [
-  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-29 11:50', date_end:'2017-06-30 21:00', users: [], book:75},
+  {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-29 11:50', date_end:'2017-07-30 21:00', users: [], book:75},
   {id: 2, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-26', date_end:'2017-06-27 19:00', users: [], book:76},
   {id: 3, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-28', date_end:'2017-06-29 20:00', users: [], book:77},
   {id: 4, title: 'Salon Harry Potter', messages:[], date_start:'2017-07-01', date_end:'2017-06-30 21:00', users: [], book:78},
@@ -15,12 +15,36 @@ rooms = [
   {id: 11, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:85},
   {id: 12, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-29 20:00', users: [], book:86}
 ]
+
+users = [
+
+]
 messageCount = 0;
 server.listen(8124);
 
-app.get('/', function (req, res) {
-  res.sendfile(__dirname + '/index.html');
+
+// Namespace de notification
+
+var ntf = io.of('/notifications');
+ntf.on('connection', function(socket){
+
+  socket.on('sync', function(user){
+    user.notifications = [];
+    var newUser = users.find((element) => element.id == user.id);
+    if (newUser == undefined){
+      users.push(user);
+      socket.user = user;
+    }
+    else{
+      socket.user = newUser;
+    }
+    socket.join(user.id);
+    socket.emit('Get:notifications', socket.user.notifications);
+  })
 });
+
+
+// Namespace de chat
 
 io.on('connection', function (socket) {
 
@@ -56,14 +80,23 @@ io.on('connection', function (socket) {
     });
 
     socket.on('Delete:message', function (data) {
-      console.log(data);
       rooms.forEach(function(element){
           if (element.id == data.roomId){
-              var index = element.messages.findIndex((elem) => elem.id == data.messageId);
+              var index = element.messages.findIndex((elem) => elem.id == data.message.id);
               element.messages.splice(index, 1);
               socket.room = element;
           }
       })
+      var notif = {
+        type: 'alert',
+        message: 'Un admin a supprimé votre message: ' + data.message.text,
+        date: Date.now()}
+      users.forEach(function(element){
+        if (element.id == data.userId){
+            element.notifications.push(notif);
+        }
+      })
+      ntf.to(data.userId).emit('Admin:delete:message', notif)
       io.to(socket.room.id).emit('Update:room:messages',socket.room);
     });
 

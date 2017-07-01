@@ -1,7 +1,6 @@
+'use strict'
+
 MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage) {
-
-  //Liste de categories
-
   $scope.Library = {
     lazyPage: 0,
     lazyProcessing: false,

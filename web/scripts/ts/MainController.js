@@ -1,3 +1,4 @@
+'use strict'
 
 var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment'])
 .config(function($interpolateProvider){

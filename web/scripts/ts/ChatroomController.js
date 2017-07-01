@@ -1,3 +1,4 @@
+'use strict'
 
 MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment, socket) {
 
@@ -79,7 +80,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     deleteMessage(message){
       message.deleted = true;
-      socket.emit('Delete:message', {messageId: message.id, roomId: this.selectedSalon.id});
+      socket.emit('Delete:message', {message: message, roomId: this.selectedSalon.id, userId: message.user.id});
       $rootScope.Alerts.add('success', 'Le message est supprimé du salon');
     },
     scroll(){
