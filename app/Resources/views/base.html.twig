@@ -84,9 +84,11 @@
         </ul>
         <ul class="header-menus" ng-cloak>
           {% if not connected %}
-            <li id='connexion' popup="popup-connexion" class='menu popup-bouton'>
-              Connexion
-            </li>
+            <a href="{{path('fos_user_security_login')}}">
+              <li id='connexion' class='menu'>
+                Connexion
+              </li>
+            </a>
             <a href="#">
               <li id='aide' class='menu popup-bouton'>
                 Aide
@@ -147,55 +149,11 @@
         </li>
       </ul>
       <div class="no-content" ng-if='Notifications.list.length == 0'>
-        <span>Aucune notification</span>
+        Aucune notification
       </div>
     </div>
 </div>
 
-<div id='popup-connexion' class="popup-box" style='width: 350px' state='false'>
-    <img id='pin' src="/assets/up.png" alt="">
-    <div class="header">
-        Connexion
-    </div>
-    <div class="content">
-      <form name='ConnexionFormX' ng-submit='ConnexionForm.submit()'>
-        <div class="connexion">
-
-            <text-form vg-model='ConnexionForm.values.login'
-                        vg-type='ConnexionForm.login.type'
-                        vg-name='ConnexionForm.login.name'
-                        vg-placeholder='ConnexionForm.login.placeholder'
-                        vg-validator='ConnexionForm.login.validator'
-                        vg-errors='ConnexionForm.login.errors'
-                        vg-required='ConnexionForm.login.required'>
-            </text-form>
-            <text-form vg-model='ConnexionForm.values.password'
-                        vg-type='ConnexionForm.password.type'
-                        vg-name='ConnexionForm.password.name'
-                        vg-placeholder='ConnexionForm.password.placeholder'
-                        vg-validator='ConnexionForm.password.validator'
-                        vg-errors='ConnexionForm.password.errors'
-                        vg-required='ConnexionForm.password.required'>
-            </text-form>
-
-            <checkbox vg-model='ConnexionForm.values.souvenir'
-                      vg-data='ConnexionForm.souvenir'>
-            </checkbox>
-            <pre class='f-left'>{(ConnexionForm.values | json)}</pre>
-
-        </div>
-        <div class="footer">
-          <div class="bouton" design='blanc'>
-            Mot de passe oublié
-          </div>
-          <button class="bouton" type='submit' design='green'
-                  ng-disabled='ConnexionFormX.$invalid'>
-            Connexion
-          </button>
-        </div>
-      </form>
-    </div>
-</div>
 
 {% if connected %}
 

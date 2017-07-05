@@ -26,7 +26,7 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
         notifications.emit('sync', $rootScope.UserInfos);
       }
       else{
-        
+
       }
     },
     add(notif){
@@ -74,11 +74,11 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
     // Evenements de contrôle d'affichage des popups
 
     $(document).click(function(){
-      $('.popup-box').hide().attr('state','false');
+      $('.popup-box:not(.static)').hide().attr('state','false');
     })
 
     $(window).resize(function(event) {
-      $('.popup-box').hide().attr('state','false');
+      $('.popup-box:not(.static)').hide().attr('state','false');
     });
 
     $(".popup-box, .popup-window .window").click(function(event){

@@ -190,6 +190,13 @@ aside{
   flex-direction: column;
   @include userselect;
 
+  &.static{
+    position: relative;
+    left: auto;
+    top: auto;
+    display: flex;
+  }
+
   #pin{
     position: absolute;
     top: -9px;
@@ -219,7 +226,7 @@ aside{
     width: 100%;
     height: auto;
     padding: 5px;
-    flex: 0 0 auto;
+    flex: 1 1 auto;
   }
 
   .connexion{
@@ -439,9 +446,15 @@ aside{
     flex: 0 0 auto;
   }
   .content{
-    flex: 0 1 auto;
-    overflow-x: hidden;
+    display: flex;
     overflow-y: auto;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    .no-content{
+    }
+
     ul{
       position: relative;
       height: auto;
@@ -486,15 +499,6 @@ aside{
         &.ng-enter.ng-enter-active {
           left: 0;
         }
-      }
-
-      .no-content{
-        position: relative;
-        height: 120px;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
       }
     }
   }
