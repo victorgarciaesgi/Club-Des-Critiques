@@ -194,8 +194,8 @@
         <div class="header">
             Ajouter un salon
         </div>
-        <form name='createSalonX' ng-submit='createSalon.submit()' autocomplete="off">
         <div class="content">
+          <form name='createSalonX' ng-submit='createSalon.submit()' autocomplete="off">
             <search-form vg-model='createSalon.values.book'
                         vg-data='createSalon.elements.search'
                         vg-source='{(createSalon.elements.search.source)}'
@@ -217,9 +217,6 @@
                                vg-model-end='createSalon.values.date_end'
                                vg-data='createSalon.elements.dates'>
             </date-between-form>
-
-          <pre>{(createSalon.values.date_start | json)}</pre>
-          <pre>{(createSalon.values.date_end | json)}</pre>
 
         </div>
         <div class="footer">

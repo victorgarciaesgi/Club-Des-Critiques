@@ -3,7 +3,7 @@
 // Composant checkbox <checkbox></checkbox>
 MainApp.component('checkbox', {
   templateUrl: '../components/Checkbox.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){},
+  controller: function($scope, $element, $attrs){},
   bindings: {
     vgModel: '=',
     vgData: '<',
@@ -14,7 +14,7 @@ MainApp.component('checkbox', {
 // composant textarea
 MainApp.component('areaForm', {
   templateUrl: '../components/Area-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
@@ -36,7 +36,7 @@ MainApp.component('areaForm', {
 
 MainApp.component('textForm', {
   templateUrl: '../components/Text-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
@@ -364,7 +364,7 @@ MainApp.component('tokenForm', {
 
 MainApp.component('ratingForm', {
   templateUrl: '../components/Rating-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     ctrl.count = 5; // Nombre d'étoiles
     ctrl.hoverStar = false; // Etat hover du block d'étoiles
@@ -440,7 +440,7 @@ MainApp.component('ratingForm', {
 
 MainApp.component('dateBetweenForm', {
   templateUrl: '../components/DateBetween-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModelStart',(newValue, oldValue, scope) => {
       if (!!newValue) {

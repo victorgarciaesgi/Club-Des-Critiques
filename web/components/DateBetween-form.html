@@ -1,72 +1,74 @@
-<ng-form name='dateForm1'>
-<div class='legend'>{($ctrl.vgData.legend1)}</div>
-<div class="input-form-wrap f-left h-auto w-100">
-  <input type="date"
-          ng-model='$ctrl.vgModelStart'
-          class='input-form'
-          ng-class='{
-            formError: (dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty),
-            formValid: (dateForm1[$ctrl.vgData.startName].$valid && dateForm1[$ctrl.vgData.startName].$dirty),
-          }'
-          placeholder="{($ctrl.vgData.legend1)}"
-          name='{($ctrl.vgData.startName)}'
-          dateEnd='{($ctrl.vgModelEnd)}'
-          ng-required='$ctrl.vgData.required'
-          ng-model-options="{'allowInvalid': true}"
-          ng-trim="false"
-          vg-verificator='dateStart'/>
+<ng-form name='dateForm' date-between-validator='{($ctrl.vgData.startName)},{($ctrl.vgData.endName)}'>
+  <ng-form name='dateForm1'>
+  <div class='legend'>{($ctrl.vgData.legend1)}</div>
+  <div class="input-form-wrap f-left h-auto w-100">
+    <input type="date"
+            ng-model='$ctrl.vgModelStart'
+            class='input-form'
+            ng-class='{
+              formError: (dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty),
+              formValid: (dateForm1[$ctrl.vgData.startName].$valid && dateForm1[$ctrl.vgData.startName].$dirty),
+            }'
+            placeholder="{($ctrl.vgData.legend1)}"
+            name='{($ctrl.vgData.startName)}'
+            date-end='{($ctrl.vgModelEnd)}'
+            ng-required='$ctrl.vgData.required'
+            ng-model-options="{'allowInvalid': true}"
+            ng-trim="false"/>
 
-   <div ng-show='dateForm1[$ctrl.vgData.startName].$valid && dateForm1[$ctrl.vgData.startName].$dirty' class="form-valid-icon form-valid"></div>
-   <div ng-show='dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty' class="form-valid-icon form-invalid"></div>
-   <div ng-show='dateForm1[$ctrl.vgData.startName].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
-</div>
-  <div class="errorMessage" ng-show='dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty'>
-    <span ng-repeat='(key, value) in dateForm1[$ctrl.vgData.startName].$error' ng-if='dateForm1[$ctrl.vgData.startName].$error && key != "required"'>
-      <span>{($ctrl.vgData.errors[key])}</span>
-    </span>
-     <span ng-if='dateForm1[$ctrl.vgData.startName].$error.required && $ctrl.vgData.errors.required'>{($ctrl.vgData.errors.required)}</span>
+     <div ng-show='dateForm1[$ctrl.vgData.startName].$valid && dateForm1[$ctrl.vgData.startName].$dirty' class="form-valid-icon form-valid"></div>
+     <div ng-show='dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty' class="form-valid-icon form-invalid"></div>
+     <div ng-show='dateForm1[$ctrl.vgData.startName].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
   </div>
-  <div class="infoMessage" ng-show='dateForm1[$ctrl.vgData.startName].$pending'>
-    <span ng-repeat='(key, value) in dateForm1[$ctrl.vgData.startName].$pending'>
-      <span>Verification...</span>
-    </span>
-  </div>
-  <!-- <pre>{(dateForm1 | json)}</pre> -->
-</ng-form>
+    <div class="errorMessage" ng-show='dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty'>
+      <span ng-repeat='(key, value) in dateForm1[$ctrl.vgData.startName].$error' ng-if='dateForm1[$ctrl.vgData.startName].$error && key != "required"'>
+        <span>{($ctrl.vgData.errors[key])}</span>
+      </span>
+       <span ng-if='dateForm1[$ctrl.vgData.startName].$error.required && $ctrl.vgData.errors.required'>{($ctrl.vgData.errors.required)}</span>
+    </div>
+    <div class="infoMessage" ng-show='dateForm1[$ctrl.vgData.startName].$pending'>
+      <span ng-repeat='(key, value) in dateForm1[$ctrl.vgData.startName].$pending'>
+        <span>Verification...</span>
+      </span>
+    </div>
+    <!-- <pre>{(dateForm1 | json)}</pre> -->
+  </ng-form>
 
 
-<ng-form name='dateForm2'>
-<div class='legend'>{($ctrl.vgData.legend2)}</div>
-<div class="input-form-wrap f-left h-auto w-100">
-  <input type="date"
-          ng-model='$ctrl.vgModelEnd'
-          class='input-form'
-          ng-class='{
-            formError: (dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty),
-            formValid: (dateForm2[$ctrl.vgData.endName].$valid && dateForm2[$ctrl.vgData.endName].$dirty),
-          }'
-          placeholder="{($ctrl.vgData.legend2)}"
-          name='{($ctrl.vgData.endName)}'
-          dateStart='{($ctrl.vgModelStart)}'
-          ng-required='$ctrl.vgData.required'
-          ng-model-options="{'allowInvalid': true}"
-          ng-trim="false"
-          vg-verificator='dateEnd'/>
+  <ng-form name='dateForm2' ng-show='$ctrl.vgModelStart && dateForm1.$valid'>
+  <div class='legend'>{($ctrl.vgData.legend2)}</div>
+  <div class="input-form-wrap f-left h-auto w-100">
+    <input type="date"
+            ng-model='$ctrl.vgModelEnd'
+            class='input-form'
+            ng-class='{
+              formError: (dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty),
+              formValid: (dateForm2[$ctrl.vgData.endName].$valid && dateForm2[$ctrl.vgData.endName].$dirty),
+            }'
+            placeholder="{($ctrl.vgData.legend2)}"
+            name='{($ctrl.vgData.endName)}'
+            date-start={($ctrl.vgModelStart)}
+            ng-required='$ctrl.vgData.required'
+            ng-model-options="{'allowInvalid': true}"
+            ng-trim="false" />
 
-   <div ng-show='dateForm2[$ctrl.vgData.endName].$valid && dateForm2[$ctrl.vgData.endName].$dirty' class="form-valid-icon form-valid"></div>
-   <div ng-show='dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty' class="form-valid-icon form-invalid"></div>
-   <div ng-show='dateForm2[$ctrl.vgData.endName].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
-</div>
-  <div class="errorMessage" ng-show='dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty'>
-    <span ng-repeat='(key, value) in dateForm2[$ctrl.vgData.endName].$error' ng-if='dateForm2[$ctrl.vgData.endName].$error && key != "required"'>
-      <span>{($ctrl.vgData.errors[key])}</span>
-    </span>
-     <span ng-if='dateForm2[$ctrl.vgData.endName].$error.required && $ctrl.vgData.errors.required'>{($ctrl.vgData.errors.required)}</span>
+     <div ng-show='dateForm2[$ctrl.vgData.endName].$valid && dateForm2[$ctrl.vgData.endName].$dirty' class="form-valid-icon form-valid"></div>
+     <div ng-show='dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty' class="form-valid-icon form-invalid"></div>
+     <div ng-show='dateForm2[$ctrl.vgData.endName].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
   </div>
-  <div class="infoMessage" ng-show='dateForm2[$ctrl.vgData.endName].$pending'>
-    <span ng-repeat='(key, value) in dateForm2[$ctrl.vgData.endName].$pending'>
-      <span>Verification...</span>
-    </span>
-  </div>
-  <!-- <pre>{(textForm[$ctrl.vgName].$pending)}</pre> -->
+    <div class="errorMessage" ng-show='dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty'>
+      <span ng-repeat='(key, value) in dateForm2[$ctrl.vgData.endName].$error' ng-if='dateForm2[$ctrl.vgData.endName].$error && key != "required"'>
+        <span>{($ctrl.vgData.errors[key])}</span>
+      </span>
+       <span ng-if='dateForm2[$ctrl.vgData.endName].$error.required && $ctrl.vgData.errors.required'>{($ctrl.vgData.errors.required)}</span>
+    </div>
+    <div class="infoMessage" ng-show='dateForm2[$ctrl.vgData.endName].$pending'>
+      <span ng-repeat='(key, value) in dateForm2[$ctrl.vgData.endName].$pending'>
+        <span>Verification...</span>
+      </span>
+    </div>
+    <!-- <pre>{(textForm[$ctrl.vgName].$pending)}</pre> -->
+  </ng-form>
+
+
 </ng-form>

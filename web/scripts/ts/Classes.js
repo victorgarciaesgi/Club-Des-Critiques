@@ -17,7 +17,7 @@ var map = {
   },
   dateBetween: {
     start: 'La date de début doit être dans le futur',
-    end: 'La date de fin'
+    end: 'La date de fin doit être après la date de début'
   },
 }
 
