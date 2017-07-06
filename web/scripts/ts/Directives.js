@@ -7,12 +7,10 @@ MainApp.directive('vgVerificator', function($q, PromiseImage) {
     restrict: 'A',
     require: 'ngModel',
     link: function(scope, elm, attrs, ctrl) {
-      console.log(ctrl)
       var validator = attrs.vgVerificator;
       switch (validator) {
         case "linkImage":
           var regxp = new RegExp("(https?:\/\/.*)");
-
           ctrl.$validators.link = (modelValue, viewValue) => {
             if(!!modelValue){
               var verif = regxp.test(modelValue);
@@ -50,7 +48,7 @@ MainApp.directive('dateBetweenValidator', function($q) {
       scope.$watch('$ctrl', function(newValue, Old){
         scope.dateForm1[names[0]].$validate();
         scope.dateForm2[names[1]].$validate();
-        
+
         scope.dateForm1[names[0]].$validators.start = (modelValue, viewValue) => {
           var date = new Date(modelValue);
           var dateEnd = new Date(newValue.vgModelEnd);

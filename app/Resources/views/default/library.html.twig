@@ -57,13 +57,24 @@
             </div>
           </div>
           <div class="library-list" lazyload='Library.loadNext()'>
-            <div class="ng-cloak loader-content" ng-if='Library.books.loading || Library.books.error'>
-              <div ng-show='!Library.books.error && Library.books.loading' taille='big' class="loading-spinner"></div>
-              <div class='error' ng-show='Library.books.error'>
-                {(Library.books.error)}
-              </div>
+            <div class="ng-cloak admin-books" ng-if='UserAdmin'>
+              <ul class="ui-tabs">
+                <li ng-repeat='tab in Library.tabs.elements track by $index'>
+                  <input id='radio-{(tab.value)}' type="radio" ng-model='Library.adminView'
+                  name="libraryTabs" ng-value="{(tab.value)}" ng-change='Library.changeView()'>
+                  <label for="radio-{(tab.value)}">
+                    {(tab.title)}
+                  </label>
+                </li>
+              </ul>
             </div>
             <ul class="books-list">
+              <div class="ng-cloak loader-content" ng-if='Library.books.loading || Library.books.error'>
+                <div ng-show='!Library.books.error && Library.books.loading' taille='big' class="loading-spinner"></div>
+                <div class='error' ng-show='Library.books.error'>
+                  {(Library.books.error)}
+                </div>
+              </div>
               <li ng-repeat='book in Library.books.elements track by book.idMedia'
                   class='ng-cloak book-wrapper'
                   ng-click='Library.books.show(book)'
@@ -332,9 +343,12 @@
           </div>
           <div class="footer">
             <div class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</div>
-            <div class="bouton" design='blanc'>Signaler</div>
-            <div ng-if='UserConnected' class="bouton" design='green'>Créer un salon</div>
-
+            <!-- User -->
+            <div class="bouton" design='blanc' ng-if='!Library.adminView'>Signaler</div>
+            <div ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</div>
+            <!-- Admin -->
+            <div ng-if='Library.adminView && UserAdmin' class="bouton" design='blanc' ng-click='Library.validate(false)'> Refuser le livre</div>
+            <div ng-if='Library.adminView && UserAdmin' class="bouton" design='green' ng-click='Library.validate(true)'> Valider le livre</div>
           </div>
       </div>
     </div>

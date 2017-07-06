@@ -135,17 +135,26 @@
         }
       }
     }
+
     .library-list{
       position: relative;
-      float: left;
+      display: flex;
       height: calc(100% - 40px);
       width: 100%;
       overflow-y: auto;
       overflow-x: hidden;
+      flex-direction: column;
+
+      .admin-books{
+        position: relative;
+        height: 40px;
+        width: 100%;
+        flex: 0 1 auto;
+      }
 
       ul{
         position: relative;
-        float: left;
+        flex: 1 1 auto;
         height: auto;
         min-height: 100%;
         width: 100%;

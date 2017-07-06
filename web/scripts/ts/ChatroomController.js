@@ -107,7 +107,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
   $scope.createSalon = {
     values: {},
     elements: {
-      search: new searchForm('Rechercher un livre... (Google Books)','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
+      search: new searchForm('Rechercher un livre...','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
       dates: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null)
     },
     preview: {},
