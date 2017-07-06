@@ -214,7 +214,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       this.values.illustration = (!!book.volumeInfo.imageLinks)?book.volumeInfo.imageLinks.thumbnail:null;
       this.values.pages = (!!book.volumeInfo.pageCount)?book.volumeInfo.pageCount:null;
       this.values.isbn = book.volumeInfo.industryIdentifiers;
-      // this.values.date = (!!book.volumeInfo.publishedDate)?book.volumeInfo.publishedDate:null;
+      this.values.date = (!!book.volumeInfo.publishedDate)?new Date(book.volumeInfo.publishedDate):null;
       this.values.description = (!!book.volumeInfo.description)?book.volumeInfo.description:null;
       this.values.price = (!!book.saleInfo.retailPrice)?book.saleInfo.retailPrice.amount:null;
       this.values.buyLink = (!!book.saleInfo.buyLink)?book.saleInfo.buyLink:null;
