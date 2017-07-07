@@ -23,6 +23,7 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
     display: false,
     init(){
       if ($rootScope.UserConnected){
+        notifications.init();
         notifications.emit('sync', $rootScope.UserInfos);
       }
       else{

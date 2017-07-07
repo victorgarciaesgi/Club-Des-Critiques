@@ -43,8 +43,11 @@ MainApp.factory('PromiseImage', function($q) {
 
 
 MainApp.factory('socket', function ($rootScope) {
-  var socket = io.connect('http://localhost:8124');
+  var socket;
   return {
+    init: function(){
+      socket = io.connect('http://localhost:8124');
+    }, 
     on: function (eventName, callback) {
       socket.on(eventName, function () {
         var args = arguments;
@@ -67,8 +70,11 @@ MainApp.factory('socket', function ($rootScope) {
 });
 
 MainApp.factory('notifications', function ($rootScope) {
-  var socket = io.connect('http://localhost:8124/notifications');
+  var socket;
   return {
+    init: function(){
+      socket = io.connect('http://localhost:8124/notifications');
+    },
     on: function (eventName, callback) {
       socket.on(eventName, function () {
         var args = arguments;
