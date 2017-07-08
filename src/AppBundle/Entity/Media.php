@@ -106,6 +106,16 @@ class Media
     private $buyLink;
 
     /**
+     * @var int
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_users", referencedColumnName="id")
+     * })
+     */
+    private $idUsers;
+
+    /**
      * @var boolean
      *
      * @ORM\Column(name="is_active", type="boolean", nullable=false)
@@ -337,6 +347,22 @@ class Media
     public function getReleaseDate()
     {
         return $this->releaseDate;
+    }
+
+    /**
+     * @return int
+     */
+    public function getIdUsers()
+    {
+        return $this->idUsers;
+    }
+
+    /**
+     * @param int $idUsers
+     */
+    public function setIdUsers($idUsers)
+    {
+        $this->idUsers = $idUsers;
     }
 
     /**
