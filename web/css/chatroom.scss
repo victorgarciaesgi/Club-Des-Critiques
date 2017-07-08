@@ -1,8 +1,7 @@
 @import "_variables.scss";
 
 $infosWidth: 350px;
-$mini: "(max-width: 1000px)";
-$desktop: "(min-width: 1001px)";
+
 
 #chatroom{
   position: relative;
@@ -334,6 +333,7 @@ article#Messages{
       z-index: 1;
       margin-bottom: 10px;
 
+
       &[self='true'][new='true'].ng-enter {
         @include transition(right 0.3s);
         right: -20px;
@@ -350,6 +350,32 @@ article#Messages{
 
       &[self='false'][new='true'].ng-enter.ng-enter-active {
         left: 0px;
+      }
+
+      &[self='true'].ng-leave {
+        @include transition(right 0.5s, opacity 0.5s, max-height 0.5s);
+        right: 0px;
+        opacity: 1;
+        max-height: 200px;
+      }
+
+      &[self='true'].ng-leave.ng-leave-active {
+        right: -70%;
+        opacity: 0;
+        max-height: 0px;
+      }
+
+      &[self='false'].ng-leave {
+        @include transition(left 0.5s, opacity 0.5s, max-height 0.5s);
+        left: 0px;
+        opacity: 1;
+        max-height: 200px;
+      }
+
+      &[self='false'].ng-leave.ng-leave-active {
+        left: -70%;
+        opacity: 0;
+        max-height: 0px;
       }
 
 
@@ -413,8 +439,26 @@ article#Messages{
             color: white;
           }
         }
+      }
+      &[self='false']{
+        float: right;
 
+        &:hover{
+          .time{
+            display: none;
+          }
 
+          .report{
+            display: flex;
+          }
+        }
+
+        .message-content .text{
+          cursor: pointer;
+          &:hover{
+            background-color: $w230;
+          }
+        }
       }
 
       .user-name{
@@ -439,9 +483,9 @@ article#Messages{
           padding: 5px 13px 5px 13px;
           min-height: 20px;
           max-width: 500px;
-          color: rgb(60,60,60);
+          color: $g60;
           line-height: 20px;
-          background-color: rgb(240,240,240);
+          background-color: $w240;
           border-radius: 20px;
           word-wrap: break-word;
           word-break: break-all;
@@ -449,23 +493,31 @@ article#Messages{
 
         .time{
           position: relative;
-          float: left;
           width: 50px;
           color: rgb(200,200,200);
           font-size: 10px;
           padding: 0 10px 0 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
 
-          div{
-            position: absolute;
-            top: 50%;
-            @include translateY(-50%);
+        .report{
+          width: 50px;
+          padding: 0 10px 0 10px;
+          display: none;
+          align-self: center;
+
+          img{
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
           }
         }
 
         .user{
           display: block;
           position: relative;
-          float: left;
           height: auto;
 
           div{

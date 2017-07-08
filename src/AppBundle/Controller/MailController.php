@@ -7,7 +7,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class MailController extends Controller
 {
@@ -19,7 +19,6 @@ class MailController extends Controller
         $data = json_decode($request->getContent(), true);
 
         dump($data);
-
 
         $currentDate = new \Datetime("now");
         $timestamp = $currentDate->getTimestamp();
@@ -33,8 +32,13 @@ class MailController extends Controller
         $RegisterMail->setAccessPermalink($uniqueLink);
         $em = $this->getDoctrine()->getManager();
 
-        $em->persist($RegisterMail);
+        $uniqueMail = $em->persist($RegisterMail);
         $em->flush();
+
+        if($uniqueMail){
+            $error = json_encode(array('error' => "Mail déja existant"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
 
         // Envoie du mail pour l'inscription
 
@@ -52,8 +56,15 @@ class MailController extends Controller
                 ),
                 'text/html'
             );
-        $this->get('mailer')->send($message);
+        $status = $this->get('mailer')->send($message);
 
-        return new Response('Un mail vous à été envoyé');
+        if($status){
+            $success = json_encode(array('success' => "Un mail vous à été envoyé. Cliquez sur le lien envoyé dans votre boite mail."), JSON_FORCE_OBJECT);
+            return new JsonResponse($success);
+        }
+        else{
+            $error = json_encode(array('error' => "Une erreur est survenu lors de l'envoi du mail"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
     }
 }

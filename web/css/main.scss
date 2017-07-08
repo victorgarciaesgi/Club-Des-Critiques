@@ -183,10 +183,19 @@ aside{
   width: auto;
   height: auto;
   min-width : 200px;
+  min-height: 130px;
+  max-height: 80%;
   color: rgb(100,100,100);
-  min-height: 150px;
   z-index: 2000;
+  flex-direction: column;
   @include userselect;
+
+  &.static{
+    position: relative;
+    left: auto;
+    top: auto;
+    display: flex;
+  }
 
   #pin{
     position: absolute;
@@ -198,7 +207,6 @@ aside{
 
   .header{
     position: relative;
-    float: left;
     padding-left: 10px;
     height: 30px;
     line-height: 30px;
@@ -210,31 +218,32 @@ aside{
     box-shadow: 0 1px 5px rgba(80,80,80, 0.2);
     font-weight: bold;
     font-size: 15px;
+    flex: 0 1 auto;
   }
 
   .content{
     position: relative;
-    float: left;
     width: 100%;
     height: auto;
     padding: 5px;
+    flex: 1 1 auto;
   }
 
   .connexion{
     position: relative;
-    float: left;
     width: 100%;
     height: auto;
     padding: 5px 5px 0 5px;
+    flex: 0 0 auto;
   }
 
   .footer{
     position: relative;
-    float: left;
     height: auto;
     padding: 0 5px 5px 5px;
     width: 100%;
     text-align: center;
+    flex: 0 1 auto;
 
     .bouton{
       display: inline-block;
@@ -320,23 +329,6 @@ aside{
   display: flex;
   align-items: center;
   justify-content: center;
-  // @include transition(all 0.4s);
-  //
-  // &.ng-enter, .ng-leave.ng-leave-active{
-  //   opacity: 0;
-  //   .window{
-  //     margin-top: -100%;
-  //   }
-  // }
-  //
-  // &.ng-enter.ng-enter-active, .ng-leave{
-  //   opacity: 1;
-  //   .window{
-  //     margin-top: 0;
-  //   }
-  // }
-
-
 
   .window{
     position: relative;
@@ -439,6 +431,74 @@ aside{
       .bouton{
         display: inline-block;
         float: none;
+      }
+    }
+  }
+}
+
+
+
+#popup-notification{
+  display: flex;
+  max-height: 80%;
+  flex-direction: column;
+  .header{
+    flex: 0 0 auto;
+  }
+  .content{
+    display: flex;
+    overflow-y: auto;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+
+    .no-content{
+    }
+
+    ul{
+      position: relative;
+      height: auto;
+      width: 100%;
+      display: flex;
+      flex-direction: column-reverse;
+      li{
+        position: relative;
+        height: auto;
+        width: 100%;
+        margin-top: 5px;
+        padding: 10px 10px 10px 50px;
+        border: 1px solid $w240;
+        font-size: 13px;
+        color: $g90;
+        align-content: flex-start;
+        border-radius: 3px;
+        background-color: white;
+        line-height: 17px;
+
+        div{
+          width: 100%;
+        }
+
+        .date{
+          font-size: 12px;
+          color: rgb(120,120,120);
+        }
+
+        img{
+          position: absolute;
+          top: 50%;
+          @include translateY(-50%);
+          left: 10px;
+        }
+
+        &.ng-enter {
+          @include transition(left 0.3s);
+          left: -100%;
+        }
+
+        &.ng-enter.ng-enter-active {
+          left: 0;
+        }
       }
     }
   }

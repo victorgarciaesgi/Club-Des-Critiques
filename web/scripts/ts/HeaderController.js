@@ -1,6 +1,6 @@
+'use strict'
 
-
-MainApp.controller('header', function ($scope, $rootScope) {
+MainApp.controller('header', function ($scope, $rootScope, notifications, moment) {
 
   $scope.ConnexionForm = {
     values: {},
@@ -17,6 +17,49 @@ MainApp.controller('header', function ($scope, $rootScope) {
   }
 
 
+  $scope.Notifications = {
+    number: 0,
+    list: [],
+    display: false,
+    init(){
+      if ($rootScope.UserConnected){
+        notifications.emit('sync', $rootScope.UserInfos);
+      }
+      else{
+
+      }
+    },
+    add(notif){
+      this.list.push(notif);
+      $rootScope.Alerts.add(notif.type, notif.message);
+      this.number++;
+    },
+    show(event){
+      this.display =  true;
+      this.number = 0;
+    },
+    hide(){this.display = false; console.log('close')},
+    fill(notifs){
+      this.list = notifs;
+    }
+
+  }
+
+  $scope.Notifications.init();
+
+
+  notifications.on('Admin:delete:message', function(data) {
+    var notif = new Notification(data.type, data.message, data.date);
+    $scope.Notifications.add(notif);
+  });
+
+
+  notifications.on('Get:notifications', function(data) {
+    $scope.Notifications.fill(data);
+  });
+
+
+
 
 
   // Evenements Jquery Header
@@ -31,11 +74,11 @@ MainApp.controller('header', function ($scope, $rootScope) {
     // Evenements de contrôle d'affichage des popups
 
     $(document).click(function(){
-      $('.popup-box').hide().attr('state','false');
+      $('.popup-box:not(.static)').hide().attr('state','false');
     })
 
     $(window).resize(function(event) {
-      $('.popup-box').hide().attr('state','false');
+      $('.popup-box:not(.static)').hide().attr('state','false');
     });
 
     $(".popup-box, .popup-window .window").click(function(event){

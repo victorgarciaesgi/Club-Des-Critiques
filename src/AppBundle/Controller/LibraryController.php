@@ -59,7 +59,7 @@ class LibraryController extends Controller
 
     function returnNoteByBook($idMedia){
       $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT avg(n.note)
+      $query = $em->createQuery("SELECT avg(n.note) as note
                                  FROM AppBundle:Media m, AppBundle:Note n
                                  WHERE m.idMedia = :idMedia
                                  AND n.idMedia = m.idMedia"
@@ -69,9 +69,18 @@ class LibraryController extends Controller
     }
 
     function returnOneBookInfos($idMedia){
-      $content = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media')->find($idMedia);
-      $book = $this->getSerializer()->normalize($content, 'null');
-      return $book;
+      $em = $this->getDoctrine()->getManager();
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note
+                           FROM AppBundle:Media m
+                           LEFT JOIN AppBundle:Note n
+                           WITH m.idMedia = n.idMedia
+                           WHERE m.idMedia = :idMedia
+                           GROUP by m.idMedia"
+      )->setParameter('idMedia',$idMedia)
+      ->setMaxResults(1);
+      $result = $query->getResult();
+      $book = $this->getSerializer()->normalize($result, 'null');
+      return $book[0];
     }
 
     function sortArray($object){
@@ -147,10 +156,12 @@ class LibraryController extends Controller
 
       $book = $this->returnOneBookInfos($data);
 
-      $book['categories'] = $this->returnCategoriesByBook($book['idMedia']);
-      $book['note'] = $this->returnNoteByBook($book['idMedia']);
+      $media = $book['media'];
+      $media['note'] = $book['note'];
 
-      return new JsonResponse($book);
+      $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
+
+      return new JsonResponse($media);
     }
 
     /**
@@ -169,10 +180,11 @@ class LibraryController extends Controller
                            FROM AppBundle:Media m
                            INNER JOIN AppBundle:CategoryAffiliation mc
                            WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
+                           AND mc.idMedia = m.idMedia
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
                            GROUP by m.idMedia
-                           ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
+                           ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
         ->setFirstResult($data['limit']);
         $books = $query->getResult();
@@ -183,7 +195,7 @@ class LibraryController extends Controller
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
                            GROUP by m.idMedia
-                           ORDER BY m.".$data['column']['value']." ".$data['tri']['value']);
+                           ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
         ->setFirstResult($data['limit']);
         $books = $query->getResult();
@@ -220,7 +232,7 @@ class LibraryController extends Controller
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
       $content = $repository->createQueryBuilder('m')
                ->where('m.name LIKE :name')
-               ->setParameter('name', '%'.$data.'%')
+               ->setParameter('name', $data.'%')
                ->setMaxResults(4)
                ->getQuery();
       $results = $content->getArrayResult();
@@ -247,7 +259,7 @@ class LibraryController extends Controller
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Category');
       $content = $repository->createQueryBuilder('c')
                ->where('c.name LIKE :name')
-               ->setParameter('name', '%'.$data.'%')
+               ->setParameter('name',$data.'%')
                ->setMaxResults(3)
                ->getQuery();
       $results = $content->getArrayResult();

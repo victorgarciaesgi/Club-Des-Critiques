@@ -1,5 +1,6 @@
 // imports
 @import "variables.scss";
+@import "main.scss";
 
 // keyframes
 @keyframes spinner-animation {
@@ -99,6 +100,7 @@ body {
   overflow-x: hidden;
   overflow-y: auto;
   padding-top: 50px;
+  min-width: 800px;
   // min-width: 800px;
   // -webkit-font-smoothing: antialiased;
 }
@@ -149,6 +151,55 @@ pre{
   position: relative;
   float: left;
   width: 100%;
+}
+
+form.fos_user_registration_register{
+  @extend .popup-box;
+  position: relative;
+  left: auto;
+  top: auto;
+  display: flex;
+  padding: 10px;
+  justify-content: center;
+  flex-direction: column;
+  max-width: 500px;
+  div{
+    justify-content: center;
+    flex-direction: column;
+  }
+  input{
+    @extend .input-form;
+  }
+  textarea{
+    @extend .input-form;
+  }
+
+  ul{
+    position: relative;
+    width: 100%;
+    border-radius: 3px;
+    border: 1px solid $red1;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    font-size: 14px;
+    background-color: transparentize($red1, 0.8);
+    padding: 10px;
+  }
+
+  button{
+    display: flex;
+    @extend .bouton;
+    float: none;
+
+    background-color: $mainGreen2;
+    color: white;
+    &:hover {
+      background-color: $mainGreen2 - rgb(20, 20, 20);
+    }
+    &:active {
+      background-color: $mainGreen2 - rgb(40, 40, 40);
+    }
+  }
 }
 
 .header-separation{
@@ -238,6 +289,16 @@ pre{
   &.formValid{
     border-color: $mainGreen2;
   }
+}
+
+.flex-container{
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 }
 
 .token-container{

@@ -17,7 +17,7 @@ var map = {
   },
   dateBetween: {
     start: 'La date de début doit être dans le futur',
-    end: 'La date de fin'
+    end: 'La date de fin doit être après la date de début'
   },
 }
 
@@ -83,5 +83,14 @@ class dateBetweenForm{
       this.errors = map[this.validator];
       if(required){this.errors["required"] = errorMessage?errorMessage:map.required}
     }
+  }
+}
+
+
+class Notification{
+  constructor(type, message, date){
+    this.type = type;
+    this.message = message;
+    this.date = date;
   }
 }

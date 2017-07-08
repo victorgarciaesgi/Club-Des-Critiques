@@ -4,19 +4,36 @@
     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
-<form action="{{ path("fos_user_security_check") }}" method="post">
-    {% if csrf_token %}
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
-    {% endif %}
 
-    <label for="username">{{ 'security.login.username'|trans }}</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+<div class="flex-container" ng-non-bindable>
+  <div id='popup-connexion' class="popup-box static" style='width: 350px'>
+      <div class="header">
+          Connexion
+      </div>
+      <div class="content">
+        <form action="{{ path("fos_user_security_check") }}" method="post">
+          {% if csrf_token %}
+              <input class="input-form" type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+          {% endif %}
 
-    <label for="password">{{ 'security.login.password'|trans }}</label>
-    <input type="password" id="password" name="_password" required="required" />
+          <input class="input-form" type="text" id="username" placeholder="{{ 'security.login.username'|trans }}" name="_username" value="{{ last_username }}" required="required" />
 
-    <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
-    <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+          <input class="input-form" type="password" placeholder='{{ 'security.login.password'|trans }}' id="password" name="_password" required="required" />
 
-    <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}" />
-</form>
+          <div class="checkbox">
+            <input class="input-form" type="checkbox" id="remember_me" name="_remember_me" value="on" />
+              <label for="remember_me"></label>
+              <span>Se souvenir de moi</span>
+          </div>
+
+      </div>
+      <div class="footer">
+        <div class="bouton" design='blanc'>
+          Mot de passe oublié
+        </div>
+        <button class='bouton' design='green' type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans }}">Connexion</button>
+
+      </div>
+      </form>
+  </div>
+</div>

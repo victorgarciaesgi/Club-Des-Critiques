@@ -1,3 +1,4 @@
+'use strict'
 
 var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment'])
 .config(function($interpolateProvider){
@@ -127,8 +128,25 @@ MainApp.controller('homepage', function ($scope, $rootScope, AjaxRequest) {
     elements: {
       mail: new textForm('Votre email..','mail','email',true,null,null, null, 'email', true, null),
     },
+    submitting: false,
     submit: function(){
-      var promise = AjaxRequest.get('mail_register',this.values);
+      this.submitting = true;
+      var promise = AjaxRequest.get('mail_register',this.values).then((result) => {
+        if (result.success){
+          this.display = false;
+          this.values = {};
+          $rootScope.Alerts.add('success',result.success);
+          this.submitting = false;
+          $scope.mailRegisterX.$setPristine();
+        }
+        else{
+          $rootScope.Alerts.add('error', result.error);
+          this.submitting = false;
+        }
+      },(error) => {
+        $rootScope.Alerts.add('error','Erreur lors de l\'envoi');
+        this.submitting = false;
+      });
     }
   }
 

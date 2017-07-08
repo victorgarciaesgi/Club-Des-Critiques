@@ -32,7 +32,7 @@ class Website
      * Limite de signalement max par utilisateur dans un chatroom
      * @var integer
      *
-     * @ORM\Column(name="report_chatroom_limit", type="integer", nullable=false)
+     * @ORM\Column(name="report_chatroom_limit", type="integer", nullable=true)
      */
     private $reportChatroomLimit;
 
@@ -40,21 +40,21 @@ class Website
      * Nombre utilisateur max par salons (chatroom)
      * @var integer
      *
-     * @ORM\Column(name="max_user_in_rooms", type="integer", nullable=false)
+     * @ORM\Column(name="max_user_in_rooms", type="integer", nullable=true)
      */
     private $maxUserChatroom;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="param_3", type="integer", nullable=false)
+     * @ORM\Column(name="param_3", type="integer", nullable=true)
      */
     private $param3;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="param_4", type="integer", nullable=false)
+     * @ORM\Column(name="param_4", type="integer", nullable=true)
      */
     private $param4;
 

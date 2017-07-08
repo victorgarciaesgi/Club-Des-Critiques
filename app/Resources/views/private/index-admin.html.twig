@@ -1,12 +1,16 @@
 {% extends 'base.html.twig' %}
 {% block javascript %}
+    <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
     <script src="/js/bootstrap.min.js"></script>
 {% endblock %}
 {% block stylesheets %}
     <link href="/css/bootstrap.min.css" rel="stylesheet">
 {% endblock %}
 {% block body %}
-    <div class="container">
+    <div class="container ng-non-bindable">
         <h2>Espace adminitration</h2>
         <div class="homepage_settings">
             <div class="row">
@@ -14,7 +18,7 @@
                 {{ form_start(form) }}
                 {{ form_errors(form) }}
 
-                {{ form_row(form.concept,{'label': 'Le concept : '}) }}
+                {{ form_row(form.concept,{'label': 'Le concept : ','id': 'editor1'}) }}
                 <br>
                 <div class="text-center">
                     {{ form_row(form.save, {'label': 'Mise à jour du context'}) }}
@@ -44,7 +48,7 @@
         </div>
         <div class="contenus">
             <div class="row">
-                <legend>Page d'accueil</legend>
+                <legend>Contenus</legend>
                 <div class="row">
                     <div class="col-lg-2">
                         <ul class="nav nav-pills nav-stacked">
@@ -53,165 +57,105 @@
                         </ul>
                     </div>
                     <div class="col-lg-10">
-                        <div class="row add-book">
-                            <h3 class="text-center">Ajouter un livre</h3>
-                            <form name='AddBookFormX' ng-submit='AddBookForm.submit()' autocomplete="off">
-
-                                <div class="header double">
-                                    <span>Ajouter un livre</span>
-                                    <span>Aperçu du livre</span>
-                                    <img src="/assets/quit.svg" class='closePopupWindow' alt="Fermer la fenêtre" ng-click='AddBookForm.hide()'>
-                                </div>
-                                <div class="content">
-                                    <div class="form-section" >
-                                        <div class="legend">
-                                            La recherche par titre va completer automatiquement les informations du livre
-                                        </div>
-                                        <search-form vg-model='AddBookForm.values.search'
-                                                     vg-data='AddBookForm.elements.search'
-                                                     vg-source='{(AddBookForm.elements.search.source)}'
-                                                     on-select-result='AddBookForm.selectResult(result)'>
-                                        </search-form>
-                                        <text-form vg-model='AddBookForm.values.author'
-                                                   vg-type='AddBookForm.elements.author.type'
-                                                   vg-name='AddBookForm.elements.author.name'
-                                                   vg-placeholder='AddBookForm.elements.author.placeholder'
-                                                   vg-validator='AddBookForm.elements.author.validator'
-                                                   vg-errors='AddBookForm.elements.author.errors'
-                                                   vg-required='AddBookForm.elements.author.required'>
-                                        </text-form>
-                                        <text-form vg-model='AddBookForm.values.illustration'
-                                                   vg-type='AddBookForm.elements.illustration.type'
-                                                   vg-name='AddBookForm.elements.illustration.name'
-                                                   vg-placeholder='AddBookForm.elements.illustration.placeholder'
-                                                   vg-validator='AddBookForm.elements.illustration.validator'
-                                                   vg-errors='AddBookForm.elements.illustration.errors'
-                                                   vg-required='AddBookForm.elements.illustration.required'>
-                                        </text-form>
-                                        <text-form vg-model='AddBookForm.values.pages'
-                                                   vg-type='AddBookForm.elements.pages.type'
-                                                   vg-name='AddBookForm.elements.pages.name'
-                                                   vg-placeholder='AddBookForm.elements.pages.placeholder'
-                                                   vg-validator='AddBookForm.elements.pages.validator'
-                                                   vg-errors='AddBookForm.elements.pages.errors'
-                                                   vg-required='AddBookForm.elements.pages.required'>
-                                        </text-form>
-                                        <area-form vg-model='AddBookForm.values.description'
-                                                   vg-type='AddBookForm.elements.description.type'
-                                                   vg-name='AddBookForm.elements.description.name'
-                                                   vg-placeholder='AddBookForm.elements.description.placeholder'
-                                                   vg-validator='AddBookForm.elements.description.validator'
-                                                   vg-errors='AddBookForm.elements.description.errors'
-                                                   vg-required='AddBookForm.elements.description.required'>
-                                        </area-form>
-                                        <text-form vg-model='AddBookForm.values.date'
-                                                   vg-type='AddBookForm.elements.date.type'
-                                                   vg-name='AddBookForm.elements.date.name'
-                                                   vg-placeholder='AddBookForm.elements.date.placeholder'
-                                                   vg-validator='AddBookForm.elements.date.validator'
-                                                   vg-errors='AddBookForm.elements.date.errors'
-                                                   vg-required='AddBookForm.elements.date.required'
-                                                   vg-legend='AddBookForm.elements.date.legend'>
-                                        </text-form>
-                                        <token-form vg-model='AddBookForm.values.categories'
-                                                    vg-data='AddBookForm.elements.categories'
-                                                    vg-source='AddBookForm.elements.categories.source'>
-                                        </token-form>
-                                        <div class='legend'>Veuillez donner une note pour ce livre</div>
-                                        <rating-form vg-model='AddBookForm.values.rating'
-                                                     vg-required='AddBookForm.elements.rating.required'
-                                                     vg-name='AddBookForm.elements.rating.name'
-                                                     vg-editable='AddBookForm.elements.rating.editable'
-                                                     vg-init='AddBookForm.elements.rating.init'
-                                                     vg-displaynote='false'>
-                                        </rating-form>
-                                        <!-- <input type="checkbox" ng-init='debugForm = false' ng-model='debugForm'> Afficher valeurs de debug
-                                        <pre ng-if='debugForm'>{(AddBookForm.values | json)}</pre> -->
-                                    </div><!--
-            --><div class="form-section" color>
-                                        <div class="book-form-preview" >
-                                            <div class="book-blur" style='background-image: url({(AddBookForm.values.illustration)})'></div>
-                                            <div class="input-form-wrap">
-                                                <div class="cover" ng-show='!AddBookForm.coverLoaded && AddBookForm.coverSearching'>
-                                                    <div class="loading-spinner"></div>
-                                                </div>
-                                                <div class="cover" ng-show='!AddBookForm.coverLoaded && !AddBookForm.coverSearching' style='background-image: url("/assets/no_thumbnail.jpg")'>
-                                                </div>
-                                                <div class="cover" ng-show='AddBookForm.coverLoaded && !AddBookForm.coverSearching' style='background-image: url({(AddBookForm.values.illustration.length > 10?AddBookForm.values.illustration:"/assets/no_thumbnail.jpg")})'>
-                                                </div>
-                                            </div>
-                                            <div class="input-form-wrap">
-                                                <div class="title-book">
-                                                    {(AddBookForm.values.search? (AddBookForm.values.search | cap) : 'Titre du livre')}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="infos-book">
-                                            <div class="infos-header">
-                                                <div class="i-h-info">
-                                                    <div class="i-h-img">
-                                                        <img src="/assets/euro.svg">
-                                                    </div>
-                                                    <div class='i-h-text'>{(AddBookForm.values.price || '-')}</div>
-                                                </div>
-                                                <div class="i-h-info">
-                                                    <div class="i-h-img">
-                                                        <img src="/assets/book.svg">
-                                                    </div>
-                                                    <div class='i-h-text'>{(AddBookForm.values.pages || '-')} <span ng-if='AddBookForm.values.pages'>pages</span></div>
-                                                </div>
-                                                <div class="i-h-info">
-                                                    <div class="i-h-img">
-                                                        <img src="/assets/date.svg">
-                                                    </div>
-                                                    <div class='i-h-text'>{(AddBookForm.values.date || '-')}</div>
-                                                </div>
-                                            </div>
-                                            <div class="info-book" ng-if='AddBookForm.values.rating'>
-                                                <rating-form vg-init='AddBookForm.values.rating' vg-editable='false'
-                                                             vg-displaynote='true'>
-                                                </rating-form>
-                                            </div>
-                                            <div class="info-book" ng-if='AddBookForm.values.categories.length'>
-                                                <ul class='token-container center'>
-                                                    <li class='token' ng-repeat='token in AddBookForm.values.categories'>
-                                                        <span>{(token.name)}</span>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            <div class="info-book" ng-if='AddBookForm.values.author'>
-                                                <div class="i-b-title">Autheur</div>
-                                                <div class="i-b-content">{(AddBookForm.values.author || '-')}</div>
-                                            </div>
-                                            <div class="info-book" ng-if='AddBookForm.values.description'>
-                                                <div class="i-b-title">Description</div>
-                                                <div class="i-b-content">{(AddBookForm.values.description || '-')}</div>
-                                            </div>
-
-                                            <div class="info-book" ng-if='AddBookForm.values.buyLink'>
-                                                <div class="i-b-title">Lien d'achat</div>
-                                                <a class="i-b-content" ng-class='{link: AddBookForm.values.buyLink}' target='_blank'
-                                                   ng-href='{(AddBookForm.values.buyLink || "#")}'>{(AddBookForm.values.buyLink?'Lien Play Store':'-')}</a>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="footer">
-                                    <div class="bouton" design='blanc' ng-click='AddBookForm.annul()'>Annuler</div>
-                                    <div class="bouton" design='blanc' ng-click='AddBookForm.reset()'>Vider les champs</div>
-                                    <button class="bouton" type='submit' design='green'
-                                            ng-disabled='AddBookFormX.$invalid'>Ajouter un livre</button>
-
-                                </div>
-                            </form>
-                        </div>
                         <div class="row update-book-select">
                             <h3 class="text-center">Modifier un livre</h3>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            Rien pour le moment
+                            <br>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="static-page">
+            <legend>Pages Statiques</legend>
+            <table class="table table-hover">
+                <tr>
+                    <th>ID</th>
+                    <th>Nom</th>
+                    <th>Date création</th>
+                    <th>Date der. modification</th>
+                    <th>Catégorie</th>
+                    <th class="text-center">Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+                {% for cms in list_cms %}
+                    <tr>
+                        <td>{{ cms.id }}</td>
+                        <td>{{ cms.title }}</td>
+                        <td>{{ cms.dateCreated|date("d/m/Y") }}</td>
+                        <td>{{ cms.dateUpdate|date("d/m/Y") }}</td>
+                        <td>{{ cms.Category }}</td>
+                        <td class="text-center">{% if cms.isActive == true %}<span class="glyphicon glyphicon-ok" style="color:green"></span>{% else %}<span class="glyphicon glyphicon-remove" style="color: red;"></span>{% endif %}</td>
+                        <td class="text-center"><a href="/cms/{{ cms.permalink }}" title="Ouvrir" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a> <a href="/admin/update-cms/{{ cms.id }}/" title="Modifier" class="btn btn-warning"><span class="glyphicon glyphicon-cog"></span></a> <a href="/admin/delete-cms/{{ cms.id }}/" title="Supprimer" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+
+            {{ form_start(cms_form) }}
+            {{ form_errors(cms_form) }}
+
+            {{ form_row(cms_form.title, {'label':'Titre de la page: '}) }}
+            <br>
+            {{ form_row(cms_form.Category, {'label':'Choix Catégorie : '}) }}
+            <br>
+            {{ form_row(cms_form.img, {'label':'Lien de l\'image : '}) }}
+            <br>
+            {{ form_row(cms_form.content, {'label':'Votre page : ','id' : 'page_cms'}) }}
+            <br>
+            <div class="col-xs-2">
+            {{ form_row(cms_form.levelAccess,{'label':'Niveau d\'accès : '}) }}
+            </div>
+            <br>
+            {{ form_row(cms_form.isActive, {'label': 'Activer la publication : '}) }}
+            <br>
+            {{ form_row(cms_form.save) }}
+            <br>
+            {{ form_end(cms_form) }}
+        </div>
+        <div class="salons">
+            <legend>Salons</legend>
+            <div class="row">
+                <button class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span> Créer un Chatroom</button>
+                <br>
+                <table class="table table-hover">
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Titre du livre</th>
+                        <th>Date Début</th>
+                        <th>Date Fermeture</th>
+                        <th>Nb. de participans</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    {% for chatroom in list_chatroom %}
+                        <tr>
+                            <td>{{ chatroom.idChatroom }}</td>
+                            <td>{{ chatroom.name }}</td>
+                            <td>{{ chatroom.idMedia.name }}</td>
+                            <td>{{ chatroom.dateStart|date("d/m/Y h:m")  }}</td>
+                            <td>{{ chatroom.dateEnd|date("d/m/Y h:m")  }}</td>
+                            <td></td>
+                            <td class="text-center">{%  if chatroom.status == 0 %}<span title="Fermé" style="color:darkgray;" class="glyphicon glyphicon-flash"></span>{%  elseif chatroom.status == 1 %}<span title="En cours" style="color:#008000;" class="glyphicon glyphicon-flash"></span>{%  else %}<span title="Terminé" style="color:#0000cc;" class="glyphicon glyphicon-flash"></span>{%  endif %}</td>
+                            <td class="text-center"><a href="#" title="Modifier" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a> <a href="/admin/update-cms//" title="Modifier" class="btn btn-warning"><span class="glyphicon glyphicon-cog"></span></a> <a href="/admin/delete-room/{{ chatroom.idChatroom }}/" title="Supprimer" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </div>
+<script src="/ckeditor/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('editor1');
+    CKEDITOR.replace('page_cms');
+</script>
 {% endblock %}

@@ -14,6 +14,7 @@ header{
   // box-shadow: 0 2px 3px $w230;
   border-bottom: 1px solid $w235;
   padding: 5px;
+  min-width: 800px;
   color: $mainGreen2;
 
   nav{
@@ -35,6 +36,7 @@ header{
 
   #search{
     margin-left: 5px;
+
   }
 
   .logo{
@@ -57,7 +59,7 @@ header{
     @include transition(background-color, 0.3s);
 
 
-    @media screen and (max-width: 1000px)  {
+    @media #{$mini}  {
       .titre{
         display: none;
       }
@@ -168,9 +170,9 @@ ul#alertes-container{
   bottom: 0;
   left: 0;
   padding: 10px;
-  width: 300px;
+  width: 350px;
   height: auto;
-  z-index: 1005;
+  z-index: 2005;
   display: flex;
   flex-direction: column-reverse;
 
@@ -179,7 +181,7 @@ ul#alertes-container{
     height: auto;
     width: 100%;
     margin-top: 5px;
-    padding: 15px 10px 15px 35px;
+    padding: 15px 10px 15px 50px;
     box-shadow: 0 0 10px rgba(20,20,20,0.2);
     font-size: 14px;
     color: $w250;
@@ -193,7 +195,7 @@ ul#alertes-container{
       position: absolute;
       top: 50%;
       @include translateY(-50%);
-      left: 5px;
+      left: 10px;
     }
 
     &.ng-enter {
@@ -213,6 +215,5 @@ ul#alertes-container{
     &.ng-leave.ng-leave-active {
       opacity: 0;
     }
-
   }
 }

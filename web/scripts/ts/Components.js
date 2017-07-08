@@ -1,9 +1,9 @@
-
+'use strict'
 
 // Composant checkbox <checkbox></checkbox>
 MainApp.component('checkbox', {
   templateUrl: '../components/Checkbox.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){},
+  controller: function($scope, $element, $attrs){},
   bindings: {
     vgModel: '=',
     vgData: '<',
@@ -14,7 +14,7 @@ MainApp.component('checkbox', {
 // composant textarea
 MainApp.component('areaForm', {
   templateUrl: '../components/Area-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
@@ -36,7 +36,7 @@ MainApp.component('areaForm', {
 
 MainApp.component('textForm', {
   templateUrl: '../components/Text-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
       if (!!newValue) {
@@ -106,7 +106,11 @@ MainApp.component('searchForm', {
           ctrl.error = false;
           ctrl.selectBook = false;
           ctrl.displayResult = false;
+          event.target.blur();
         }
+      }
+      else{
+        ctrl.displayResult = true;
       }
     }
 
@@ -145,7 +149,6 @@ MainApp.component('searchForm', {
       },
         (error) => {
           ctrl.searching = false;
-          ctrl.displayResult = false;
           ctrl.search_result.reset();
         })
     }
@@ -197,7 +200,6 @@ MainApp.component('searchForm', {
           ctrl.searchText = "";
           ctrl.filled = "";
           ctrl.vgModel = {};
-          ctrl.displayResult = false;
           ctrl.search_result.reset();
         }
       }
@@ -253,9 +255,19 @@ MainApp.component('tokenForm', {
         }
         else if(result.length > 0){
           ctrl.searching = false;
-          ctrl.search_result.data = result;
-          ctrl.search_result.selected = result[0];
-          ctrl.search_result.selected["indexList"] = 0;
+          var newResult = result.filter((element) => ctrl.vgModel.findIndex((elem) => elem.idCategory == element.idCategory) == -1);
+
+          if (newResult.length > 0){
+            ctrl.search_result.data = newResult;
+            ctrl.search_result.selected = newResult[0];
+            ctrl.search_result.selected["indexList"] = 0;
+          }
+          else{
+            ctrl.search_result.reset();
+            ctrl.error = true;
+            ctrl.displayResult = true;
+            ctrl.errorMessage = 'Aucun résultat';
+          }
         }
       },
         (error) => {
@@ -266,16 +278,18 @@ MainApp.component('tokenForm', {
     }
 
     ctrl.selectAction = (category) => {
-      ctrl.search_result.reset();
-      ctrl.vgModel.push({name: category.name, idCategory: category.idCategory});
-      ctrl.searchText = "";
-      ctrl.selectToken = true;
+      if (ctrl.vgModel.findIndex((element) => element.idCategory == category.idCategory) == -1){
+        ctrl.search_result.reset();
+        ctrl.vgModel.push({name: category.name, idCategory: category.idCategory});
+        ctrl.searchText = "";
+        ctrl.selectToken = true;
+      }
     }
 
     ctrl.keydown = (event, element) => {
       if (event.which == 13) {event.preventDefault();}
       if (!ctrl.searching){
-        if (event.which == 13) {
+        if (event.which == 13 && ctrl.search_result.data.length > 0) {
           event.preventDefault();
           ctrl.selectAction(ctrl.search_result.selected);
         }
@@ -322,6 +336,7 @@ MainApp.component('tokenForm', {
         if (newValue.trim().length > 0){
           ctrl.searching = true;
           ctrl.search_result.reset();
+          ctrl.error = false;
           ctrl.search(ctrl.vgSource ,newValue);
         }
         else{
@@ -349,7 +364,7 @@ MainApp.component('tokenForm', {
 
 MainApp.component('ratingForm', {
   templateUrl: '../components/Rating-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     ctrl.count = 5; // Nombre d'étoiles
     ctrl.hoverStar = false; // Etat hover du block d'étoiles
@@ -425,7 +440,7 @@ MainApp.component('ratingForm', {
 
 MainApp.component('dateBetweenForm', {
   templateUrl: '../components/DateBetween-form.html',
-  controller: function($scope, $element, $attrs, AjaxRequest){
+  controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModelStart',(newValue, oldValue, scope) => {
       if (!!newValue) {
