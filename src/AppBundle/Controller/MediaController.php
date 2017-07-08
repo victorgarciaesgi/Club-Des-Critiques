@@ -56,16 +56,15 @@ class MediaController extends Controller
             $isbn = "0";
 
         $media->setIsbn($isbn);
-        $media->setPrice($data['price']);
+        if(!empty($data['price']))
+            $media->setPrice($data['price']);
 
-
-        //si l'isbn est à 0 le livre n'est pas validé
-        $valid = $this->isValid($isbn);
-        $media->setValid($valid);
+        $media->setValid(0);
 
         //formattage de la date
         $rawDate = $data['date'];
         $media->setReleaseDate(\DateTime::createFromFormat('Y-m-d\TH:i:s\.u\Z', $rawDate));
+        $media->setIdUsers($this->getUser());
         $media->setIsActive(1);
 
         $validator = $this->get('validator');
@@ -105,14 +104,6 @@ class MediaController extends Controller
             return $isbn10;
 
         return "0";
-    }
-
-    public function isValid($valueIsbn){
-        if($valueIsbn!="0"){
-            return 1;
-        }else{
-            return 0;
-        }
     }
 
     public function setCategories($media ,$array){
