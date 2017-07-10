@@ -707,9 +707,11 @@ rating-form{
           .exists{
             padding: 0 10px 0 10px;
             font-size: 10px;
+            height: 18px;
+            line-height: 18px;
             width: auto;
             color: white;
-            background-color: $mainMarron;
+            background-color: $mainColor;
             border-radius: 20px;
           }
         }
