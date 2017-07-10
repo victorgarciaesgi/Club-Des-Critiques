@@ -185,6 +185,19 @@ MainApp.controller('homepage', function ($scope, $rootScope, $q, $timeout, AjaxR
 
 
 
+  $scope.ProchainSalon = {
+    details: false,
+    book: {},
+    init(){
+      AjaxRequest.get('library_getOneBook', 101).then((result) => {
+        this.book = result;
+      });
+    }
+  }
+  $scope.ProchainSalon.init();
+
+
+
   $scope.mailRegister = {
     values: {},
     elements: {

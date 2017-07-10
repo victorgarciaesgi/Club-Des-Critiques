@@ -15,6 +15,9 @@
                     {{ context.concept | raw }}
                 </p>
             </div>
+            <div class="footer">
+
+            </div>
         </section>
 
         <section class="">
@@ -81,46 +84,7 @@
     </div>
 
     <aside>
-        <section class="letter">
-            <div class="title">
-                Prochain Salon
-            </div>
-            <div class="content">
-                <div class="salon">
-                    <div class="infos">
-                        <div class="date info">
-                            <img class='icon' src="/assets/event.svg" alt="event">
-                            <strong><span>10/03/2017 18:00</span></strong>
-                        </div>
-                        <div class="book info">
-                            <img class='icon' src="/assets/book.svg" alt="book">
-                            <span>All That Man is</span>
-                        </div>
-                        <div class="author info">
-                            <img class='icon' src="/assets/author.svg" alt="book">
-                            <span>J.K Rowling</span>
-                        </div>
-                        <div class="stars info">
-                            <img class='icon' src="/assets/rating.svg" alt="book">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_half.svg" alt="star">
-                            <img src="/assets/star_empty.svg" alt="star">
-                            <img src="/assets/star_empty.svg" alt="star">
-                        </div>
-                    </div>
-                    <div class="cover">
-                        <div class="cover-image" style=''></div>
-                    </div>
-                    <div class="footer">
-                        <div class="bouton" design='green'>
-                            Rejoindre
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section>
+        <section class='incription'>
             <div class="title green">
                 S'inscrire à Club des Critiques
             </div>
@@ -146,6 +110,87 @@
                 </form>
 
                 <!-- <pre>{(mailRegister.values | json)}</pre> -->
+            </div>
+        </section>
+        <section>
+            <div class="title">
+                Prochain Salon <span>(Ouvre dans 20 minutes)</span>
+            </div>
+            <div class="content nopadding">
+              <div class="book-form-preview">
+                <div class="book-blur" style='background-image: url({(ProchainSalon.book.img)})'></div>
+                <div class="input-form-wrap">
+                  <div class="cover" style='background-image: url({(ProchainSalon.book.img.length > 10?ProchainSalon.book.img:"/assets/no_thumbnail.jpg")})'>
+                  </div>
+                </div>
+                <div class="input-form-wrap">
+                  <div class="title-book">
+                    {(ProchainSalon.book.name? (ProchainSalon.book.name | cap) : 'Titre du livre')}
+                  </div>
+                </div>
+              </div>
+              <div class="time-until">
+
+              </div>
+              <div class="show-details" ng-click='ProchainSalon.details = !ProchainSalon.details'>
+                {(ProchainSalon.details?'Cacher':'Afficher')} les details du livre
+                <img src="/assets/expand_down.svg" alt="" ng-class='{rotate: ProchainSalon.details}'>
+              </div>
+              <div class="infos-book" ng-if='ProchainSalon.details'>
+                <div class="infos-header">
+                  <div class="i-h-info">
+                    <div class="i-h-img">
+                      <img src="/assets/euro.svg">
+                    </div>
+                    <div class='i-h-text'>{(ProchainSalon.book.price || '-')}</div>
+                  </div>
+                  <div class="i-h-info">
+                    <div class="i-h-img">
+                      <img src="/assets/book.svg">
+                    </div>
+                    <div class='i-h-text'>{(ProchainSalon.book.numberPage || '-')} <span ng-if='ProchainSalon.book.numberPage'>pages</span></div>
+                  </div>
+                  <div class="i-h-info">
+                    <div class="i-h-img">
+                      <img src="/assets/date.svg">
+                    </div>
+                    <div class='i-h-text'>{(ProchainSalon.book.releaseDate.timestamp | date:'dd/MM/y' || '-')}</div>
+                  </div>
+                </div>
+
+                <div class="info-book">
+                  <rating-form vg-init='ProchainSalon.book.note'
+                               vg-count='ProchainSalon.book.nbrNotes'
+                               vg-editable='false'
+                               vg-displaynote='true'>
+                  </rating-form>
+                </div>
+                <div class="info-book" ng-if='ProchainSalon.book.categories.length'>
+                  <ul class='token-container center'>
+                    <li class='token' ng-repeat='token in ProchainSalon.book.categories'>
+                      <span>{(token.name)}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="info-book">
+                  <div class="i-b-title">Autheur</div>
+                  <div class="i-b-content">{(ProchainSalon.book.author || '-')}</div>
+                </div>
+                <div class="info-book">
+                  <div class="i-b-title">Description</div>
+                  <div class="i-b-content">{(ProchainSalon.book.description || '-')}</div>
+                </div>
+                <div class="info-book" ng-if='ProchainSalon.book.buyLink'>
+                  <div class="i-b-title">Lien d'achat</div>
+                  <a class="i-b-content" ng-class='{link: ProchainSalon.book}' target='_blank'
+                  ng-href='{(ProchainSalon.book.buyLink || "#")}'>{(ProchainSalon.book.buyLink?'Lien Play Store':'-')}</a>
+                </div>
+              </div>
+            </div>
+            <div class="footer">
+                <div class="bouton" design='green'>
+                    Rejoindre
+                </div>
             </div>
         </section>
     </aside>

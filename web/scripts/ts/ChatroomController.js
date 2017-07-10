@@ -98,6 +98,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         socket.emit('Create:room', 1);
         socket.emit('Create:user', $rootScope.UserInfos);
       }
+      else{
+        this.messages.error = "Vous devez vous connecter pour participer et voir le contenu des salons"
+      }
 
       return this;
     }
