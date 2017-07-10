@@ -53,11 +53,14 @@ class SecurityController extends Controller
             ? $this->get('security.csrf.token_manager')->getToken('authenticate')->getValue()
             : null;
 
+        /*
         return $this->renderLogin(array(
             'last_username' => $lastUsername,
             'error' => $error,
             'csrf_token' => $csrfToken,
         ));
+        */
+        return new RedirectResponse($this->router->generate('homepage'));
     }
 
     /**

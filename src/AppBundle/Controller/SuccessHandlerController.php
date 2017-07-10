@@ -21,16 +21,18 @@ class SuccessHandlerController implements AuthenticationSuccessHandlerInterface
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         if($request->isXmlHttpRequest()){
+            /*
             $response = new Response(json_encode(array(
                 'success'=> 1,
             )));
-            $response->headers->set('Content-Type', 'application/json');
+            */
+            //$response->headers->set('Content-Type', 'application/json');
             //return $response;
 
             return new RedirectResponse($this->router->generate('fos_user_security_login'));
         }else{
             if ($token->getUser()->isSuperAdmin()) {
-                return new RedirectResponse($this->router->generate('admin'));
+                return new RedirectResponse($this->router->generate('homepage'));
             }
             else {
                 return new RedirectResponse($this->router->generate('homepage'));
