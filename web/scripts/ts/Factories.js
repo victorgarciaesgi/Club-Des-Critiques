@@ -43,55 +43,63 @@ MainApp.factory('PromiseImage', function($q) {
 
 
 MainApp.factory('socket', function ($rootScope) {
-  var socket;
+  var socket = 'none';
   return {
     init: function(){
       socket = io.connect('http://localhost:8124');
-    }, 
+    },
     on: function (eventName, callback) {
-      socket.on(eventName, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
+      if(socket != 'none'){
+        socket.on(eventName, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            callback.apply(socket, args);
+          });
         });
-      });
+      }
     },
     emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
+      if(socket != 'none'){
+        socket.emit(eventName, data, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            if (callback) {
+              callback.apply(socket, args);
+            }
+          });
+        })
+      }
     }
   };
 });
 
 MainApp.factory('notifications', function ($rootScope) {
-  var socket;
+  var socket = 'none';
   return {
     init: function(){
       socket = io.connect('http://localhost:8124/notifications');
     },
     on: function (eventName, callback) {
-      socket.on(eventName, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          callback.apply(socket, args);
+      if(socket != 'none'){
+        socket.on(eventName, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            callback.apply(socket, args);
+          });
         });
-      });
+      }
     },
     emit: function (eventName, data, callback) {
-      socket.emit(eventName, data, function () {
-        var args = arguments;
-        $rootScope.$apply(function () {
-          if (callback) {
-            callback.apply(socket, args);
-          }
-        });
-      })
+      if(socket != 'none'){
+        socket.emit(eventName, data, function () {
+          var args = arguments;
+          $rootScope.$apply(function () {
+            if (callback) {
+              callback.apply(socket, args);
+            }
+          });
+        })
+      }
     }
   };
 });
