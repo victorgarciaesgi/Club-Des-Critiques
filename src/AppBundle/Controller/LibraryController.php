@@ -34,17 +34,6 @@ class LibraryController extends Controller
       return $data['data'];
     }
 
-    function returnAllBooks($column, $tri, $limit){
-      $em = $this->getDoctrine()->getManager();
-      $content = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media')
-      ->setMaxResults(15)
-      ->setFirstResult($limit)
-      ->findBy(array(), array($column => $tri));
-
-      $books = $this->getSerializer()->normalize($content, 'null');
-      return $books;
-    }
-
     function returnCategoriesByBook($idMedia){
       $em = $this->getDoctrine()->getManager();
       $query = $em->createQuery("SELECT c
@@ -68,6 +57,18 @@ class LibraryController extends Controller
       return json_decode($this->getSerializer()->serialize($result, 'json'));
     }
 
+    function returnMyNoteByBook($idMedia){
+      $em = $this->getDoctrine()->getManager();
+      $query = $em->createQuery("SELECT n.note as note
+                                 FROM AppBundle:Media m, AppBundle:Note n
+                                 WHERE m.idMedia = :idMedia
+                                 AND n.idMedia = m.idMedia
+                                 AND n.idUser = ".$this->getUser()
+      )->setParameter('idMedia',$idMedia);
+      $result = $query->getResult();
+      return json_decode($this->getSerializer()->serialize($result, 'json'));
+    }
+
     function returnOneBookInfos($idMedia){
       $em = $this->getDoctrine()->getManager();
       $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
@@ -80,7 +81,12 @@ class LibraryController extends Controller
       ->setMaxResults(1);
       $result = $query->getResult();
       $book = $this->getSerializer()->normalize($result, 'null');
-      return $book[0];
+      $book = $book[0];
+      $media = $book['media'];
+      $media['note'] = $book['note'];
+      $media['nbrNotes'] = $book['nbrNotes'];
+      $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
+      return $media;
     }
 
     function doesBookExists($isbn){
@@ -158,25 +164,6 @@ class LibraryController extends Controller
 
 
     /**
-     * @Route("/library/getAllBooks", options = { "expose" = true }, name="library_getAllBooks")
-     * @Method({"POST"})
-     */
-
-    public function GetAllBooks(Request $request) {
-      $data = $this->decodeAjaxRequest($request);
-      $listBooks = $this->returnAllBooks($data['column']['value'], $data['tri']['value']);
-
-      foreach ($listBooks as $key => $value) {
-        $listBooks[$key]['categories'] = $this->returnCategoriesByBook($value['idMedia']);
-      }
-
-      foreach ($listBooks as $key => $value) {
-        $listBooks[$key]['note'] = $this->returnNoteByBook($value['idMedia']);
-      }
-      return new JsonResponse($listBooks);
-    }
-
-    /**
      * @Route("/library/getOneBook", options = { "expose" = true }, name="library_getOneBook")
      * @Method({"POST"})
      */
@@ -186,13 +173,7 @@ class LibraryController extends Controller
 
       $book = $this->returnOneBookInfos($data);
 
-      $media = $book['media'];
-      $media['note'] = $book['note'];
-      $media['nbrNotes'] = $book['nbrNotes'];
-
-      $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
-
-      return new JsonResponse($media);
+      return new JsonResponse($book);
     }
 
     /**

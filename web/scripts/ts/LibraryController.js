@@ -24,6 +24,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       bookShow: {},
       display: false,
       error: null,
+      notation: false,
+      notationCount: 0,
       loading: true,
       show(book){
         this.bookShow = book;
@@ -33,6 +35,26 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       hide(){
         this.display = false;
         this.bookShow = {};
+        this.notation = false;
+        this.notationCount = 0;
+      },
+      toggleNote(){
+        this.notation = !this.notation;
+      },
+      sendNote(value){
+        console.log(value)
+        AjaxRequest.get('addNote',{note: value, idMedia: this.bookShow.idMedia}).then((result) => {
+          console.log(result)
+          if (result.success){
+            this.bookShow = result.media;
+            var index = this.elements.findIndex(elem => elem.idMedia == this.bookShow.idMedia);
+            this.elements[index] = result.media;
+            this.toggleNote();
+            this.notationCount = 0;
+            $rootScope.Alerts.add('success', result.success);
+          }
+
+        })
       }
     },
     tabs: {
