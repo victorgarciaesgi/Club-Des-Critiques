@@ -314,6 +314,7 @@
 
               <div class="info-book">
                 <rating-form vg-init='Library.books.bookShow.note'
+                             vg-count='Library.books.bookShow.nbrNotes'
                              vg-editable='false'
                              vg-displaynote='true'>
                 </rating-form>
@@ -347,7 +348,7 @@
             <div class="bouton" design='blanc' ng-if='!Library.adminView'>Signaler</div>
             <div ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</div>
             <!-- Admin -->
-            <div ng-if='Library.adminView && UserAdmin' class="bouton" design='blanc' ng-click='Library.validate(false)'> Refuser le livre</div>
+            <div ng-if='Library.adminView && UserAdmin' class="bouton red" design='blanc' ng-click='Library.validate(false)'> Refuser le livre</div>
             <div ng-if='Library.adminView && UserAdmin' class="bouton" design='green' ng-click='Library.validate(true)'> Valider le livre</div>
           </div>
       </div>

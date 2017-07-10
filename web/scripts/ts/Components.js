@@ -433,6 +433,7 @@ MainApp.component('ratingForm', {
     vgName: '<?',
     vgEditable: '<?',
     vgInit: '<?',
+    vgCount: '<?',
     vgDisplaynote: '<?'
   }
 });

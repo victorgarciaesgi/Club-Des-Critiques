@@ -49,7 +49,8 @@
         <div class="infos">
           <span class='title'>{(result.volumeInfo.title)}</span>
           <span class='author'>{(result.volumeInfo.authors[0])}</span>
-          <span class='description'>{(result.volumeInfo.description)}</span>
+          <span class='description' ng-if='!result.volumeInfo.bookExist'>{(result.volumeInfo.description)}</span>
+          <span class='exists' ng-if='result.volumeInfo.bookExist'>Ce livre est déjà dans la bibliothèque</span>
         </div>
       </li>
     </ul>

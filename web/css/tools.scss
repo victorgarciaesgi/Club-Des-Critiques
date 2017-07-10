@@ -489,6 +489,18 @@ rating-form{
         font-size: 14px;
         background-color: $mainMarron;
       }
+
+      .star-displayCount{
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        @include translateY(-50%);
+        color: white;
+        padding: 3px 10px 3px 10px;
+        border-radius: 30px;
+        font-size: 12px;
+        background-color: $mainMarron;
+      }
     }
   }
 }
@@ -692,6 +704,14 @@ rating-form{
             font-size: 13px;
             color: rgb(130,130,130);
           }
+          .exists{
+            padding: 0 10px 0 10px;
+            font-size: 10px;
+            width: auto;
+            color: white;
+            background-color: $mainMarron;
+            border-radius: 20px;
+          }
         }
       }
 
@@ -824,6 +844,10 @@ select{
     background-color: white;
     color: $g90;
     border: 1px solid $w220;
+
+    &.red{
+      color: $red1;
+    }
 
     &:hover {
       background-color: $w250;

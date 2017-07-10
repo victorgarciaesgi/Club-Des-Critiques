@@ -30,6 +30,9 @@
     <div class="star-displayNumber" ng-if='$ctrl.vgDisplaynote'>
       {($ctrl.hoverCount != 0?$ctrl.hoverCount:'-')} / {($ctrl.count)}
     </div>
+    <div class="star-displayCount" ng-if='$ctrl.vgDisplaynote && $ctrl.vgCount'>
+      {($ctrl.vgCount)} {($ctrl.vgCount > 1?'notes':'note')}
+    </div>
   </div>
   <input type="hidden" name='{($ctrl.vgName)}' ng-required='$ctrl.vgRequired'
         ng-model='$ctrl.filled'>

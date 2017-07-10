@@ -67,6 +67,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       AjaxRequest.get('library_validateBook',{state: state, idMedia: this.books.bookShow.idMedia}).then((result) => {
         this.books.hide();
         this.filter();
+        $rootScope.Alerts.add(result.success);
       })
     },
     filter(){
