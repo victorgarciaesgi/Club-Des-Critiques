@@ -845,8 +845,12 @@ select{
     color: $g90;
     border: 1px solid $w220;
 
-    &.red{
-      color: $red1;
+    &.green{
+      color: $mainGreen2;
+    }
+
+    &.brown{
+      color: $mainMarron;
     }
 
     &:hover {
@@ -1191,6 +1195,44 @@ select{
     .token{
       display: inline-block;
     }
+  }
+}
+
+.note-action{
+  position: absolute;
+  height: 60px;
+  width: 100%;
+  left: 0px;
+  bottom: 100%;
+  background-color: $w250;
+  box-shadow: 0 -2px 3px rgba(60,60,60,0.2);
+  align-content: center;
+  border-bottom: 1px solid $w220;
+  overflow: hidden;
+  z-index: 1;
+  @include transition(opacity 0.3s);
+
+  &.ng-enter{
+    opacity: 0;
+  }
+  &.ng-enter.ng-enter-active {
+    opacity: 1;
+  }
+
+  &.ng-leave{
+    opacity: 1;
+  }
+  &.ng-leave.ng-leave-active {
+    opacity: 0;
+  }
+
+
+
+  .input-form-wrap{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 

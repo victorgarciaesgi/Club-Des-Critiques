@@ -141,7 +141,6 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     AjaxRequest.get('library_getOneBook', book).then((result) => {
       $scope.Chatroom.infos.book = result;
     });
-    // $scope.Chatroom.infos.book = book;
   });
 
 
@@ -163,9 +162,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     $scope.Chatroom.selectedSalon = current_room;
 
     AjaxRequest.get('library_getOneBook', current_room.book).then((result) => {
+      console.log(result)
       $scope.Chatroom.infos.book = result;
     });
-    // $scope.Chatroom.infos.book = current_room.book;
 
     if (current_room.messages.length == 0){
       $scope.Chatroom.messages.loading = false;

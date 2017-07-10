@@ -36,9 +36,9 @@
   </div>
   <input type="hidden" name='{($ctrl.vgName)}' ng-required='$ctrl.vgRequired'
         ng-model='$ctrl.filled'>
-  <div ng-if='ratingForm[$ctrl.vgName].$pristine' class="form-valid-icon form-required"></div>
-  <div ng-if='ratingForm[$ctrl.vgName].$valid && ratingForm[$ctrl.vgName].$dirty' class="form-valid-icon form-valid"></div>
-  <div ng-if='ratingForm[$ctrl.vgName].$invalid && ratingForm[$ctrl.vgName].$dirty' class="form-valid-icon form-invalid"></div>
+  <div ng-if='ratingForm[$ctrl.vgName].$pristine && !$ctrl.vgDisplaynote' class="form-valid-icon form-required"></div>
+  <div ng-if='ratingForm[$ctrl.vgName].$valid && ratingForm[$ctrl.vgName].$dirty && !$ctrl.vgDisplaynote' class="form-valid-icon form-valid"></div>
+  <div ng-if='ratingForm[$ctrl.vgName].$invalid && ratingForm[$ctrl.vgName].$dirty && !$ctrl.vgDisplaynote' class="form-valid-icon form-invalid"></div>
 </div>
 <!-- <pre>{($ctrl.hoverCount | json)}</pre>
 <pre>{(ratingForm.rating | json)}</pre> -->

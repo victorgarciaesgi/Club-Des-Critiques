@@ -403,6 +403,7 @@ MainApp.component('ratingForm', {
         ctrl.hoverStar = false;
         ctrl.vgModel = value;
         ctrl.rating = value;
+        ctrl.onSelectResult({note: value});
       }
     }
 
@@ -434,7 +435,8 @@ MainApp.component('ratingForm', {
     vgEditable: '<?',
     vgInit: '<?',
     vgCount: '<?',
-    vgDisplaynote: '<?'
+    vgDisplaynote: '<?',
+    onSelectResult: '&?'
   }
 });
 

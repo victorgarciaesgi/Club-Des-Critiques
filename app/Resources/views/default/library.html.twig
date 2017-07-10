@@ -219,7 +219,7 @@
                         <div class="i-h-img">
                           <img src="/assets/date.svg">
                         </div>
-                        <div class='i-h-text'>{( (AddBookForm.values.date | date:'yyyy-MM-dd') || '-')}</div>
+                        <div class='i-h-text'>{( (AddBookForm.values.date | date:'dd/MM/y') || '-')}</div>
                       </div>
                     </div>
                     <div class="info-book" ng-if='AddBookForm.values.rating'>
@@ -308,7 +308,7 @@
                   <div class="i-h-img">
                     <img src="/assets/date.svg">
                   </div>
-                  <div class='i-h-text'>{(Library.books.bookShow.releaseDate.timestamp | date:'dd-MM-y' || '-')}</div>
+                  <div class='i-h-text'>{(Library.books.bookShow.releaseDate.timestamp | date:'dd/MM/y' || '-')}</div>
                 </div>
               </div>
 
@@ -343,9 +343,21 @@
             </div>
           </div>
           <div class="footer">
+            <div class="note-action" ng-if='UserConnected && Library.books.notation'>
+              <rating-form vg-model='Library.books.notationCount'
+                            vg-name='"noteUserBook"'
+                            vg-editable='true'
+                            vg-init='0'
+                            vg-displaynote='true'
+                            on-select-result='Library.books.sendNote(note)'>
+              </rating-form>
+            </div>
+
+
             <div class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</div>
             <!-- User -->
             <div class="bouton" design='blanc' ng-if='!Library.adminView'>Signaler</div>
+            <div class="bouton green" design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</div>
             <div ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</div>
             <!-- Admin -->
             <div ng-if='Library.adminView && UserAdmin' class="bouton red" design='blanc' ng-click='Library.validate(false)'> Refuser le livre</div>
