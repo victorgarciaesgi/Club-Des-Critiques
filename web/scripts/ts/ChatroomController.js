@@ -42,7 +42,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     selectedSalon: {},
     infos:{
-      open: false,
+      open: true,
       details: false,
       users: [],
       book: {},
