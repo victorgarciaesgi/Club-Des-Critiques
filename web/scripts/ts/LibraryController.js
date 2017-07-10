@@ -5,11 +5,15 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
     lazyPage: 0,
     lazyProcessing: false,
     endOfContent: false,
+    adminView: false,
     categories: {
       values: {},
       elements: [],
       filter: {},
       loading: true,
+      reset(){
+        this.values = {};
+      },
       noSelected(){
         var obj = Object.values(this.values);
         return obj.every(elem => !elem);
@@ -31,6 +35,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         this.bookShow = {};
       }
     },
+    tabs: {
+      selected: {},
+      elements: [
+        {title: 'Livres validés', value: false},
+        {title: 'Livres à valider', value: true},
+      ]
+    },
     order: {
       value: {label: 'Titre', value:'m.name'},
       elements: [
@@ -48,6 +59,16 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         {label: 'Ordre décroissant', value:'desc'}
       ],
     },
+    changeView(){
+      this.categories.reset();
+      this.filter();
+    },
+    validate(state){
+      AjaxRequest.get('library_validateBook',{state: state, idMedia: this.books.bookShow.idMedia}).then((result) => {
+        this.books.hide();
+        this.filter();
+      })
+    },
     filter(){
       this.books.loading = true;
       this.books.elements = [];
@@ -58,7 +79,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         categories: this.categories.noSelected()?null:this.categories.values,
         column: this.order.value,
         tri: this.tri.value,
-        limit: this.lazyPage
+        limit: this.lazyPage,
+        active: this.adminView?0:1
       }
       AjaxRequest.get('library_getFilterBooks',data).then((result) => {
         this.loadBooks(result);
@@ -99,7 +121,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
           categories: this.categories.noSelected()?null:this.categories.values,
           column: this.order.value,
           tri: this.tri.value,
-          limit: this.lazyPage
+          limit: this.lazyPage,
+          active: this.adminView?0:1
         }
         AjaxRequest.get('library_getFilterBooks',data).then((result) => {
           if (result.length){
@@ -115,7 +138,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       AjaxRequest.get('library_getCategories',null).then((result) => {
         this.categories.elements = result;
       })
-      AjaxRequest.get('library_getFilterBooks',{categories: null, column: this.order.value, tri: this.tri.value, limit: this.lazyPage}).then((result) => {
+      AjaxRequest.get('library_getFilterBooks',{categories: null, column: this.order.value, tri: this.tri.value, limit: this.lazyPage, active: 1}).then((result) => {
         console.log(result)
         this.loadBooks(result);
       })

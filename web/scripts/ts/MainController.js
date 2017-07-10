@@ -1,9 +1,12 @@
 'use strict'
 
 var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment'])
-.config(function($interpolateProvider){
+.config(function($interpolateProvider, $compileProvider){
     $interpolateProvider.startSymbol('{(');
     $interpolateProvider.endSymbol(')}');
+    // $compileProvider.debugInfoEnabled(false);
+    // $compileProvider.commentDirectivesEnabled(false);
+    // $compileProvider.cssClassDirectivesEnabled(false);
 });
 
 MainApp.run(function($rootScope, amMoment, $timeout) {

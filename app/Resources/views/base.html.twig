@@ -188,7 +188,7 @@
 
 <!-- Alertes  -->
 
-<ul id="alertes-container" class='ng-cloak'>
+<ul id="alertes-container" class='ng-cloak' ng-show='Alerts.list.length'>
   <li ng-repeat='alert in Alerts.list track by alert.id' type='{(alert.type)}'>
     <span>{(alert.message)}</span>
     <ng-switch on="alert.type">

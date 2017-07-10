@@ -183,6 +183,7 @@ class LibraryController extends Controller
                            AND mc.idMedia = m.idMedia
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           WHERE m.isActive = ".$data['active']."
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -194,6 +195,7 @@ class LibraryController extends Controller
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           WHERE m.isActive = ".$data['active']."
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -231,7 +233,7 @@ class LibraryController extends Controller
 
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
       $content = $repository->createQueryBuilder('m')
-               ->where('m.name LIKE :name')
+               ->where('m.name LIKE :name AND m.isActive = 1')
                ->setParameter('name', $data.'%')
                ->setMaxResults(4)
                ->getQuery();
