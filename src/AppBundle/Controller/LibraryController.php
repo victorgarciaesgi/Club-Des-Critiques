@@ -70,7 +70,7 @@ class LibraryController extends Controller
 
     function returnOneBookInfos($idMedia){
       $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
@@ -83,8 +83,34 @@ class LibraryController extends Controller
       return $book[0];
     }
 
+    function doesBookExists($isbn){
+      $em = $this->getDoctrine()->getManager();
+      $query = $em->createQuery("SELECT m
+                           FROM AppBundle:Media m
+                           WHERE m.isbn = :isbn
+                           AND m.isbn != 0"
+      )->setParameter('isbn',$isbn)
+      ->setMaxResults(1);
+      $result = $query->getResult();
+      $book = $this->getSerializer()->normalize($result, 'null');
+      return (sizeof($book) > 0)?true:false;
+    }
+
     function sortArray($object){
       return strcmp($a->name, $b->name);
+    }
+
+    function findIsbn($array){
+        foreach ($array as $value){
+           if($value->type==="ISBN_10")
+                $isbn10 = $value->identifier;
+           if($value->type==="ISBN_13")
+                return $value->identifier;
+        }
+        if(!empty($isbn10))
+            return $isbn10;
+
+        return "0";
     }
 
 
@@ -116,6 +142,10 @@ class LibraryController extends Controller
           if (isset($value->volumeInfo->imageLinks)) {
             $value->volumeInfo->imageLinks->thumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->thumbnail);
             $value->volumeInfo->imageLinks->smallThumbnail = str_replace('&edge=curl','',$value->volumeInfo->imageLinks->smallThumbnail);
+          }
+          if (isset($value->volumeInfo->industryIdentifiers)){
+            $exist = $this->doesBookExists($this->findIsbn($value->volumeInfo->industryIdentifiers));
+            $value->volumeInfo->bookExist = $exist;
           }
         }
         return new JsonResponse($array);
@@ -158,6 +188,7 @@ class LibraryController extends Controller
 
       $media = $book['media'];
       $media['note'] = $book['note'];
+      $media['nbrNotes'] = $book['nbrNotes'];
 
       $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
 
@@ -176,14 +207,15 @@ class LibraryController extends Controller
 
       $books = [];
       if (isset($data['categories'])) {
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
                            FROM AppBundle:Media m
                            INNER JOIN AppBundle:CategoryAffiliation mc
                            WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
                            AND mc.idMedia = m.idMedia
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
-                           WHERE m.isActive = ".$data['active']."
+                           WHERE m.valid = ".$data['active']."
+                           AND m.isActive = 1
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -191,11 +223,12 @@ class LibraryController extends Controller
         $books = $query->getResult();
       }
       else{
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
-                           WHERE m.isActive = ".$data['active']."
+                           WHERE m.valid = ".$data['active']."
+                           AND m.isActive = 1
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -208,6 +241,7 @@ class LibraryController extends Controller
         foreach ($books as $key => $value) {
           $media = $value['media'];
           $media['note'] = $value['note'];
+          $media['nbrNotes'] = $value['nbrNotes'];
           $books[$key] = $media;
         }
         foreach ($books as $key => $value) {
@@ -233,7 +267,7 @@ class LibraryController extends Controller
 
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
       $content = $repository->createQueryBuilder('m')
-               ->where('m.name LIKE :name AND m.isActive = 1')
+               ->where('m.name LIKE :name AND m.isActive = 1 AND m.valid = 1')
                ->setParameter('name', $data.'%')
                ->setMaxResults(4)
                ->getQuery();
