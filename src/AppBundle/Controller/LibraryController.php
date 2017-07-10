@@ -234,9 +234,8 @@ class LibraryController extends Controller
       }
 
       return new JsonResponse($books);
-
-
     }
+
 
     /**
      * @Route("/library/searchBaseBooks", options = { "expose" = true }, name="library_searchBooks")
@@ -245,7 +244,6 @@ class LibraryController extends Controller
 
     public function SearchBooksAction(Request $request) {
       $data = $this->decodeAjaxRequest($request);
-
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
       $content = $repository->createQueryBuilder('m')
                ->where('m.name LIKE :name AND m.isActive = 1 AND m.valid = 1')
@@ -262,7 +260,46 @@ class LibraryController extends Controller
       }
     }
 
+    /**
+     * @Route("/library/getBooksUne", options = { "expose" = true }, name="library_booksUne")
+     * @Method({"POST"})
+     */
 
+    public function getBooksUne(Request $request) {
+      $data = $this->decodeAjaxRequest($request);
+      $em = $this->getDoctrine()->getManager();
+
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+                         FROM AppBundle:Media m
+                         INNER JOIN AppBundle:hasOne h
+                         WITH h.idMedia = m.idMedia
+                         LEFT JOIN AppBundle:Note n
+                         WITH m.idMedia = n.idMedia
+                         WHERE m.valid = 1
+                         AND m.isActive = 1
+                         GROUP by m.idMedia");
+      $query->setMaxResults(20)
+      ->setFirstResult($data['limit']);
+      $books = $query->getResult();
+
+      $books = $this->getSerializer()->normalize($books, 'null');
+      if (isset($books[0]['media'])){
+        foreach ($books as $key => $value) {
+          $media = $value['media'];
+          $media['note'] = $value['note'];
+          $media['nbrNotes'] = $value['nbrNotes'];
+          $books[$key] = $media;
+        }
+        foreach ($books as $key => $value) {
+          $books[$key]['categories'] = $this->returnCategoriesByBook($value['idMedia']);
+        }
+      }
+      else{
+        $books = [];
+      }
+
+      return new JsonResponse($books);
+    }
 
 
     /**

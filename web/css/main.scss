@@ -14,17 +14,17 @@
 
 section{
   position: relative;
-  float: left;
   height: auto;
   width: 100%;
   box-shadow: 0 0 5px $w200;
   margin-bottom: 10px;
   border-bottom: 2px solid $mainGreen2;
+  display: flex;
+  flex-flow: column nowrap;
 
   .footer{
     position: relative;
-    float: left;
-    height: auto;
+    flex: 0 0 auto;
     padding: 5px;
     width: 100%;
     text-align: center;
@@ -36,8 +36,7 @@ section{
   }
 
   .title{
-    position: relative;
-    float: left;
+    flex: 0 0 auto;
     padding-left: 10px;
     height: 40px;
     line-height: 40px;
@@ -45,16 +44,22 @@ section{
     border-bottom: 1px solid $w235;
     font-weight: bold;
     font-size: 16px;
+
+    &.green{
+      color: white;
+      background-color: $mainGreen2;
+    }
   }
 
   .content{
-    position: relative;
-    float: left;
     width: 100%;
-    height: auto;
+    flex: 1 1 auto;
     padding: 10px;
     font-size: 14px;
     line-height: 18px;
+    min-height: 150px;
+    display: flex;
+    flex-flow: column nowrap;
 
     p{
       padding: 5px;
@@ -67,7 +72,7 @@ section{
 
       img{
         width: auto;
-        height: 100px;
+        height: 70px;
       }
     }
 
@@ -80,23 +85,26 @@ section{
       @include translateX(-50%);
     }
 
-    .list-books{
+    ul{
       position: relative;
-      height: 100%;
-      width: auto;
-      max-width: 100%;
-      max-height: 270px;
+      flex: 1 1 auto;
+      height: auto;
+      min-height: 100%;
+      width: 100%;
+      padding-top: 10px;
+      padding-bottom: 20px;
       display: flex;
-      padding: 10px;
-      justify-content: flex-start;
-      flex-wrap: nowrap;
-      overflow: auto;
-
-      .book-wrapper{
-        flex: 10 0 auto;
-      }
+      justify-content: center;
+      align-items: flex-start;
+      align-content: flex-start;
+      flex-flow: row wrap;
     }
   }
+}
+
+section.contexte{
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 
