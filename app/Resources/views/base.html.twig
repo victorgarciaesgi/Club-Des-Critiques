@@ -79,7 +79,8 @@
             </a>
             <div class="header-separation"></div>
             <li id='search'>
-                <input type="text" class="input-search" name="content" placeholder="Recherche de livres...">
+              <input class='s-search' type="text" placeholder="Rechercher un livre">
+              <div class="s-icon"></div>
             </li>
         </ul>
         <ul class="header-menus" ng-cloak>
@@ -92,15 +93,6 @@
             <a href="#">
               <li id='aide' class='menu popup-bouton'>
                 Aide
-              </li>
-            </a>
-          {% endif %}
-
-          {% if is_granted('ROLE_SUPER_ADMIN') %}
-
-            <a href="{{path('homepage_admin')}}">
-              <li id='aide' class='menu popup-bouton'>
-                Admin
               </li>
             </a>
           {% endif %}
@@ -165,8 +157,13 @@
     </div>
     <ul class='user-option-list'>
         <a href="{{path('fos_user_profile_show')}}"><li class='user-option'>Mon profil</li></a>
-        <li class='user-option'>Éditer mes infos</li>
-        <li class='user-option'>Réglages</li>
+        {% if is_granted('ROLE_SUPER_ADMIN') %}
+          <a href="{{path('homepage_admin')}}">
+            <li id='aide' class='user-option'>
+              Administration
+            </li>
+          </a>
+        {% endif %}
         <li class='user-option'>Aide</li>
         <a href="/app_dev.php/logout"><li class='user-option'>Deconnexion</li></a>
     </ul>
