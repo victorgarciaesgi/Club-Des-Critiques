@@ -1332,6 +1332,14 @@ select{
     z-index: 2001;
   }
 
+  #pin2{
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    margin-left: -10px;
+    z-index: 2001;
+  }
+
   .header{
     position: relative;
     padding-left: 10px;

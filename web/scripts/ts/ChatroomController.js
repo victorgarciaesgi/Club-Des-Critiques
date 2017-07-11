@@ -52,7 +52,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       }
     },// Contient toutes les infos du salon selectionné
     options: [
-      {text: 'Inviter un contact dans ce salon', action:'invite', icon:'add_contact'},
+      {text: 'Inviter un contact dans ce salon', action:'invite', popup:'popup-inviteFriend', icon:'add_contact'},
       {text: 'Signaler un contenu inapproprié', action:'reportSalon', icon:'signaler'},
     ],
     selectSalon(salon){
@@ -117,6 +117,23 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     preview: {},
     submit(){
       socket.emit('New:Room',this.values);
+    },
+    reset(){
+      this.values = {};
+      $scope.createSalonX.$setPristine();
+    },
+    selectResult(book){
+    }
+  }
+
+  $scope.inviteFriend = {
+    values: {},
+    elements: {
+      search: new searchForm('Rechercher un ami','user', true, null,'library_searchUsers', null,true,'Vous devez selectionner un utilisateur'),
+    },
+    preview: {},
+    submit(){
+      socket.emit('Invite:User',this.values);
     },
     reset(){
       this.values = {};

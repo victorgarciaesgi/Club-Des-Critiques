@@ -170,7 +170,7 @@
                 Options
               </div>
               <ul class='ng-cloak'>
-                <li ng-repeat='option in Chatroom.options' ng-click='Chatroom.execute(option.action)'>
+                <li ng-repeat='option in Chatroom.options' ng-class='{"popup-bouton": option.popup}' ng-click='Chatroom.execute(option.action)' popup='{(option.popup)}'>
                   <img class='ng-cloak icon' src='/assets/{(option.icon)}.svg'>
                   <span>{(option.text)}</span>
                 </li>
@@ -231,6 +231,41 @@
           ng-disabled='createSalonX.$invalid'>Créer le salon</button>
         </div>
         </form>
+        <img id='pin2' src="/assets/down.png" alt="">
+    </div>
+
+    <div id='popup-inviteFriend' class="popup-box" style='width: 300px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Inviter un ami
+        </div>
+        <div class="content">
+          <form name='createSalonX' ng-submit='inviteFriend.submit()' autocomplete="off">
+            <search-form vg-model='inviteFriend.values.book'
+                        vg-data='inviteFriend.elements.search'
+                        vg-source='{(inviteFriend.elements.search.source)}'
+                        vg-only-select='true'
+                        vg-origin='"base"'
+                        on-select-result='inviteFriend.selectResult(result)'>
+            </search-form>
+            <div class='previewBook' ng-if='inviteFriend.values.book.idMedia'>
+              <div class="cover"
+              style='background-image: url({(inviteFriend.values.book.img?inviteFriend.values.book.img:"/assets/no_thumbnail.jpg")})'>
+              </div>
+              <div class="infos">
+                <span class='title'>{(inviteFriend.values.book.name)}</span>
+                <span class='author'>{(inviteFriend.values.book.author)}</span>
+                <span class='description'>{(inviteFriend.values.book.description)}</span>
+              </div>
+            </div>
+
+        </div>
+        <div class="footer">
+          <button class="bouton" type='submit' design='green'
+          ng-disabled='createSalonX.$invalid'>Inviter</button>
+        </div>
+        </form>
+        <img id='pin2' src="/assets/down.png" alt="">
     </div>
 
 </ng-controller>

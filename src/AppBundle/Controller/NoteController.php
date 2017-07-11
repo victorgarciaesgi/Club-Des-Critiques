@@ -33,10 +33,12 @@ class NoteController extends Controller
 
     function returnOneBookInfos($idMedia){
       $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           LEFT JOIN AppBundle:User u
+                           WITH u.id = m.idUsers
                            WHERE m.idMedia = :idMedia
                            GROUP by m.idMedia"
       )->setParameter('idMedia',$idMedia)
@@ -45,12 +47,13 @@ class NoteController extends Controller
       $book = $this->getSerializer()->normalize($result, 'null');
       $book = $book[0];
       $media = $book['media'];
+      $media['username'] = $book['username'];
       $media['note'] = $book['note'];
       $media['nbrNotes'] = $book['nbrNotes'];
       $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
       return $media;
     }
-
+    
     function returnCategoriesByBook($idMedia){
       $em = $this->getDoctrine()->getManager();
       $query = $em->createQuery("SELECT c

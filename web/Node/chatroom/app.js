@@ -40,6 +40,18 @@ ntf.on('connection', function(socket){
     }
     socket.join(user.id);
     socket.emit('Get:notifications', socket.user.notifications);
+  });
+
+  socket.on('Send:notification', function(user, message){
+    var checkuser = users.find((element) => element.id == user.id);
+    if (checkuser != undefined){
+      var notif = {
+        type: 'alert',
+        message: message,
+        date: Date.now()};
+      checkuser.notifications.push(notif);
+      ntf.to(user.id).emit('Notifications', notif);
+    }
   })
 });
 
@@ -96,8 +108,16 @@ io.on('connection', function (socket) {
             element.notifications.push(notif);
         }
       })
-      ntf.to(data.userId).emit('Admin:delete:message', notif)
+      ntf.to(data.userId).emit('New:notification', notif)
       io.to(socket.room.id).emit('Update:room:messages',socket.room);
+    });
+
+    socket.on('Invite:User', function (data) {
+      var notif = {
+        type: 'alert',
+        message: socket.user.name + ' vous a invité au salon : ' + socket.room.title,
+        date: Date.now()}
+      ntf.to(data.userId).emit('New:notification', notif)
     });
 
     socket.on('Switch:room', function(newroom){

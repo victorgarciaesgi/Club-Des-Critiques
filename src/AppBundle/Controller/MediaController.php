@@ -89,7 +89,7 @@ class MediaController extends Controller
         $em->flush();
         $em->clear();
 
-        $success = json_encode(array('success' => $media->getName() . " a bien été ajouté à la librairie"), JSON_FORCE_OBJECT);
+        $success = json_encode(array('success' => $media->getName() . " a bien été ajouté à la librairie. Un administrateur devra le valider"), JSON_FORCE_OBJECT);
         return new JsonResponse($success);
     }
 

@@ -1,16 +1,20 @@
 
 function displayPopup(element, event){
   event.stopPropagation();
-  var popupName = element.attr("popup");
+  var popupName = $(element).attr("popup");
   var state = $("#" + popupName).attr('state');
+  $("#" + popupName).find('#pin').show();
+  $("#" + popupName).find('#pin2').hide();
 
   if (state == 'false') {
     $('.popup-box').hide().attr('state','false');
-    var width = element.outerWidth();
-    var height = element.outerHeight();
+    var width = $(element).outerWidth();
+    var height = $(element).outerHeight();
+    var viewportOffset = element.getBoundingClientRect();
+    var outputBottom = 'auto';
     var position = {
-      left: Math.round(element.offset().left),
-      top: Math.round(element.offset().top - $(window).scrollTop())
+      left: Math.round(viewportOffset.left),
+      top: Math.round(viewportOffset.top)
     }
     var popupWidth = $("#" + popupName).width();
     var outputLeft = position.left + width / 2 - popupWidth / 2;
@@ -23,6 +27,12 @@ function displayPopup(element, event){
     else if((outputLeft < 10) ){
       outputLeft = 10;
     }
+    if ((outputTop + 300) > $(window).height()){
+      $("#" + popupName).find('#pin').hide();
+      $("#" + popupName).find('#pin2').show();
+      outputTop = 'auto';
+      outputBottom = $(window).height() - position.top + 10;
+    }
 
     var left = position.left - outputLeft + (width/2);
     $("#" + popupName).find('#pin').css({left: left})
@@ -30,6 +40,7 @@ function displayPopup(element, event){
     $("#" + popupName).css({
       left: outputLeft,
       top: outputTop,
+      bottom: outputBottom,
       display: 'flex'
     }).attr('state','true')
   }

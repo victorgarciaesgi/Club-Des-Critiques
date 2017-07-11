@@ -12,29 +12,34 @@
   align-content: flex-start;
   justify-content: center;
   padding: 10px;
+  background-color: $w240;
 
   section{
     max-width : 650px;
+    background-color: white;
   }
 
   .content{
     justify-content: center;
     align-items: center;
-    padding: 10px 30px 10px 30px;
+    padding: 0 0 10px 0;
 
     .separation{
       height: 1px;
       background-color: $w240;
       align-self: center;
+      width: 100%;
     }
 
     .profil{
       display: flex;
+      width: 100%;
+      background-color: white;
       justify-content: center;
       flex-direction: column;
       align-items: center;
       padding: 10px;
-      border-radius: 4px;
+      border-radius: 3px 3px 0 0;
 
       .picture{
         height: 130px;
@@ -61,10 +66,11 @@
       align-content: center;
       display: flex;
       flex-direction: column;
-      border-top: 1px solid $w240;
+      background-color: white;
+
 
       .infos-text{
-        padding: 10px;
+        padding: 10px 40px 10px 40px;
         .i-t-title{
           height: 40px;
           line-height: 40px;

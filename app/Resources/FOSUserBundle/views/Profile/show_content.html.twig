@@ -10,6 +10,7 @@
           <div class="name">{{ user.username }}</div>
 
         </div>
+        <div class="separation"></div>
         <div class="infos">
           <div class="infos-header">
             <div class="i-h-info">
@@ -22,9 +23,9 @@
             </div>
             <div class="i-h-info">
               <div class="i-h-img">
-                <img src="/assets/book.svg">
+                <img src="/assets/contact.svg">
               </div>
-              <div class='i-h-text'>Lorem <span ng-if='ProchainSalon.book.numberPage'>pages</span></div>
+              <div class='i-h-text'>Contacter</div>
             </div>
             <div class="i-h-info">
               <div class="i-h-img">
@@ -66,10 +67,6 @@
               </div>
             </ul>
           </div>
-        </div>
-
-        <div class="books-echange">
-
         </div>
       </div>
     </section>
@@ -165,6 +162,7 @@
             </rating-form>
           </div>
           <div class="bouton" design='blanc' ng-click='UserBooks.hide()'>Fermer</div>
+          <div class="bouton red" design='blanc' ng-click='UserBooks.retirer()'>Retirer de ma collection</div>
           <div class="bouton green" design='blanc' ng-click='UserBooks.toggleNote()'>Noter</div>
         </div>
     </div>

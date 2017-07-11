@@ -42,9 +42,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         this.notation = !this.notation;
       },
       sendNote(value){
-        console.log(value)
         AjaxRequest.get('addNote',{note: value, idMedia: this.bookShow.idMedia}).then((result) => {
-          console.log(result)
           if (result.success){
             this.bookShow = result.media;
             var index = this.elements.findIndex(elem => elem.idMedia == this.bookShow.idMedia);
