@@ -330,6 +330,11 @@
                 <div class="i-b-title">Autheur</div>
                 <div class="i-b-content">{(Library.books.bookShow.author || '-')}</div>
               </div>
+              <div class="info-book" ng-if='Library.books.bookShow.username'>
+                <div class="i-b-title">Ajouté par </div>
+                <a class="i-b-content capitalize" ng-class='{link: Library.books.bookShow}' target='_blank'
+                ng-href='{(Library.books.bookShow.username || "#")}'>{(Library.books.bookShow.username || '-')}</a>
+              </div>
               <div class="info-book">
                 <div class="i-b-title">Description</div>
                 <div class="i-b-content">{(Library.books.bookShow.description || '-')}</div>

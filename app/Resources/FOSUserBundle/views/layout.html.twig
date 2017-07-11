@@ -1,7 +1,7 @@
 {% extends '::base.html.twig' %}
 {% block body %}
     <!DOCTYPE html>
-    <div class='flex-container'>
+    <!-- <div class='flex-container' test>
 
         {% if app.request.hasPreviousSession %}
             {% for type, messages in app.session.flashbag.all() %}
@@ -12,6 +12,9 @@
                 {% endfor %}
             {% endfor %}
         {% endif %}
-            {% block fos_user_content %}
-            {% endblock fos_user_content %}    </div>
+
+
+      </div> -->
+      {% block fos_user_content %}
+      {% endblock fos_user_content %}
 {% endblock %}

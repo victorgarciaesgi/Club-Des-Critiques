@@ -71,10 +71,12 @@ class LibraryController extends Controller
 
     function returnOneBookInfos($idMedia){
       $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           LEFT JOIN AppBundle:User u
+                           WITH u.id = m.idUsers
                            WHERE m.idMedia = :idMedia
                            GROUP by m.idMedia"
       )->setParameter('idMedia',$idMedia)
@@ -83,6 +85,7 @@ class LibraryController extends Controller
       $book = $this->getSerializer()->normalize($result, 'null');
       $book = $book[0];
       $media = $book['media'];
+      $media['username'] = $book['username'];
       $media['note'] = $book['note'];
       $media['nbrNotes'] = $book['nbrNotes'];
       $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
@@ -188,13 +191,15 @@ class LibraryController extends Controller
 
       $books = [];
       if (isset($data['categories'])) {
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                            FROM AppBundle:Media m
                            INNER JOIN AppBundle:CategoryAffiliation mc
                            WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
                            AND mc.idMedia = m.idMedia
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           LEFT JOIN AppBundle:User u
+                           WITH u.id = m.idUsers
                            WHERE m.valid = ".$data['active']."
                            AND m.isActive = 1
                            GROUP by m.idMedia
@@ -204,10 +209,12 @@ class LibraryController extends Controller
         $books = $query->getResult();
       }
       else{
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           LEFT JOIN AppBundle:User u
+                           WITH u.id = m.idUsers
                            WHERE m.valid = ".$data['active']."
                            AND m.isActive = 1
                            GROUP by m.idMedia
@@ -221,6 +228,7 @@ class LibraryController extends Controller
       if (isset($books[0]['media'])){
         foreach ($books as $key => $value) {
           $media = $value['media'];
+          $media['username'] = $value['username'];
           $media['note'] = $value['note'];
           $media['nbrNotes'] = $value['nbrNotes'];
           $books[$key] = $media;
@@ -269,12 +277,14 @@ class LibraryController extends Controller
       $data = $this->decodeAjaxRequest($request);
       $em = $this->getDoctrine()->getManager();
 
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                          FROM AppBundle:Media m
                          INNER JOIN AppBundle:hasOne h
                          WITH h.idMedia = m.idMedia
                          LEFT JOIN AppBundle:Note n
                          WITH m.idMedia = n.idMedia
+                         LEFT JOIN AppBundle:User u
+                         WITH u.id = m.idUsers
                          WHERE m.valid = 1
                          AND m.isActive = 1
                          GROUP by m.idMedia");
@@ -286,6 +296,7 @@ class LibraryController extends Controller
       if (isset($books[0]['media'])){
         foreach ($books as $key => $value) {
           $media = $value['media'];
+          $media['username'] = $value['username'];
           $media['note'] = $value['note'];
           $media['nbrNotes'] = $value['nbrNotes'];
           $books[$key] = $media;

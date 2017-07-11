@@ -149,6 +149,11 @@
                 <div class="i-b-title">Autheur</div>
                 <div class="i-b-content">{(Chatroom.infos.book.author || '-')}</div>
               </div>
+              <div class="info-book" ng-if='Chatroom.infos.book.username'>
+                <div class="i-b-title">Ajouté par </div>
+                <a class="i-b-content capitalize" ng-class='{link: Chatroom.infos.book}' target='_blank'
+                ng-href='{(Chatroom.infos.book.username || "#")}'>{(Chatroom.infos.book.username || '-')}</a>
+              </div>
               <div class="info-book">
                 <div class="i-b-title">Description</div>
                 <div class="i-b-content">{(Chatroom.infos.book.description || '-')}</div>

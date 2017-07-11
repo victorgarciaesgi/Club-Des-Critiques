@@ -176,6 +176,11 @@
                   <div class="i-b-title">Autheur</div>
                   <div class="i-b-content">{(ProchainSalon.book.author || '-')}</div>
                 </div>
+                <div class="info-book" ng-if='ProchainSalon.book.username'>
+                  <div class="i-b-title">Ajouté par </div>
+                  <a class="i-b-content capitalize" ng-class='{link: ProchainSalon.book.username}' target='_blank'
+                  ng-href='{(ProchainSalon.book.username || "#")}'>{(ProchainSalon.book.username || '-')}</a>
+                </div>
                 <div class="info-book">
                   <div class="i-b-title">Description</div>
                   <div class="i-b-content">{(ProchainSalon.book.description || '-')}</div>
@@ -257,6 +262,11 @@
               <div class="info-book">
                 <div class="i-b-title">Autheur</div>
                 <div class="i-b-content">{(BooksUne.bookShow.author || '-')}</div>
+              </div>
+              <div class="info-book" ng-if='BooksUne.bookShow.username'>
+                <div class="i-b-title">Ajouté par</div>
+                <a class="i-b-content capitalize" ng-class='{link: BooksUne.bookShow}' target='_blank'
+                ng-href='{(BooksUne.bookShow.username || "#")}'>{(BooksUne.bookShow.username || '-')}</a>
               </div>
               <div class="info-book">
                 <div class="i-b-title">Description</div>

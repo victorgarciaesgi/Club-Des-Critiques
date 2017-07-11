@@ -2,9 +2,172 @@
 
 <ng-controller ng-controller='profil'>
 
-  <div class="fos_user_user_show">
-      <p>{{ 'profile.show.username'|trans }}: {{ user.username }}</p>
-      <p>{{ 'profile.show.email'|trans }}: {{ user.email }}</p>
+  <div id='profil'>
+    <section>
+      <div class="ng-cloak content">
+        <div class="profil">
+          <div class="picture" style='background-image: url("/assets/profil.jpg")'></div>
+          <div class="name">{{ user.username }}</div>
+
+        </div>
+        <div class="infos">
+          <div class="infos-header">
+            <div class="i-h-info">
+              <div class="i-h-img">
+                <img src="/assets/user_star.svg">
+              </div>
+              <div class='i-h-text'>
+                4/5
+              </div>
+            </div>
+            <div class="i-h-info">
+              <div class="i-h-img">
+                <img src="/assets/book.svg">
+              </div>
+              <div class='i-h-text'>Lorem <span ng-if='ProchainSalon.book.numberPage'>pages</span></div>
+            </div>
+            <div class="i-h-info">
+              <div class="i-h-img">
+                <img src="/assets/date.svg">
+              </div>
+              <div class='i-h-text'>Peta</div>
+            </div>
+          </div>
+          <div class="infos-text">
+            <div class="i-t-title">Description</div>
+            <div class="i-t-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+          </div>
+          <div class="infos-text">
+            <div class="i-t-title">Livres à echanger</div>
+            <ul>
+              <div class="ng-cloak loader-content" ng-if='UserBooks.loading || UserBooks.error'>
+                <div ng-show='!UserBooks.error && UserBooks.loading' taille='big' class="loading-spinner"></div>
+                <div class='error' ng-show='UserBooks.error'>
+                  {(UserBooks.error)}
+                </div>
+              </div>
+              <li ng-repeat='book in UserBooks.elements track by book.idMedia'
+                  class='ng-cloak book-wrapper'
+                  ng-click='UserBooks.show(book)'>
+                  <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
+                  <div class="cover-wrap">
+                    <div class="ng-cloak cover" style='background-image: url("{(book.img)}")'></div>
+                  </div>
+                  <div class="book-info-wrapper">
+                    <div class="name info-book" ng-cloak>{(book.name)}</div>
+                    <div class="author info-book" ng-cloak>{(book.author)}</div>
+                    <rating-form vg-init='book.note' vg-editable='false'
+                                  vg-displaynote='false'>
+                    </rating-form>
+                  </div>
+              </li>
+              <div ng-if='Library.lazyProcessing && !Library.endOfContent' class="ng-cloak padding-lazyContent">
+                <div class="loading-spinner" taille='medium'></div>
+              </div>
+            </ul>
+          </div>
+        </div>
+
+        <div class="books-echange">
+
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id='bookshow-window' class="ng-cloak popup-window" ng-if='UserBooks.display'
+        ng-click='UserBooks.hide()'>
+    <div class="window" ng-click='$event.stopPropagation();'>
+        <div class="header">
+            Aperçu d'un livre
+
+            <a href="#"><img src="/assets/link.svg" class='externalLink' alt="Ouvrir le lien de la page"></a>
+            <img src="/assets/quit.svg" class='closePopupWindow' ng-click='UserBooks.hide()' alt="Fermer la fenêtre">
+        </div>
+        <div class="content">
+          <div class="book-form-preview">
+            <div class="book-blur" style='background-image: url({(UserBooks.bookShow.img)})'></div>
+            <div class="input-form-wrap">
+              <div class="cover" style='background-image: url({(UserBooks.bookShow.img.length > 10?UserBooks.bookShow.img:"/assets/no_thumbnail.jpg")})'>
+              </div>
+            </div>
+            <div class="input-form-wrap">
+              <div class="title-book">
+                {(UserBooks.bookShow.name? (UserBooks.bookShow.name | cap) : 'Titre du livre')}
+              </div>
+            </div>
+          </div>
+          <div class="infos-book">
+            <div class="infos-header">
+              <div class="i-h-info">
+                <div class="i-h-img">
+                  <img src="/assets/euro.svg">
+                </div>
+                <div class='i-h-text'>{(UserBooks.bookShow.price || '-')}</div>
+              </div>
+              <div class="i-h-info">
+                <div class="i-h-img">
+                  <img src="/assets/book.svg">
+                </div>
+                <div class='i-h-text'>{(UserBooks.bookShow.numberPage || '-')} <span ng-if='UserBooks.bookShow.numberPage'>pages</span></div>
+              </div>
+              <div class="i-h-info">
+                <div class="i-h-img">
+                  <img src="/assets/date.svg">
+                </div>
+                <div class='i-h-text'>{(UserBooks.bookShow.releaseDate.timestamp | date:'dd/MM/y' || '-')}</div>
+              </div>
+            </div>
+
+            <div class="info-book">
+              <rating-form vg-init='UserBooks.bookShow.note'
+                           vg-count='UserBooks.bookShow.nbrNotes'
+                           vg-editable='false'
+                           vg-displaynote='true'>
+              </rating-form>
+            </div>
+            <div class="info-book" ng-if='UserBooks.bookShow.categories.length'>
+              <ul class='token-container center'>
+                <li class='token' ng-repeat='token in UserBooks.bookShow.categories'>
+                  <span>{(token.name)}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="info-book">
+              <div class="i-b-title">Autheur</div>
+              <div class="i-b-content">{(UserBooks.bookShow.author || '-')}</div>
+            </div>
+            <div class="info-book" ng-if='UserBooks.bookShow.username'>
+              <div class="i-b-title">Ajouté par </div>
+              <a class="i-b-content capitalize" ng-class='{link: UserBooks.bookShow}' target='_blank'
+              ng-href='{(UserBooks.bookShow.username || "#")}'>{(UserBooks.bookShow.username || '-')}</a>
+            </div>
+            <div class="info-book">
+              <div class="i-b-title">Description</div>
+              <div class="i-b-content">{(UserBooks.bookShow.description || '-')}</div>
+            </div>
+            <div class="info-book" ng-if='UserBooks.bookShow.buyLink'>
+              <div class="i-b-title">Lien d'achat</div>
+              <a class="i-b-content" ng-class='{link: UserBooks.bookShow}' target='_blank'
+              ng-href='{(UserBooks.bookShow.buyLink || "#")}'>{(UserBooks.bookShow.buyLink?'Lien Play Store':'-')}</a>
+            </div>
+
+          </div>
+        </div>
+        <div class="footer">
+          <div class="note-action" ng-if='UserConnected && UserBooks.notation'>
+            <rating-form vg-model='UserBooks.notationCount'
+                          vg-name='"noteUserBook"'
+                          vg-editable='true'
+                          vg-init='0'
+                          vg-displaynote='true'
+                          on-select-result='UserBooks.sendNote(note)'>
+            </rating-form>
+          </div>
+          <div class="bouton" design='blanc' ng-click='UserBooks.hide()'>Fermer</div>
+          <div class="bouton green" design='blanc' ng-click='UserBooks.toggleNote()'>Noter</div>
+        </div>
+    </div>
   </div>
 
 </ng-controller>

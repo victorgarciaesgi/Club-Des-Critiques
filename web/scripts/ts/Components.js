@@ -2,7 +2,7 @@
 
 // Composant checkbox <checkbox></checkbox>
 MainApp.component('checkbox', {
-  templateUrl: '../components/Checkbox.html',
+  templateUrl: '../../components/Checkbox.html',
   controller: function($scope, $element, $attrs){},
   bindings: {
     vgModel: '=',
@@ -13,7 +13,7 @@ MainApp.component('checkbox', {
 
 // composant textarea
 MainApp.component('areaForm', {
-  templateUrl: '../components/Area-form.html',
+  templateUrl: '../../components/Area-form.html',
   controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
@@ -35,7 +35,7 @@ MainApp.component('areaForm', {
 
 
 MainApp.component('textForm', {
-  templateUrl: '../components/Text-form.html',
+  templateUrl: '../../components/Text-form.html',
   controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModel',(newValue, oldValue, scope) => {
@@ -57,7 +57,7 @@ MainApp.component('textForm', {
 });
 
 MainApp.component('searchForm', {
-  templateUrl: '../components/Search-form.html',
+  templateUrl: '../../components/Search-form.html',
   controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
     ctrl.init = function(){
@@ -217,7 +217,7 @@ MainApp.component('searchForm', {
 });
 
 MainApp.component('tokenForm', {
-  templateUrl: '../components/Token-form.html',
+  templateUrl: '../../components/Token-form.html',
   controller: function($scope, $element, $attrs, AjaxRequest){
     var ctrl = this;
     ctrl.init = function(){
@@ -363,7 +363,7 @@ MainApp.component('tokenForm', {
 // Composant notation par étoiles
 
 MainApp.component('ratingForm', {
-  templateUrl: '../components/Rating-form.html',
+  templateUrl: '../../components/Rating-form.html',
   controller: function($scope, $element, $attrs){
     var ctrl = this;
     ctrl.count = 5; // Nombre d'étoiles
@@ -442,7 +442,7 @@ MainApp.component('ratingForm', {
 
 
 MainApp.component('dateBetweenForm', {
-  templateUrl: '../components/DateBetween-form.html',
+  templateUrl: '../../components/DateBetween-form.html',
   controller: function($scope, $element, $attrs){
     var ctrl = this;
     $scope.$watch('$ctrl.vgModelStart',(newValue, oldValue, scope) => {
