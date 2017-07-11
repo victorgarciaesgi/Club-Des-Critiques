@@ -28,7 +28,7 @@
     <!-- <div ng-if='$ctrl.vgEditable' class="star-zero"></div> -->
 
     <div class="star-displayNumber" ng-if='$ctrl.vgDisplaynote'>
-      {($ctrl.hoverCount != 0?$ctrl.hoverCount:'-')} / {($ctrl.count)}
+      {( ($ctrl.hoverCount != 0?($ctrl.hoverCount | number : 1 ):'-') )} / {($ctrl.count)}
     </div>
     <div class="star-displayCount" ng-if='$ctrl.vgDisplaynote && $ctrl.vgCount'>
       {($ctrl.vgCount)} {($ctrl.vgCount > 1?'notes':'note')}

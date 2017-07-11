@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"file": "profil.min.css",
+	"sources": [
+		"profil.scss",
+		"_variables.scss"
+	],
+	"mappings": "",
+	"names": []
+}
