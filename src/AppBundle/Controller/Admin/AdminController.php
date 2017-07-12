@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use AppBundle\Entity\CMS;
 use AppBundle\Entity\ContactUS;
+use AppBundle\Entity\Media;
 
 use AppBundle\Entity\CustomPages;
 use AppBundle\Form\CMSType;
@@ -181,4 +182,74 @@ class AdminController extends Controller
         $em->flush();
         return $this->redirectToRoute('homepage_admin');
     }
+
+    /**
+     * @Route("admin/media/active", name="active_media")
+     */
+    public function activeMediaAction(Request $request)
+    {
+        $data = $this->decodeAjaxRequest($request);
+
+        $em = $this->getDoctrine()->getManager();
+        $media = $em->getRepository('AppBundle:Media')->find($data["idMedia"]);
+
+
+
+        if (empty($media)) {
+            $error = json_encode(array('error' => "Aucun média trouvé"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
+
+        $media->setValid(1);
+        $em->flush();
+
+        $success = json_encode(array('success' =>  + " a bien été activé"), JSON_FORCE_OBJECT);
+        return new JsonResponse($success);
+    }
+
+    /**
+     * @Route("admin/media/desactive", name="desactive_media")
+     */
+    public function desactiveMediaAction(Request $request)
+    {
+        $data = $this->decodeAjaxRequest($request);
+
+        $em = $this->getDoctrine()->getManager();
+        $media = $em->getRepository('AppBundle:Media')->find($data["idMedia"]);
+
+        if (empty($media)) {
+            $error = json_encode(array('error' => "Aucun média trouvé"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
+
+        $media->setValid(0);
+        $em->flush();
+
+        $success = json_encode(array('success' =>  + " a bien été désactivé"), JSON_FORCE_OBJECT);
+        return new JsonResponse($success);
+    }
+
+    /**
+     * @Route("admin/media/delete", name="delete_media")
+     */
+    public function deleteMediaAction(Request $request)
+    {
+        $data = $this->decodeAjaxRequest($request);
+
+        $em = $this->getDoctrine()->getManager();
+        $media = $em->getRepository('AppBundle:Media')->find($data["idMedia"]);
+
+        if (empty($media)) {
+            $error = json_encode(array('error' => "Aucun média trouvé"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
+
+        $media->setIsActive(0);
+        $em->flush();
+
+        $success = json_encode(array('success' =>  + " a bien été supprimé"), JSON_FORCE_OBJECT);
+        return new JsonResponse($success);
+    }
+
+
 }
