@@ -41,6 +41,7 @@ header{
     width: 300px;
     display: flex;
     align-items: center;
+    justify-content: center;
 
     input.s-search{
       height: 100%;
@@ -79,6 +80,7 @@ header{
     padding: 0 10px 0 10px;
     line-height: 40px;
     cursor: pointer;
+    text-transform: capitalize;
     @include transition(background-color, 0.3s);
 
 

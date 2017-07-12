@@ -71,10 +71,12 @@ class LibraryController extends Controller
 
     function returnOneBookInfos($idMedia){
       $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           LEFT JOIN AppBundle:User u
+                           WITH u.id = m.idUsers
                            WHERE m.idMedia = :idMedia
                            GROUP by m.idMedia"
       )->setParameter('idMedia',$idMedia)
@@ -83,6 +85,7 @@ class LibraryController extends Controller
       $book = $this->getSerializer()->normalize($result, 'null');
       $book = $book[0];
       $media = $book['media'];
+      $media['username'] = $book['username'];
       $media['note'] = $book['note'];
       $media['nbrNotes'] = $book['nbrNotes'];
       $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
@@ -188,15 +191,18 @@ class LibraryController extends Controller
 
       $books = [];
       if (isset($data['categories'])) {
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                            FROM AppBundle:Media m
                            INNER JOIN AppBundle:CategoryAffiliation mc
                            WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
                            AND mc.idMedia = m.idMedia
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           LEFT JOIN AppBundle:User u
+                           WITH u.id = m.idUsers
                            WHERE m.valid = ".$data['active']."
-                           AND m.isActive = 1
+                           AND m.isActive = 1 "
+                           . ((strlen($data['search']) > 0)?"AND m.name LIKE '".$data['search']."%' ":"")."
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -204,12 +210,15 @@ class LibraryController extends Controller
         $books = $query->getResult();
       }
       else{
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
+                           LEFT JOIN AppBundle:User u
+                           WITH u.id = m.idUsers
                            WHERE m.valid = ".$data['active']."
-                           AND m.isActive = 1
+                           AND m.isActive = 1 "
+                           . ((strlen($data['search']) > 1)?"AND m.name LIKE '".$data['search']."%' ":"")."
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -221,6 +230,7 @@ class LibraryController extends Controller
       if (isset($books[0]['media'])){
         foreach ($books as $key => $value) {
           $media = $value['media'];
+          $media['username'] = $value['username'];
           $media['note'] = $value['note'];
           $media['nbrNotes'] = $value['nbrNotes'];
           $books[$key] = $media;
@@ -234,9 +244,8 @@ class LibraryController extends Controller
       }
 
       return new JsonResponse($books);
-
-
     }
+
 
     /**
      * @Route("/library/searchBaseBooks", options = { "expose" = true }, name="library_searchBooks")
@@ -245,7 +254,6 @@ class LibraryController extends Controller
 
     public function SearchBooksAction(Request $request) {
       $data = $this->decodeAjaxRequest($request);
-
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
       $content = $repository->createQueryBuilder('m')
                ->where('m.name LIKE :name AND m.isActive = 1 AND m.valid = 1')
@@ -263,6 +271,75 @@ class LibraryController extends Controller
     }
 
 
+    /**
+     * @Route("/library/searchUsers", options = { "expose" = true }, name="library_searchUsers")
+     * @Method({"POST"})
+     */
+
+    public function SearchUsersAction(Request $request) {
+      $data = $this->decodeAjaxRequest($request);
+      $em = $this->getDoctrine()->getManager();
+
+      $query = $em->createQuery("SELECT u.username, u.id, u.pathImg
+                         FROM AppBundle:User u
+                         WHERE u.username LIKE :username
+                         AND u.enabled = 1
+                         AND u.isBlocked = 0")
+      ->setParameter('username', $data.'%')
+      ->setMaxResults(20);
+      $results = $query->getResult();
+      if (sizeof($results) > 0) {
+        return new JsonResponse($results);
+      }
+      else {
+        $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);
+        return new JsonResponse($error_data);
+      }
+    }
+
+    /**
+     * @Route("/library/getBooksUne", options = { "expose" = true }, name="library_booksUne")
+     * @Method({"POST"})
+     */
+
+    public function getBooksUne(Request $request) {
+      $data = $this->decodeAjaxRequest($request);
+      $em = $this->getDoctrine()->getManager();
+
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
+                         FROM AppBundle:Media m
+                         INNER JOIN AppBundle:hasOne h
+                         WITH h.idMedia = m.idMedia
+                         LEFT JOIN AppBundle:Note n
+                         WITH m.idMedia = n.idMedia
+                         LEFT JOIN AppBundle:User u
+                         WITH u.id = m.idUsers
+                         WHERE m.valid = 1
+                         AND m.isActive = 1
+                         GROUP by m.idMedia");
+      $query->setMaxResults(20)
+      ->setFirstResult($data['limit']);
+      $books = $query->getResult();
+
+      $books = $this->getSerializer()->normalize($books, 'null');
+      if (isset($books[0]['media'])){
+        foreach ($books as $key => $value) {
+          $media = $value['media'];
+          $media['username'] = $value['username'];
+          $media['note'] = $value['note'];
+          $media['nbrNotes'] = $value['nbrNotes'];
+          $books[$key] = $media;
+        }
+        foreach ($books as $key => $value) {
+          $books[$key]['categories'] = $this->returnCategoriesByBook($value['idMedia']);
+        }
+      }
+      else{
+        $books = [];
+      }
+
+      return new JsonResponse($books);
+    }
 
 
     /**

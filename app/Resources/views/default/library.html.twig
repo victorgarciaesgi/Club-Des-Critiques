@@ -51,9 +51,10 @@
               </select>
             </div>
             <div ng-if='UserConnected' class="group">
-              <div class="bouton openPopupWindow" ng-click='AddBookForm.show()' design='blanc'>
-                <img src="/assets/add.svg" alt="Ajouter un livre" >Ajouter un livre
-              </div>
+              <button class="bouton openPopupWindow" ng-click='AddBookForm.show()' design='blanc'>
+                <img src="/assets/add.svg" alt="Ajouter un livre" >
+                <span>Ajouter un livre</span>
+              </button>
             </div>
           </div>
           <div class="library-list" lazyload='Library.loadNext()'>
@@ -67,6 +68,17 @@
                   </label>
                 </li>
               </ul>
+            </div>
+            <div class="ng-cloak book-search">
+              <div class="wrapper">
+                <input class='s-search' name='searchBook' type="text" ng-model='Library.search.value'
+                placeholder="Rechercher un livre" ng-trim="false" ng-model-options="{
+                    updateOn: 'default blur',
+                    debounce: { 'default': 300, 'blur': 0 }
+                  }">
+                <div class="form-searching nobadge" ng-if='Library.search.loading'><div class="loading-spinner"></div></div>
+                <div class="s-icon"></div>
+              </div>
             </div>
             <ul class="books-list">
               <div class="ng-cloak loader-content" ng-if='Library.books.loading || Library.books.error'>
@@ -330,6 +342,11 @@
                 <div class="i-b-title">Autheur</div>
                 <div class="i-b-content">{(Library.books.bookShow.author || '-')}</div>
               </div>
+              <div class="info-book" ng-if='Library.books.bookShow.username'>
+                <div class="i-b-title">Ajouté par </div>
+                <a class="i-b-content capitalize" ng-class='{link: Library.books.bookShow}' target='_blank'
+                ng-href='{(Library.books.bookShow.username || "#")}'>{(Library.books.bookShow.username || '-')}</a>
+              </div>
               <div class="info-book">
                 <div class="i-b-title">Description</div>
                 <div class="i-b-content">{(Library.books.bookShow.description || '-')}</div>
@@ -354,10 +371,13 @@
             </div>
 
 
-            <div class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</div>
+            <!-- <div class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</div> -->
             <!-- User -->
-            <div class="bouton" design='blanc' ng-if='!Library.adminView'>Signaler</div>
-            <div class="bouton green" design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</div>
+            <div class="bouton" design='blanc' ng-if='!Library.adminView'
+              ng-click='Library.books.addCollection' ng-class='{submitting: Library.books.submittingCollection}'>Ajouter à ma collection
+              <div class="loading-spinner inline-block white"></div>
+            </div>
+            <div class="bouton" ng-class='{green: Library.books.notation}' design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</div>
             <div ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</div>
             <!-- Admin -->
             <div ng-if='Library.adminView && UserAdmin' class="bouton red" design='blanc' ng-click='Library.validate(false)'> Refuser le livre</div>

@@ -4,6 +4,7 @@
     <div id="home">
         <section class="contexte">
             <div class="title">
+                <img src="/assets/Contexte.svg" alt="">
                 Contexte
             </div>
             <div class="content">
@@ -15,35 +16,48 @@
                     {{ context.concept | raw }}
                 </p>
             </div>
+            <div class="footer">
+
+            </div>
         </section>
 
         <section class="">
             <div class="title">
-                A la une
+                <img src="/assets/Une.svg" alt="">
+                À la une
             </div>
             <div class="content">
                 <ul id='books-une' class='list-books'>
-                  <li ng-repeat='book in BooksUne.elements track by $index'
-                  class='ng-cloak book-wrapper'
-                  ng-click='BooksUne.show(book)'>
-                  <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
-                  <div class="cover-wrap">
-                    <div class="ng-cloak cover" style='background-image: url("http://lorempixel.com/200/200")'></div>
+                  <div class="ng-cloak loader-content" ng-if='BooksUne.loading || BooksUne.error'>
+                    <div ng-show='!BooksUne.error && BooksUne.loading' taille='big' class="loading-spinner"></div>
+                    <div class='error' ng-show='BooksUne.error'>
+                      {(BooksUne.error)}
+                    </div>
                   </div>
-                  <div class="book-info-wrapper">
-                    <div class="name info-book" ng-cloak>Lorem Ipsum</div>
-                    <div class="author info-book" ng-cloak>Atheur</div>
-                    <rating-form vg-init='3.5' vg-editable='false'
-                                  vg-displaynote='false'>
-                    </rating-form>
+                  <li ng-repeat='book in BooksUne.elements track by book.idMedia'
+                      class='ng-cloak book-wrapper'
+                      ng-click='BooksUne.show(book)'>
+                      <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
+                      <div class="cover-wrap">
+                        <div class="ng-cloak cover" style='background-image: url("{(book.img)}")'></div>
+                      </div>
+                      <div class="book-info-wrapper">
+                        <div class="name info-book" ng-cloak>{(book.name)}</div>
+                        <div class="author info-book" ng-cloak>{(book.author)}</div>
+                        <rating-form vg-init='book.note' vg-editable='false'
+                                      vg-displaynote='false'>
+                        </rating-form>
+                      </div>
+                  </li>
+                  <div ng-if='Library.lazyProcessing && !Library.endOfContent' class="ng-cloak padding-lazyContent">
+                    <div class="loading-spinner" taille='medium'></div>
                   </div>
-              </li>
-
                 </ul>
             </div>
         </section>
         <section class="contact">
             <div class="title">
+              <img src="/assets/contact.svg" alt="">
                 Nous contacter
             </div>
             <div class="content">
@@ -70,56 +84,13 @@
               </div>
             </div>
         </section>
-        <!-- <div class="lazyload">
-          <div class="lazyloadgif">
-
-          </div>
-        </div> -->
     </div>
 
     <aside>
-        <section class="letter">
+        <section class='incription'>
             <div class="title">
-                Prochain Salon
-            </div>
-            <div class="content">
-                <div class="salon">
-                    <div class="infos">
-                        <div class="date info">
-                            <img class='icon' src="/assets/event.svg" alt="event">
-                            <strong><span>10/03/2017 18:00</span></strong>
-                        </div>
-                        <div class="book info">
-                            <img class='icon' src="/assets/book.svg" alt="book">
-                            <span>All That Man is</span>
-                        </div>
-                        <div class="author info">
-                            <img class='icon' src="/assets/author.svg" alt="book">
-                            <span>J.K Rowling</span>
-                        </div>
-                        <div class="stars info">
-                            <img class='icon' src="/assets/rating.svg" alt="book">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_plain.svg" alt="star">
-                            <img src="/assets/star_half.svg" alt="star">
-                            <img src="/assets/star_empty.svg" alt="star">
-                            <img src="/assets/star_empty.svg" alt="star">
-                        </div>
-                    </div>
-                    <div class="cover">
-                        <div class="cover-image" style=''></div>
-                    </div>
-                    <div class="footer">
-                        <div class="bouton" design='green'>
-                            Rejoindre
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section>
-            <div class="title">
-                S'inscrire à Club des Critiques
+                <img src="/assets/inscription.svg" alt="">
+                S'inscrire au Club des Critiques
             </div>
             <div class="content">
                 <p>Indiquez votre adresse mail. <br>
@@ -134,7 +105,7 @@
                               vg-required='mailRegister.elements.mail.required'>
                   </text-form>
                   <div class="footer">
-                    <button class="bouton" type='submit' design='brown'
+                    <button class="bouton" type='submit' design='green'
                         ng-disabled='mailRegisterX.$invalid || mailRegister.submitting'
                         ng-class='{submitting: mailRegister.submitting}'>S'inscrire
                       <div class="loading-spinner inline-block white"></div>
@@ -145,8 +116,190 @@
                 <!-- <pre>{(mailRegister.values | json)}</pre> -->
             </div>
         </section>
+        <section>
+            <div class="title">
+                <img src="/assets/salons_grey.svg" alt="">
+                Prochain Salon  <span>(Ouvre dans 20 minutes)</span>
+            </div>
+            <div class="content nopadding">
+              <div class="book-form-preview">
+                <div class="book-blur" style='background-image: url({(ProchainSalon.book.img)})'></div>
+                <div class="input-form-wrap">
+                  <div class="cover" style='background-image: url({(ProchainSalon.book.img.length > 10?ProchainSalon.book.img:"/assets/no_thumbnail.jpg")})'>
+                  </div>
+                </div>
+                <div class="input-form-wrap">
+                  <div class="title-book">
+                    {(ProchainSalon.book.name? (ProchainSalon.book.name | cap) : 'Titre du livre')}
+                  </div>
+                </div>
+              </div>
+              <div class="time-until">
+
+              </div>
+              <div class="show-details" ng-click='ProchainSalon.details = !ProchainSalon.details'>
+                {(ProchainSalon.details?'Cacher':'Afficher')} les details du livre
+                <img src="/assets/expand_down.svg" alt="" ng-class='{rotate: ProchainSalon.details}'>
+              </div>
+              <div class="infos-book" ng-if='ProchainSalon.details'>
+                <div class="infos-header">
+                  <div class="i-h-info">
+                    <div class="i-h-img">
+                      <img src="/assets/euro.svg">
+                    </div>
+                    <div class='i-h-text'>{(ProchainSalon.book.price || '-')}</div>
+                  </div>
+                  <div class="i-h-info">
+                    <div class="i-h-img">
+                      <img src="/assets/book.svg">
+                    </div>
+                    <div class='i-h-text'>{(ProchainSalon.book.numberPage || '-')} <span ng-if='ProchainSalon.book.numberPage'>pages</span></div>
+                  </div>
+                  <div class="i-h-info">
+                    <div class="i-h-img">
+                      <img src="/assets/date.svg">
+                    </div>
+                    <div class='i-h-text'>{(ProchainSalon.book.releaseDate.timestamp | date:'dd/MM/y' || '-')}</div>
+                  </div>
+                </div>
+
+                <div class="info-book">
+                  <rating-form vg-init='ProchainSalon.book.note'
+                               vg-count='ProchainSalon.book.nbrNotes'
+                               vg-editable='false'
+                               vg-displaynote='true'>
+                  </rating-form>
+                </div>
+                <div class="info-book" ng-if='ProchainSalon.book.categories.length'>
+                  <ul class='token-container center'>
+                    <li class='token' ng-repeat='token in ProchainSalon.book.categories'>
+                      <span>{(token.name)}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="info-book">
+                  <div class="i-b-title">Autheur</div>
+                  <div class="i-b-content">{(ProchainSalon.book.author || '-')}</div>
+                </div>
+                <div class="info-book" ng-if='ProchainSalon.book.username'>
+                  <div class="i-b-title">Ajouté par </div>
+                  <a class="i-b-content capitalize" ng-class='{link: ProchainSalon.book.username}' target='_blank'
+                  ng-href='{(ProchainSalon.book.username || "#")}'>{(ProchainSalon.book.username || '-')}</a>
+                </div>
+                <div class="info-book">
+                  <div class="i-b-title">Description</div>
+                  <div class="i-b-content">{(ProchainSalon.book.description || '-')}</div>
+                </div>
+                <div class="info-book" ng-if='ProchainSalon.book.buyLink'>
+                  <div class="i-b-title">Lien d'achat</div>
+                  <a class="i-b-content" ng-class='{link: ProchainSalon.book}' target='_blank'
+                  ng-href='{(ProchainSalon.book.buyLink || "#")}'>{(ProchainSalon.book.buyLink?'Lien Play Store':'-')}</a>
+                </div>
+              </div>
+            </div>
+            <div class="footer">
+                <div class="bouton" design='green'>
+                    Rejoindre
+                </div>
+            </div>
+        </section>
     </aside>
     <!-- Elements cachés -->
+
+    <div id='bookshow-window' class="ng-cloak popup-window" ng-if='BooksUne.display'
+          ng-click='BooksUne.hide()'>
+      <div class="window" ng-click='$event.stopPropagation();'>
+          <div class="header">
+              Aperçu d'un livre
+
+              <a href="#"><img src="/assets/link.svg" class='externalLink' alt="Ouvrir le lien de la page"></a>
+              <img src="/assets/quit.svg" class='closePopupWindow' ng-click='BooksUne.hide()' alt="Fermer la fenêtre">
+          </div>
+          <div class="content">
+            <div class="book-form-preview">
+              <div class="book-blur" style='background-image: url({(BooksUne.bookShow.img)})'></div>
+              <div class="input-form-wrap">
+                <div class="cover" style='background-image: url({(BooksUne.bookShow.img.length > 10?BooksUne.bookShow.img:"/assets/no_thumbnail.jpg")})'>
+                </div>
+              </div>
+              <div class="input-form-wrap">
+                <div class="title-book">
+                  {(BooksUne.bookShow.name? (BooksUne.bookShow.name | cap) : 'Titre du livre')}
+                </div>
+              </div>
+            </div>
+            <div class="infos-book">
+              <div class="infos-header">
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/euro.svg">
+                  </div>
+                  <div class='i-h-text'>{(BooksUne.bookShow.price || '-')}</div>
+                </div>
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/book.svg">
+                  </div>
+                  <div class='i-h-text'>{(BooksUne.bookShow.numberPage || '-')} <span ng-if='BooksUne.bookShow.numberPage'>pages</span></div>
+                </div>
+                <div class="i-h-info">
+                  <div class="i-h-img">
+                    <img src="/assets/date.svg">
+                  </div>
+                  <div class='i-h-text'>{(BooksUne.bookShow.releaseDate.timestamp | date:'dd/MM/y' || '-')}</div>
+                </div>
+              </div>
+
+              <div class="info-book">
+                <rating-form vg-init='BooksUne.bookShow.note'
+                             vg-count='BooksUne.bookShow.nbrNotes'
+                             vg-editable='false'
+                             vg-displaynote='true'>
+                </rating-form>
+              </div>
+              <div class="info-book" ng-if='BooksUne.bookShow.categories.length'>
+                <ul class='token-container center'>
+                  <li class='token' ng-repeat='token in BooksUne.bookShow.categories'>
+                    <span>{(token.name)}</span>
+                  </li>
+                </ul>
+              </div>
+              <div class="info-book">
+                <div class="i-b-title">Autheur</div>
+                <div class="i-b-content">{(BooksUne.bookShow.author || '-')}</div>
+              </div>
+              <div class="info-book" ng-if='BooksUne.bookShow.username'>
+                <div class="i-b-title">Ajouté par</div>
+                <a class="i-b-content capitalize" ng-class='{link: BooksUne.bookShow}' target='_blank'
+                ng-href='{(BooksUne.bookShow.username || "#")}'>{(BooksUne.bookShow.username || '-')}</a>
+              </div>
+              <div class="info-book">
+                <div class="i-b-title">Description</div>
+                <div class="i-b-content">{(BooksUne.bookShow.description || '-')}</div>
+              </div>
+              <div class="info-book" ng-if='BooksUne.bookShow.buyLink'>
+                <div class="i-b-title">Lien d'achat</div>
+                <a class="i-b-content" ng-class='{link: BooksUne.bookShow}' target='_blank'
+                ng-href='{(BooksUne.bookShow.buyLink || "#")}'>{(BooksUne.bookShow.buyLink?'Lien Play Store':'-')}</a>
+              </div>
+
+            </div>
+          </div>
+          <div class="footer">
+            <div class="note-action" ng-if='UserConnected && BooksUne.notation'>
+              <rating-form vg-model='BooksUne.notationCount'
+                            vg-name='"noteUserBook"'
+                            vg-editable='true'
+                            vg-init='0'
+                            vg-displaynote='true'
+                            on-select-result='BooksUne.sendNote(note)'>
+              </rating-form>
+            </div>
+            <div class="bouton" design='blanc' ng-click='BooksUne.hide()'>Fermer</div>
+            <div class="bouton green" design='blanc' ng-click='BooksUne.toggleNote()'>Noter</div>
+          </div>
+      </div>
+    </div>
 
 </ng-controller>
 {% endblock %}

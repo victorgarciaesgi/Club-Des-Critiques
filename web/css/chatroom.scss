@@ -15,6 +15,7 @@ $infosWidth: 350px;
     height: 100%;
     margin-bottom: 0;
     box-shadow: none;
+    flex-flow: row wrap;
 
     &.close{
       @media #{$mini} {
@@ -230,7 +231,7 @@ article#Salons{
       }
       .salonState{
         position: absolute;
-        right: left;
+        left: 5px;
         top: 50%;
         height: 8px;
         width: 8px;
@@ -546,6 +547,7 @@ article#Messages{
     padding: 0;
     max-height: calc(100% - 35px);
     overflow-y: auto;
+    display: block;
 
     .title-book{
       background-color: $mainMarron;

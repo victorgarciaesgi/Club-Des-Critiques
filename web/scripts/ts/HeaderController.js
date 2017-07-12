@@ -2,6 +2,12 @@
 
 MainApp.controller('header', function ($scope, $rootScope, notifications, moment) {
 
+  $scope.Header = {
+    displaySearch: false,
+  }
+
+
+
   $scope.ConnexionForm = {
     values: {},
     login: new textForm('Login..','login','text',true,null,null, null, null, false, null),
@@ -49,7 +55,7 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
   $scope.Notifications.init();
 
 
-  notifications.on('Admin:delete:message', function(data) {
+  notifications.on('New:notification', function(data) {
     var notif = new Notification(data.type, data.message, data.date);
     $scope.Notifications.add(notif);
   });
@@ -69,7 +75,7 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
   $(document).ready(function() {
     // Affichage des popups de header
     $("body").on('click','.popup-bouton, openPopupWindow',function(event){
-      displayPopup($(this), event);
+      displayPopup(this, event);
     })
 
     // Evenements de contrôle d'affichage des popups

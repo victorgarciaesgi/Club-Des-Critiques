@@ -1,6 +1,5 @@
 // imports
 @import "variables.scss";
-@import "main.scss";
 
 // keyframes
 @keyframes spinner-animation {
@@ -11,16 +10,20 @@
 
 .loading-spinner {
   position: relative;
-  display: block;
+  display: flex;
+  left: 0;
+  top: 0;
   width: $Loadersize;
   height: $Loadersize;
+  justify-content: center;
+  align-items: center;
 
   &::before,
   &::after {
     content: "";
     position: absolute;
     z-index: 10; // prevent sibling elements from getting their own layers
-    top: 0;
+    top: 1px;
     left: 0;
     border-radius: 1em;
     width: calc(100% - 2px);
@@ -95,7 +98,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: $mainFont, sans-serif;
-  color: $mainColor;
+  color: $g90;
   box-sizing: border-box;
   overflow-x: hidden;
   overflow-y: auto;
@@ -516,45 +519,45 @@ rating-form{
   color: $g90;
 }
 
+.form-searching{
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  @include translateY(-50%);
+  height: 20px;
+  width: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .loading-spinner{
+    position: absolute;
+    right: 0px;
+  }
+
+  &:not(.nobadge)::after{
+    content:"Recherche";
+    background-color: $mainGreen2;
+    color: white;
+    position: absolute;
+    width: auto;
+    height: auto;
+    text-align: center;
+    vertical-align: text-top;
+    right: 25px;
+    border-radius: 20px;
+    font-size: 11px;
+    opacity: 1;
+    padding: 5px 8px 5px 8px;
+  }
+}
+
 
 .input-form-wrap{
   position: relative;
   float: left;
   width: 100%;
   height: auto;
-
-  .form-searching{
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    @include translateY(-50%);
-    height: 20px;
-    width: 20px;
-    display: flex;
-    justify-content: center;
-
-    .loading-spinner{
-      position: absolute;
-      top: 3px;
-      right: 0px;
-    }
-
-    &::after{
-      content:"Searching";
-      background-color: $mainGreen2;
-      color: white;
-      position: absolute;
-      width: auto;
-      height: auto;
-      text-align: center;
-      vertical-align: text-top;
-      right: 25px;
-      border-radius: 20px;
-      font-size: 11px;
-      opacity: 1;
-      padding: 5px 8px 5px 8px;
-    }
-  }
 
   .form-valid-icon{
     position: absolute;
@@ -673,6 +676,17 @@ rating-form{
           background-color: $w200;
         }
 
+        &[user]{
+          height: 60px;
+          padding-left: 10px;
+          .cover{
+            height: 40px;
+            width: 40px;
+            margin-top: 10px;
+            border-radius: 40px;
+          }
+        }
+
         .infos{
           position: relative;
           float: left;
@@ -714,6 +728,14 @@ rating-form{
             background-color: $mainColor;
             border-radius: 20px;
           }
+
+          .name{
+            height: 100%;
+            line-height: 60px;
+            margin-left: 10px;
+            font-size: 15px;
+            font-weight: bold;
+          }
         }
       }
 
@@ -733,7 +755,7 @@ rating-form{
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255,255,255,1);
 }
 
 .padding-lazyContent{
@@ -799,6 +821,10 @@ select{
   position: relative;
   width: auto;
   float: left;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
   height: 33px;
   font-size: $boutonfont;
   border-radius: 4px;
@@ -829,7 +855,6 @@ select{
   img{
     position: inline-block;
     vertical-align: middle;
-    margin-bottom: 2px;
     margin-left: -5px;
     margin-right: 5px;
     height: 17px;
@@ -849,6 +874,10 @@ select{
 
     &.green{
       color: $mainGreen2;
+    }
+
+    &.red{
+      color: $red1;
     }
 
     &.brown{
@@ -903,17 +932,6 @@ select{
 
     &:active {
       background-color: $mainGreen2 - rgb(40, 40, 40);
-    }
-  }
-
-  &[image] {
-    img {
-      vertical-align: middle;
-      margin: 0 5px 0 5px;
-    }
-
-    span {
-      padding: 0 5px 0 0;
     }
   }
 }
@@ -1119,49 +1137,6 @@ select{
   background-color: white;
   white-space: normal;
 
-  .infos-header{
-    position: relative;
-    float: left;
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-    height: 80px;
-    padding: 5px 0 5px 0;
-    border-bottom: 1px solid $w240;
-    text-align: center;
-
-    .i-h-info{
-      position: relative;
-      flex-grow: 1;
-      height: 100%;
-      width: auto;
-      min-width: 80px;
-      max-width: calc(100% / 3);
-      padding: 5px;
-
-      div.i-h-img{
-        position: relative;
-        float: left;
-        width: 100%;
-        height: 50%;
-        text-align: center;
-        line-height: 30px;
-      }
-      div.i-h-text{
-        position: relative;
-        float: left;
-        width: 100%;
-        font-size: 16px;
-        white-space: nowrap;
-        overflow-x: hidden;
-        text-overflow: ellipsis;
-        height: 50%;
-        text-align: center;
-        line-height: 30px;
-      }
-    }
-  }
-
   .info-book{
     position: relative;
     float: left;
@@ -1192,10 +1167,54 @@ select{
       width: 100%;
       font-size: 13px;
       font-style: italic;
+
     }
 
     .token{
       display: inline-block;
+    }
+  }
+}
+
+.infos-header{
+  position: relative;
+  float: left;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  height: 80px;
+  padding: 5px 0 5px 0;
+  border-bottom: 1px solid $w240;
+  text-align: center;
+
+  .i-h-info{
+    position: relative;
+    flex-grow: 1;
+    height: 100%;
+    width: auto;
+    min-width: 80px;
+    max-width: calc(100% / 3);
+    padding: 5px;
+
+    div.i-h-img{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 50%;
+      text-align: center;
+      line-height: 30px;
+    }
+    div.i-h-text{
+      position: relative;
+      float: left;
+      width: 100%;
+      font-size: 16px;
+      white-space: nowrap;
+      overflow-x: hidden;
+      text-overflow: ellipsis;
+      height: 50%;
+      text-align: center;
+      line-height: 30px;
     }
   }
 }
@@ -1239,7 +1258,7 @@ select{
 }
 
 
-.previewBook{
+.previewContent{
   position: relative;
   float: left;
   width: 100%;
@@ -1259,6 +1278,17 @@ select{
     margin-right: 5px;
     @include bg-center;
     background-color: $w200;
+  }
+
+  &[user]{
+    height: 60px;
+    padding-left: 10px;
+    .cover{
+      height: 40px;
+      width: 40px;
+      margin-top: 5px;
+      border-radius: 40px;
+    }
   }
 
   .infos{
@@ -1292,15 +1322,175 @@ select{
       font-size: 13px;
       color: rgb(130,130,130);
     }
+    .name{
+      height: 100%;
+      line-height: 50px;
+      margin-left: 10px;
+      font-size: 15px;
+      font-weight: bold;
+    }
   }
 }
 
+.popup-box{
+  position: fixed;
+  left: calc(100% - 350px);
+  top: 55px;
+  display: none;
+  background-color: $w250;
+  border-radius: 3px;
+  box-shadow: 0 0 8px rgba(0,0,0, 0.3);
+  width: auto;
+  height: auto;
+  min-width : 200px;
+  min-height: 130px;
+  max-height: 80%;
+  color: rgb(100,100,100);
+  z-index: 2000;
+  flex-direction: column;
+  @include userselect;
 
+  &.static{
+    position: relative;
+    left: auto;
+    top: auto;
+    display: flex;
+  }
+
+  #pin{
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    margin-left: -10px;
+    z-index: 2001;
+  }
+
+  #pin2{
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    margin-left: -10px;
+    z-index: 2001;
+  }
+
+  .header{
+    position: relative;
+    padding-left: 10px;
+    height: 30px;
+    line-height: 30px;
+    width: 100%;
+    border-radius: 3px 3px 0 0;
+    color: rgb(100,100,100);
+    background-color: $w245;
+    // border-bottom: 1px solid $mainGreen2;
+    box-shadow: 0 1px 5px rgba(80,80,80, 0.2);
+    font-weight: bold;
+    font-size: 15px;
+    flex: 0 1 auto;
+  }
+
+  .content{
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 5px;
+    flex: 1 1 auto;
+  }
+
+  .connexion{
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 5px 5px 0 5px;
+    flex: 0 0 auto;
+  }
+
+  .footer{
+    position: relative;
+    height: auto;
+    padding: 0 5px 5px 5px;
+    width: 100%;
+    text-align: center;
+    flex: 0 1 auto;
+
+    .bouton{
+      display: inline-block;
+      float: none;
+    }
+  }
+
+  .user{
+    position: relative;
+    float: left;
+    width: 100%;
+    height: auto;
+    background-color: $w245;
+    border-bottom: 1px solid $w240;
+
+    .user-picture{
+      position: relative;
+      float: left;
+      height: 100px;
+      width: 100px;
+      border-radius: 100%;
+      margin-top: 10px;
+      margin-left: 50%;
+      border: 3px solid $mainMarron;
+      @include translateX(-50%);
+      @include bg-center;
+    }
+
+    .user-name{
+      position: relative;
+      float: left;
+      width: 100%;
+      height: 40px;
+      font-size: 17px;
+      line-height: 40px;
+      text-align: center;
+      text-transform: capitalize;
+      font-weight: bold;
+    }
+  }
+
+  .user-option-list{
+    position: relative;
+    float: left;
+    height: auto;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0 0 3px 3px;
+
+    .user-option{
+      position: relative;
+      float: left;
+      height: 35px;
+      width: 100%;
+      padding-left: 20px;
+      line-height: 35px;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: bold;
+
+      &:hover{
+        background-color: $w230;
+      }
+
+      &:active{
+        background-color: $w210;
+      }
+    }
+  }
+}
 
 
 // .popupConfirm
 
 // classes generiques
+
+.capitalize{
+  text-transform: capitalize;
+}
 
 .d-none {
   display: none;

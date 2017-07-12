@@ -40,6 +40,18 @@ ntf.on('connection', function(socket){
     }
     socket.join(user.id);
     socket.emit('Get:notifications', socket.user.notifications);
+  });
+
+  socket.on('Send:notification', function(user, message){
+    var checkuser = users.find((element) => element.id == user.id);
+    if (checkuser != undefined){
+      var notif = {
+        type: 'alert',
+        message: message,
+        date: Date.now()};
+      checkuser.notifications.push(notif);
+      ntf.to(user.id).emit('Notifications', notif);
+    }
   })
 });
 
@@ -91,13 +103,17 @@ io.on('connection', function (socket) {
         type: 'alert',
         message: 'Un admin a supprimé votre message: ' + data.message.text,
         date: Date.now()}
-      users.forEach(function(element){
-        if (element.id == data.userId){
-            element.notifications.push(notif);
-        }
-      })
-      ntf.to(data.userId).emit('Admin:delete:message', notif)
+      sendNotification(data.userId, notif);
       io.to(socket.room.id).emit('Update:room:messages',socket.room);
+    });
+
+    socket.on('Invite:User', function (data, callback) {
+      var notif = {
+        type: 'alert',
+        message: socket.user.name + ' vous a invité au salon : ' + socket.room.title,
+        date: Date.now()}
+      callback();
+      sendNotification(data.user.id, notif);
     });
 
     socket.on('Switch:room', function(newroom){
@@ -125,4 +141,21 @@ io.on('connection', function (socket) {
         socket.emit('Update:book',socket.room.book)
     });
 
+
+
+
+
+
+
+
+
+
+    function sendNotification(userId, notif){
+      users.forEach(function(element){
+        if (element.id == userId){
+            element.notifications.push(notif);
+        }
+      })
+      ntf.to(userId).emit('New:notification', notif)
+    }
 });

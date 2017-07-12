@@ -42,7 +42,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     selectedSalon: {},
     infos:{
-      open: false,
+      open: true,
       details: false,
       users: [],
       book: {},
@@ -52,7 +52,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       }
     },// Contient toutes les infos du salon selectionné
     options: [
-      {text: 'Inviter un contact dans ce salon', action:'invite', icon:'add_contact'},
+      {text: 'Inviter un contact dans ce salon', action:'invite', popup:'popup-inviteFriend', icon:'add_contact'},
       {text: 'Signaler un contenu inapproprié', action:'reportSalon', icon:'signaler'},
     ],
     selectSalon(salon){
@@ -98,6 +98,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         socket.emit('Create:room', 1);
         socket.emit('Create:user', $rootScope.UserInfos);
       }
+      else{
+        this.messages.error = "Vous devez vous connecter pour participer et voir le contenu des salons"
+      }
 
       return this;
     }
@@ -107,17 +110,40 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
   $scope.createSalon = {
     values: {},
+    loading: false,
     elements: {
       search: new searchForm('Rechercher un livre...','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
       dates: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null)
     },
-    preview: {},
     submit(){
-      socket.emit('New:Room',this.values);
+      socket.emit('New:Room',this.values, () => {
+        $rootScope.Alerts.add('success', 'La demande de créationd de salon a été transmise');
+        this.reset();
+      });
     },
     reset(){
       this.values = {};
       $scope.createSalonX.$setPristine();
+    },
+    selectResult(book){
+    }
+  }
+
+  $scope.inviteFriend = {
+    values: {},
+    loading: false,
+    elements: {
+      search: new searchForm('Rechercher un ami','user', true, null,'library_searchUsers', null,true,'Vous devez selectionner un utilisateur'),
+    },
+    submit(){
+      socket.emit('Invite:User',this.values, () => {
+        $rootScope.Alerts.add('success', 'L\'invitation a été envoyée');
+        this.reset();
+      });
+    },
+    reset(){
+      this.values = {};
+      $scope.inviteFriendX.$setPristine();
     },
     selectResult(book){
     }
@@ -162,7 +188,6 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     $scope.Chatroom.selectedSalon = current_room;
 
     AjaxRequest.get('library_getOneBook', current_room.book).then((result) => {
-      console.log(result)
       $scope.Chatroom.infos.book = result;
     });
 

@@ -149,6 +149,11 @@
                 <div class="i-b-title">Autheur</div>
                 <div class="i-b-content">{(Chatroom.infos.book.author || '-')}</div>
               </div>
+              <div class="info-book" ng-if='Chatroom.infos.book.username'>
+                <div class="i-b-title">Ajouté par </div>
+                <a class="i-b-content capitalize" ng-class='{link: Chatroom.infos.book}' target='_blank'
+                ng-href='{(Chatroom.infos.book.username || "#")}'>{(Chatroom.infos.book.username || '-')}</a>
+              </div>
               <div class="info-book">
                 <div class="i-b-title">Description</div>
                 <div class="i-b-content">{(Chatroom.infos.book.description || '-')}</div>
@@ -165,7 +170,7 @@
                 Options
               </div>
               <ul class='ng-cloak'>
-                <li ng-repeat='option in Chatroom.options' ng-click='Chatroom.execute(option.action)'>
+                <li ng-repeat='option in Chatroom.options' ng-class='{"popup-bouton": option.popup}' ng-click='Chatroom.execute(option.action)' popup='{(option.popup)}'>
                   <img class='ng-cloak icon' src='/assets/{(option.icon)}.svg'>
                   <span>{(option.text)}</span>
                 </li>
@@ -204,7 +209,7 @@
                         vg-origin='"base"'
                         on-select-result='createSalon.selectResult(result)'>
             </search-form>
-            <div class='previewBook' ng-if='createSalon.values.book.idMedia'>
+            <div class='previewContent' ng-if='createSalon.values.book.idMedia' book>
               <div class="cover"
               style='background-image: url({(createSalon.values.book.img?createSalon.values.book.img:"/assets/no_thumbnail.jpg")})'>
               </div>
@@ -226,6 +231,38 @@
           ng-disabled='createSalonX.$invalid'>Créer le salon</button>
         </div>
         </form>
+        <img id='pin2' src="/assets/down.png" alt="">
+    </div>
+
+    <div id='popup-inviteFriend' class="popup-box" style='width: 300px' state='false'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+            Inviter un ami
+        </div>
+        <div class="content">
+          <form name='inviteFriendX' ng-submit='inviteFriend.submit()' autocomplete="off">
+            <search-form vg-model='inviteFriend.values.user'
+                        vg-data='inviteFriend.elements.search'
+                        vg-source='{(inviteFriend.elements.search.source)}'
+                        vg-only-select='true'
+                        vg-origin='"users"'
+                        on-select-result='inviteFriend.selectResult(result)'>
+            </search-form>
+            <div class='previewContent' ng-if='inviteFriend.values.user.id' user>
+              <div class="cover user"
+              style='background-image: url({(inviteFriend.values.user.pathImg?inviteFriend.values.user.pathImg:"/assets/no_thumbnail.jpg")})'>
+              </div>
+              <div class="infos">
+                <span class='name'>{(inviteFriend.values.user.username)}</span>
+              </div>
+            </div>
+        </div>
+        <div class="footer">
+          <button class="bouton" type='submit' design='green'
+          ng-disabled='inviteFriendX.$invalid'>Inviter dans le salon</button>
+        </div>
+        </form>
+        <img id='pin2' src="/assets/down.png" alt="">
     </div>
 
 </ng-controller>
