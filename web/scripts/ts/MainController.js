@@ -4,7 +4,7 @@ var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment']
 .config(function($interpolateProvider, $compileProvider){
     $interpolateProvider.startSymbol('{(');
     $interpolateProvider.endSymbol(')}');
-    // $compileProvider.debugInfoEnabled(false);
+    $compileProvider.debugInfoEnabled(false);
     // $compileProvider.commentDirectivesEnabled(false);
     // $compileProvider.cssClassDirectivesEnabled(false);
 });
@@ -197,7 +197,7 @@ MainApp.controller('homepage', function ($scope, $rootScope, $q, $timeout, AjaxR
     elements: {
       mail: new textForm('Votre email..','mail','email',true,null,null, null, 'email', true, null),
     },
-    submitting: true,
+    submitting: false,
     submit: function(){
       this.submitting = false;
       AjaxRequest.get('mail_register',this.values).then((result) => {
