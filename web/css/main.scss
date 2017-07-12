@@ -40,12 +40,10 @@ section{
     padding: 5px;
     width: 100%;
     min-height: 10px;
-    text-align: center;
-
-    .bouton{
-      display: inline-block;
-      float: none;
-    }
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    flex-flow: row nowrap;
   }
 
   .title{
@@ -171,17 +169,15 @@ aside{
   }
 
   .footer{
-    position: relative;
-    float: left;
+    flex: 0 0 auto;
+    display: flex;
     height: auto;
     padding: 5px;
     width: 100%;
-    text-align: center;
+    justify-content: center;
+    align-items: center;
+    flex-flow: row nowrap;
 
-    .bouton{
-      display: inline-block;
-      float: none;
-    }
   }
 }
 
@@ -216,8 +212,7 @@ aside{
 
 
     .header{
-      position: relative;
-      float: left;
+      flex: 0 0 auto;
       padding-left: 10px;
       height: 35px;
       line-height: 35px;
@@ -260,8 +255,7 @@ aside{
     }
 
     .content{
-      position: relative;
-      float: left;
+      flex: 1 1 auto;
       width: 100%;
       height: auto;
       overflow: hidden;
@@ -289,18 +283,18 @@ aside{
 
     .footer{
       position: relative;
-      float: left;
-      height: 100%;
+      display: flex;
+      flex: 0 0 auto;
+      height: 50px;
       padding: 5px;
       width: 100%;
       z-index: 2;
       text-align: center;
       border-top: 1px solid $w240;
-
-      .bouton{
-        display: inline-block;
-        float: none;
-      }
+      justify-content: center;
+      align-items: center;
+      align-content: center;
+      flex-flow: row nowrap;
     }
   }
 }

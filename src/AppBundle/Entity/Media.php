@@ -107,10 +107,12 @@ class Media
 
     /**
      * @var int
-     *
      * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\Column(name="id_users", type="integer", nullable=false)
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_users", referencedColumnName="id")
+     * })
      */
+
     private $idUsers;
 
     /**

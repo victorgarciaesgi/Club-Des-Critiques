@@ -14,6 +14,9 @@ use AppBundle\Form\WebsiteType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -21,9 +24,15 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class AdminController extends Controller
 {
+    function decodeAjaxRequest($request){
+      $data = json_decode($request->getContent(), true);
+      return $data['data'];
+    }
+
     /**
      * @Route("/admin/", name="homepage_admin")
      */
+
     public function adminAction(Request $request)
     {
         // Le Concept
@@ -184,7 +193,8 @@ class AdminController extends Controller
     }
 
     /**
-     * @Route("admin/media/active", name="active_media")
+     * @Route("admin/media/active",options = { "expose" = true }, name="active_media")
+     * @Method({"POST"})
      */
     public function activeMediaAction(Request $request)
     {
@@ -203,12 +213,13 @@ class AdminController extends Controller
         $media->setValid(1);
         $em->flush();
 
-        $success = json_encode(array('success' =>  + " a bien été activé"), JSON_FORCE_OBJECT);
+        $success = json_encode(array('success' =>  "Le livre a bien été activé"), JSON_FORCE_OBJECT);
         return new JsonResponse($success);
     }
 
     /**
-     * @Route("admin/media/desactive", name="desactive_media")
+     * @Route("admin/media/desactive",options = { "expose" = true }, name="desactive_media")
+     * @Method({"POST"})
      */
     public function desactiveMediaAction(Request $request)
     {
@@ -222,10 +233,10 @@ class AdminController extends Controller
             return new JsonResponse($error);
         }
 
-        $media->setValid(0);
+        $media->setIsActive(0);
         $em->flush();
 
-        $success = json_encode(array('success' =>  + " a bien été désactivé"), JSON_FORCE_OBJECT);
+        $success = json_encode(array('success' =>  "Le livre a bien été désactivé"), JSON_FORCE_OBJECT);
         return new JsonResponse($success);
     }
 

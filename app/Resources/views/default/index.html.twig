@@ -76,9 +76,9 @@
                   <textarea type="text" class='input-form' name="" placeholder="Message..."></textarea>
 
                   <div class="footer">
-                    <div class="bouton" design='green'>
+                    <button class="bouton" design='green'>
                       Envoyer
-                    </div>
+                    </button>
                   </div>
                 </form>
               </div>
@@ -108,7 +108,7 @@
                     <button class="bouton" type='submit' design='green'
                         ng-disabled='mailRegisterX.$invalid || mailRegister.submitting'
                         ng-class='{submitting: mailRegister.submitting}'>S'inscrire
-                      <div class="loading-spinner inline-block white"></div>
+                      <div class="loading-spinner white"></div>
                     </button>
                   </div>
                 </form>
@@ -295,8 +295,8 @@
                             on-select-result='BooksUne.sendNote(note)'>
               </rating-form>
             </div>
-            <div class="bouton" design='blanc' ng-click='BooksUne.hide()'>Fermer</div>
-            <div class="bouton green" design='blanc' ng-click='BooksUne.toggleNote()'>Noter</div>
+            <button class="bouton" design='blanc' ng-click='BooksUne.hide()'>Fermer</button>
+            <button class="bouton green" design='blanc' ng-click='BooksUne.toggleNote()'>Noter</button>
           </div>
       </div>
     </div>

@@ -1,16 +1,15 @@
 'use strict'
 
-MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage) {
+MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage, notifications) {
   $scope.Library = {
-    init: false,
+    init: true,
     lazyPage: 0,
     lazyProcessing: false,
     endOfContent: false,
     adminView: false,
     promises: [],
-    defered: false,
     search: {
-      value: null,
+      value: "",
       loading: false,
     },
     categories: {
@@ -33,6 +32,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       error: null,
       notation: false,
       notationCount: 0,
+      validating: false,
+      refusing: false,
       submittingCollection: false,
       loading: true,
       show(book){
@@ -79,7 +80,27 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
 
           }
         })
-      }
+      },
+      validate(){
+        this.validating = true;
+        AjaxRequest.get('active_media',{idMedia: this.bookShow.idMedia}).then((result) => {
+          notifications.emit('Send:notification', {userId: this.bookShow.idUsers, message: 'Votre livre "'+ this.bookShow.name + '" a été approuvé'});
+          this.hide();
+          this.validating = false;
+          $scope.Library.filter();
+          $rootScope.Alerts.add("success",result.success);
+        })
+      },
+      refuse(){
+        this.refusing = true;
+        AjaxRequest.get('desactive_media',{idMedia: this.bookShow.idMedia}).then((result) => {
+          notifications.emit('Send:notification', {userId: this.bookShow.idUsers, message: 'Votre livre "'+ this.bookShow.name + '"n\'a pas été approuvé'});
+          this.hide();
+          this.refusing = false;
+          $scope.Library.filter();
+          $rootScope.Alerts.add("success",result.success);
+        })
+      },
     },
     tabs: {
       selected: {},
@@ -109,13 +130,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       this.categories.reset();
       this.filter();
     },
-    validate(state){
-      AjaxRequest.get('library_validateBook',{state: state, idMedia: this.books.bookShow.idMedia}).then((result) => {
-        this.books.hide();
-        this.filter();
-        $rootScope.Alerts.add("Success",result.success);
-      })
-    },
     filter(){
       this.books.loading = true;
       this.books.elements = [];
@@ -132,13 +146,11 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         search: this.search.value
       }
       AjaxRequest.get('library_getFilterBooks',data).then((result) => {
-        this.loadBooks(result);
+        this.loadBooks(result, true);
       })
     },
-    loadBooks(result){
-      if (this.defered){}
-      else if (result.length > 0) {
-        this.defered = true;
+    loadBooks(result, clear){
+      if (result.length > 0) {
         let loader = result;
         this.promises = [];
         $.each(loader, (index, el) => {
@@ -149,16 +161,15 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
           this.search.loading = false;
           this.categories.loading = false;
           this.books.error = null;
-          this.books.elements = loader;
+          if (clear){this.books.elements = []}
+          this.books.elements = this.books.elements.concat(loader);
           this.lazyPage += 20;
-          this.defered = false;
 
         },(error) => {
           this.books.loading = false;
           this.search.loading = false;
           this.categories.loading = false;
           this.lazyPage = 0;
-          this.defered = false;
           this.books.error = 'Impossible de charger les livres';
         })
       }
@@ -167,7 +178,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         this.search.loading = false;
         this.categories.loading = false;
         this.lazyPage = 0;
-        this.defered = false;
         this.books.error = 'Aucun livre trouvé pour cette recherche';
       }
     },
@@ -184,7 +194,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         }
         AjaxRequest.get('library_getFilterBooks',data).then((result) => {
           if (result.length){
-            this.loadBooks(result);
+            this.loadBooks(result, false);
           }
           else{
             this.endOfContent = true;
@@ -204,12 +214,17 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
 
 
   $scope.$watch('Library.search.value', function(newValue, oldValue){
-    if(!!newValue){
-      if (newValue.trim().length > 0){
-        $scope.Library.search.loading = true;
+    if ($scope.Library.init) {
+      $timeout(function() { $scope.Library.init = false; });
+    } else {
+      if(!!newValue){
+        if (newValue.trim().length > 0){
+          $scope.Library.search.loading = true;
+        }
       }
+      $scope.Library.filter();
     }
-    $scope.Library.filter();
+
   })
 
   // $rootScope.Alerts.add('success','Test de la notif');

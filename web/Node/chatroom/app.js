@@ -42,15 +42,15 @@ ntf.on('connection', function(socket){
     socket.emit('Get:notifications', socket.user.notifications);
   });
 
-  socket.on('Send:notification', function(user, message){
-    var checkuser = users.find((element) => element.id == user.id);
+  socket.on('Send:notification', function(data){
+    var checkuser = users.find((element) => element.id == data.userId);
     if (checkuser != undefined){
       var notif = {
         type: 'alert',
-        message: message,
+        message: data.message,
         date: Date.now()};
       checkuser.notifications.push(notif);
-      ntf.to(user.id).emit('Notifications', notif);
+      sendNotification(data.userId, notif);
     }
   })
 });
@@ -141,21 +141,14 @@ io.on('connection', function (socket) {
         socket.emit('Update:book',socket.room.book)
     });
 
-
-
-
-
-
-
-
-
-
-    function sendNotification(userId, notif){
-      users.forEach(function(element){
-        if (element.id == userId){
-            element.notifications.push(notif);
-        }
-      })
-      ntf.to(userId).emit('New:notification', notif)
-    }
 });
+
+
+function sendNotification(userId, notif){
+  users.forEach(function(element){
+    if (element.id == userId){
+        element.notifications.push(notif);
+    }
+  })
+  ntf.to(userId).emit('New:notification', notif)
+}

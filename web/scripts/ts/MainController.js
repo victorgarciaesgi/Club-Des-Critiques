@@ -197,10 +197,10 @@ MainApp.controller('homepage', function ($scope, $rootScope, $q, $timeout, AjaxR
     elements: {
       mail: new textForm('Votre email..','mail','email',true,null,null, null, 'email', true, null),
     },
-    submitting: false,
+    submitting: true,
     submit: function(){
-      this.submitting = true;
-      var promise = AjaxRequest.get('mail_register',this.values).then((result) => {
+      this.submitting = false;
+      AjaxRequest.get('mail_register',this.values).then((result) => {
         if (result.success){
           this.display = false;
           this.values = {};

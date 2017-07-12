@@ -88,6 +88,7 @@ class LibraryController extends Controller
       $media['username'] = $book['username'];
       $media['note'] = $book['note'];
       $media['nbrNotes'] = $book['nbrNotes'];
+      $media['idUsers'] = $book['media']['idUsers']['id'];
       $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
       return $media;
     }
@@ -233,6 +234,7 @@ class LibraryController extends Controller
           $media['username'] = $value['username'];
           $media['note'] = $value['note'];
           $media['nbrNotes'] = $value['nbrNotes'];
+          $media['idUsers'] = $value['media']['idUsers']['id'];
           $books[$key] = $media;
         }
         foreach ($books as $key => $value) {
@@ -328,6 +330,7 @@ class LibraryController extends Controller
           $media['username'] = $value['username'];
           $media['note'] = $value['note'];
           $media['nbrNotes'] = $value['nbrNotes'];
+          $media['idUsers'] = $value['media']['idUsers']['id'];
           $books[$key] = $media;
         }
         foreach ($books as $key => $value) {

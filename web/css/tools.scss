@@ -52,6 +52,15 @@
     }
   }
 
+  &.grey{
+    &::before {
+      border-color: $g60 transparent transparent transparent;
+    }
+    &::after {
+      border-color: transparent lighten($g60, 15%) transparent transparent;
+    }
+  }
+
   &[taille='big']{
     height: 40px;
     width: 40px;
@@ -755,6 +764,7 @@ rating-form{
   align-items: center;
   justify-content: center;
   background-color: rgba(255,255,255,1);
+  text-align: center;
 }
 
 .padding-lazyContent{
@@ -819,7 +829,6 @@ select{
 .bouton {
   position: relative;
   width: auto;
-  float: left;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -841,13 +850,12 @@ select{
 
   .loading-spinner{
     display: none;
-    margin-left: 5px;
+    margin-left: 8px;
   }
 
   &.submitting{
     .loading-spinner{
-      display: inline-block;
-      margin-left: 5px;
+      display: flex;
     }
   }
 

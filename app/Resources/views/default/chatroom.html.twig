@@ -82,9 +82,9 @@
             <input id='sendMessage' autocomplete='off' type="text" name="message" value="" placeholder='Votre message...'
                     ng-model='Chatroom.messages.inputMessage'
                     vg-enter='Chatroom.messages.send()'>
-            <div class="bouton-send" ng-click='Chatroom.messages.send()'>
+            <button class="bouton-send" ng-click='Chatroom.messages.send()'>
               <img src="/assets/send.svg" alt="Envoyer le message">
-            </div>
+            </button>
           </div>
         </article>
 
@@ -226,7 +226,7 @@
 
         </div>
         <div class="footer">
-          <div class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</div>
+          <button class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</button>
           <button class="bouton" type='submit' design='green'
           ng-disabled='createSalonX.$invalid'>Créer le salon</button>
         </div>
