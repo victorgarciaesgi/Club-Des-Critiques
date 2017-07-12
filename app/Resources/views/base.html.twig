@@ -58,33 +58,32 @@
         <ul class="header-nav">
             <a href="{{path('homepage')}}">
               <li class='menu' active='{{app.request.attributes.get('_route') == 'homepage'?'true':'false'}}'>
-                  <img false src='/assets/home.svg' class="icon">
-                  <img true src='/assets/home_active.svg' class="icon">
+                  <img false src='/assets/home.svg' class="icon change">
+                  <img true src='/assets/home_active.svg' class="icon change">
                   <span class='titre'>Accueil</span>
               </li>
             </a>
             <a href="{{path('library')}}">
               <li class='menu' active='{{app.request.attributes.get('_route') == 'library'?'true':'false'}}'>
-                  <img false src='/assets/contenus.svg' class="icon">
-                  <img true src='/assets/contenus_active.svg' class="icon">
+                  <img false src='/assets/contenus.svg' class="icon change">
+                  <img true src='/assets/contenus_active.svg' class="icon change">
                   <span class='titre'>Bibliothèque</span>
               </li>
             </a>
 
             <a href="{{ path('chatroom') }}">
               <li class='menu' active='{{app.request.attributes.get('_route') == 'chatroom'?'true':'false'}}'>
-                  <img false src='/assets/salons.svg' class="icon">
-                  <img true src='/assets/salons_active.svg' class="icon">
+                  <img false src='/assets/salons.svg' class="icon change">
+                  <img true src='/assets/salons_active.svg' class="icon change">
                   <span class='titre'>Salons</span>
               </li>
             </a>
             <div class="header-separation"></div>
-            <div class="activate-search">
 
-            </div>
-            <li id='search' ng-if='Header.displaySearch'>
-              <input class='s-search' type="text" placeholder="Rechercher un utilisateur">
-              <div class="s-icon"></div>
+            <li class='ng-cloak' id='search'>
+              <input class='s-search' ng-if='Header.displaySearch' type="text" placeholder="Rechercher un utilisateur">
+              <div class="s-icon grey"  ng-if='Header.displaySearch' ng-click='Header.displaySearch = false'></div>
+              <div class="s-icon green" ng-if='!Header.displaySearch' alt="" ng-click='Header.displaySearch = true'></div>
             </li>
         </ul>
         <ul class="header-menus" ng-cloak>
@@ -105,7 +104,7 @@
             {% if connected %}
             <li id='notifications' state='false' class='menu popup-bouton' popup="popup-notification"
               ng-click='Notifications.show()'>
-                <img src='/assets/notifications.svg' only class="icon">
+                <img src='/assets/notifications.svg' class="icon">
                 <div class="counter">
                     <span ng-if='Notifications.number > 0'>{(Notifications.number)}</span>
                 </div>

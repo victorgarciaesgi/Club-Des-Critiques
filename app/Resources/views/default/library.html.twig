@@ -371,13 +371,13 @@
             </div>
 
 
-            <!-- <div class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</div> -->
+            <div ng-if='!UserConnected && !Library.adminView' class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</div>
             <!-- User -->
-            <div class="bouton" design='blanc' ng-if='!Library.adminView'
+            <div ng-if='UserConnected && !Library.adminView' class="bouton" design='blanc' ng-if='!Library.adminView'
               ng-click='Library.books.addCollection' ng-class='{submitting: Library.books.submittingCollection}'>Ajouter à ma collection
               <div class="loading-spinner inline-block white"></div>
             </div>
-            <div class="bouton" ng-class='{green: Library.books.notation}' design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</div>
+            <div ng-if='UserConnected && !Library.adminView' class="bouton" ng-class='{green: Library.books.notation}' design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</div>
             <div ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</div>
             <!-- Admin -->
             <div ng-if='Library.adminView && UserAdmin' class="bouton red" design='blanc' ng-click='Library.validate(false)'> Refuser le livre</div>
