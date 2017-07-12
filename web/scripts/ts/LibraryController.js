@@ -121,6 +121,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       this.books.elements = [];
       this.lazyPage = 0;
       this.endOfContent = false;
+      this.books.error = null;
       $('.library-list').scrollTop(0);
       var data = {
         categories: this.categories.noSelected()?null:this.categories.values,
@@ -148,7 +149,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
           this.search.loading = false;
           this.categories.loading = false;
           this.books.error = null;
-          this.books.elements = this.books.elements.concat(loader);
+          this.books.elements = loader;
           this.lazyPage += 20;
           this.defered = false;
 

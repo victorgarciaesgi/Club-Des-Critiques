@@ -16,22 +16,55 @@ header{
   padding: 5px;
   min-width: 700px;
   color: $mainGreen2;
+  display: flex;
 
   nav{
-    position: relative;
-    float: left;
+    display: flex;
     height: 100%;
     width: 100%;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
   }
 
   //Menus
 
+  ul{
+    position: relative;
+    display: flex;
+    height: 100%;
+    width: auto;
+    a {
+      display: flex;
+      float: none;
+      height: 100%;;
+    }
+  }
+
+  ul.header-nav{
+    flex: 1 1 auto;
+  }
+
+  ul.header-menus{
+    display: flex;
+    flex: 0 0 auto;
+  }
+
   li{
     position: relative;
-    float: left;
+    display: flex;
     height: 100%;
     width: auto;
     margin-right: 5px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+  }
+
+  .activate-search{
+    display: flex;
+    align-items: center;
   }
 
   #search{
@@ -52,24 +85,49 @@ header{
       line-height: 30px;
       border-radius: 4px;
       font-size: 13px;
+
+      &.ng-enter{
+        @include transition(transform 0.3s, opacity 0.3s);
+        @include scale(0.7);
+        opacity: 0;
+      }
+
+      &.ng-leave{
+        @include transition(transform 0.3s, opacity 0.3s);
+        @include scale(1);
+        opacity: 1;
+      }
+      &.ng-enter.ng-enter-active{
+        @include scale(1);
+        opacity: 1;
+      }
+
+      &.ng-leave.ng-leave-active{
+        @include scale(0.7);
+        opacity: 0;
+      }
     }
     div.s-icon{
       position: absolute;
-      height: 20px;
-      width: 20px;
+      height: 22px;
+      width: 22px;
       left: 10px;
-      background-image: url('../assets/search.svg');
+      cursor: pointer;
       @include bg-center;
+
+      &.grey{
+        background-image: url('../assets/search.svg');
+      }
+      &.green{
+        background-image: url('../assets/search_green.svg');
+      }
     }
   }
 
   .logo{
-    position: relative;
-    float: left;
-    display: inline-block;
     height: 25px;
     width: 25px;
-    margin: 7px 0 0 5px;
+    margin-left: 5px;
     cursor: pointer;
   }
 
@@ -92,14 +150,12 @@ header{
 
     //Photo du profil
     .picture{
-      position: relative;
-      display: inline-block;
       height: 25px;
       width: 25px;
       border-radius: 100%;
+      margin-left: 10px;
       text-align: center;
       vertical-align: middle;
-      margin: 0 0px 2px 5px;
       border: 2px solid $mainMarron;
       @include bg-center;
     }
@@ -109,17 +165,10 @@ header{
     }
 
     img.icon{
-      position: relative;
-      display: inline-block;
       height: 22px;
       width: 22px;
-      vertical-align: middle;
-      margin: 0 0px 3px 0px;
-      display: none;
-
-      &[only]{
-        margin-right: 0;
-        display: inline-block;
+      &.change{
+        display: none;
       }
     }
 
@@ -165,22 +214,7 @@ header{
   }
 
 
-  //Container de navigation
-  ul.header-nav{
-    position: relative;
-    float: left;
-    height: 100%;
-    width: auto;
-  }
 
-
-  //Container de menus
-  ul.header-menus{
-    position: relative;
-    float: right;
-    height: 100%;
-    width: auto;
-  }
 }
 
 // Composants

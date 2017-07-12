@@ -4,18 +4,18 @@ $infosWidth: 350px;
 
 
 #chatroom{
-  position: relative;
-  float: left;
+  display: flex;
   height: 100%;
   width: 100%;
   color: rgb(80,80,80);
   z-index: 1001;
+  flex-flow: row nowrap;
 
   section{
     height: 100%;
     margin-bottom: 0;
     box-shadow: none;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
 
     &.close{
       @media #{$mini} {
@@ -115,6 +115,7 @@ $infosWidth: 350px;
 
 
 article#Salons{
+  flex: 0 0 auto;
   height: 100%;
   width: 300px;
   border-right: 1px solid rgb(220,220,220);
@@ -256,8 +257,9 @@ article#Salons{
 
 article#Messages{
   height: 100%;
-  width: calc(100% - 300px);
+  flex: 1 1 auto;
   border-right: 1px solid rgb(220,220,220);
+  min-width: 300px;
 
   .header{
     padding: 0 40px 0 10px;
@@ -542,6 +544,7 @@ article#Messages{
 #Infos{
   width: $infosWidth;
   display: none;
+  flex: 0 0 auto;
 
   .content{
     padding: 0;
