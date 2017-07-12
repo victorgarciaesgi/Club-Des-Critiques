@@ -2,6 +2,12 @@
 
 MainApp.controller('header', function ($scope, $rootScope, notifications, moment) {
 
+  $scope.Header = {
+    displaySearch: false,
+  }
+
+
+
   $scope.ConnexionForm = {
     values: {},
     login: new textForm('Login..','login','text',true,null,null, null, null, false, null),

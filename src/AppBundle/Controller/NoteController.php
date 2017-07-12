@@ -33,7 +33,7 @@ class NoteController extends Controller
 
     function returnOneBookInfos($idMedia){
       $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
+      $query = $em->createQuery("SELECT avg(n.note) as note, count(n.note) as nbrNotes
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
@@ -46,25 +46,10 @@ class NoteController extends Controller
       $result = $query->getResult();
       $book = $this->getSerializer()->normalize($result, 'null');
       $book = $book[0];
-      $media = $book['media'];
-      $media['username'] = $book['username'];
-      $media['note'] = $book['note'];
-      $media['nbrNotes'] = $book['nbrNotes'];
-      $media['categories'] = $this->returnCategoriesByBook($media['idMedia']);
-      return $media;
+
+      return $book;
     }
-    
-    function returnCategoriesByBook($idMedia){
-      $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT c
-                                 FROM AppBundle:Media m, AppBundle:Category c, AppBundle:CategoryAffiliation mc
-                                 WHERE m.idMedia = :idMedia
-                                 AND mc.idMedia = m.idMedia
-                                 AND mc.idCategory = c.idCategory"
-      )->setParameter('idMedia',$idMedia);
-      $result = $query->getResult();
-      return json_decode($this->getSerializer()->serialize($result, 'json'));
-    }
+
 
     /**
      * @Route("/note/add", options = { "expose" = true }, name="addNote")

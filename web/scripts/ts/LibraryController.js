@@ -51,10 +51,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       },
       sendNote(value){
         AjaxRequest.get('addNote',{note: value, idMedia: this.bookShow.idMedia}).then((result) => {
+          console.log(result);
           if (result.success){
-            this.bookShow = result.media;
+            this.bookShow.note = result.media.note;
+            this.bookShow.nbrNotes = result.media.nbrNotes;
             var index = this.elements.findIndex(elem => elem.idMedia == this.bookShow.idMedia);
-            this.elements[index] = result.media;
+            this.elements[index].note = result.media.note;
+            this.elements[index].nbrNotes = result.media.nbrNotes;
             this.toggleNote();
             this.notationCount = 0;
             $rootScope.Alerts.add('success', result.success);
