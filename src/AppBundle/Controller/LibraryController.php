@@ -201,7 +201,8 @@ class LibraryController extends Controller
                            LEFT JOIN AppBundle:User u
                            WITH u.id = m.idUsers
                            WHERE m.valid = ".$data['active']."
-                           AND m.isActive = 1
+                           AND m.isActive = 1 "
+                           . ((strlen($data['search']) > 0)?"AND m.name LIKE '".$data['search']."%' ":"")."
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)
@@ -216,7 +217,8 @@ class LibraryController extends Controller
                            LEFT JOIN AppBundle:User u
                            WITH u.id = m.idUsers
                            WHERE m.valid = ".$data['active']."
-                           AND m.isActive = 1
+                           AND m.isActive = 1 "
+                           . ((strlen($data['search']) > 1)?"AND m.name LIKE '".$data['search']."%' ":"")."
                            GROUP by m.idMedia
                            ORDER BY ".$data['column']['value']." ".$data['tri']['value']);
         $query->setMaxResults(20)

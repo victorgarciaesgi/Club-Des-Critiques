@@ -2,10 +2,17 @@
 
 MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage) {
   $scope.Library = {
+    init: false,
     lazyPage: 0,
     lazyProcessing: false,
     endOfContent: false,
     adminView: false,
+    promises: [],
+    defered: false,
+    search: {
+      value: null,
+      loading: false,
+    },
     categories: {
       values: {},
       elements: [],
@@ -26,6 +33,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       error: null,
       notation: false,
       notationCount: 0,
+      submittingCollection: false,
       loading: true,
       show(book){
         this.bookShow = book;
@@ -52,6 +60,21 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
             $rootScope.Alerts.add('success', result.success);
           }
 
+        })
+      },
+      addCollection(){
+        AjaxRequest.get('addToCollection',{note: value, idMedia: this.bookShow.idMedia}).then((result) => {
+          if (result.success){
+            this.bookShow = result.media;
+            var index = this.elements.findIndex(elem => elem.idMedia == this.bookShow.idMedia);
+            this.elements[index] = result.media;
+            this.toggleNote();
+            this.notationCount = 0;
+            $rootScope.Alerts.add('success', result.success);
+          }
+          else if(result.error){
+
+          }
         })
       }
     },
@@ -101,37 +124,46 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         column: this.order.value,
         tri: this.tri.value,
         limit: this.lazyPage,
-        active: this.adminView?0:1
+        active: this.adminView?0:1,
+        search: this.search.value
       }
       AjaxRequest.get('library_getFilterBooks',data).then((result) => {
         this.loadBooks(result);
       })
     },
     loadBooks(result){
-      if (result.length > 0) {
+      if (this.defered){}
+      else if (result.length > 0) {
+        this.defered = true;
         let loader = result;
-        let promises = [];
-        $.each(loader, function(index, el) {
-          promises.push(PromiseImage.load(el.img));
+        this.promises = [];
+        $.each(loader, (index, el) => {
+          this.promises.push(PromiseImage.load(el.img));
         })
-        $q.all(promises).then((data) => {
+        $q.all(this.promises).then((data) => {
           this.books.loading = false;
+          this.search.loading = false;
           this.categories.loading = false;
           this.books.error = null;
           this.books.elements = this.books.elements.concat(loader);
           this.lazyPage += 20;
+          this.defered = false;
 
         },(error) => {
           this.books.loading = false;
+          this.search.loading = false;
           this.categories.loading = false;
           this.lazyPage = 0;
+          this.defered = false;
           this.books.error = 'Impossible de charger les livres';
         })
       }
       else{
         this.books.loading = false;
+        this.search.loading = false;
         this.categories.loading = false;
         this.lazyPage = 0;
+        this.defered = false;
         this.books.error = 'Aucun livre trouvé pour cette recherche';
       }
     },
@@ -143,7 +175,8 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
           column: this.order.value,
           tri: this.tri.value,
           limit: this.lazyPage,
-          active: this.adminView?0:1
+          active: this.adminView?0:1,
+          search: this.search.value
         }
         AjaxRequest.get('library_getFilterBooks',data).then((result) => {
           if (result.length){
@@ -159,14 +192,21 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       AjaxRequest.get('library_getCategories',null).then((result) => {
         this.categories.elements = result;
       })
-      AjaxRequest.get('library_getFilterBooks',{categories: null, column: this.order.value, tri: this.tri.value, limit: this.lazyPage, active: 1}).then((result) => {
-        console.log(result)
-        this.loadBooks(result);
-      })
+      this.filter();
 
     }
   };
   $scope.Library.init()
+
+
+  $scope.$watch('Library.search.value', function(newValue, oldValue){
+    if(!!newValue){
+      if (newValue.trim().length > 0){
+        $scope.Library.search.loading = true;
+      }
+    }
+    $scope.Library.filter();
+  })
 
   // $rootScope.Alerts.add('success','Test de la notif');
   // $rootScope.Alerts.add('error','Test de la notif');
@@ -185,13 +225,13 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       search: ""
     },
     elements: {
-      search: new searchForm('Rechercher un livre... (Google Books)','search', true, null,'library_addSearch', null,true,null),
-      author: new textForm('Auteur..','author','text',true,'Autheur(s) du livre',null, null, null, true, null),
+      search: new searchForm('Rechercher un livre (Google Books)','search', true, null,'library_addSearch', null,true,null),
+      author: new textForm('Auteurs','author','text',true,'Autheur(s) du livre',null, null, null, true, null),
       illustration: new textForm('Illustration du livre (lien)','illustration','text',true,null,null, null,'linkImage', true,'L\'illustration du livre est obligatoire'),
       description: new textForm('Description','description','text',true,null,null, null, null, true, null),
-      categories: new textForm('Catégories.. (Entrée pour ajouter un élément)','categories','text',true,'Catégories de ce livre','library_searchCategories', null, null, true, 'Veuillez ajouter au moins une catégorie'),
-      pages: new textForm('Nombre de pages...','pages','number',false,null,null, null,'number', true, null),
-      date: new textForm('Date de sortie...', 'date','date', true,'Date de publication',null, null, 'date', true, null),
+      categories: new textForm('Catégories (Entrée pour ajouter un élément)','categories','text',true,'Catégories de ce livre','library_searchCategories', null, null, true, 'Veuillez ajouter au moins une catégorie'),
+      pages: new textForm('Nombre de pages','pages','number',false,null,null, null,'number', true, null),
+      date: new textForm('Date de sortie', 'date','date', true,'Date de publication',null, null, 'date', true, null),
       rating: new ratingForm('rating', true, 0, true),
     },
     display: false,
