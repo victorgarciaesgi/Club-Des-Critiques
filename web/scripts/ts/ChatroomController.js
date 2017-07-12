@@ -110,13 +110,16 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
   $scope.createSalon = {
     values: {},
+    loading: false,
     elements: {
       search: new searchForm('Rechercher un livre...','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
       dates: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null)
     },
-    preview: {},
     submit(){
-      socket.emit('New:Room',this.values);
+      socket.emit('New:Room',this.values, () => {
+        $rootScope.Alerts.add('success', 'La demande de créationd de salon a été transmise');
+        this.reset();
+      });
     },
     reset(){
       this.values = {};
@@ -128,16 +131,19 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
   $scope.inviteFriend = {
     values: {},
+    loading: false,
     elements: {
       search: new searchForm('Rechercher un ami','user', true, null,'library_searchUsers', null,true,'Vous devez selectionner un utilisateur'),
     },
-    preview: {},
     submit(){
-      socket.emit('Invite:User',this.values);
+      socket.emit('Invite:User',this.values, () => {
+        $rootScope.Alerts.add('success', 'L\'invitation a été envoyée');
+        this.reset();
+      });
     },
     reset(){
       this.values = {};
-      $scope.createSalonX.$setPristine();
+      $scope.inviteFriendX.$setPristine();
     },
     selectResult(book){
     }
@@ -182,7 +188,6 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     $scope.Chatroom.selectedSalon = current_room;
 
     AjaxRequest.get('library_getOneBook', current_room.book).then((result) => {
-      console.log(result)
       $scope.Chatroom.infos.book = result;
     });
 

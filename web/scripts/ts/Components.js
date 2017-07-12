@@ -116,7 +116,7 @@ MainApp.component('searchForm', {
 
     ctrl.selectAction = (book) => {
       if (ctrl.vgOnlySelect) {
-        ctrl.searchText = book.name;
+        ctrl.searchText = book.name?book.name:book.username;
         ctrl.vgModel = book;
         ctrl.search_result.reset();
         ctrl.displayResult = false;

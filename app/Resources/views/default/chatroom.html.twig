@@ -209,7 +209,7 @@
                         vg-origin='"base"'
                         on-select-result='createSalon.selectResult(result)'>
             </search-form>
-            <div class='previewBook' ng-if='createSalon.values.book.idMedia'>
+            <div class='previewContent' ng-if='createSalon.values.book.idMedia' book>
               <div class="cover"
               style='background-image: url({(createSalon.values.book.img?createSalon.values.book.img:"/assets/no_thumbnail.jpg")})'>
               </div>
@@ -240,29 +240,26 @@
             Inviter un ami
         </div>
         <div class="content">
-          <form name='createSalonX' ng-submit='inviteFriend.submit()' autocomplete="off">
-            <search-form vg-model='inviteFriend.values.book'
+          <form name='inviteFriendX' ng-submit='inviteFriend.submit()' autocomplete="off">
+            <search-form vg-model='inviteFriend.values.user'
                         vg-data='inviteFriend.elements.search'
                         vg-source='{(inviteFriend.elements.search.source)}'
                         vg-only-select='true'
-                        vg-origin='"base"'
+                        vg-origin='"users"'
                         on-select-result='inviteFriend.selectResult(result)'>
             </search-form>
-            <div class='previewBook' ng-if='inviteFriend.values.book.idMedia'>
-              <div class="cover"
-              style='background-image: url({(inviteFriend.values.book.img?inviteFriend.values.book.img:"/assets/no_thumbnail.jpg")})'>
+            <div class='previewContent' ng-if='inviteFriend.values.user.id' user>
+              <div class="cover user"
+              style='background-image: url({(inviteFriend.values.user.pathImg?inviteFriend.values.user.pathImg:"/assets/no_thumbnail.jpg")})'>
               </div>
               <div class="infos">
-                <span class='title'>{(inviteFriend.values.book.name)}</span>
-                <span class='author'>{(inviteFriend.values.book.author)}</span>
-                <span class='description'>{(inviteFriend.values.book.description)}</span>
+                <span class='name'>{(inviteFriend.values.user.username)}</span>
               </div>
             </div>
-
         </div>
         <div class="footer">
           <button class="bouton" type='submit' design='green'
-          ng-disabled='createSalonX.$invalid'>Inviter</button>
+          ng-disabled='inviteFriendX.$invalid'>Inviter dans le salon</button>
         </div>
         </form>
         <img id='pin2' src="/assets/down.png" alt="">

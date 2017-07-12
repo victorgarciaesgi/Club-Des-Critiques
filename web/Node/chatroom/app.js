@@ -103,21 +103,17 @@ io.on('connection', function (socket) {
         type: 'alert',
         message: 'Un admin a supprimé votre message: ' + data.message.text,
         date: Date.now()}
-      users.forEach(function(element){
-        if (element.id == data.userId){
-            element.notifications.push(notif);
-        }
-      })
-      ntf.to(data.userId).emit('New:notification', notif)
+      sendNotification(data.userId, notif);
       io.to(socket.room.id).emit('Update:room:messages',socket.room);
     });
 
-    socket.on('Invite:User', function (data) {
+    socket.on('Invite:User', function (data, callback) {
       var notif = {
         type: 'alert',
         message: socket.user.name + ' vous a invité au salon : ' + socket.room.title,
         date: Date.now()}
-      ntf.to(data.userId).emit('New:notification', notif)
+      callback();
+      sendNotification(data.user.id, notif);
     });
 
     socket.on('Switch:room', function(newroom){
@@ -145,4 +141,21 @@ io.on('connection', function (socket) {
         socket.emit('Update:book',socket.room.book)
     });
 
+
+
+
+
+
+
+
+
+
+    function sendNotification(userId, notif){
+      users.forEach(function(element){
+        if (element.id == userId){
+            element.notifications.push(notif);
+        }
+      })
+      ntf.to(userId).emit('New:notification', notif)
+    }
 });

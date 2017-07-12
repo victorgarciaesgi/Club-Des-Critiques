@@ -672,6 +672,17 @@ rating-form{
           background-color: $w200;
         }
 
+        &[user]{
+          height: 60px;
+          padding-left: 10px;
+          .cover{
+            height: 40px;
+            width: 40px;
+            margin-top: 10px;
+            border-radius: 40px;
+          }
+        }
+
         .infos{
           position: relative;
           float: left;
@@ -712,6 +723,14 @@ rating-form{
             color: white;
             background-color: $mainColor;
             border-radius: 20px;
+          }
+
+          .name{
+            height: 100%;
+            line-height: 60px;
+            margin-left: 10px;
+            font-size: 15px;
+            font-weight: bold;
           }
         }
       }
@@ -1243,7 +1262,7 @@ select{
 }
 
 
-.previewBook{
+.previewContent{
   position: relative;
   float: left;
   width: 100%;
@@ -1263,6 +1282,17 @@ select{
     margin-right: 5px;
     @include bg-center;
     background-color: $w200;
+  }
+
+  &[user]{
+    height: 60px;
+    padding-left: 10px;
+    .cover{
+      height: 40px;
+      width: 40px;
+      margin-top: 5px;
+      border-radius: 40px;
+    }
   }
 
   .infos{
@@ -1295,6 +1325,13 @@ select{
       height: 20px;
       font-size: 13px;
       color: rgb(130,130,130);
+    }
+    .name{
+      height: 100%;
+      line-height: 50px;
+      margin-left: 10px;
+      font-size: 15px;
+      font-weight: bold;
     }
   }
 }

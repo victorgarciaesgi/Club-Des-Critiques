@@ -68,6 +68,18 @@
         </div>
       </li>
     </ul>
+    <ul ng-show='$ctrl.search_result.data.length > 0' ng-if='$ctrl.vgOrigin == "users"'>
+      <li ng-repeat='result in $ctrl.search_result.data | limitTo: $ctrl.limit'
+          ng-class='{selected: $ctrl.search_result.selected.indexList == $index}'
+          ng-mousedown='$ctrl.selectAction(result)' user>
+        <div class="cover"
+        style='background-image: url({(result.pathImg?result.pathImg:"/assets/no_thumbnail.jpg")})'>
+        </div>
+        <div class="infos">
+          <span class='name'>{(result.username)}</span>
+        </div>
+      </li>
+    </ul>
     <ul ng-show='$ctrl.error'>
       <div class="error_message">
         {($ctrl.errorMessage)}

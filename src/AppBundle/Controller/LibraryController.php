@@ -268,6 +268,33 @@ class LibraryController extends Controller
       }
     }
 
+
+    /**
+     * @Route("/library/searchUsers", options = { "expose" = true }, name="library_searchUsers")
+     * @Method({"POST"})
+     */
+
+    public function SearchUsersAction(Request $request) {
+      $data = $this->decodeAjaxRequest($request);
+      $em = $this->getDoctrine()->getManager();
+
+      $query = $em->createQuery("SELECT u.username, u.id, u.pathImg
+                         FROM AppBundle:User u
+                         WHERE u.username LIKE :username
+                         AND u.enabled = 1
+                         AND u.isBlocked = 0")
+      ->setParameter('username', $data.'%')
+      ->setMaxResults(20);
+      $results = $query->getResult();
+      if (sizeof($results) > 0) {
+        return new JsonResponse($results);
+      }
+      else {
+        $error_data = json_encode(array('error' => "Aucun résultat"), JSON_FORCE_OBJECT);
+        return new JsonResponse($error_data);
+      }
+    }
+
     /**
      * @Route("/library/getBooksUne", options = { "expose" = true }, name="library_booksUne")
      * @Method({"POST"})
