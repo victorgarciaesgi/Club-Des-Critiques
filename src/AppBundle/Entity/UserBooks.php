@@ -5,7 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * hasOne Table des livre à la Une
+ *
  *
  * @ORM\Table(name="UserBooks")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserBooksRepository")
@@ -26,7 +26,7 @@ class UserBooks
      *
      * @ORM\ManyToOne(targetEntity="Media")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_media", referencedColumnName="id_media",unique=true)
+     *   @ORM\JoinColumn(name="id_media", referencedColumnName="id_media")
      * })
      */
     private $idMedia;
@@ -36,10 +36,17 @@ class UserBooks
      *
      * @ORM\ManyToOne(targetEntity="User")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id",unique=true)
+     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      * })
      */
     private $idUser;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
+     */
+    private $isActive;
 
 
     /**
@@ -57,7 +64,7 @@ class UserBooks
      *
      * @param integer $idMedia
      *
-     * @return hasOne
+     * @return UserBooks
      */
     public function setIdMedia($idMedia)
     {
@@ -69,13 +76,27 @@ class UserBooks
     /**
      * Set idUser
      *
-     * @param integer $idMedia
+     * @param integer $idUser
      *
-     * @return hasOne
+     * @return UserBooks
      */
     public function setIdUser($idUser)
     {
         $this->idUser = $idUser;
+
+        return $this;
+    }
+
+
+    /**
+     * Set isActive
+     *
+     * @param boolean $isActive
+     *
+     */
+    public function setIsActive($isActive)
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

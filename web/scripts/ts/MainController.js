@@ -4,7 +4,7 @@ var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment']
 .config(function($interpolateProvider, $compileProvider){
     $interpolateProvider.startSymbol('{(');
     $interpolateProvider.endSymbol(')}');
-    $compileProvider.debugInfoEnabled(false);
+    // $compileProvider.debugInfoEnabled(false);
     // $compileProvider.commentDirectivesEnabled(false);
     // $compileProvider.cssClassDirectivesEnabled(false);
 });

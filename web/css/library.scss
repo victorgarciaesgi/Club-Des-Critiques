@@ -136,7 +136,7 @@
         height: 100%;
         border-right: 1px solid $w240;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
 
         span{
           margin-right: 5px;
@@ -206,8 +206,7 @@
         height: auto;
         min-height: 100%;
         width: 100%;
-        padding-top: 10px;
-        padding-bottom: 20px;
+        padding: 10px 5px 20px 5px;
         display: flex;
         justify-content: center;
         align-items: flex-start;
@@ -241,19 +240,6 @@
   margin: 5px;
   box-shadow: 0 0 8px transparentize($g90, 0.7);
   @include transition(all 0.3s);
-
-
-  // .cover-blur{
-  //   position: absolute;
-  //   height: 190px;
-  //   width: calc(100% + 20px);
-  //   left: -10px;
-  //   overflow: hidden;
-  //   top: -10px;
-  //   @include bg-center;
-  //   @include filter(blur(15px));
-  // }
-
 
   .cover-wrap{
     position: relative;
@@ -326,6 +312,7 @@
 
 
   &.ng-enter {
+    @include transition(top 0.3s, opacity 0.3s);
     opacity: 0;
     top: -20px;
   }
@@ -341,10 +328,13 @@
   }
 
   &.ng-leave {
+    @include transition(opacity 0.3s, max-width 0.3s);
+    max-width: 180px;
     opacity: 1;
   }
 
   &.ng-leave.ng-leave-active {
+    max-width: 0px;
     opacity: 0;
   }
 
@@ -364,5 +354,14 @@
       overflow-y: auto;
       max-height: calc(90vh - 89px);
     }
+  }
+}
+
+#popup-selectType{
+  .content{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    align-content: center;
   }
 }

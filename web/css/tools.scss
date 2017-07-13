@@ -151,7 +151,7 @@ ul, li {
   list-style-type: none;
 }
 
-input, textarea {
+input, textarea, button{
   outline: none;
   border: none;
   background: none;
@@ -1419,11 +1419,9 @@ select{
     width: 100%;
     text-align: center;
     flex: 0 1 auto;
-
-    .bouton{
-      display: inline-block;
-      float: none;
-    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .user{

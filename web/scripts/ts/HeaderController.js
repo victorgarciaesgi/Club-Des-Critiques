@@ -74,13 +74,14 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
 
   $(document).ready(function() {
     // Affichage des popups de header
-    $("body").on('click','.popup-bouton, openPopupWindow',function(event){
+    $(document).on('click','.popup-bouton',function(event){
       displayPopup(this, event);
     })
 
     // Evenements de contrôle d'affichage des popups
 
-    $(document).click(function(){
+    $(window).click(function(){
+      console.log('window')
       $('.popup-box:not(.static)').hide().attr('state','false');
     })
 

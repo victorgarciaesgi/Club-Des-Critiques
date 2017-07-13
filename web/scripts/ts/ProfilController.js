@@ -10,6 +10,7 @@ MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxReq
     notation: false,
     notationCount: 0,
     loading: true,
+    submittingCollection: false,
     show(book){
       this.bookShow = book;
       this.display = true;
@@ -38,6 +39,20 @@ MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxReq
         }
       })
     },
+    removeCollection(){
+      this.submittingCollection = true;
+      AjaxRequest.get('library_removeCollection',{idMedia: this.bookShow.idMedia}).then((result) => {
+        this.submittingCollection = false;
+        if (result.success){
+          this.hide();
+          this.init();
+          $rootScope.Alerts.add('success', result.success);
+        }
+        else if(result.error){
+          $rootScope.Alerts.add('error', result.error);
+        }
+      });
+    },
     loadBooks(result){
       if (result.length > 0) {
         let loader = result;
@@ -48,7 +63,7 @@ MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxReq
         $q.all(promises).then((data) => {
           this.loading = false;
           this.error = null;
-          this.elements = this.elements.concat(loader);
+          this.elements = loader;
 
         },(error) => {
           this.loading = false;
@@ -57,12 +72,11 @@ MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxReq
       }
       else{
         this.loading = false;
-        this.error = 'Aucun livre en Une';
+        this.error = 'Aucun livre dans la collection';
       }
     },
     init(){
-      AjaxRequest.get('library_booksUne',null).then((result) => {
-        console.log(result);
+      AjaxRequest.get('getUserBooks',null).then((result) => {
         this.loadBooks(result);
       })
     }

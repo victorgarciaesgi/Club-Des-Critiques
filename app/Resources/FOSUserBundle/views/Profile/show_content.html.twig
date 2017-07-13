@@ -39,7 +39,7 @@
             <div class="i-t-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
           </div>
           <div class="infos-text">
-            <div class="i-t-title">Livres à echanger</div>
+            <div class="i-t-title">Collection</div>
             <ul>
               <div class="ng-cloak loader-content" ng-if='UserBooks.loading || UserBooks.error'>
                 <div ng-show='!UserBooks.error && UserBooks.loading' taille='big' class="loading-spinner"></div>
@@ -162,7 +162,10 @@
             </rating-form>
           </div>
           <div class="bouton" design='blanc' ng-click='UserBooks.hide()'>Fermer</div>
-          <div class="bouton red" design='blanc' ng-click='UserBooks.retirer()'>Retirer de ma collection</div>
+          <button ng-if='UserConnected' ng-disabled='UserBooks.submittingCollection' class="bouton red" design='blanc'
+            ng-click='UserBooks.removeCollection()' ng-class='{submitting: UserBooks.submittingCollection}'>Retirer de ma collection
+            <div class="loading-spinner grey"></div>
+          </button>
           <div class="bouton green" design='blanc' ng-click='UserBooks.toggleNote()'>Noter</div>
         </div>
     </div>

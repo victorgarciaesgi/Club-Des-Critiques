@@ -372,10 +372,13 @@
 
 
             <button ng-if='!UserConnected && !Library.adminView' class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</button>
-            <!-- User -->
-            <button ng-if='UserConnected && !Library.adminView' class="bouton" design='blanc' ng-if='!Library.adminView'
-              ng-click='Library.books.addCollection' ng-class='{submitting: Library.books.submittingCollection}'>Ajouter à ma collection
-              <div class="loading-spinner white"></div>
+            <button ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "0"' class="bouton popup-bouton" popup='popup-selectType' design='blanc'
+              ng-click='Library.books.userType.toggle($event)' ng-class='{green: Library.books.notation}' >Ajouter à ma collection
+              <div class="loading-spinner grey"></div>
+            </button>
+            <button ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "1"' ng-disabled='Library.books.submittingCollection' class="bouton red" design='blanc'
+              ng-click='Library.books.removeCollection()' ng-class='{submitting: Library.books.submittingCollection}'>Retirer de ma collection
+              <div class="loading-spinner grey"></div>
             </button>
             <button ng-if='UserConnected && !Library.adminView' class="bouton" ng-class='{green: Library.books.notation}' design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</button>
             <button ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</button>
@@ -388,6 +391,28 @@
                 <div class="loading-spinner white"></div></button>
           </div>
       </div>
+    </div>
+
+    <div id='popup-selectType' ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "0"'
+    class="popup-box" style='width: 300px' state='false' ng-click='$event.stopPropagation();'>
+        <img id='pin' src="/assets/up.png" alt="">
+        <div class="header">
+          Choisir le statut du livre
+        </div>
+        <div class="content">
+          <span>Statut:</span>
+          <select ng-model='Library.books.userType.value'
+                  ng-options='option.label for option in Library.books.userType.elements'
+                  ng-init='Library.books.userType.value = Library.books.userType.elements[0]'>
+          </select>
+        </div>
+        <div class="footer">
+          <button ng-disabled='Library.books.submittingCollection' class="bouton" design='green'
+            ng-click='Library.books.addCollection()' ng-class='{submitting: Library.books.submittingCollection}'>Valider
+            <div class="loading-spinner white"></div>
+          </button>
+        </div>
+        <img id='pin2' src="/assets/down.png" alt="">
     </div>
 </ng-controller>
 

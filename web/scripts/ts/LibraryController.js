@@ -1,6 +1,8 @@
 'use strict'
 
 MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage, notifications) {
+
+
   $scope.Library = {
     init: true,
     lazyPage: 0,
@@ -36,6 +38,19 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       refusing: false,
       submittingCollection: false,
       loading: true,
+      userType: {
+        value: "",
+        toggle(event){
+          displayPopup(event.target, event);
+        },
+        elements: [
+          {id:1, label:"À prêter"},
+          {id:2, label:"Prêté"},
+          {id:3, label:"Je le veux"},
+          {id:4, label:"Je ne le veux plus"},
+          {id:5, label:"Je ne veux pas le prêter"},
+        ]
+      },
       show(book){
         this.bookShow = book;
         this.display = true;
@@ -52,7 +67,6 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       },
       sendNote(value){
         AjaxRequest.get('addNote',{note: value, idMedia: this.bookShow.idMedia}).then((result) => {
-          console.log(result);
           if (result.success){
             this.bookShow.note = result.media.note;
             this.bookShow.nbrNotes = result.media.nbrNotes;
@@ -63,23 +77,40 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
             this.notationCount = 0;
             $rootScope.Alerts.add('success', result.success);
           }
-
+          else if(result.error){
+            $rootScope.Alerts.add('error', result.error);
+          }
         })
       },
       addCollection(){
-        AjaxRequest.get('addToCollection',{note: value, idMedia: this.bookShow.idMedia}).then((result) => {
+        this.submittingCollection = true;
+        AjaxRequest.get('library_addCollection',{idMedia: this.bookShow.idMedia, type: this.userType.value}).then((result) => {
+          this.submittingCollection = false;
           if (result.success){
-            this.bookShow = result.media;
+            this.bookShow.isInCollection = 1;
             var index = this.elements.findIndex(elem => elem.idMedia == this.bookShow.idMedia);
-            this.elements[index] = result.media;
-            this.toggleNote();
-            this.notationCount = 0;
+            this.elements[index].isInCollection = 1;
             $rootScope.Alerts.add('success', result.success);
           }
           else if(result.error){
-
+            $rootScope.Alerts.add('error', result.error);
           }
-        })
+        });
+      },
+      removeCollection(){
+        this.submittingCollection = true;
+        AjaxRequest.get('library_removeCollection',{idMedia: this.bookShow.idMedia}).then((result) => {
+          this.submittingCollection = false;
+          if (result.success){
+            this.bookShow.isInCollection = 0;
+            var index = this.elements.findIndex(elem => elem.idMedia == this.bookShow.idMedia);
+            this.elements[index].isInCollection = 0;
+            $rootScope.Alerts.add('success', result.success);
+          }
+          else if(result.error){
+            $rootScope.Alerts.add('error', result.error);
+          }
+        });
       },
       validate(){
         this.validating = true;
@@ -146,6 +177,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
         search: this.search.value
       }
       AjaxRequest.get('library_getFilterBooks',data).then((result) => {
+        console.log(result)
         this.loadBooks(result, true);
       })
     },
