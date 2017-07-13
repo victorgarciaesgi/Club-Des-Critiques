@@ -318,7 +318,9 @@ class LibraryController extends Controller
       $data = $this->decodeAjaxRequest($request);
       $em = $this->getDoctrine()->getManager();
 
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
+      $table = ["À prêter","Prêté","Je le veux","Je ne le veux plus","Je ne veux pas le prêter"];
+
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username, ub.userState as userState
                          FROM AppBundle:Media m
                          INNER JOIN AppBundle:UserBooks ub
                          WITH ub.idUser = ".$this->getUser()->getId()."
@@ -341,6 +343,7 @@ class LibraryController extends Controller
           $media = $value['media'];
           $media['username'] = $value['username'];
           $media['note'] = $value['note'];
+          $media['userState'] = $table[$value['userState'] - 1];
           $media['nbrNotes'] = $value['nbrNotes'];
           $media['idUsers'] = $value['media']['idUsers']['id'];
           $books[$key] = $media;

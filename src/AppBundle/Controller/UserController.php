@@ -60,6 +60,7 @@ class UserController extends Controller
       if (sizeof($decode) > 0){
         $userbook = $exists{0};
         $userbook->setIsActive(1);
+        $userbook->setUserState($data['type']['id']);
       }
       else{
         $userbook = new UserBooks();
@@ -67,6 +68,7 @@ class UserController extends Controller
         $findMedia = $em->getRepository('AppBundle:Media')->findOneBy(array('idMedia' => $data['idMedia']));
         $userbook->setIdMedia($findMedia);
         $userbook->setIsActive(1);
+        $userbook->setUserState($data['type']['id']);
       }
       $em->persist($userbook);
       $em->flush();

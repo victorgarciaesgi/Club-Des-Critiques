@@ -77,6 +77,7 @@ MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxReq
     },
     init(){
       AjaxRequest.get('getUserBooks',null).then((result) => {
+        console.log(result)
         this.loadBooks(result);
       })
     }

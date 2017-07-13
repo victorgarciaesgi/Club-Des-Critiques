@@ -288,6 +288,22 @@
       color: rgb(130,130,130);
     }
 
+    .state{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      span{
+        padding: 0 10px 0 10px;
+        font-size: 10px;
+        height: 18px;
+        line-height: 18px;
+        width: auto;
+        color: white;
+        background-color: $mainMarron;
+        border-radius: 20px;
+      }
+    }
+
     .rating{
       text-align: center;
       img{

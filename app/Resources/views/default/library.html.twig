@@ -373,7 +373,7 @@
 
             <button ng-if='!UserConnected && !Library.adminView' class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</button>
             <button ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "0"' class="bouton popup-bouton" popup='popup-selectType' design='blanc'
-              ng-click='Library.books.userType.toggle($event)' ng-class='{green: Library.books.notation}' >Ajouter à ma collection
+              ng-click='Library.books.userType.toggle($event)' >Ajouter à ma collection
               <div class="loading-spinner grey"></div>
             </button>
             <button ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "1"' ng-disabled='Library.books.submittingCollection' class="bouton red" design='blanc'

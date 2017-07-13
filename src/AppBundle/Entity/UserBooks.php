@@ -48,6 +48,13 @@ class UserBooks
      */
     private $isActive;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="userState", type="integer", nullable=false)
+     */
+    private $userState;
+
 
     /**
      * Get id
@@ -97,6 +104,19 @@ class UserBooks
     public function setIsActive($isActive)
     {
         $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    /**
+     * Set userState
+     *
+     * @param int userState
+     *
+     */
+    public function setUserState($userState)
+    {
+        $this->userState = $userState;
 
         return $this;
     }

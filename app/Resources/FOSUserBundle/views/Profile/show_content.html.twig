@@ -57,9 +57,9 @@
                   <div class="book-info-wrapper">
                     <div class="name info-book" ng-cloak>{(book.name)}</div>
                     <div class="author info-book" ng-cloak>{(book.author)}</div>
-                    <rating-form vg-init='book.note' vg-editable='false'
-                                  vg-displaynote='false'>
-                    </rating-form>
+                    <div class="state info-book" ng-cloak>
+                      <span>{(book.userState)}</span>
+                    </div>
                   </div>
               </li>
               <div ng-if='Library.lazyProcessing && !Library.endOfContent' class="ng-cloak padding-lazyContent">
