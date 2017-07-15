@@ -1,14 +1,13 @@
 {
-  "name": "super-chat",
+  "name": "Club critique",
   "version": "0.1.0",
   "dependencies": {
     "ent": "~0.1.0",
     "express": "~3.3.4",
     "mysql": "^2.13.0",
     "request": "^2.81.0",
-    "socket.io": "~1.2.1",
-    "socket.io-redis": "^5.1.0"
+    "socket.io": "~1.2.1"
   },
-  "author": "Mateo21 <mateo21@email.com>",
-  "description": "Un super Chat temps réel avec socket.io"
+  "author": "Grouep 16",
+  "description": "Chatroom"
 }
