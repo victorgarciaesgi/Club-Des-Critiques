@@ -1,0 +1,11 @@
+h2,h3,strong,legend{
+    color:#70BEB1;
+}
+.open-exchange{
+    background-color:#70BEB1;
+    border-color: #70BEB1;
+}
+.open-exchange:hover{
+    background-color:#FFFFFF;
+    color: #70BEB1;
+}
