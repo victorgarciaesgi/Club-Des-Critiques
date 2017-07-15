@@ -17,6 +17,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Entity\UserBooks;
 
 
+use AppBundle\Entity\User;
+
+
 class UserController extends Controller
 {
 
@@ -127,6 +130,21 @@ class UserController extends Controller
       return new JsonResponse($success);
     }
 
+    /**
+     * @Route("/profile/{id_user}", name="show_user_profile")
+     */
+    public function showProfileCollection(Request $request,$id_user){
+
+        $hasOneRepo = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AppBundle:User');
+        $resultUser = $hasOneRepo->find($id_user);
+
+        return $this->render('default/profile.html.twig', [
+            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
+            'user' => $resultUser,
+        ]);
+    }
 
 
 
