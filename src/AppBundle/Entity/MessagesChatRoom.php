@@ -46,9 +46,9 @@ class MessagesChatRoom
     /**
      * @var string
      *
-     * @ORM\Column(name="messages", type="string", length=255)
+     * @ORM\Column(name="message", type="string", length=255)
      */
-    private $messages;
+    private $message;
 
     /**
      * @var \DateTime
@@ -119,13 +119,13 @@ class MessagesChatRoom
     /**
      * Set messages
      *
-     * @param string $messages
+     * @param string $message
      *
      * @return MessagesChatRoom
      */
-    public function setMessages($messages)
+    public function setMessage($message)
     {
-        $this->messages = $messages;
+        $this->message = $message;
 
         return $this;
     }
