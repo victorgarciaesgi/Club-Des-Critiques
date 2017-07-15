@@ -120,16 +120,17 @@ io.on('connection', function (socket) {
 // Supprimer un message
     socket.on('Delete:message', function (data) {
       // verifs a faire
-      rooms.forEach(function(element){
-          if (element.id == data.roomId){
-              var index = element.messages.findIndex((elem) => elem.id == data.message.id);
-              element.messages.splice(index, 1);
-              socket.room = element;
-          }
-      })
-      var notif = new Notification('warning', 'Un admin a supprimé votre message: ' + data.message.text);
-      sendNotification(data.userId, notif);
-      io.to(socket.room.id_chatRoom).emit('Update:room:messages',socket.room);
+
+      deleteMessage(data.message.id).then((result) => {
+        getMessages(socket.room.id_chatRoom).then((messages) => {
+          var notif = new Notification('warning', 'Un admin a supprimé votre message: ' + data.message.message);
+          sendNotification(data.userId, notif);
+          io.to(socket.room.id_chatRoom).emit('Update:room:messages',messages);
+        })
+
+      });
+
+
     });
 
 
@@ -149,9 +150,7 @@ io.on('connection', function (socket) {
         getRoombyId(roomId).then((room) => {
           socket.room = room;
           getRoomInfos(roomId).then((messages) => {
-            console.log(messages);
             socket.room.messages = messages;
-            console.log(socket.room);
             socket.join(roomId);
             socket.emit('Update:currentRoom', socket.room);
           })
@@ -285,7 +284,7 @@ io.on('connection', function (socket) {
       return new Promise(function (fulfill, reject){
         var date = new Date(Date.now());
         var msg = {id_user: socket.user.id, message: message, date_created: Date.now(), id_chatRoom: socket.room.id_chatRoom, path_img: socket.user.path_img, username: socket.user.username};
-        var query = `INSERT INTO messages_chat_room VALUES ('', '${msg.id_user}', '${msg.message}', '${msg.date_created}','${msg.id_chatRoom}');`;
+        var query = `INSERT INTO messages_chat_room VALUES ('', '${msg.id_user}', '${msg.message}', '${msg.date_created}','${msg.id_chatRoom}','1');`;
                     console.log(query)
         BDD.query(query,(err, rows, fields) => {
           if (!err){
@@ -302,7 +301,8 @@ io.on('connection', function (socket) {
         var query = `SELECT m.*, u.username, u.path_img
                     FROM messages_chat_room m
                     LEFT JOIN user u on u.id = m.id_user
-                    WHERE m.id_chatRoom = ${roomId}`;
+                    WHERE m.id_chatRoom = ${roomId}
+                    AND m.is_active = 1`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             return fulfill(rows);
@@ -314,9 +314,9 @@ io.on('connection', function (socket) {
 
     function deleteMessage(id){
       return new Promise(function (fulfill, reject){
-        var query = `SELECT *
-                    FROM messages_chat_room
-                    WHERE `;
+        var query = `UPDATE messages_chat_room
+                    SET is_active = 0
+                    WHERE id = ${id}`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             return fulfill(rows);

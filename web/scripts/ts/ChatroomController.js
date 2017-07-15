@@ -80,7 +80,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     deleteMessage(message){
       message.deleted = true;
-      socket.emit('Delete:message', {message: message, roomId: this.selectedSalon.id, userId: message.user.id});
+      socket.emit('Delete:message', {message: message, userId: message.id_user});
       $rootScope.Alerts.add('success', 'Le message est supprimé du salon');
     },
     scroll(){
@@ -154,16 +154,14 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
 
   socket.on('Update:newMessage', function(message) {
-    console.log(message);
     $scope.Chatroom.messages.error = null;
     message.new = true;
     $scope.Chatroom.messages.elements.push(message);
   });
 
-  socket.on('Update:room:messages', function(room) {
-    console.log(room);
+  socket.on('Update:room:messages', function(messages) {
     $scope.Chatroom.messages.error = null;
-    $scope.Chatroom.messages.elements = room.messages;
+    $scope.Chatroom.messages.elements = messages;
   });
 
 

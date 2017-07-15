@@ -57,6 +57,13 @@ class MessagesChatRoom
      */
     private $dateCreated;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="is_active", type="boolean", nullable=false)
+     */
+    private $is_active;
+
 
     /**
      * Get id
