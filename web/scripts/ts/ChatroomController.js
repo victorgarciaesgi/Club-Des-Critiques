@@ -38,7 +38,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       }
     },
     filter: {
-      title: ""
+      name: ""
     },
     selectedSalon: {},
     infos:{
@@ -56,12 +56,12 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       {text: 'Signaler un contenu inapproprié', action:'reportSalon', icon:'signaler'},
     ],
     selectSalon(salon){
-      if(this.selectedSalon.id != salon.id){
+      if(this.selectedSalon.id_chatRoom != salon.id_chatRoom){
         this.selectedSalon = salon;
         this.messages.loading = true;
         $scope.Chatroom.messages.error = null;
         $scope.Chatroom.messages.elements = [];
-        socket.emit('Switch:room', salon);
+        socket.emit('Switch:room', salon.id_chatRoom);
         this.infos.init();
       }
     },
@@ -95,7 +95,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       this.messages.Parent = this
       if ($rootScope.UserConnected){
         socket.init();
-        socket.emit('Sync');
+        socket.emit('Sync', $rootScope.UserInfos);
       }
       else{
         this.messages.error = "Vous devez vous connecter pour participer et voir le contenu des salons"
@@ -112,11 +112,13 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     loading: false,
     elements: {
       search: new searchForm('Rechercher un livre...','book', true, null,'library_searchBooks', null,true,'Vous devez selectionner un livre existant'),
-      dates: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null)
+      name: new textForm('Titre du salon','name','text',true,null,null, null, null, true, null),
+      dates: new dateBetweenForm('date_start', 'date_end', 'Date de début du salon', 'Date de fin du salon', true, true, null),
+
     },
     submit(){
       socket.emit('New:Room',this.values, () => {
-        $rootScope.Alerts.add('success', 'La demande de créationd de salon a été transmise');
+        $rootScope.Alerts.add('success', 'La demande de création de salon a été transmise');
         this.reset();
       });
     },
@@ -152,41 +154,30 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
 
   socket.on('Update:newMessage', function(message) {
+    console.log(message);
     $scope.Chatroom.messages.error = null;
     message.new = true;
     $scope.Chatroom.messages.elements.push(message);
   });
 
   socket.on('Update:room:messages', function(room) {
+    console.log(room);
     $scope.Chatroom.messages.error = null;
     $scope.Chatroom.messages.elements = room.messages;
   });
 
-  socket.on('Update:book', function(book) {
-    AjaxRequest.get('library_getOneBook', book).then((result) => {
-      $scope.Chatroom.infos.book = result;
-    });
-  });
 
 
 
   socket.on('Update:rooms', function(rooms, current_room) {
-
-    rooms.forEach(function(element){
-      element.dates = {
-        end: element.date_end,
-        start: element.date_start
-      };
+    rooms.forEach((element) => {
+      element.dates = {end: element.date_end,start: element.date_start};
     })
-    current_room.dates = {
-      end: this.date_end,
-      start: this.date_start
-    };
-
+    current_room.dates = {end: this.date_end,start: this.date_start};
     $scope.Chatroom.salons.elements = rooms;
     $scope.Chatroom.selectedSalon = current_room;
 
-    AjaxRequest.get('library_getOneBook', current_room.book).then((result) => {
+    AjaxRequest.get('library_getOneBook', current_room.id_media).then((result) => {
       $scope.Chatroom.infos.book = result;
     });
 
@@ -201,6 +192,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
 
   socket.on('Update:currentRoom', function(room) {
+    console.log(room);
       if (room.messages.length == 0){
           $scope.Chatroom.messages.loading = false;
           $scope.Chatroom.messages.error = 'Aucun message';
@@ -208,6 +200,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       else{
           $scope.Chatroom.messages.elements = room.messages;
       }
+      AjaxRequest.get('library_getOneBook', room.id_media).then((result) => {
+        $scope.Chatroom.infos.book = result;
+      });
   });
 
   socket.on('update:messages', function(room) {

@@ -10,20 +10,20 @@
           </div>
           <ul class="list-salons">
             <div class="salons-search">
-              <input class='s-search' type="text" ng-model='Chatroom.filter.title' placeholder="Rechercher un salon">
+              <input class='s-search' type="text" ng-model='Chatroom.filter.name' placeholder="Rechercher un salon">
               <div class="s-icon"></div>
             </div>
-            <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id'
+            <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id_chatRoom'
                 ng-click='Chatroom.selectSalon(salon)'
-                ng-class='{selected: salon.id == Chatroom.selectedSalon.id}'>
+                ng-class='{selected: salon.id_chatRoom == Chatroom.selectedSalon.id_chatRoom}'>
               <div class="salon-cover">
-                  <div style='background-image: url("http://lorempixel.com/200/200")'>
+                  <div style='background-image: url("{(salon.img)}")'>
 
                   </div>
               </div>
               <div class="salon-infos">
                 <div class="s-i-title">
-                  {(salon.title)}
+                  {(salon.name)}
                 </div>
                 <div class="s-i-interval">
                   {(salon.dates | dateUntilSalon)}
@@ -32,6 +32,7 @@
               <div class="salonState" state='{(salon.dates | isSalonOpen)}'></div>
             </li>
           </ul>
+          <pre>{(Chatroom.salons | json)}</pre>
         </article>
 
         <article id="Messages">
@@ -50,24 +51,24 @@
                 </div>
               </div>
               <div class=" ng-cloak message" ng-repeat='message in Chatroom.messages.elements track by message.id'
-                    self='{(message.user.id == UserInfos.id)}'
+                    self='{(message.id_user == UserInfos.id)}'
                     new='{(message.new)}'
                     ng-class='{
-                      top: Chatroom.messages.elements[$index + 1].user.id == message.user.id && (Chatroom.messages.elements[$index - 1].user.id != message.user.id || !Chatroom.messages.elements[$index - 1]) && Chatroom.messages.elements[$index + 1],
-                      middle: Chatroom.messages.elements[$index - 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1].user.id == message.user.id && Chatroom.messages.elements[$index + 1] && Chatroom.messages.elements[$index - 1],
-                      bottom: Chatroom.messages.elements[$index - 1].user.id == message.user.id && (Chatroom.messages.elements[$index + 1].user.id != message.user.id || !Chatroom.messages.elements[$index + 1]),
+                      top: Chatroom.messages.elements[$index + 1].id_user == message.id_user && (Chatroom.messages.elements[$index - 1].id_user != message.id_user || !Chatroom.messages.elements[$index - 1]) && Chatroom.messages.elements[$index + 1],
+                      middle: Chatroom.messages.elements[$index - 1].id_user == message.id_user && Chatroom.messages.elements[$index + 1].id_user == message.id_user && Chatroom.messages.elements[$index + 1] && Chatroom.messages.elements[$index - 1],
+                      bottom: Chatroom.messages.elements[$index - 1].id_user == message.id_user && (Chatroom.messages.elements[$index + 1].id_user != message.id_user || !Chatroom.messages.elements[$index + 1]),
                     }'
                     on-finish-render='Chatroom.scroll()'>
-                  <div ng-if='Chatroom.messages.elements[$index - 1].user.id != message.user.id' class="user-name">
-                    {(message.user.name)}
+                  <div ng-if='Chatroom.messages.elements[$index - 1].id_user != message.id_user' class="user-name">
+                    {(message.id_user)}
                   </div>
                   <div class="message-content">
                     <div class="user">
-                      <div style='background-image: url("http://lorempixel.com/100/100")'></div>
+                      <div style='background-image: url("{(message.path_img)}")'></div>
                     </div>
-                    <div class='text'>{(message.text)} - {(message.id)}</div>
+                    <div class='text'>{(message.message)} - {(message.id)}</div>
                     <div class="time">
-                      <div>{(message.date_send)}</div>
+                      <div>{(message.date_created | date: 'hh:mm')}</div>
                     </div>
                     <div class="report" ng-if='!UserAdmin'>
                       <img src="/assets/signaler_grey.svg" alt="" ng-click='Chatroom.reportMessage(message)'>
@@ -219,11 +220,20 @@
                 <span class='description'>{(createSalon.values.book.description)}</span>
               </div>
             </div>
+            <text-form vg-model='createSalon.values.name'
+                        vg-type='createSalon.elements.name.type'
+                        vg-name='createSalon.elements.name.name'
+                        vg-placeholder='createSalon.elements.name.placeholder'
+                        vg-validator='createSalon.elements.name.validator'
+                        vg-errors='createSalon.elements.name.errors'
+                        vg-required='createSalon.elements.name.required'>
+            </text-form>
             <date-between-form vg-model-start='createSalon.values.date_start'
                                vg-model-end='createSalon.values.date_end'
                                vg-data='createSalon.elements.dates'>
             </date-between-form>
 
+            <pre>{(createSalon.values | json)}</pre>
         </div>
         <div class="footer">
           <button class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</button>

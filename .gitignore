@@ -17,3 +17,4 @@
 /vendor/
 /web/bundles/
 /.idea/
+/web/Node/chatroom/node_modules

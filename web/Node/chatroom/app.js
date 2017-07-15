@@ -4,23 +4,13 @@ const server  = http.Server(app);
 const io      = require('socket.io')(server);
 const mysql   = require('mysql');
 const Request = require('request');
-const BBD = mysql.createConnection({
+const BDD = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   port:'8889',
   password: 'root',
   database: 'club-critique',
 });
-
-var options = {
-  host: 'http://clubcritique.com',
-  path: '/User/getUserStatus',
-  method: 'POST',
-  headers: {
-    'Content-Type': 'json',
-    'Content-Length': post_data.length
-  }
-};
 
 server.listen(8124);
 // rooms = [
@@ -37,6 +27,10 @@ server.listen(8124);
 //   {id: 11, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:85},
 //   {id: 12, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-29 20:00', users: [], book:86}
 // ]
+
+users = [];
+
+messageCount = 0;
 
 class Room {
   constructor(created_by, id_media, name, number_room, date_start, date_end) {
@@ -69,7 +63,7 @@ class Notification{
 var ntf = io.of('/notifications');
 ntf.on('connection', function(socket){
 
-  socket.on('sync', function(){
+  socket.on('sync', function(user){
     user.notifications = [];
     var newUser = users.find((element) => element.id == user.id);
     if (newUser == undefined){
@@ -98,14 +92,19 @@ ntf.on('connection', function(socket){
 
 io.on('connection', function (socket) {
 
-    socket.on('Sync', function () {
+    socket.on('Sync', function (user) {
+      socket.user = user;
 
-        socket.emit('Update:rooms', rooms, socket.room);
-    });
+      var rooms = getAllRooms();
+      rooms.then((rooms) => {
+        socket.room = rooms[0];
+        getRoomInfos(socket.room.id_chatRoom).then((messages) => {
+          socket.room.messages = messages;
+          socket.join(socket.room.id_chatRoom);
+          socket.emit('Update:rooms', rooms, socket.room);
+        })
+      })
 
-    socket.on('Create:user', function (user) {
-        socket.user = user;
-        io.to(socket.room.id).emit('welcome', socket.user);
     });
 
     socket.on('New:message', function (message) {
@@ -123,7 +122,10 @@ io.on('connection', function (socket) {
         io.to(socket.room.id).emit('Update:newMessage',formatedMessage);
     });
 
+
+// Supprimer un message
     socket.on('Delete:message', function (data) {
+      // verifs a faire
       rooms.forEach(function(element){
           if (element.id == data.roomId){
               var index = element.messages.findIndex((elem) => elem.id == data.message.id);
@@ -136,50 +138,179 @@ io.on('connection', function (socket) {
       io.to(socket.room.id).emit('Update:room:messages',socket.room);
     });
 
+
+
+    // Inviter un user
     socket.on('Invite:User', function (data, callback) {
       var notif = new Notification('alert',socket.user.name + ' vous a invité au salon : ' + socket.room.title);
       callback();
       sendNotification(data.user.id, notif);
     });
 
-    socket.on('Switch:room', function(newroom){
 
-        rooms.forEach(function(element){
-            if (element.id == socket.room.id){
-                var index = element.users.indexOf(socket.user);
-                if (index > -1) {
-                    element.users.splice(index, 1);
-                }
-            }
+
+    // Clicker sur une autre room
+    socket.on('Switch:room', function(roomId){
+        socket.leave(socket.room.id_chatRoom);
+        getRoombyId(roomId).then((room) => {
+          socket.room = room;
+          getRoomInfos(roomId).then((messages) => {
+            console.log(messages);
+            socket.room.messages = messages;
+            console.log(socket.room);
+            socket.join(roomId);
+            socket.emit('Update:currentRoom', socket.room);
+          })
         })
+    });
 
-        socket.leave(socket.room.id);
-        socket.join(newroom.id);
+    //Creation d'une room
 
-        rooms.forEach(function(element){
-            if (element.id == newroom.id){
-                element.users.push(socket.user);
-                socket.room = element;
-            }
-        })
+    socket.on('New:room', function(newroom){
 
-        socket.emit('Update:currentRoom', socket.room);
-        socket.emit('Update:book',socket.room.book)
     });
 });
 
 
-function getRooms(){
 
+
+// rooms
+
+
+function getRoomInfos(roomId){
+  return new Promise(function (fulfill, reject){
+    getMessages(roomId).then((result) => {
+      fulfill(result);
+    }, (error) => {reject(error)})
+  })
 }
 
-function getRoombyId(){
-
+function getAllRoomsInfos(roomId){
+  return new Promise(function (fulfill, reject){
+    getAllRooms().then((rooms) => {
+      rooms.forEach((room, index, array) => {
+        getRoomInfos(room.id_chatRoom).then((messages) => {
+          room.messages = messages;
+          if (index === array.length - 1){
+            fulfill(rooms);
+          }
+        })
+      });
+    })
+  })
 }
 
-function updateRoom(){
-
+function getAllRooms(){
+  return new Promise(function (fulfill, reject){
+    var query = `SELECT c.*, m.img
+                FROM chatroom c
+                LEFT JOIN media m on m.id_media = c.id_media
+                WHERE c.is_active = 1
+                ORDER by c.id_chatRoom`;
+    BDD.query(query,(err, rows, fields) => {
+      if (!err){
+        return fulfill(rows);
+      }
+      else{reject(err);console.log('Erreur a la recup des rooms')}
+    });
+  })
 }
+
+function getAccessRooms(userId){
+  return new Promise(function (fulfill, reject){
+    var query = `SELECT c.*, m.img
+                FROM chatroom c, chatroom_access ca
+                LEFT JOIN media m on m.id_media = c.id_media
+                WHERE c.is_active = 1
+                AND c.id_chatRoom = ca.id_chatRoom
+                AND ca.id_user = ${userId}
+                ORDER by c.id_chatRoom`;
+    BDD.query(query,(err, rows, fields) => {
+      if (!err){
+        return fulfill(rows);
+      }
+      else{reject(err);console.log('Erreur a la recup des rooms access')}
+    });
+  })
+}
+
+function getRoombyId(id){
+  return new Promise(function (fulfill, reject){
+    var query = `SELECT *
+                FROM chatroom
+                WHERE is_active = 1
+                AND id_chatRoom = ${id}
+                ORDER by id_chatRoom`;
+    BDD.query(query,(err, rows, fields) => {
+      if (!err){
+        return fulfill(rows[0]);
+      }
+      else{reject(err);console.log('Erreur a la recup de la room ${id}')}
+    });
+  })
+}
+
+function createRoom(room){
+  return new Promise(function (fulfill, reject){
+    var query = `INSERT INTO chatroom
+            VALUES ('1', '106', NULL, 'deuxieme room', '1', 'adzadazdza', '2017-07-15', '2017-07-15', '2017-07-28', '2017-07-15', '2017-07-17', '1', '1', '1');`;
+    BDD.query(query,(err, rows, fields) => {
+      if (!err){
+        return fulfill(rows);
+      }
+      else{reject(err);console.log('Erreur a la creation de la room ${id}')}
+    });
+  })
+}
+
+
+// messages
+
+
+function saveMessage(message){
+  return new Promise(function (fulfill, reject){
+    var query = `INSERT INTO messages_chat_room
+                VALUES (NULL, '${socket.user.id}', '${message.text}', '${Date.now()}','${socket.room.id}`;
+    BDD.query(query,(err, rows, fields) => {
+      if (!err){
+        return fulfill(rows);
+      }
+      else{reject(err);console.log('Erreur a lajout du message ${message.text}')}
+    });
+  })
+}
+
+function getMessages(roomId){
+  return new Promise(function (fulfill, reject){
+    var query = `SELECT m.*, u.username, u.path_img
+                FROM messages_chat_room m
+                LEFT JOIN user u on u.id = m.id_user
+                WHERE m.id_chatRoom = ${roomId}`;
+    BDD.query(query,(err, rows, fields) => {
+      if (!err){
+        return fulfill(rows);
+      }
+      else{reject(err);console.log('Erreur a la recup des messages de la room ${roomId}')}
+    });
+  })
+}
+
+function deleteMessage(id){
+  return new Promise(function (fulfill, reject){
+    var query = `SELECT *
+                FROM messages_chat_room
+                WHERE `;
+    BDD.query(query,(err, rows, fields) => {
+      if (!err){
+        return fulfill(rows);
+      }
+      else{reject(err);console.log('Erreur a lajout du message ${message.text}')}
+    });
+  })
+}
+
+
+
 
 
 function sendNotification(userId, notif){
