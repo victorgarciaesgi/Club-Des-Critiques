@@ -18,6 +18,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 use SocketIO\Emitter;
+use Predis\Autoloader;
 
 class ChatroomController extends Controller
 {
@@ -34,25 +35,6 @@ class ChatroomController extends Controller
         $normalizers = array(new ObjectNormalizer());
 
         $serializer = new Serializer($normalizers, $encoders);
-
-        // Calling PHP Redis from global namespace
-        $redis = new \Redis();
-
-        // Connecting on localhost and port 6379
-        $redis->connect('127.0.0.1', '6379');
-
-        // Creating Emitter
-        $emitter = new Emitter($redis);
-
-        $rooms = $this->getDoctrine()
-            ->getManager()
-            ->getRepository('AppBundle:Chat');
-        $resultHasOne = $rooms->findAll();
-
-
-        $jsonContent = $serializer->serialize($resultHasOne, 'json');
-
-        $emitter->emit('pushRooms', $jsonContent);
 
         return $this->render('default/chatroom.html.twig');
     }

@@ -44,6 +44,26 @@ class UserController extends Controller
 
 
     /**
+     * @Route("/User/getUserStatus", options = { "expose" = true }, name="User_status")
+     * @Method({"POST"})
+     */
+
+
+    public function UserStatus(Request $request){
+
+      if ($this->getUser() !== null){
+        $success = json_encode($this->getUser()->getId());
+        return new JsonResponse($success);
+      }
+      else{
+        $response = json_encode(array('error' => "pas connecté"), JSON_FORCE_OBJECT);
+        return new Response($response);
+      }
+    }
+
+
+
+    /**
      * @Route("/library/addCollection", options = { "expose" = true }, name="library_addCollection")
      * @Method({"POST"})
      */

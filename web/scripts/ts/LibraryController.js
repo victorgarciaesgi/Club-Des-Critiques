@@ -125,7 +125,7 @@ MainApp.controller('library', function ($scope, $rootScope, $q, $timeout, AjaxRe
       refuse(){
         this.refusing = true;
         AjaxRequest.get('desactive_media',{idMedia: this.bookShow.idMedia}).then((result) => {
-          notifications.emit('Send:notification', {userId: this.bookShow.idUsers, message: 'Votre livre "'+ this.bookShow.name + '"n\'a pas été approuvé'});
+          notifications.emit('Send:notification', {userId: this.bookShow.idUsers, message: 'Votre livre "'+ this.bookShow.name + '" n\'a pas été approuvé'});
           this.hide();
           this.refusing = false;
           $scope.Library.filter();

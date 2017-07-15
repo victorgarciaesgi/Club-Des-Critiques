@@ -74,7 +74,7 @@ class Chatroom
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_closed", type="date", nullable=false)
+     * @ORM\Column(name="date_closed", type="date", nullable=true)
      */
     private $dateClosed;
 

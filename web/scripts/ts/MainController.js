@@ -2,7 +2,7 @@
 
 var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment'])
 .config(function($interpolateProvider, $compileProvider){
-    $interpolateProvider.startSymbol('{(');
+    $interpolateProvider.startSymbol('{('); // Configuration d'angular
     $interpolateProvider.endSymbol(')}');
     // $compileProvider.debugInfoEnabled(false);
     // $compileProvider.commentDirectivesEnabled(false);
@@ -10,6 +10,8 @@ var MainApp = angular.module('mainApp',['ngAnimate', 'ngLodash','angularMoment']
 });
 
 MainApp.run(function($rootScope, amMoment, $timeout) {
+  // Recupération des infos user
+
     amMoment.changeLocale('fr');
     $rootScope.Rootview = '';
     $rootScope.UserConnected = (!!window.nohomo)?true:false;
@@ -20,6 +22,8 @@ MainApp.run(function($rootScope, amMoment, $timeout) {
         name: (!!window.javaEE)?window.javaEE:false,
       }
     }
+
+    // Méthode pour afficher des alertes et les supprimer automatiquement
 
     $rootScope.Alerts = {
       count: 0,
@@ -38,7 +42,7 @@ MainApp.run(function($rootScope, amMoment, $timeout) {
         this.list.push(alert);
         $timeout(() => {
           this.delete(alert);
-        },3000)
+        },5000)
       }
     }
 });

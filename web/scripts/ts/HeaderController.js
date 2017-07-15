@@ -81,7 +81,6 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
     // Evenements de contrôle d'affichage des popups
 
     $(window).click(function(){
-      console.log('window')
       $('.popup-box:not(.static)').hide().attr('state','false');
     })
 

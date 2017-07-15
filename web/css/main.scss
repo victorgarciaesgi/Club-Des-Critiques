@@ -212,6 +212,7 @@ aside{
 
 
     .header{
+      position: relative;
       flex: 0 0 auto;
       padding-left: 10px;
       height: 35px;
@@ -237,6 +238,7 @@ aside{
 
       .externalLink{
         position: absolute;
+        display: none;
         right: 30px;
         top: 50%;
         height: 21px;

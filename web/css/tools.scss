@@ -685,13 +685,13 @@ rating-form{
         }
 
         &[user]{
-          height: 60px;
+          height: 50px;
           padding-left: 10px;
           .cover{
-            height: 40px;
-            width: 40px;
-            margin-top: 10px;
-            border-radius: 40px;
+            height: 35px;
+            width: 35px;
+            margin-top: 7px;
+            border-radius: 35px;
           }
         }
 
@@ -739,7 +739,7 @@ rating-form{
 
           .name{
             height: 100%;
-            line-height: 60px;
+            line-height: 50px;
             margin-left: 10px;
             font-size: 15px;
             font-weight: bold;

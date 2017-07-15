@@ -95,8 +95,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       this.messages.Parent = this
       if ($rootScope.UserConnected){
         socket.init();
-        socket.emit('Create:room', 1);
-        socket.emit('Create:user', $rootScope.UserInfos);
+        socket.emit('Sync');
       }
       else{
         this.messages.error = "Vous devez vous connecter pour participer et voir le contenu des salons"
@@ -200,9 +199,6 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     }
   });
 
-    socket.on('pushRooms', function (rooms) {
-        console.log(rooms);
-    });
 
   socket.on('Update:currentRoom', function(room) {
       if (room.messages.length == 0){
