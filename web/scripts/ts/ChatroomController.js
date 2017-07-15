@@ -200,7 +200,21 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     }
   });
 
+    socket.on('pushRooms', function (rooms) {
+        console.log(rooms);
+    });
+
   socket.on('Update:currentRoom', function(room) {
+      if (room.messages.length == 0){
+          $scope.Chatroom.messages.loading = false;
+          $scope.Chatroom.messages.error = 'Aucun message';
+      }
+      else{
+          $scope.Chatroom.messages.elements = room.messages;
+      }
+  });
+
+  socket.on('update:messages', function(room) {
     if (room.messages.length == 0){
       $scope.Chatroom.messages.loading = false;
       $scope.Chatroom.messages.error = 'Aucun message';
