@@ -60,13 +60,13 @@
                     }'
                     on-finish-render='Chatroom.scroll()'>
                   <div ng-if='Chatroom.messages.elements[$index - 1].id_user != message.id_user' class="user-name">
-                    {(message.id_user)}
+                    {(message.username)}
                   </div>
                   <div class="message-content">
                     <div class="user">
                       <div style='background-image: url("{(message.path_img)}")'></div>
                     </div>
-                    <div class='text'>{(message.message)} - {(message.id)}</div>
+                    <div class='text'>{(message.message)}</div>
                     <div class="time">
                       <div>{(message.date_created | date: 'hh:mm')}</div>
                     </div>

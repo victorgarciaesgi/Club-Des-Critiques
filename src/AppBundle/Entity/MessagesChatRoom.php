@@ -53,7 +53,7 @@ class MessagesChatRoom
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_created", type="date")
+     * @ORM\Column(name="date_created", type="string", length=15)
      */
     private $dateCreated;
 
