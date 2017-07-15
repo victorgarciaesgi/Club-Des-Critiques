@@ -199,7 +199,7 @@ MainApp.controller('homepage', function ($scope, $rootScope, $q, $timeout, AjaxR
     },
     submitting: false,
     submit: function(){
-      this.submitting = false;
+      this.submitting = true;
       AjaxRequest.get('mail_register',this.values).then((result) => {
         if (result.success){
           this.display = false;
