@@ -7,8 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * MessagesPrivate
  *
- * @ORM\Table(name="messages_private", indexes={@ORM\Index(name="id_user", columns={"id"})}, indexes={@ORM\Index(name="id_private_chat", columns={"id_private_chat"})})
+ * @ORM\Table(name="messages_private")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\MessagesPrivateRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class MessagesPrivate
 {
@@ -22,41 +23,74 @@ class MessagesPrivate
     private $id;
 
     /**
-     * @var \User
+     * @var integer
      *
-     * @ORM\ManyToOne(targetEntity="User")
-     *
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     * @ORM\Column(name="id_User", type="integer")
      * })
      */
     private $idUser;
 
     /**
-     * @var \PrivateChat
+     * @var \User
      *
-     * @ORM\ManyToOne(targetEntity="PrivateChat")
+     * @ORM\OneToOne(targetEntity="User")
      *
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="id_private_chat", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="senders", referencedColumnName="id",nullable=true)
      * })
      */
-    private $idPrivateChat;
+    private $senders;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="messages", type="string", length=500)
+     * @ORM\Column(name="messages", type="text")
      */
     private $messages;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="subject", type="text",length=255)
+     */
+    private $subject;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="mail", type="text",length=255)
+     */
+    private $mail;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="text",length=500)
+     */
+    private $name;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_created", type="date")
+     * @ORM\Column(name="date_created", type="datetime")
      */
     private $dateCreated;
 
+    /**
+     * @return \User
+     */
+    public function getSenders()
+    {
+        return $this->senders;
+    }
+
+    /**
+     * @param \User $senders
+     */
+    public function setSenders($senders)
+    {
+        $this->senders = $senders;
+    }
 
     /**
      * Get id
@@ -83,6 +117,54 @@ class MessagesPrivate
     }
 
     /**
+     * @return string
+     */
+    public function getSubject()
+    {
+        return $this->subject;
+    }
+
+    /**
+     * @param string $subject
+     */
+    public function setSubject($subject)
+    {
+        $this->subject = $subject;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * @param string $mail
+     */
+    public function setMail($mail)
+    {
+        $this->mail = $mail;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
      * Get idUser
      *
      * @return int
@@ -90,30 +172,6 @@ class MessagesPrivate
     public function getIdUser()
     {
         return $this->idUser;
-    }
-
-    /**
-     * Set idPrivateMessage
-     *
-     * @param integer $idPrivateMessage
-     *
-     * @return MessagesPrivate
-     */
-    public function setIdPrivateMessage($idPrivateMessage)
-    {
-        $this->idPrivateMessage = $idPrivateMessage;
-
-        return $this;
-    }
-
-    /**
-     * Get idPrivateMessage
-     *
-     * @return int
-     */
-    public function getIdPrivateMessage()
-    {
-        return $this->idPrivateMessage;
     }
 
     /**
@@ -146,10 +204,11 @@ class MessagesPrivate
      * @param \DateTime $dateCreated
      *
      * @return MessagesPrivate
+     * @ORM\PrePersist
      */
     public function setDateCreated($dateCreated)
     {
-        $this->dateCreated = $dateCreated;
+        $this->dateCreated = new \DateTime();
 
         return $this;
     }

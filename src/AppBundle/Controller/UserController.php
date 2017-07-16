@@ -15,8 +15,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 
 use AppBundle\Entity\UserBooks;
-
-
 use AppBundle\Entity\User;
 
 
@@ -135,14 +133,21 @@ class UserController extends Controller
      */
     public function showProfileCollection(Request $request,$id_user){
 
-        $hasOneRepo = $this->getDoctrine()
+        $getUser = $this->getDoctrine()
             ->getManager()
             ->getRepository('AppBundle:User');
-        $resultUser = $hasOneRepo->find($id_user);
+        $resultUser = $getUser->find($id_user);
+
+        $getBooks = $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AppBundle:UserBooks');
+        $resultBookUser = $getBooks->findBy(array('idUser' => $id_user));
 
         return $this->render('default/profile.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
             'user' => $resultUser,
+            'UserBooks' => $resultBookUser,
+            'id_user_profile' => $id_user,
         ]);
     }
 

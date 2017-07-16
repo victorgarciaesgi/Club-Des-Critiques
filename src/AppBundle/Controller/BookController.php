@@ -7,6 +7,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
 class BookController extends Controller
 {
     /**
@@ -50,5 +54,26 @@ class BookController extends Controller
         $em->flush();
 
         return new Response('Envoi formulaire de contact OK');
+    }
+
+    /**
+     * Controller pour l'ajout d'un livre
+     *
+     * @Route("/get-book-info/{id_media}", name="get_info_media")
+     */
+    public function getBookInfoAction(Request $request,$id_media)
+    {
+        $encoders = array(new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        $serializer = new Serializer($normalizers, $encoders);
+
+        $getInfoMedia= $this->getDoctrine()
+            ->getManager()
+            ->getRepository('AppBundle:Media');
+        $resultInfoMedia = $getInfoMedia->find($id_media);
+
+        $json_result = $serializer->serialize($resultInfoMedia,"json");
+
+        return $this->json($json_result);
     }
 }
