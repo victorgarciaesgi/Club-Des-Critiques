@@ -57,8 +57,6 @@ class BookController extends Controller
     }
 
     /**
-     * Controller pour l'ajout d'un livre
-     *
      * @Route("/get-book-info/{id_media}", name="get_info_media")
      */
     public function getBookInfoAction(Request $request,$id_media)
