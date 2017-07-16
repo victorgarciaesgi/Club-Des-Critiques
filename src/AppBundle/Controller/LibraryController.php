@@ -198,7 +198,7 @@ class LibraryController extends Controller
       }
 
       if (isset($data['categories'])) {
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username, count(ub.id) as isInCollection
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username ". (($UserConnected)?",count(ub.id) as isInCollection":"")."
                            FROM AppBundle:Media m
                            INNER JOIN AppBundle:CategoryAffiliation mc
                            WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
@@ -218,7 +218,7 @@ class LibraryController extends Controller
         $books = $query->getResult();
       }
       else{
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username, count(ub.id) as isInCollection
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username ". (($UserConnected)?",count(ub.id) as isInCollection":"")."
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
@@ -241,7 +241,7 @@ class LibraryController extends Controller
           $media = $value['media'];
           $media['username'] = $value['username'];
           $media['note'] = $value['note'];
-          $media['isInCollection'] = $value['isInCollection'];
+          $media['isInCollection'] = isset($value['isInCollection'])?$value['isInCollection']:null;
           $media['nbrNotes'] = $value['nbrNotes'];
           $media['idUsers'] = $value['media']['idUsers']['id'];
           $books[$key] = $media;
@@ -323,7 +323,7 @@ class LibraryController extends Controller
       $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username, ub.userState as userState
                          FROM AppBundle:Media m
                          INNER JOIN AppBundle:UserBooks ub
-                         WITH ub.idUser = ".$this->getUser()->getId()."
+                         WITH ub.idUser = ".$data."
                          AND ub.isActive = 1
                          AND ub.idMedia = m.idMedia
                          LEFT JOIN AppBundle:Note n

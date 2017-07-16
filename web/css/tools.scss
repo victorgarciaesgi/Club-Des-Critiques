@@ -257,11 +257,12 @@ ul.ui-tabs{
 
 .header-separation{
   position: relative;
-  float: left;
+  display: flex;
+  flex: 0 0 auto;
   height: calc(100% - 12px);
   width: 1px;
   background-color: $w240;
-  margin: 6px 10px 0 10px;
+  margin: 0px 10px 0 10px;
 }
 
 .l-separation10 {

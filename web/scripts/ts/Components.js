@@ -133,7 +133,6 @@ MainApp.component('searchForm', {
     ctrl.search = (source, value) => {
       ctrl.error = false;
       AjaxRequest.get(source, value.replace(/ /g,'%20')).then((result) => {
-        console.log(result)
         if (result.error){
           ctrl.searching = false;
           ctrl.search_result.reset();

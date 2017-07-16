@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{% block title %}Salons de discussions{% endblock %}
+
 {% block body %}
 <ng-controller ng-controller='chatroom'>
     <div id="chatroom">
@@ -37,7 +39,7 @@
 
         <article id="Messages">
           <div class="header" >
-            <span ng-cloak>{(Chatroom.selectedSalon.title)}</span>
+            <span ng-cloak>{(Chatroom.selectedSalon.name)}</span>
             <div class="icons" ng-click='Chatroom.infos.open = !Chatroom.infos.open'>
               <img show src="/assets/infos.svg" alt="">
               <img hide src="/assets/infos_close.svg" alt="">
@@ -233,12 +235,14 @@
                                vg-data='createSalon.elements.dates'>
             </date-between-form>
 
-            <pre>{(createSalon.values | json)}</pre>
+            <!-- <pre>{(createSalon.values | json)}</pre> -->
         </div>
         <div class="footer">
           <button class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</button>
-          <button class="bouton" type='submit' design='green'
-          ng-disabled='createSalonX.$invalid'>Créer le salon</button>
+          <button type='submit' ng-disabled='createSalon.loading' class="bouton" design='green'
+          ng-class='{submitting: createSalon.loading}'>Créer le salon
+            <div class="loading-spinner white"></div>
+          </button>
         </div>
         </form>
         <img id='pin2' src="/assets/down.png" alt="">

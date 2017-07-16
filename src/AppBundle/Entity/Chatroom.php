@@ -60,35 +60,35 @@ class Chatroom
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_created", type="date", nullable=false)
+     * @ORM\Column(name="date_created", type="string", length=15)
      */
     private $dateCreated;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_update", type="date", nullable=false)
+     * @ORM\Column(name="date_updated", type="string", length=15)
      */
     private $dateUpdate;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_closed", type="date", nullable=true)
+     * @ORM\Column(name="date_closed", type="string", length=15, nullable=true)
      */
     private $dateClosed;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_start", type="date", nullable=false)
+     * @ORM\Column(name="date_start", type="string", length=15)
      */
     private $dateStart;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="date", nullable=false)
+     * @ORM\Column(name="date_end", type="string", length=15)
      */
     private $dateEnd;
 

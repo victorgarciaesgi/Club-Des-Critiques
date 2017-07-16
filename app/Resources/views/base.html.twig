@@ -109,6 +109,13 @@
                     <span ng-if='Notifications.number > 0'>{(Notifications.number)}</span>
                 </div>
             </li>
+            <li id='messages' state='false' class='menu popup-bouton' popup="popup-messages"
+            ng-click='Messages.show()'>
+                <img src='/assets/contact_green.svg' class="icon">
+                <div class="counter">
+                    <!-- <span ng-if='Notifications.number > 0'></span> -->
+                </div>
+            </li>
             <li id='user' class='menu popup-bouton' popup="popup-user">
                 <span class="name">{{app.user.username}}</span>
                 <div class="picture" style='background-image: url(/assets/profil.jpg)'></div>
@@ -123,6 +130,11 @@
 
 
 </header>
+
+
+
+
+{% if connected %}
 
 <div id='popup-notification' state='false' class='ng-cloak popup-box' style='width: 300px'
   ng-blur='Notification.hide()' ng-show='Notifications.display'>
@@ -149,8 +161,30 @@
     </div>
 </div>
 
-
-{% if connected %}
+<div id='popup-messages' state='false' class='ng-cloak popup-box' style='width: 350px'
+  ng-blur='Messages.hide()' ng-show='Messages.display'>
+    <img id='pin' src="/assets/up.png" alt="">
+    <div class="header">
+        Messages
+    </div>
+    <div class="content">
+      <ul ng-if='Messages.list.length > 0'>
+        <li ng-repeat='notif in Messages.list| limitTo: 10'>
+          <div>{(notif.message)}</div>
+          <div class='date' am-time-ago='notif.date'></div>
+          <ng-switch on="notif.type">
+            <img src="/assets/form-valid-green.svg" alt="" ng-switch-when='success'>
+            <img src="/assets/form-invalid-red.svg" alt="" ng-switch-when='error'>
+            <img src="/assets/warning.svg" alt="" ng-switch-when='warning'>
+            <img src="/assets/info.svg" alt="" ng-switch-when='alert'>
+          </ng-switch>
+        </li>
+      </ul>
+      <div class="no-content" ng-if='Messages.list.length == 0'>
+        Aucun Message
+      </div>
+    </div>
+</div>
 
 <div id='popup-user' class="popup-box" style='width: 200px' state='false'>
     <img id='pin' src="/assets/up.png" alt="">

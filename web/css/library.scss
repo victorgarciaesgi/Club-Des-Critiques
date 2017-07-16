@@ -241,6 +241,10 @@
   box-shadow: 0 0 8px transparentize($g90, 0.7);
   @include transition(all 0.3s);
 
+  &:last-child{
+    margin-bottom: 20px;
+  }
+
   .cover-wrap{
     position: relative;
     float: left;

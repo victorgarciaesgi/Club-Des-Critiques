@@ -2,9 +2,47 @@
 
 MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage) {
 
+  $scope.ProfilId = (!!window.user)?window.user:false;
+
   $scope.UserBooks = {
     elements: [],
     bookShow: {},
+    messageForm: {
+      values: {
+        target_user: $scope.ProfilId
+      },
+      elements: {
+        name: new textForm('Votre nom','name','text',true,null,null, null, null, true, null),
+        subject: new textForm('Sujet','subject','text',true,null,null, null, null, true, null),
+        mail: new textForm('Votre email','mail','email',true,null,null, null, 'email', true, null),
+        message: new textForm('Votre message','message','text',true,null,null, null, null, true, null),
+      },
+      user: null,
+      display: false,
+      submitting: false,
+      reset(){
+        this.display = false;
+        this.values = {target_user: $scope.ProfilId};
+        $scope.messageFormX.$setPristine();
+      },
+      show(){
+        this.display = true;
+      },
+      hide(){
+        this.display = false;
+      },
+      submit(){
+        this.submitting = true;
+        AjaxRequest.get('send_message_private',this.values).then((result) => {
+          if (result.success){
+            $rootScope.Alerts.add('success', result.success);
+          }
+          this.submitting = false;
+          this.reset();
+        });
+
+      },
+    },
     display: false,
     error: null,
     notation: false,
@@ -57,6 +95,7 @@ MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxReq
       if (result.length > 0) {
         let loader = result;
         let promises = [];
+        this.error = null;
         $.each(loader, function(index, el) {
           promises.push(PromiseImage.load(el.img));
         })
@@ -76,8 +115,8 @@ MainApp.controller('profil', function ($scope, $rootScope, $q, $timeout, AjaxReq
       }
     },
     init(){
-      AjaxRequest.get('getUserBooks',null).then((result) => {
-        console.log(result)
+      AjaxRequest.get('getUserBooks',$scope.ProfilId).then((result) => {
+        console.log(result);
         this.loadBooks(result);
       })
     }

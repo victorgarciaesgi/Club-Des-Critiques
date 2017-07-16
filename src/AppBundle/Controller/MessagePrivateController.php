@@ -8,19 +8,34 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Serializer;
+
+
 
 class MessagePrivateController extends Controller
 {
+    function decodeAjaxRequest($request){
+      $data = json_decode($request->getContent(), true);
+      return $data['data'];
+    }
+
+
     /**
-     * @Route("/message/private/send", name="send_message_private")
+     * @Route("/message/private/send",options = { "expose" = true }, name="send_message_private")
+     * @Method({"POST"})
      */
     public function SendMessageAction(Request $request)
     {
-        $name = $request->request->get('name');
-        $mail = $request->request->get('mail');
-        $subject = $request->request->get('subject');
-        $message = $request->request->get('message');
-        $target_user = intval($request->request->get('target_user'));
+        $data = $this->decodeAjaxRequest($request);
+
+        $name = $data['name'];
+        $mail = $data['mail'];
+        $subject = $data['subject'];
+        $message = $data['message'];
+        $target_user = intval($data['target_user']);
 
         $em = $this->getDoctrine()->getManager();
 
@@ -35,6 +50,7 @@ class MessagePrivateController extends Controller
 
         $em->flush();
 
-        return $this->json(true);
+        $error_data = json_encode(array('success' => "Le message est bien envoyé"), JSON_FORCE_OBJECT);
+        return new JsonResponse($error_data);;
     }
 }

@@ -117,13 +117,15 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
     },
     submit(){
-      socket.emit('New:Room',this.values, () => {
+      this.loading = true;
+      socket.emit('New:room',this.values, () => {
         $rootScope.Alerts.add('success', 'La demande de création de salon a été transmise');
         this.reset();
       });
     },
     reset(){
       this.values = {};
+      this.loading = false;
       $scope.createSalonX.$setPristine();
     },
     selectResult(book){

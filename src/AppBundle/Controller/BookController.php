@@ -6,6 +6,7 @@ use AppBundle\Entity\ContactUS;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -14,32 +15,13 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class BookController extends Controller
 {
     /**
-     * Controller pour l'ajout d'un livre
-     *
-     * @Route("/add-book/", name="add_book", options = { "expose" = true })
+     * @Route("/contactUser/", name="contactUser", options = { "expose" = true })
+     * @Method({"POST"})
      */
     public function contactAction(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         $data = $data['data'];
-        /*
-            {
-            "search": "naruto",
-            "categories": [
-            {
-              "label": "test"
-            },
-            {
-              "label": "test"
-            }
-            ],
-            "rating": 0,
-            "author": "dazdazdzadzdazdz",
-            "illustration": "dazdazdazdaz",
-            "description": "adzadza",
-            "pages": 160
-            }
-        */
 
         $currentDate = new \Datetime("now");
         $MessageContact = new ContactUS();

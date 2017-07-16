@@ -20,12 +20,14 @@ header{
 
   nav{
     display: flex;
+    position: relative;
     height: 100%;
     width: 100%;
-    flex-flow: row wrap;
+    flex-flow: row nowrap;
     justify-content: space-around;
     align-content: center;
     align-items: center;
+    padding-left: 5px;
   }
 
   //Menus
@@ -35,10 +37,12 @@ header{
     display: flex;
     height: 100%;
     width: auto;
+    align-items: center;
     a {
       display: flex;
       float: none;
-      height: 100%;;
+      height: 100%;
+      flex: 0 0 auto;
     }
   }
 
@@ -68,11 +72,10 @@ header{
   }
 
   #search{
-    margin-left: 5px;
-    margin-top: 5px;
     height: 30px;
     width: 300px;
     display: flex;
+    flex: 0 1 auto;
     align-items: center;
     justify-content: center;
 
@@ -125,9 +128,10 @@ header{
   }
 
   .logo{
+    display: flex;
+    flex: 0 0 auto;
     height: 25px;
     width: 25px;
-    margin-left: 5px;
     cursor: pointer;
   }
 

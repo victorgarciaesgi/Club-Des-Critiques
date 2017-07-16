@@ -64,14 +64,18 @@ MainApp.filter('dateUntilSalon', function(moment) {
     return function(input) {
       if ((!!input)) {
         var state = stateSalon(input.start, input.end);
+        var date = {
+          start: new Date(Number(input.start)),
+          end: new Date(Number(input.end))
+        }
         if (state == 'notyet'){
-          return 'Ouvre ' + moment(input.start).fromNow();
+          return 'Ouvre ' + moment(date.start).fromNow();
         }
         else if(state == 'open'){
-          return 'Fin ' + moment(input.end).fromNow();
+          return 'Fin ' + moment(date.end).fromNow();
         }
         else if(state == 'ended'){
-          return 'Fini ' + moment(input.end).fromNow();
+          return 'Fini ' + moment(date.end).fromNow();
         }
       }
     }
@@ -98,14 +102,18 @@ MainApp.filter('dateVerboseSalon', function(moment) {
     return function(input) {
       if ((!!input)) {
         var today = Date.now();
-        if (input.start > today){
-          return 'Ouvre ' + moment(input.start).fromNow();
+        var date = {
+          start: new Date(Number(input.start)),
+          end: new Date(Number(input.end))
         }
-        else if(input.start < today && input.end > today){
-          return 'Fin ' + moment(input.end).fromNow();
+        if (date.start > today){
+          return 'Ouvre ' + moment(date.start).fromNow();
         }
-        else if(input.end < today){
-          return 'Fini ' + moment(input.end).fromNow();
+        else if(date.start < today && date.end > today){
+          return 'Fin ' + moment(date.end).fromNow();
+        }
+        else if(date.end < today){
+          return 'Fini ' + moment(date.end).fromNow();
         }
       }
     }

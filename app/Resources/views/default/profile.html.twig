@@ -1,101 +1,254 @@
 {% extends 'base.html.twig' %}
-{% block title %}{{ user.username }} | Profil Utilisateur{% endblock %}
-{% block javascript %}
+{% block title %}{{ user.username }} | Profil{% endblock %}
+{# {% block javascript %}
     <script src="/js/bootstrap.min.js"></script>
     <script src="/js/profile.js"></script>
 {% endblock %}
 {% block stylesheets %}
     <link href="/css/bootstrap.min.css" rel="stylesheet">
     <link href="/css/profile.css" rel="stylesheet">
-{% endblock %}
+{% endblock %} #}
 {% block body %}
-    <div class="container ng-non-bindable">
-        <div class="row">
-            <div class="col-md-2">
-                <img class="img-circle img-responsive" src="{{ user.pathImg }}"/>
-            </div>
-            <div class="col-md-10">
-                <h2>{{ user.username }}</h2>
-                <p>{{ user.email }}</p>
-                <p><strong>Description</strong></p>
-                <p>{{ user.description }}</p>
-            </div>
+
+<script type="text/javascript">
+  window.user = {{(id_user_profile is defined)?id_user_profile:"null"}};
+</script>
+
+
+<ng-controller ng-controller='profil'>
+
+  <div id='profil'>
+    <section>
+      <div class="ng-cloak content">
+        <div class="profil">
+          <div class="picture" style='background-image: url("{{ user.pathImg }}")'></div>
+          <div class="name">{{ user.username }}</div>
+
         </div>
-        <div class="row">
-            <h2>Pour échanger</h2>
-            <input id="id_user_profile" type="hidden" value="{{ id_user_profile }}">
-            {% for book in UserBooks %}
-                <div class="col-md-3 text-center">
-                    <div class="thumbnail">
-                        <img src="{{ book.idMedia.img }}" alt="{{ book.idMedia.name }}">
-                        <div class="caption">
-                            <h3>{{ book.idMedia.name }}</h3>
-                            <p><span class="glyphicon glyphicon-book"></span> {{ book.idMedia.author }}</p>
-                            <legend>Description</legend>
-                            <p>{{ book.idMedia.description | slice(0, 200) }}...</p>
-                            <p><button href="#" class="btn btn-primary open-exchange" role="button" data-toggle="modal" data-id-media="{{ book.idMedia.idMedia }}" date-id-user="{{ book.idUser.id }}" data-target="#myModal"><span class="glyphicon glyphicon-inbox"></span> Demande d'échange</button></p>
-                        </div>
+        <div class="separation"></div>
+        <div class="infos">
+          <div class="infos-header">
+            <div class="i-h-info">
+              <div class="i-h-img">
+                <img src="/assets/user_star.svg">
+              </div>
+              <div class='i-h-text'>
+                4/5
+              </div>
+            </div>
+            <div class="i-h-info">
+              <div class="i-h-glob" ng-click='UserBooks.messageForm.show()'>
+                <div class="i-h-img">
+                  <img src="/assets/contact.svg">
+                </div>
+                <div class='i-h-text'>Contacter</div>
+              </div>
+            </div>
+            <div class="i-h-info">
+              <div class="i-h-img">
+                <img src="/assets/date.svg">
+              </div>
+              <div class='i-h-text'>Inscrit depuis 2016</div>
+            </div>
+          </div>
+          <div class="infos-text">
+            <div class="i-t-title">Description</div>
+            <div class="i-t-content">{{ user.description}}</div>
+          </div>
+          <div class="infos-text">
+            <div class="i-t-title">Collection</div>
+            <ul>
+              <div class="ng-cloak loader-content" ng-if='UserBooks.loading || UserBooks.error'>
+                <div ng-show='!UserBooks.error && UserBooks.loading' taille='big' class="loading-spinner"></div>
+                <div class='error' ng-show='UserBooks.error'>
+                  {(UserBooks.error)}
+                </div>
+              </div>
+              <li ng-repeat='book in UserBooks.elements track by book.idMedia'
+                  class='ng-cloak book-wrapper'
+                  ng-click='UserBooks.show(book)'>
+                  <!-- <div class="cover-blur" ng-cloak style='background-image: url("{(book.img)}")' ></div> -->
+                  <div class="cover-wrap">
+                    <div class="ng-cloak cover" style='background-image: url("{(book.img)}")'></div>
+                  </div>
+                  <div class="book-info-wrapper">
+                    <div class="name info-book" ng-cloak>{(book.name)}</div>
+                    <div class="author info-book" ng-cloak>{(book.author)}</div>
+                    <div class="state info-book" ng-cloak>
+                      <span>{(book.userState)}</span>
                     </div>
-                </div>
-            {% endfor%}
+                  </div>
+              </li>
+              <div ng-if='Library.lazyProcessing && !Library.endOfContent' class="ng-cloak padding-lazyContent">
+                <div class="loading-spinner" taille='medium'></div>
+              </div>
+            </ul>
+          </div>
         </div>
-        <hr>
-        <div class="row">
-            <h2>Contactez {{ user.username }}</h2>
-            <div class="col-md-offset-4 col-md-4">
-                <div class="alert-contact"></div>
-                <div class="form-group">
-                    <label>Votre nom</label>
-                    <input type="text" class="form-control" id="name_user" required/>
-                </div>
-                <div class="form-group">
-                    <label>Votre adresse email</label>
-                    <input type="email" class="form-control" id="mail_user" required/>
-                </div>
-                <div class="form-group">
-                    <label>Sujet</label>
-                    <input type="text" class="form-control" id="subject_user" required/>
-                </div>
-                <div class="form-group">
-                    <label>Votre Message</label>
-                    <textarea class="form-control" placeholder="Votre message" aria-multiline="true" id="message_user" required></textarea>
-                </div>
-                <div class="text-center">
-                    <button class="btn btn-default send_message" design="green"><span class="glyphicon glyphicon-send"></span> Envoyer</button>
-                </div>
+      </div>
+    </section>
+  </div>
+
+  <div id='bookshow-window' class="ng-cloak popup-window" ng-if='UserBooks.display'
+        ng-click='UserBooks.hide()'>
+    <div class="window" ng-click='$event.stopPropagation();'>
+        <div class="header">
+            Aperçu d'un livre
+
+            <a href="#"><img src="/assets/link.svg" class='externalLink' alt="Ouvrir le lien de la page"></a>
+            <img src="/assets/quit.svg" class='closePopupWindow' ng-click='UserBooks.hide()' alt="Fermer la fenêtre">
+        </div>
+        <div class="content">
+          <div class="book-form-preview">
+            <div class="book-blur" style='background-image: url({(UserBooks.bookShow.img)})'></div>
+            <div class="input-form-wrap">
+              <div class="cover" style='background-image: url({(UserBooks.bookShow.img.length > 10?UserBooks.bookShow.img:"/assets/no_thumbnail.jpg")})'>
+              </div>
             </div>
+            <div class="input-form-wrap">
+              <div class="title-book">
+                {(UserBooks.bookShow.name? (UserBooks.bookShow.name | cap) : 'Titre du livre')}
+              </div>
+            </div>
+          </div>
+          <div class="infos-book">
+            <div class="infos-header">
+              <div class="i-h-info">
+                <div class="i-h-img">
+                  <img src="/assets/euro.svg">
+                </div>
+                <div class='i-h-text'>{(UserBooks.bookShow.price || '-')}</div>
+              </div>
+              <div class="i-h-info">
+                <div class="i-h-img">
+                  <img src="/assets/book.svg">
+                </div>
+                <div class='i-h-text'>{(UserBooks.bookShow.numberPage || '-')} <span ng-if='UserBooks.bookShow.numberPage'>pages</span></div>
+              </div>
+              <div class="i-h-info">
+                <div class="i-h-img">
+                  <img src="/assets/date.svg">
+                </div>
+                <div class='i-h-text'>{(UserBooks.bookShow.releaseDate.timestamp | date:'dd/MM/y' || '-')}</div>
+              </div>
+            </div>
+
+            <div class="info-book">
+              <rating-form vg-init='UserBooks.bookShow.note'
+                           vg-count='UserBooks.bookShow.nbrNotes'
+                           vg-editable='false'
+                           vg-displaynote='true'>
+              </rating-form>
+            </div>
+            <div class="info-book" ng-if='UserBooks.bookShow.categories.length'>
+              <ul class='token-container center'>
+                <li class='token' ng-repeat='token in UserBooks.bookShow.categories'>
+                  <span>{(token.name)}</span>
+                </li>
+              </ul>
+            </div>
+            <div class="info-book">
+              <div class="i-b-title">Autheur</div>
+              <div class="i-b-content">{(UserBooks.bookShow.author || '-')}</div>
+            </div>
+            <div class="info-book" ng-if='UserBooks.bookShow.username'>
+              <div class="i-b-title">Ajouté par </div>
+              <a class="i-b-content capitalize" ng-class='{link: UserBooks.bookShow}' target='_blank'
+              ng-href='/profile/{(UserBooks.bookShow.idUsers || "#")}'>{(UserBooks.bookShow.username || '-')}</a>
+            </div>
+            <div class="info-book">
+              <div class="i-b-title">Description</div>
+              <div class="i-b-content">{(UserBooks.bookShow.description || '-')}</div>
+            </div>
+            <div class="info-book" ng-if='UserBooks.bookShow.buyLink'>
+              <div class="i-b-title">Lien d'achat</div>
+              <a class="i-b-content" ng-class='{link: UserBooks.bookShow}' target='_blank'
+              ng-href='{(UserBooks.bookShow.buyLink || "#")}'>{(UserBooks.bookShow.buyLink?'Lien Play Store':'-')}</a>
+            </div>
+
+          </div>
+        </div>
+        <div class="footer">
+          <div class="note-action" ng-if='UserConnected && UserBooks.notation'>
+            <rating-form vg-model='UserBooks.notationCount'
+                          vg-name='"noteUserBook"'
+                          vg-editable='true'
+                          vg-init='0'
+                          vg-displaynote='true'
+                          on-select-result='UserBooks.sendNote(note)'>
+            </rating-form>
+          </div>
+          <!-- <div class="bouton" design='blanc' ng-click='UserBooks.hide()'>Fermer</div> -->
+          <button ng-if='UserConnected && ProfilId != UserInfos.id' ng-disabled='UserBooks.submittingCollection' class="bouton" design='blanc'
+             ng-class='{submitting: UserBooks.submittingCollection}'>Demande de prêt
+            <div class="loading-spinner grey"></div>
+          </button>
+          <button ng-if='UserConnected && ProfilId == UserInfos.id' ng-disabled='UserBooks.submittingCollection' class="bouton red" design='blanc'
+            ng-click='UserBooks.removeCollection()' ng-class='{submitting: UserBooks.submittingCollection}'>Retirer de ma collection
+            <div class="loading-spinner grey"></div>
+          </button>
+          <div class="bouton green" design='blanc' ng-click='UserBooks.toggleNote()'>Noter</div>
         </div>
     </div>
-    <!-- Script Modal -->
-    <script>
-        $('#myModal').on('shown.bs.modal', function () {
+  </div>
 
-        })
-    </script>
-    <!-- Modal pour la demande d'échange -->
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Demander un échange à {{ user.username }}</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="col-md-4">
-                        <img src="" class="img-responsive img-modal-book" />
-                    </div>
-                    <div class="col-md-8">
-                        <h4 class="title-book"></h4>
-                        <p><strong class="author-book"></strong></p>
-                        <p class="description-book"></p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success"><span class="glyphicon glyphicon-send"></span> Envoyer la demande</button>
-                </div>
-            </div>
+  <div id='demande-window' class="ng-cloak popup-window" ng-show='UserBooks.messageForm.display'
+        ng-click='UserBooks.messageForm.hide()'>
+    <div class="window" ng-click='$event.stopPropagation();'>
+        <div class="header">
+            Message privé
+
+            <img src="/assets/quit.svg" class='closePopupWindow' ng-click='UserBooks.messageForm.hide()' alt="Fermer la fenêtre">
         </div>
+        <div class="content">
+          <form name='messageFormX' ng-submit='UserBooks.messageForm.submit()' autocomplete="off">
+            <text-form vg-model='UserBooks.messageForm.values.name'
+                        vg-type='UserBooks.messageForm.elements.name.type'
+                        vg-name='UserBooks.messageForm.elements.name.name'
+                        vg-placeholder='UserBooks.messageForm.elements.name.placeholder'
+                        vg-validator='UserBooks.messageForm.elements.name.validator'
+                        vg-errors='UserBooks.messageForm.elements.name.errors'
+                        vg-required='UserBooks.messageForm.elements.name.required'>
+            </text-form>
+            <text-form vg-model='UserBooks.messageForm.values.subject'
+                        vg-type='UserBooks.messageForm.elements.subject.type'
+                        vg-name='UserBooks.messageForm.elements.subject.name'
+                        vg-placeholder='UserBooks.messageForm.elements.subject.placeholder'
+                        vg-validator='UserBooks.messageForm.elements.subject.validator'
+                        vg-errors='UserBooks.messageForm.elements.subject.errors'
+                        vg-required='UserBooks.messageForm.elements.subject.required'>
+            </text-form>
+            <text-form vg-model='UserBooks.messageForm.values.mail'
+                        vg-type='UserBooks.messageForm.elements.mail.type'
+                        vg-name='UserBooks.messageForm.elements.mail.name'
+                        vg-placeholder='UserBooks.messageForm.elements.mail.placeholder'
+                        vg-validator='UserBooks.messageForm.elements.mail.validator'
+                        vg-errors='UserBooks.messageForm.elements.mail.errors'
+                        vg-required='UserBooks.messageForm.elements.mail.required'>
+            </text-form>
+            <area-form vg-model='UserBooks.messageForm.values.message'
+                        vg-type='UserBooks.messageForm.elements.message.type'
+                        vg-name='UserBooks.messageForm.elements.message.name'
+                        vg-placeholder='UserBooks.messageForm.elements.message.placeholder'
+                        vg-validator='UserBooks.messageForm.elements.message.validator'
+                        vg-errors='UserBooks.messageForm.elements.message.errors'
+                        vg-required='UserBooks.messageForm.elements.message.required'>
+            </area-form>
+
+
+            <!-- <pre>{(UserBooks.messageForm.values | json)}</pre> -->
+        </div>
+        <div class="footer">
+          <button type='submit' ng-disabled='UserBooks.messageForm.submitting' class="bouton" design='green'
+          ng-class='{submitting: UserBooks.messageForm.submitting}'>Envoyer le message
+            <div class="loading-spinner grey"></div>
+          </button>
+        </div>
+        </form>
     </div>
+  </div>
+</ng-controller>
+
+
 {% endblock %}

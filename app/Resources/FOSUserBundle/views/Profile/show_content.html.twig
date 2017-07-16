@@ -1,4 +1,8 @@
+
 {% trans_default_domain 'FOSUserBundle' %}
+<script type="text/javascript">
+  window.user = {{(app.user.id is defined)?app.user.id:"null"}};
+</script>
 
 <ng-controller ng-controller='profil'>
 
@@ -6,7 +10,7 @@
     <section>
       <div class="ng-cloak content">
         <div class="profil">
-          <div class="picture" style='background-image: url("/assets/profil.jpg")'></div>
+          <div class="picture" style='background-image: url("{{user.pathImg}}")'></div>
           <div class="name">{{ user.username }}</div>
 
         </div>
@@ -23,20 +27,14 @@
             </div>
             <div class="i-h-info">
               <div class="i-h-img">
-                <img src="/assets/contact.svg">
-              </div>
-              <div class='i-h-text'>Contacter</div>
-            </div>
-            <div class="i-h-info">
-              <div class="i-h-img">
                 <img src="/assets/date.svg">
               </div>
-              <div class='i-h-text'>Peta</div>
+              <div class='i-h-text'>Lorem</div>
             </div>
           </div>
           <div class="infos-text">
             <div class="i-t-title">Description</div>
-            <div class="i-t-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</div>
+            <div class="i-t-content">{{user.description}}</div>
           </div>
           <div class="infos-text">
             <div class="i-t-title">Collection</div>

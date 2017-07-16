@@ -49,10 +49,36 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
     fill(notifs){
       this.list = notifs;
     }
-
   }
 
-  $scope.Notifications.init();
+  $scope.Messages = {
+    number: 0,
+    list: [],
+    display: false,
+    init(){
+      if ($rootScope.UserConnected){
+        notifications.emit('sync:messages', $rootScope.UserInfos);
+      }
+      else{
+
+      }
+    },
+    add(message){
+      this.list.push(message);
+      $rootScope.Alerts.add(notif.type, notif.message);
+      this.number++;
+    },
+    show(event){
+      this.display =  true;
+      this.number = 0;
+    },
+    hide(){this.display = false; console.log('close')},
+    fill(notifs){
+      this.list = notifs;
+    }
+  }
+
+  $scope.Messages.init();
 
 
   notifications.on('New:notification', function(data) {
