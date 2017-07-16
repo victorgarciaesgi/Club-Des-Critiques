@@ -74,4 +74,6 @@ class BookController extends Controller
 
         return $this->json($json_result);
     }
+
+
 }

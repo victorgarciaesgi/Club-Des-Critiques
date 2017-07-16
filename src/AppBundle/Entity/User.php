@@ -52,6 +52,13 @@ class User extends BaseUser
     /**
      * @var string
      *
+     * @ORM\Column(name="img", type="string",length=500, nullable=true)
+     */
+    private $img;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="address_ip", type="string",length=50, nullable=true)
      */
     private $addressIP;
@@ -98,6 +105,23 @@ class User extends BaseUser
     {
         $this->pathImg = $pathImg;
     }
+
+    /**
+     * @return string
+     */
+    public function getImg()
+    {
+        return $this->img;
+    }
+
+    /**
+     * @param string $img
+     */
+    public function setImg($img)
+    {
+        $this->img = $img;
+    }
+
 
     /**
      * Set note

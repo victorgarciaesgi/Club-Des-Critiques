@@ -4,7 +4,7 @@
     {{ form_widget(form) }}
 {{ form_end(form) }}
 
-<!-- <div class="flex-container" ng-non-bindable>
+<div class="flex-container" ng-non-bindable>
   <div id='popup-connexion' class="popup-box static" style='width: 400px'>
       <div class="header">
           Completer ses informations
@@ -22,10 +22,12 @@
 
           <textarea class="input-form" placeholder="Description" name="fos_user_registration_form[description]" required="required" ></textarea>
 
+          <input class="input-form" placeholder="Image" name="fos_user_registration_form[img]" />
+
       </div>
       <div class="footer">
         <button class='bouton' design='green' type="submit" id="_submit" name="fos_user_registration_form[save]" value="{{ 'security.login.submit'|trans }}">Créer mon compte</button>
       </div>
       </form>
   </div>
-</div> -->
+</div>

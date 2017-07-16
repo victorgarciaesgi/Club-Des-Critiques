@@ -57,8 +57,6 @@ class AdminController extends Controller
             ->getRepository('AppBundle:hasOne');
         $resultHasOne = $hasOneRepo->findAll();
 
-        //
-
         $repository = $this
             ->getDoctrine()
             ->getManager()
@@ -252,6 +250,28 @@ class AdminController extends Controller
 
         if (empty($media)) {
             $error = json_encode(array('error' => "Aucun média trouvé"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
+
+        $media->setIsActive(0);
+        $em->flush();
+
+        $success = json_encode(array('success' =>  + " a bien été supprimé"), JSON_FORCE_OBJECT);
+        return new JsonResponse($success);
+    }
+
+    /**
+     * @Route("/admin/chatroom/delete/{id_chatroom}", name="delete_chatroom")
+     */
+    public function deleteChatRoomAction(Request $request,$id_chatroom)
+    {
+        $data = $this->decodeAjaxRequest($request);
+
+        $em = $this->getDoctrine()->getManager();
+        $media = $em->getRepository('AppBundle:Chatroom')->find($id_chatroom);
+
+        if (empty($media)) {
+            $error = json_encode(array('error' => "Aucun chatroom trouvé"), JSON_FORCE_OBJECT);
             return new JsonResponse($error);
         }
 
