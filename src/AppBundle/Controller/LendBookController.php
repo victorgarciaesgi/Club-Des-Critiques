@@ -20,9 +20,9 @@ class LendBookController extends Controller
      */
     public function lendBookAction(Request $request)
     {
-        $user_origin = $request->request->get('user_origin');
-        $media = $request->request->get('subject');
-        $user_target = $this->getUser()->getId();
+        $user_origin = intval($request->request->get('user_origin'));
+        $media = intval($request->request->get('subject'));
+        $user_target = intval($this->getUser()->getId());
 
         $em = $this->getDoctrine()->getManager();
 
@@ -30,6 +30,7 @@ class LendBookController extends Controller
         $LendBook->setUserOrigin($user_origin);
         $LendBook->setMedia($media);
         $LendBook->setUserTarget($user_target);
+        $LendBook->setStatus(1);
 
         $em->persist($LendBook);
 
