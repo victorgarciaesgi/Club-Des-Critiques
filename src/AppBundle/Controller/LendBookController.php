@@ -14,7 +14,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 class LendBookController extends Controller
 {
     /**
-     * Controller pour l'ajout d'un livre
      *
      * @Route("/lend-book", name="add_book", options = { "expose" = true })
      */
@@ -37,6 +36,24 @@ class LendBookController extends Controller
         $em->flush();
 
         return $this->json(true);
+    }
 
+    /**
+     * Changement de status quand le livre
+     *
+     * @Route("/lend-book/status-recup/{id_lend}/{status}", name="change_status_lead")
+     */
+    public function changeStatusAction(Request $request,$id_lend,$status)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $newStatus = intval($status);// Récupérer
+        $LendId = intval($id_lend);
+
+        $lendBook = $em->getRepository('AppBundle:LendBook')->find($LendId);
+        $lendBook->setStatus($newStatus);
+        $em->flush();
+
+        return $this->json(true);
     }
 }
