@@ -142,8 +142,8 @@
                             <td>{{ chatroom.idChatroom }}</td>
                             <td>{{ chatroom.name }}</td>
                             <td>{{ chatroom.idMedia.name }}</td>
-                            <td>{{ chatroom.dateStart|date("d/m/Y h:m")  }}</td>
-                            <td>{{ chatroom.dateEnd|date("d/m/Y h:m")  }}</td>
+                            <td>{{ chatroom.dateStart|date("d/m/Y") }}</td>
+                            <td>{{ chatroom.dateEnd |date("d/m/Y") }}</td>
                             <td></td>
                             <td class="text-center">{%  if chatroom.status == 0 %}<span title="Fermé" style="color:darkgray;" class="glyphicon glyphicon-flash"></span>{%  elseif chatroom.status == 1 %}<span title="En cours" style="color:#008000;" class="glyphicon glyphicon-flash"></span>{%  else %}<span title="Terminé" style="color:#0000cc;" class="glyphicon glyphicon-flash"></span>{%  endif %}</td>
                             <td class="text-center"><a href="#" title="Modifier" class="btn btn-primary"><span class="glyphicon glyphicon-eye-open"></span></a> <a href="/admin/update-cms//" title="Modifier" class="btn btn-warning"><span class="glyphicon glyphicon-cog"></span></a> <a href="/admin/delete-room/{{ chatroom.idChatroom }}/" title="Supprimer" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
