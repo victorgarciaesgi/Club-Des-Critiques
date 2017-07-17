@@ -63,14 +63,21 @@ io.on('connection', function (socket) {
     socket.on('Sync', function (user) {
       getUserInfos(user.id).then((user) => {
         socket.user = user;
-        getAllRoomsInfos().then((rooms) => {
+        getAccessRooms().then((rooms) => {
           socket.room = rooms[0];
-          getRoomInfos(socket.room.id_chatRoom).then((messages) => {
-            socket.room.messages = messages;
+          getRoomInfos(socket.room.id_chatRoom).then((data) => {
+            socket.room.messages = data.messages;
+            socket.room.users = data.users;
             socket.join(socket.room.id_chatRoom);
             socket.emit('Update:rooms', rooms, socket.room);
           })
         })
+      })
+    });
+
+    socket.on('Reload:rooms', function (user) {
+      getAccessRooms().then((rooms) => {
+        socket.emit('Update:rooms', rooms, socket.room);
       })
     });
 
@@ -99,8 +106,17 @@ io.on('connection', function (socket) {
     // Inviter un user
     socket.on('Invite:User', function (data, callback) {
       var notif = new Notification('alert',socket.user.username + ' vous a invité au salon : ' + socket.room.name);
-      callback();
-      sendNotification(data.user.id, notif);
+      inviteUser(socket.room.id_chatRoom, data.user.id).then((r) => {
+        getRoomInfos(socket.room.id_chatRoom).then((result) => {
+          socket.room.users = result.users;
+          socket.broadcast.emit('Reload:rooms',socket.room);
+          io.to(socket.room.id_chatRoom).emit('Update:currentRoom',socket.room);
+          callback();
+          sendNotification(data.user.id, notif);
+        })
+      });
+
+
     });
 
 
@@ -110,8 +126,9 @@ io.on('connection', function (socket) {
         socket.leave(socket.room.id_chatRoom);
         getRoombyId(roomId).then((room) => {
           socket.room = room;
-          getRoomInfos(roomId).then((messages) => {
-            socket.room.messages = messages;
+          getRoomInfos(roomId).then((data) => {
+            socket.room.messages = data.messages;
+            socket.room.users = data.users;
             socket.join(roomId);
             socket.emit('Update:currentRoom', socket.room);
           })
@@ -122,7 +139,7 @@ io.on('connection', function (socket) {
     socket.on('New:room', function(newroom, callback){
       createRoom(newroom).then((roomId) => {
         callback();
-        getAllRooms().then((rooms) => {
+        getAccessRooms().then((rooms) => {
           socket.emit('Update:rooms', rooms, socket.room);
         })
       }, (error) => {
@@ -141,7 +158,7 @@ io.on('connection', function (socket) {
       return new Promise(function (fulfill, reject){
         var query = `SELECT u.id, u.username, u.path_img
                     FROM user u
-                    WHERE u.id = ${id}`;
+                    WHERE u.id = ${BDD.escape(id)}`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             return fulfill(rows[0]);
@@ -159,8 +176,10 @@ io.on('connection', function (socket) {
 
     function getRoomInfos(roomId){
       return new Promise(function (fulfill, reject){
-        getMessages(roomId).then((result) => {
-          fulfill(result);
+        getMessages(roomId).then((messages) => {
+          getUsersByRoom(roomId).then((users) => {
+            fulfill({messages: messages, users: users});
+          })
         }, (error) => {reject(error)})
       })
     }
@@ -169,8 +188,9 @@ io.on('connection', function (socket) {
       return new Promise(function (fulfill, reject){
         getAllRooms().then((rooms) => {
           rooms.forEach((room, index, array) => {
-            getRoomInfos(room.id_chatRoom).then((messages) => {
-              room.messages = messages;
+            getRoomInfos(room.id_chatRoom).then((data) => {
+              room.messages = data.messages;
+              room.users = data.users
               if (index === array.length - 1){
                 fulfill(rooms);
               }
@@ -184,8 +204,9 @@ io.on('connection', function (socket) {
       return new Promise(function (fulfill, reject){
         getAccessRooms().then((rooms) => {
           rooms.forEach((room, index, array) => {
-            getRoomInfos(room.id_chatRoom).then((messages) => {
-              room.messages = messages;
+            getRoomInfos(room.id_chatRoom).then((data) => {
+              room.messages = data.messages;
+              room.users = data.users
               if (index === array.length - 1){
                 fulfill(rooms);
               }
@@ -217,7 +238,8 @@ io.on('connection', function (socket) {
                     FROM chatroom c
                     JOIN chatroom_access ca ON c.is_active = 1
                     AND c.id_chatRoom = ca.id_chatRoom
-                    AND ca.id_user = ${socket.user.id}
+                    AND ca.status =  1
+                    AND ca.id_user = ${BDD.escape(socket.user.id)}
                     LEFT JOIN media m ON m.id_media = c.id_media
                     GROUP BY c.id_chatRoom
                     ORDER by c.id_chatRoom`;
@@ -235,7 +257,7 @@ io.on('connection', function (socket) {
         var query = `SELECT *
                     FROM chatroom
                     WHERE is_active = 1
-                    AND id_chatRoom = ${id}
+                    AND id_chatRoom = ${BDD.escape(id)}
                     ORDER by id_chatRoom`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
@@ -271,12 +293,44 @@ io.on('connection', function (socket) {
         if (dateStart < today){return reject()}
         if (dateStart > dateEnd){return reject()}
         var query = `INSERT INTO chatroom
-                VALUES ('${socket.user.id}', '${infos.book.idMedia}', NULL, '${infos.name}', '1', 'a', '${Date.now()}', 'null', '${dateStart.getTime()}', '${dateEnd.getTime()}', '1', '0', '1', '${Date.now()}');`;
+                VALUES (${BDD.escape(socket.user.id)}, ${BDD.escape(infos.book.idMedia)}, NULL, ${BDD.escape(infos.name)}, '1', 'a', ${Date.now()}, 'null', ${BDD.escape(dateStart.getTime())}, ${BDD.escape(dateEnd.getTime())}, '1', '0', '1', ${Date.now()});`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
-            fulfill(rows.insertId);
+            inviteUser(rows.insertId, socket.user.id).then((result) =>{
+              fulfill(rows.insertId);
+            })
           }
           else{reject(err);console.log('Erreur a la creation de la room ${id}')}
+        });
+      })
+    }
+
+    //invite User
+
+    function inviteUser(roomId, userId){
+      return new Promise(function (fulfill, reject){
+        var query = `INSERT INTO chatroom_access VALUES (NULL, '${roomId}', ${BDD.escape(userId)}, '1', '1');`;
+        BDD.query(query,(err, rows, fields) => {
+          if (!err){
+            return fulfill();
+          }
+          else{reject(err);console.log('Erreur a Linvitation du user')}
+        });
+      })
+    }
+
+
+    function getUsersByRoom(roomId){
+      return new Promise(function (fulfill, reject){
+        var query = `SELECT u.username, u.id, u.path_img
+                    FROM chatroom_access ca
+                    LEFT JOIN user u ON u.id = ca.id_user
+                    WHERE ca.id_chatRoom = ${BDD.escape(roomId)}`;
+        BDD.query(query,(err, rows, fields) => {
+          if (!err){
+            return fulfill(rows);
+          }
+          else{reject(err);console.log('Erreur a la recup des messages de la room ${roomId}')}
         });
       })
     }
@@ -288,12 +342,11 @@ io.on('connection', function (socket) {
     function saveMessage(message){
       return new Promise(function (fulfill, reject){
         var msg = {id_user: socket.user.id, message: message, date_created: Date.now(), id_chatRoom: socket.room.id_chatRoom, path_img: socket.user.path_img, username: socket.user.username};
-        var query = `INSERT INTO messages_chat_room VALUES ('', '${msg.id_user}', '${msg.message}', '${msg.date_created}','${msg.id_chatRoom}','1');`;
-                    console.log(query)
+        var query = `INSERT INTO messages_chat_room VALUES ('', ${BDD.escape(msg.id_user)}, ${BDD.escape(msg.message)}, ${BDD.escape(msg.date_created)},${BDD.escape(msg.id_chatRoom)},'1');`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             msg.id = rows.insertId;
-            return fulfill(msg);
+            fulfill(msg);
           }
           else{reject(err);console.log('Erreur a lajout du message ${message.text}')}
         });
@@ -305,7 +358,7 @@ io.on('connection', function (socket) {
         var query = `SELECT m.*, u.username, u.path_img
                     FROM messages_chat_room m
                     LEFT JOIN user u on u.id = m.id_user
-                    WHERE m.id_chatRoom = ${roomId}
+                    WHERE m.id_chatRoom = ${BDD.escape(roomId)}
                     AND m.is_active = 1`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
@@ -320,7 +373,7 @@ io.on('connection', function (socket) {
       return new Promise(function (fulfill, reject){
         var query = `UPDATE messages_chat_room
                     SET is_active = 0
-                    WHERE id = ${id}`;
+                    WHERE id = ${BDD.escape(id)}`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             return fulfill(rows);

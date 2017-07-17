@@ -105,9 +105,9 @@ class Chatroom
     /**
      * @var integer
      *
-     * @ORM\Column(name="note", type="integer", nullable=false)
+     * @ORM\Column(name="is_valid", type="integer", nullable=false)
      */
-    private $note;
+    private $is_valid;
 
     /**
      * Status : Terminé/en cours / Fermé /blocked

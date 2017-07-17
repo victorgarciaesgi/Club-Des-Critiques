@@ -1,6 +1,6 @@
 'use strict'
 
-MainApp.controller('header', function ($scope, $rootScope, notifications, moment) {
+MainApp.controller('header', function ($scope, $rootScope, notifications, moment, socket) {
 
   $scope.Header = {
     displaySearch: false,
@@ -80,7 +80,6 @@ MainApp.controller('header', function ($scope, $rootScope, notifications, moment
   }
 
   $scope.Messages.init();
-
 
   notifications.on('New:notification', function(data) {
     var notif = new Notification(data.type, data.message, data.date);

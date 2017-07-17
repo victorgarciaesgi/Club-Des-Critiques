@@ -374,22 +374,22 @@
             </div>
 
 
-            <button ng-if='!UserConnected && !Library.adminView' class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</button>
-            <button ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "0"' class="bouton popup-bouton" popup='popup-selectType' design='blanc'
+            <button type='button' ng-if='!UserConnected && !Library.adminView' class="bouton" design='blanc' ng-click='Library.books.hide()'>Fermer</button>
+            <button type='button' ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "0"' class="bouton popup-bouton" popup='popup-selectType' design='blanc'
               ng-click='Library.books.userType.toggle($event)' >Ajouter à ma collection
               <div class="loading-spinner grey"></div>
             </button>
-            <button ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "1"' ng-disabled='Library.books.submittingCollection' class="bouton red" design='blanc'
+            <button type='button' ng-if='UserConnected && !Library.adminView && Library.books.bookShow.isInCollection == "1"' ng-disabled='Library.books.submittingCollection' class="bouton red" design='blanc'
               ng-click='Library.books.removeCollection()' ng-class='{submitting: Library.books.submittingCollection}'>Retirer de ma collection
               <div class="loading-spinner grey"></div>
             </button>
-            <button ng-if='UserConnected && !Library.adminView' class="bouton" ng-class='{green: Library.books.notation}' design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</button>
-            <button ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</button>
+            <button type='button' ng-if='UserConnected && !Library.adminView' class="bouton" ng-class='{green: Library.books.notation}' design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</button>
+            <button type='button' ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</button>
             <!-- Admin -->
-            <button ng-if='Library.adminView && UserAdmin' ng-disabled='Library.books.refusing'
+            <button type='button' ng-if='Library.adminView && UserAdmin' ng-disabled='Library.books.refusing'
                 ng-class='{submitting: Library.books.refusing}' class="bouton red" design='blanc' ng-click='Library.books.refuse()'>Refuser le livre
                 <div class="loading-spinner grey"></div></button>
-            <button ng-if='Library.adminView && UserAdmin' ng-disabled='Library.books.validating'
+            <button type='button' ng-if='Library.adminView && UserAdmin' ng-disabled='Library.books.validating'
                 ng-class='{submitting: Library.books.validating}' class="bouton" design='green' ng-click='Library.books.validate()'> Valider le livre
                 <div class="loading-spinner white"></div></button>
           </div>

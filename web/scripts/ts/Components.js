@@ -87,7 +87,7 @@ MainApp.component('searchForm', {
     ctrl.keydown = (event, element) => {
       if (event.which == 13) {event.preventDefault();}
       var model = ctrl.vgModel?ctrl.vgModel:"";
-      if (!ctrl.searching && (model.length > 1 || ctrl.searchText.length > 1) && (model != undefined || ctrl.searchText != undefined)){
+      if (!ctrl.searching && (model.length > 1 || ctrl.searchText.length > 0) && (model != undefined || ctrl.searchText != undefined)){
         if (event.which == 13 && !ctrl.error) {
           event.preventDefault();
           ctrl.selectAction(ctrl.search_result.selected);
@@ -446,21 +446,25 @@ MainApp.component('dateBetweenForm', {
     var ctrl = this;
 
     ctrl.$onInit = function(){
-      var date = new Date();
+      var date = new Date(Date.now());
       date = new Date(date.setSeconds(0))
-      ctrl.vgModelStart = new Date(date);
-      ctrl.vgModelEnd = new Date(date.setDate(date.getDate() + 1));
+      ctrl.vgModelStart = new Date(date.setDate(date.getDate() + 1));
+      ctrl.vgModelEnd = new Date(date.setDate(date.getDate() + 2));
+
     }
 
     $scope.$watch('$ctrl.vgModelStart',(newValue, oldValue, scope) => {
       if (!!newValue) {
         scope.dateForm1[ctrl.vgData.startName].$setDirty();
       }
+      else{
+        ctrl.$onInit();
+      }
     }, true)
 
     $scope.$watch('$ctrl.vgModelStartTime',(newValue, oldValue, scope) => {
       if (!!newValue) {
-        scope.dateForm1[ctrl.vgData.startName].$setDirty();
+        scope.dateForm1['startTime'].$setDirty();
       }
     }, true)
 
@@ -468,11 +472,14 @@ MainApp.component('dateBetweenForm', {
       if (!!newValue) {
         scope.dateForm2[ctrl.vgData.endName].$setDirty();
       }
+      else{
+        ctrl.$onInit();
+      }
     }, true)
 
     $scope.$watch('$ctrl.vgModelEndTime',(newValue, oldValue, scope) => {
       if (!!newValue) {
-        scope.dateForm2[ctrl.vgData.endName].$setDirty();
+        scope.dateForm2['endTime'].$setDirty();
       }
     }, true)
   },

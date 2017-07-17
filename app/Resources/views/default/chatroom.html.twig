@@ -70,7 +70,7 @@
                     </div>
                     <div class='text'>{(message.message)}</div>
                     <div class="time">
-                      <div>{(message.date_created | date: 'hh:mm')}</div>
+                      <div>{(message.date_created | date: 'HH:mm')}</div>
                     </div>
                     <div class="report" ng-if='!UserAdmin'>
                       <img src="/assets/signaler_grey.svg" alt="" ng-click='Chatroom.reportMessage(message)'>
@@ -185,9 +185,9 @@
                 Personnes
               </div>
               <ul>
-                <li ng-repeat='user in Chatroom.infos.users'>
-                  <div class="ng-cloak profil" style='background-image: url("http://lorempixel.com/100/100?{(user.name)}")'></div>
-                  <span>{(user.name)}</span>
+                <li ng-repeat='user in Chatroom.infos.users track by user.id'>
+                  <div class="ng-cloak profil" style='background-image: url("{(user.path_img)}")'></div>
+                  <span>{(user.username)}</span>
                 </li>
               </ul>
             </div>
@@ -198,7 +198,7 @@
 
     </div>
 
-    <div id='popup-createSalon' class="popup-box" style='width: 400px' state='false'>
+    <div id='popup-createSalon' ng-click='createSalon.toggle()' class="popup-box" style='width: 400px' state='false'>
         <img id='pin' src="/assets/up.png" alt="">
         <div class="header">
             Ajouter un salon
@@ -237,10 +237,10 @@
                                vg-data='createSalon.elements.dates'>
             </date-between-form>
 
-            <pre>{(createSalon.values | json)}</pre>
+            <!-- <pre>{(createSalon.values | json)}</pre> -->
         </div>
         <div class="footer">
-          <button class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</button>
+          <button type='button' class="bouton" design='blanc' ng-click='createSalon.reset()'>Vider les champs</button>
           <button type='submit' ng-disabled='createSalon.loading || createSalonX.$invalid' class="bouton" design='green'
           ng-class='{submitting: createSalon.loading}'>Créer le salon
             <div class="loading-spinner white"></div>
