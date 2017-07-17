@@ -13,42 +13,9 @@ const BDD = mysql.createConnection({
 });
 
 server.listen(8124);
-// rooms = [
-//   {id: 1, title: 'Salon Harry Potter', messages:[], date_start:'2017-06-29 11:50', date_end:'2017-07-30 21:00', users: [], book:75},
-//   {id: 2, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-26', date_end:'2017-06-27 19:00', users: [], book:76},
-//   {id: 3, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-28', date_end:'2017-06-29 20:00', users: [], book:77},
-//   {id: 4, title: 'Salon Harry Potter', messages:[], date_start:'2017-07-01', date_end:'2017-06-30 21:00', users: [], book:78},
-//   {id: 5, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:79},
-//   {id: 6, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-27 13:00', users: [], book:80},
-//   {id: 7, title: 'Salon Harry Potter', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 21:00', users: [], book:81},
-//   {id: 8, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:82},
-//   {id: 9, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-29 20:00', users: [], book:83},
-//   {id: 10, title: 'Salon Harry Potter', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 21:00', users: [], book:84},
-//   {id: 11, title: 'Discussion sur Hunger Games', messages:[], date_start:'2017-07-01', date_end:'2017-06-26 19:00', users: [], book:85},
-//   {id: 12, title: 'Salon sur Titeuf', messages:[], date_start:'2017-07-01', date_end:'2017-06-29 20:00', users: [], book:86}
-// ]
 
 users = [];
 
-messageCount = 0;
-
-class Room {
-  constructor(created_by, id_media, name, number_room, date_start, date_end) {
-    this.created_by = created_by;
-    this.id_media = id_media;
-    this.name = name;
-    this.number_room = number_room;
-    this.description = "";
-    this.date_created = Date.now();
-    this.date_updated = Date.now();
-    this.date_closed = null;
-    this.date_start = date_start;
-    this.date_end = date_end;
-    this.note = 0;
-    this.status = 0;
-    this.is_active = 1;
-  }
-}
 
 class Notification{
   constructor(type, message, date){
@@ -131,7 +98,7 @@ io.on('connection', function (socket) {
 
     // Inviter un user
     socket.on('Invite:User', function (data, callback) {
-      var notif = new Notification('alert',socket.user.name + ' vous a invité au salon : ' + socket.room.title);
+      var notif = new Notification('alert',socket.user.username + ' vous a invité au salon : ' + socket.room.name);
       callback();
       sendNotification(data.user.id, notif);
     });
@@ -158,6 +125,8 @@ io.on('connection', function (socket) {
         getAllRooms().then((rooms) => {
           socket.emit('Update:rooms', rooms, socket.room);
         })
+      }, (error) => {
+
       })
     });
 
@@ -235,7 +204,7 @@ io.on('connection', function (socket) {
                     ORDER by c.id_chatRoom`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
-            return fulfill(rows);
+            fulfill(rows);
           }
           else{reject(err);console.log('Erreur a la recup des rooms')}
         });
@@ -254,7 +223,7 @@ io.on('connection', function (socket) {
                     ORDER by c.id_chatRoom`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
-            return fulfill(rows);
+            fulfill(rows);
           }
           else{reject(err);console.log('Erreur a la recup des rooms access')}
         });
@@ -270,7 +239,7 @@ io.on('connection', function (socket) {
                     ORDER by id_chatRoom`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
-            return fulfill(rows[0]);
+            fulfill(rows[0]);
           }
           else{reject(err);console.log('Erreur a la recup de la room ${id}')}
         });
@@ -279,13 +248,33 @@ io.on('connection', function (socket) {
 
     function createRoom(infos){
       return new Promise(function (fulfill, reject){
-        var date = new Date(Date.now());
+        var today = new Date(Date.now());
+
+        var dateStart = new Date(infos.date_start);
+        if (infos.date_startTime){
+          dateStart.setHours(new Date(infos.date_startTime).getHours());
+          dateStart.setMinutes(new Date(infos.date_startTime).getMinutes());
+        }
+        else{
+          dateStart.setHours(0);
+          dateStart.setMinutes(0);
+        }
+        var dateEnd = new Date(infos.date_end);
+        if (infos.date_endTime){
+          dateEnd.setHours(new Date(infos.date_endTime).getHours());
+          dateEnd.setMinutes(new Date(infos.date_endTime).getMinutes());
+        }
+        else{
+          dateEnd.setHours(0);
+          dateEnd.setMinutes(0);
+        }
+        if (dateStart < today){return reject()}
+        if (dateStart > dateEnd){return reject()}
         var query = `INSERT INTO chatroom
-                VALUES ('${socket.user.id}', '${infos.book.idMedia}', NULL, '${infos.name}', '1', 'a', '${Date.now()}', 'null', '${new Date(infos.date_start).getTime()}', '${new Date(infos.date_start).getTime()}', '1', '1', '1', '${Date.now()}');`;
-        console.log(query);
+                VALUES ('${socket.user.id}', '${infos.book.idMedia}', NULL, '${infos.name}', '1', 'a', '${Date.now()}', 'null', '${dateStart.getTime()}', '${dateEnd.getTime()}', '1', '0', '1', '${Date.now()}');`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
-            return fulfill(rows.insertId);
+            fulfill(rows.insertId);
           }
           else{reject(err);console.log('Erreur a la creation de la room ${id}')}
         });
@@ -348,7 +337,9 @@ io.on('connection', function (socket) {
 
 
 
-
+var intervalSalons = setInterval(() => {
+  // checkSalons();
+},10000);
 
 
 

@@ -11,15 +11,27 @@
             }'
             placeholder="{($ctrl.vgData.legend1)}"
             name='{($ctrl.vgData.startName)}'
-            date-end='{($ctrl.vgModelEnd)}'
             ng-required='$ctrl.vgData.required'
             ng-model-options="{'allowInvalid': true}"
             ng-trim="false"/>
-
      <div ng-show='dateForm1[$ctrl.vgData.startName].$valid && dateForm1[$ctrl.vgData.startName].$dirty' class="form-valid-icon form-valid"></div>
      <div ng-show='dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty' class="form-valid-icon form-invalid"></div>
      <div ng-show='dateForm1[$ctrl.vgData.startName].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
   </div>
+  <div class="input-form-wrap f-left h-auto w-100">
+  <input type="time"
+          ng-model='$ctrl.vgModelStartTime'
+          class='input-form'
+          ng-class='{
+            formError: (dateForm1["startTime"].$invalid && dateForm1["startTime"].$dirty),
+            formValid: (dateForm1["startTime"].$valid && dateForm1["startTime"].$dirty),
+          }'
+          placeholder="Heure de début"
+          name='startTime'
+          required='true'
+          ng-disabled='$ctrl.vgDisabled'
+          ng-model-options="{'allowInvalid': true}"
+          ng-trim="false" />
     <div class="errorMessage" ng-show='dateForm1[$ctrl.vgData.startName].$invalid && dateForm1[$ctrl.vgData.startName].$dirty'>
       <span ng-repeat='(key, value) in dateForm1[$ctrl.vgData.startName].$error' ng-if='dateForm1[$ctrl.vgData.startName].$error && key != "required"'>
         <span>{($ctrl.vgData.errors[key])}</span>
@@ -35,7 +47,7 @@
   </ng-form>
 
 
-  <ng-form name='dateForm2' ng-show='$ctrl.vgModelStart && dateForm1.$valid'>
+  <ng-form name='dateForm2'>
   <div class='legend'>{($ctrl.vgData.legend2)}</div>
   <div class="input-form-wrap f-left h-auto w-100">
     <input type="date"
@@ -47,7 +59,6 @@
             }'
             placeholder="{($ctrl.vgData.legend2)}"
             name='{($ctrl.vgData.endName)}'
-            date-start={($ctrl.vgModelStart)}
             ng-required='$ctrl.vgData.required'
             ng-model-options="{'allowInvalid': true}"
             ng-trim="false" />
@@ -56,6 +67,19 @@
      <div ng-show='dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty' class="form-valid-icon form-invalid"></div>
      <div ng-show='dateForm2[$ctrl.vgData.endName].$pristine && $ctrl.vgData.required' class="form-valid-icon form-required"></div>
   </div>
+  <input type="time"
+          ng-model='$ctrl.vgModelEndTime'
+          class='input-form'
+          ng-class='{
+            formError: (dateForm2["endTime"].$invalid && dateForm2["endTime"].$dirty),
+            formValid: (dateForm2["endTime"].$valid && dateForm2["endTime"].$dirty),
+          }'
+          placeholder="Heure de fin"
+          name='endTime'
+          required='true'
+          ng-disabled='$ctrl.vgDisabled'
+          ng-model-options="{'allowInvalid': true}"
+          ng-trim="false" />
     <div class="errorMessage" ng-show='dateForm2[$ctrl.vgData.endName].$invalid && dateForm2[$ctrl.vgData.endName].$dirty'>
       <span ng-repeat='(key, value) in dateForm2[$ctrl.vgData.endName].$error' ng-if='dateForm2[$ctrl.vgData.endName].$error && key != "required"'>
         <span>{($ctrl.vgData.errors[key])}</span>

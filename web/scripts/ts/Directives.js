@@ -51,14 +51,38 @@ MainApp.directive('dateBetweenValidator', function($q) {
 
         scope.dateForm1[names[0]].$validators.start = (modelValue, viewValue) => {
           var date = new Date(modelValue);
-          var dateEnd = new Date(newValue.vgModelEnd);
-          var today = Date.now();
+          if (newValue.vgModelStartTime){
+            date.setHours(newValue.vgModelStartTime.getHours());
+            date.setMinutes(newValue.vgModelStartTime.getMinutes());
+          }
+          else{
+            date.setHours(0);
+            date.setMinutes(0);
+          }
+
+          var today = new Date(Date.now());
           if (date < today){return false;}
           else{return true;}
         }
         scope.dateForm2[names[1]].$validators.end = (modelValue, viewValue) => {
           var dateStart = new Date(newValue.vgModelStart);
+          if (newValue.vgModelStartTime){
+            dateStart.setHours(newValue.vgModelStartTime.getHours());
+            dateStart.setMinutes(newValue.vgModelStartTime.getMinutes());
+          }
+          else{
+            dateStart.setHours(0);
+            dateStart.setMinutes(0);
+          }
           var date = new Date(modelValue);
+          if (newValue.vgModelEndTime){
+            date.setHours(newValue.vgModelEndTime.getHours());
+            date.setMinutes(newValue.vgModelEndTime.getMinutes());
+          }
+          else{
+            date.setHours(0);
+            date.setMinutes(0);
+          }
           if (dateStart > date){return false;}
           else{return true;}
         }

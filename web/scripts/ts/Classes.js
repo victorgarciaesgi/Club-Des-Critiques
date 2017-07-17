@@ -12,6 +12,9 @@ var map = {
   email: {
     email: 'Ce champs doit être une adresse valide'
   },
+  time: {
+    time: 'L\'heure doit être valide'
+  },
   date: {
     date: 'La date doit être valide'
   },

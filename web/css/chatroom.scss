@@ -540,6 +540,12 @@ article#Messages{
   }
 }
 
+#popup-createSalon{
+  .content{
+    overflow-y: auto;
+  }
+}
+
 
 #Infos{
   width: $infosWidth;

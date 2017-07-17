@@ -96,7 +96,7 @@ MainApp.component('searchForm', {
           event.preventDefault();
           var list = ctrl.search_result.data;
           var index = ctrl.search_result.selected.indexList;
-          if((event.which == 38 && index > 0) || (event.which == 40 && index < ctrl.limit - 1)){
+          if((event.which == 38 && index > 0) || (event.which == 40 && index < ctrl.limit - 1 && index < (ctrl.search_result.data.length - 1))){
             var direction = (- 39) + event.which;
             ctrl.search_result.selected = list[index + direction];
             ctrl.search_result.selected["indexList"] = index + direction;
@@ -444,7 +444,21 @@ MainApp.component('dateBetweenForm', {
   templateUrl: '../../components/DateBetween-form.html',
   controller: function($scope, $element, $attrs){
     var ctrl = this;
+
+    ctrl.$onInit = function(){
+      var date = new Date();
+      date = new Date(date.setSeconds(0))
+      ctrl.vgModelStart = new Date(date);
+      ctrl.vgModelEnd = new Date(date.setDate(date.getDate() + 1));
+    }
+
     $scope.$watch('$ctrl.vgModelStart',(newValue, oldValue, scope) => {
+      if (!!newValue) {
+        scope.dateForm1[ctrl.vgData.startName].$setDirty();
+      }
+    }, true)
+
+    $scope.$watch('$ctrl.vgModelStartTime',(newValue, oldValue, scope) => {
       if (!!newValue) {
         scope.dateForm1[ctrl.vgData.startName].$setDirty();
       }
@@ -455,10 +469,18 @@ MainApp.component('dateBetweenForm', {
         scope.dateForm2[ctrl.vgData.endName].$setDirty();
       }
     }, true)
+
+    $scope.$watch('$ctrl.vgModelEndTime',(newValue, oldValue, scope) => {
+      if (!!newValue) {
+        scope.dateForm2[ctrl.vgData.endName].$setDirty();
+      }
+    }, true)
   },
   bindings: {
     vgModelStart: '=',
     vgModelEnd: '=',
+    vgModelStartTime: '=',
+    vgModelEndTime: '=',
     vgData: '<?',
   }
 });
