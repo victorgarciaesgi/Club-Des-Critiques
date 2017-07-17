@@ -98,6 +98,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         socket.emit('Sync', $rootScope.UserInfos);
       }
       else{
+        this.infos.open = false;
         this.messages.error = "Vous devez vous connecter pour participer et voir le contenu des salons"
       }
 
@@ -119,9 +120,14 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     },
     submit(){
       this.loading = true;
-      socket.emit('New:room',this.values, () => {
-        $rootScope.Alerts.add('success', 'La demande de création de salon a été transmise');
-        this.reset();
+      socket.emit('New:room',this.values, (result) => {
+        if (result){
+          $rootScope.Alerts.add('success', 'La demande de création de salon a été transmise');
+          this.reset();
+        }
+        else{
+          $rootScope.Alerts.add('error', 'Erreur lors de la création du salon');
+        }
       });
     },
     reset(){
@@ -172,7 +178,6 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
 
   socket.on('Update:rooms', function(rooms, current_room) {
-    console.log(rooms, current_room);
     rooms.forEach((element) => {
       element.dates = {end: element.date_end,start: element.date_start};
     })

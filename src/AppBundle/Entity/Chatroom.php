@@ -328,27 +328,27 @@ class Chatroom
     }
 
     /**
-     * Set note
+     * Set is_valid
      *
-     * @param integer $note
+     * @param integer $isValid
      *
      * @return Chatroom
      */
-    public function setNote($note)
+    public function setIsValid($isValid)
     {
-        $this->note = $note;
+        $this->is_valid = $iValid;
 
         return $this;
     }
 
     /**
-     * Get note
+     * Get is_valid
      *
      * @return integer
      */
-    public function getNote()
+    public function getIsValid()
     {
-        return $this->note;
+        return $this->is_valid;
     }
 
     /**

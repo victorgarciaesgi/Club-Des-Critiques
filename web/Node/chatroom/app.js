@@ -138,12 +138,12 @@ io.on('connection', function (socket) {
     //Creation d'une room
     socket.on('New:room', function(newroom, callback){
       createRoom(newroom).then((roomId) => {
-        callback();
+        callback(true);
         getAccessRooms().then((rooms) => {
           socket.emit('Update:rooms', rooms, socket.room);
         })
       }, (error) => {
-
+        callback(false);
       })
     });
 
@@ -342,7 +342,7 @@ io.on('connection', function (socket) {
     function saveMessage(message){
       return new Promise(function (fulfill, reject){
         var msg = {id_user: socket.user.id, message: message, date_created: Date.now(), id_chatRoom: socket.room.id_chatRoom, path_img: socket.user.path_img, username: socket.user.username};
-        var query = `INSERT INTO messages_chat_room VALUES ('', ${BDD.escape(msg.id_user)}, ${BDD.escape(msg.message)}, ${BDD.escape(msg.date_created)},${BDD.escape(msg.id_chatRoom)},'1');`;
+        var query = `INSERT INTO messages_chat_room VALUES (NULL, ${BDD.escape(msg.id_user)}, ${BDD.escape(msg.message)}, ${BDD.escape(msg.date_created)},${BDD.escape(msg.id_chatRoom)},'1');`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             msg.id = rows.insertId;
