@@ -46,11 +46,11 @@ class UserController extends Controller
 
     /**
      * @Route("/User/getUserStatus", options = { "expose" = true }, name="User_status")
-     * @Method({"POST"})
+     * @Method({"GET"})
      */
 
 
-    public function UserStatus(Request $request){
+    public function UserStatus(){
 
       if ($this->getUser() !== null){
         $success = json_encode($this->getUser()->getId());
