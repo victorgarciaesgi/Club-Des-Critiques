@@ -65,8 +65,8 @@ MainApp.filter('dateUntilSalon', function(moment) {
       if ((!!input)) {
         var state = stateSalon(input.start, input.end);
         var date = {
-          start: new Date(Number(input.start)),
-          end: new Date(Number(input.end))
+          start: new Date(Number(input.start) * 1000),
+          end: new Date(Number(input.end) * 1000)
         }
         if (state == 'notyet'){
           return 'Ouvre ' + moment(date.start).fromNow();
@@ -98,26 +98,26 @@ MainApp.filter('isSalonOpen', function(moment) {
     }
 });
 
-MainApp.filter('dateVerboseSalon', function(moment) {
-    return function(input) {
-      if ((!!input)) {
-        var today = Date.now();
-        var date = {
-          start: new Date(Number(input.start)),
-          end: new Date(Number(input.end))
-        }
-        if (date.start > today){
-          return 'Ouvre ' + moment(date.start).fromNow();
-        }
-        else if(date.start < today && date.end > today){
-          return 'Fin ' + moment(date.end).fromNow();
-        }
-        else if(date.end < today){
-          return 'Fini ' + moment(date.end).fromNow();
-        }
-      }
-    }
-});
+// // MainApp.filter('dateVerboseSalon', function(moment) {
+// //     return function(input) {
+// //       if ((!!input)) {
+// //         var state = stateSalon(input.start, input.end);
+// //         var date = {
+// //           start: new Date(Number(input.start) * 1000),
+// //           end: new Date(Number(input.end) * 1000)
+// //         }
+// //         if (state == 'notyet'){
+// //           return 'Ouvre '+ moment(date.end).fromNow();
+// //         }
+// //         else if(state == 'open'){
+// //           return 'OUVERT ' + moment(date.end).fromNow();
+// //         }
+// //         else if(state == 'ended'){
+// //           return 'FINI ' + moment(date.end).fromNow();
+// //         }
+// //       }
+// //     }
+// });
 
 MainApp.controller('homepage', function ($scope, $rootScope, $q, $timeout, AjaxRequest, PromiseImage) {
 

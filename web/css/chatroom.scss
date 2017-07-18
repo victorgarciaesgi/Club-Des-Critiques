@@ -262,21 +262,58 @@ article#Messages{
   min-width: 300px;
 
   .header{
-    padding: 0 40px 0 10px;
+    padding: 0 5px 0 10px;
     text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: row nowrap;
+
+    .salonState{
+      position: relative;
+      display: flex;
+      flex: 1 0 auto;
+      justify-content: flex-start;
+      align-items: center;
+      height: 100%;
+      padding: 5px;
+      span{
+        position: relative;
+        padding: 3px 15px 3px 15px;
+        color: white;
+        height: 100%;
+        border-radius: 30px;
+        line-height: 20px;
+        font-size: 13px;
+        &[state='false']{
+          background-color: $w200;
+          color: $g90;
+        }
+        &[state='notyet']{
+          background-color: $mainMarron;
+        }
+        &[state='true']{
+          background-color: $mainGreen2;
+        }
+      }
+    }
+
+    .text{
+      flex: 0 1 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
     div.icons{
-      position: absolute;
-      right: 5px;
-      top: 5px;
+      display: flex;
+      flex: 0 0 auto;
       height: auto;
       width: auto;
+      margin-left: 5px;
+      justify-content: center;
+      align-items: center;
       cursor: pointer;
 
-      img{
-        right: 5px;
-        top: 5px;
-      }
     }
   }
 
