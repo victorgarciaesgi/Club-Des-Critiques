@@ -51,7 +51,7 @@ class UserBooks
     /**
      * @var int
      *
-     * @ORM\Column(name="userState", type="integer", nullable=false)
+     * @ORM\Column(name="user_state", type="integer", nullable=false)
      */
     private $userState;
 
@@ -111,7 +111,7 @@ class UserBooks
     /**
      * Set userState
      *
-     * @param int userState
+     * @param int $userState
      *
      */
     public function setUserState($userState)
