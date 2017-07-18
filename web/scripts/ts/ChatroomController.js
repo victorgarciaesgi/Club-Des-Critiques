@@ -184,6 +184,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     current_room.dates = {end: this.date_end,start: this.date_start};
     $scope.Chatroom.salons.elements = rooms;
     $scope.Chatroom.selectedSalon = current_room;
+    $scope.Chatroom.selectedSalon.dates = {end: current_room.date_end,start: current_room.date_start};
     $scope.Chatroom.infos.users = current_room.users;
 
     AjaxRequest.get('library_getOneBook', current_room.id_media).then((result) => {
@@ -201,7 +202,6 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
 
   socket.on('Update:currentRoom', function(room) {
-    console.log(room);
     if (room.messages.length == 0){
         $scope.Chatroom.messages.loading = false;
         $scope.Chatroom.messages.error = 'Aucun message';
@@ -210,6 +210,8 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         $scope.Chatroom.messages.elements = room.messages;
     }
     $scope.Chatroom.infos.users = room.users;
+    $scope.Chatroom.selectedSalon = room;
+    $scope.Chatroom.selectedSalon.dates = {end: room.date_end,start: room.date_start};
 
     AjaxRequest.get('library_getOneBook', room.id_media).then((result) => {
       $scope.Chatroom.infos.book = result;

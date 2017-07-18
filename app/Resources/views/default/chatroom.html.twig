@@ -39,7 +39,10 @@
 
         <article id="Messages">
           <div class="header" >
-            <span ng-cloak>{(Chatroom.selectedSalon.name)}</span>
+            <span ng-cloak class='text'>{(Chatroom.selectedSalon.name)}</span>
+            <div class="salonState" >
+              <span state='{(Chatroom.selectedSalon.dates | isSalonOpen)}'>{(Chatroom.selectedSalon.dates | dateUntilSalon)}</span>
+            </div>
             <div class="icons" ng-click='Chatroom.infos.open = !Chatroom.infos.open'>
               <img show src="/assets/infos.svg" alt="">
               <img hide src="/assets/infos_close.svg" alt="">

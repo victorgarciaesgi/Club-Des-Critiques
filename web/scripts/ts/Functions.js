@@ -89,14 +89,14 @@ function mergeBooks(array){
 }
 
 function stateSalon(start, end){
-  var today = Date.now();
-  if (start > today){
+  var today = Date.now() ;
+  if (start * 1000 > today){
     return 'notyet'
   }
-  else if(start < today && end > today){
+  else if(start * 1000 < today && end * 1000 > today){
     return 'open';
   }
-  else if(end < today){
+  else if(end * 1000 < today){
     return 'ended';
   }
 }
