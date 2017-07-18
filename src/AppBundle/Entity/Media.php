@@ -27,6 +27,10 @@ class Media
      *
      * @ORM\Column(name="name", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *  min = 1,
+     *  max = 255
+     * )
      */
     private $name;
 
@@ -37,6 +41,10 @@ class Media
      *
      * @ORM\Column(name="author", type="string", length=255, nullable=false)
      * @Assert\NotBlank()
+     * @Assert\Length(
+     *  min = 1,
+     *  max = 255
+     * )
      */
     private $author;
 
@@ -44,6 +52,9 @@ class Media
      * @var string
      *
      * @ORM\Column(name="img", type="string", length=1000, nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\Url()
+     *
      */
     private $img;
 
@@ -51,6 +62,8 @@ class Media
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
+     * @Assert\NotBlank()
+     *
      */
     private $description;
 
@@ -60,6 +73,10 @@ class Media
      * @var integer
      *
      * @ORM\Column(name="number_page", type="integer", nullable=true)
+     * @Assert\Range(
+     *      min = 0
+     * )
+     *
      */
     private $number_page;
 
@@ -69,6 +86,9 @@ class Media
      * @var float
      *
      * @ORM\Column(name="price", type="float", nullable=true)
+     * @Assert\Range(
+     *      min = 0
+     * )
      */
     private $price;
 
@@ -86,6 +106,8 @@ class Media
      *
      * @var \DateTime
      * @ORM\Column(name="release_date", type="datetime", nullable=false)
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      */
     private $releaseDate;
 
@@ -94,6 +116,7 @@ class Media
      *
      * @var string
      * @ORM\Column(name="isbn", type="string", length=13, nullable=false)
+     * @Assert\NotBlank()
      */
     private $isbn;
 
@@ -102,6 +125,8 @@ class Media
      *
      * @var \DateTime
      * @ORM\Column(name="buy_link", type="string",length=500 , nullable=true)
+     * @Assert\Url()
+     *
      */
     private $buyLink;
 
@@ -112,7 +137,6 @@ class Media
      *   @ORM\JoinColumn(name="id_users", referencedColumnName="id")
      * })
      */
-
     private $idUsers;
 
     /**

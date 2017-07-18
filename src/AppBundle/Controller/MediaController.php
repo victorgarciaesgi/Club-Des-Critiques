@@ -24,39 +24,56 @@ use AppBundle\Repository\CategoryAffiliationRepository;
 class MediaController extends Controller
 {
 
-    function decodeAjaxRequest($request){
-      $data = json_decode($request->getContent(), true);
-      return $data['data'];
+    function decodeAjaxRequest($request)
+    {
+        $data = json_decode($request->getContent(), true);
+        return $data['data'];
     }
 
     /**
      * @Route("/library/addBook", options = { "expose" = true }, name="library_addBook")
      * @Method({"POST"})
      */
-    public function addBookAction(Request $request){
+    public function addBookAction(Request $request)
+    {
+
+        if (!$this->get('security.authorization_checker')->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $error = json_encode(array('error' => "Veuillez vous connecter pour ajouter un livre"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
 
         $media = new Media();
 
         $data = $this->decodeAjaxRequest($request);
 
-        $media->setName($data['search']);
-        $media->setAuthor($data['author']);
-        $media->setDescription($data['description']);
-        $media->setNumberPage($data['pages']);
-        $media->setImg($data['illustration']);
+        if (!empty($data['search']))
+            $media->setName($data['search']);
 
-        if(!empty($data['buyLink']))
+        if (!empty($data['author']))
+            $media->setAuthor($data['author']);
+
+        if(!empty($data['description']))
+            $media->setDescription($data['description']);
+
+        if(!empty($data['pages']))
+            $media->setNumberPage($data['pages']);
+
+        if(!empty($data['illustration']))
+            $media->setImg($data['illustration']);
+
+        if (!empty($data['buyLink']))
             $media->setBuyLink($data['buyLink']);
 
         //verifie si un isbn 13 est présent, sinon verifie pour l'isbn 10
         //renvoi 0 si aucun des 2 n'est trouvé
-        if(!empty($data['isbn']))
+        if (!empty($data['isbn']))
             $isbn = $this->findIsbn($data['isbn']);
         else
             $isbn = "0";
 
         $media->setIsbn($isbn);
-        if(!empty($data['price']))
+
+        if (!empty($data['price']))
             $media->setPrice($data['price']);
 
         $media->setValid(0);
@@ -76,9 +93,19 @@ class MediaController extends Controller
              * ConstraintViolationList object. This gives us a nice string
              * for debugging.
              */
-            $errorsString = (string) $errors;
 
-            return new Response($errorsString);
+            $error = json_encode(array('error' => (String)$errors), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
+
+        if (empty($data['categories'])){
+            $error = json_encode(array('error' => "Aucune categorie spécifié"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
+        }
+
+        if (empty($data['rating'])){
+            $error = json_encode(array('error' => "Aucune note spécifié"), JSON_FORCE_OBJECT);
+            return new JsonResponse($error);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -93,24 +120,26 @@ class MediaController extends Controller
         return new JsonResponse($success);
     }
 
-    public function findIsbn($array){
-        foreach ($array as $value){
-           if($value['type']==="ISBN_10")
+    public function findIsbn($array)
+    {
+        foreach ($array as $value) {
+            if ($value['type'] === "ISBN_10")
                 $isbn10 = $value['identifier'];
-           if($value['type']==="ISBN_13")
+            if ($value['type'] === "ISBN_13")
                 return $value['identifier'];
         }
-        if(!empty($isbn10))
+        if (!empty($isbn10))
             return $isbn10;
 
         return "0";
     }
 
-    public function setCategories($media ,$array){
+    public function setCategories($media, $array)
+    {
 
         $em = $this->getDoctrine()->getManager();
 
-        foreach ($array as $value){
+        foreach ($array as $value) {
             $category = new CategoryAffiliation();
             $category->setIdMedia($media);
             $findCategory = $em->getRepository('AppBundle:Category')->findOneBy(array('idCategory' => $value['idCategory']));
@@ -119,7 +148,8 @@ class MediaController extends Controller
         }
     }
 
-    public function setNote($media, $note){
+    public function setNote($media, $note)
+    {
         $em = $this->getDoctrine()->getManager();
 
         $noteObject = new Note();
