@@ -24,7 +24,7 @@ header{
     height: 100%;
     width: 100%;
     flex-flow: row nowrap;
-    justify-content: space-around;
+    justify-content: flex-start;
     align-content: center;
     align-items: center;
     padding-left: 5px;
@@ -73,9 +73,10 @@ header{
 
   #search{
     height: 30px;
-    width: 300px;
+    min-width: 200px;
+    max-width: 300px;
     display: flex;
-    flex: 0 1 auto;
+    flex: 1 0 auto;
     align-items: center;
     justify-content: center;
 

@@ -120,6 +120,7 @@ article#Salons{
   width: 300px;
   border-right: 1px solid rgb(220,220,220);
 
+
   .error{
     display: flex;
     height: 100%;
@@ -142,6 +143,7 @@ article#Salons{
     float: left;
     width: 100%;
     height: calc(100% - 35px);
+    margin-top: 10px;
     overflow-y: auto;
     overflow-x: hidden;
 
@@ -174,87 +176,96 @@ article#Salons{
       }
     }
 
-    li.salons{
+    ul{
       position: relative;
       float: left;
-      padding: 5px;
       width: 100%;
-      height: 70px;
-      color: white;
-      cursor: pointer;
-      padding-left: 10px;
-
-      &.selected{
-        background-color: $w235;
-      }
-
-      &:hover{
-        background-color: $w240;
-      }
-
-      &:active{
-        background-color: $w220;
-      }
-
-      .salon-cover{
+      li.salons{
         position: relative;
         float: left;
-        height: 100%;
-        width: 70px;
-        padding: 5px 5px 5px 15px;
-
-        div{
-          height: 100%;
-          width: 100%;
-          border-radius: 100%;
-          @include bg-center;
-        }
-      }
-
-      .salon-infos{
-        position: relative;
-        float: left;
-        height: 100%;
         padding: 5px;
-        width: calc(100% - 70px);
+        width: 100%;
+        height: 70px;
+        color: white;
+        cursor: pointer;
+        padding-left: 10px;
 
-        div{
+        &:last-child{
+          margin-bottom: 10px;
+        }
+
+        &.selected{
+          background-color: $w235;
+        }
+
+        &:hover{
+          background-color: $w240;
+        }
+
+        &:active{
+          background-color: $w220;
+        }
+
+        .salon-cover{
           position: relative;
-          height: 50%;
-          width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          float: left;
+          height: 100%;
+          width: 70px;
+          padding: 5px 5px 5px 15px;
+
+          div{
+            height: 100%;
+            width: 100%;
+            border-radius: 100%;
+            @include bg-center;
+          }
         }
 
-        .s-i-title{
-          line-height: 32px;
-          font-size: 14px;
-          color: $g90;
-        }
-        .s-i-interval{
-          line-height: 22px;
-          font-size: 13px;
-          color: rgb(160,160,160);
-        }
-      }
-      .salonState{
-        position: absolute;
-        left: 5px;
-        top: 50%;
-        height: 8px;
-        width: 8px;
-        border-radius: 100%;
-        @include translateY(-50%);
+        .salon-infos{
+          position: relative;
+          float: left;
+          height: 100%;
+          padding: 5px;
+          width: calc(100% - 70px);
 
-        &[state='false']{
-          background-color: $w200;
+          div{
+            position: relative;
+            height: 50%;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .s-i-title{
+            line-height: 32px;
+            font-size: 14px;
+            color: $g90;
+          }
+          .s-i-interval{
+            line-height: 22px;
+            font-size: 13px;
+            color: rgb(160,160,160);
+          }
         }
-        &[state='notyet']{
-          background-color: $mainMarron;
-        }
-        &[state='true']{
-          background-color: $mainGreen2;
+        .salonState{
+          position: absolute;
+          left: 5px;
+          top: 50%;
+          height: 8px;
+          width: 8px;
+          border-radius: 100%;
+          @include translateY(-50%);
+
+          &[state='false']{
+            background-color: $w200;
+          }
+          &[state='notyet']{
+            background-color: $mainMarron;
+          }
+          &[state='true']{
+            background-color: $mainGreen2;
+          }
         }
       }
     }
@@ -268,6 +279,10 @@ article#Messages{
   flex: 1 1 auto;
   border-right: 1px solid rgb(220,220,220);
   min-width: 300px;
+
+  .bouton{
+    margin: 0;
+  }
 
   .header{
     padding: 0 5px 0 10px;
@@ -291,6 +306,7 @@ article#Messages{
         color: white;
         height: 100%;
         border-radius: 30px;
+        font-weight: normal;
         line-height: 20px;
         font-size: 13px;
         &[state='false']{

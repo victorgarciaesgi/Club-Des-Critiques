@@ -195,7 +195,8 @@ MainApp.controller('homepage', function ($scope, $rootScope, $q, $timeout, AjaxR
     details: false,
     book: {},
     init(){
-      AjaxRequest.get('library_getOneBook', 101).then((result) => {
+      AjaxRequest.get('library_getProchainSalon', null).then((result) => {
+        result.dates = {end: result.dateEnd,start: result.dateStart};
         this.book = result;
       });
     }

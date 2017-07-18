@@ -5,17 +5,31 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
   $scope.Chatroom = {
     salons: {
       elements: [],
+      allElements: [],
       loading: true,
+      notAllowed: false,
+      noteRequired: false,
+      notJoined: false,
+      all: false,
       error: null,
       create(){
         // Creer un nouveau salon
       }
     },
+    tabs: {
+      selected: {},
+      elements: [
+        {title: 'Salons rejoins', value: false},
+        {title: 'Tous', value: true},
+      ]
+    },
+    changeView(){
+
+    },
     messages: {
       elements: [],
       error: null,
       loading: true,
-      noteRequired: false,
       inputMessage: "",
       send(){
         if (this.inputMessage.trim().length > 0) {
@@ -73,6 +87,17 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
       {text: 'Inviter un contact dans ce salon', action:'invite', popup:'popup-inviteFriend', icon:'add_contact'},
       {text: 'Signaler un contenu inapproprié', action:'reportSalon', icon:'signaler'},
     ],
+    joinSalon(){
+      socket.emit('Invite:User',{user:{id: $rootScope.UserInfos.id}}, (result) => {
+        if (result.success){
+          $rootScope.Alerts.add('success', 'Vous avez rejoint le salon');
+          this.salons.all = false;
+        }
+        else if(result.error){
+          $rootScope.Alerts.add('error', result.error);
+        }
+      });
+    },
     selectSalon(salon){
       if(this.selectedSalon.id_chatRoom != salon.id_chatRoom){
         this.messages.loading = true;
@@ -109,22 +134,33 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
     },
     load(room){
+      console.log(room)
       room.dates = {end: room.date_end,start: room.date_start};
       this.selectedSalon = room;
-      if (room.vote > 0){
-        this.messages.noteRequired = false;
-        if (room.messages.length == 0){
-          this.messages.loading = false;
-          this.messages.error = 'Aucun message';
+      if(room.rejoin){
+        this.salons.notJoined = false;
+        if (room.vote > 0){
+          this.salons.notAllowed = false;
+          this.salons.noteRequired = false;
+          if (room.messages.length == 0){
+            this.messages.loading = false;
+            this.messages.error = 'Aucun message';
+          }
+          else{
+            this.messages.elements = room.messages;
+          }
         }
         else{
-          this.messages.elements = room.messages;
+          this.messages.loading = false;
+          this.salons.notAllowed = true;
+          this.salons.noteRequired = true;
+          this.infos.details = true;
         }
       }
       else{
-        this.messages.loading = false;
-        this.messages.noteRequired = true;
-        this.infos.details = true;
+        this.salons.noteRequired = false;
+        this.salons.notAllowed = true;
+        this.salons.notJoined = true;
       }
 
 
@@ -132,14 +168,15 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         this.infos.book = result;
       });
     },
-    loadList(rooms){
+    loadList(rooms, all){
       if (rooms.length > 0){
         rooms.forEach((element) => {
           element.dates = {end: element.date_end,start: element.date_start};
         })
-        $scope.Chatroom.salons.elements = rooms;
+        if (all){$scope.Chatroom.salons.allElements = rooms}
+        else {$scope.Chatroom.salons.elements = rooms;}
       }
-      else{
+      else if(!all){
         $scope.Chatroom.salons.loading = false;
         $scope.Chatroom.salons.error = 'Aucun salon';
         $scope.Chatroom.messages.loading = false;
@@ -255,13 +292,19 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
 
 
   socket.on('Update:list', function(rooms) {
-    $scope.Chatroom.loadList(rooms);
+    $scope.Chatroom.loadList(rooms, false);
   });
 
   socket.on('Update:rooms', function(rooms, current_room) {
     if (rooms.length > 0){
-      $scope.Chatroom.loadList(rooms);
+      $scope.Chatroom.loadList(rooms, false);
       $scope.Chatroom.load(current_room);
+    }
+  });
+
+  socket.on('Update:rooms:all', function(rooms) {
+    if (rooms.length > 0){
+      $scope.Chatroom.loadList(rooms, true);
     }
   });
 

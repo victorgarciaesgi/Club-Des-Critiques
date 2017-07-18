@@ -182,6 +182,30 @@ class LibraryController extends Controller
       return new JsonResponse($book);
     }
 
+
+    /**
+     * @Route("/library/getProchainSalon", options = { "expose" = true }, name="library_getProchainSalon")
+     * @Method({"POST"})
+     */
+
+    public function getProchainSalon(Request $request) {
+      $em = $this->getDoctrine()->getManager();
+      $query = $em->createQuery("SELECT IDENTITY(c.idMedia) as idMedia, c.dateStart, c.dateEnd, c.idChatroom
+                                FROM AppBundle:Chatroom c
+                                WHERE c.is_active = 1
+                                AND c.status = 0
+                                ORDER BY c.dateStart - CURRENT_TIMESTAMP() ")
+                                ->setMaxResults(1);
+      $result = $query->getResult();
+      $idMedia = $this->getSerializer()->normalize($result, 'null');
+
+      $book = $this->returnOneBookInfos($idMedia[0]['idMedia']);
+      $book['dateStart'] = $idMedia[0]['dateStart'];
+      $book['dateEnd'] = $idMedia[0]['dateEnd'];
+
+      return new JsonResponse($book);
+    }
+
     /**
      * @Route("/library/getFilterBooks", options = { "expose" = true }, name="library_getFilterBooks")
      * @Method({"POST"})

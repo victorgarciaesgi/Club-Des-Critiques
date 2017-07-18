@@ -66,18 +66,24 @@ io.on('connection', function (socket) {
         getAccessRooms().then((rooms) => {
           if (rooms.length > 0){
             socket.room = rooms[0];
-            getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
-              socket.room.messages = data.messages;
-              socket.room.users = data.users;
-              socket.room.vote = data.vote;
-              socket.join(socket.room.id_chatRoom);
-              socket.emit('Update:users', data.users);
-              socket.emit('Update:rooms', rooms, socket.room);
+            checkUser(socket.room.id_chatRoom, socket.user.id).then(result => {
+              getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
+                socket.room.messages = data.messages;
+                socket.room.users = data.users;
+                socket.room.vote = data.vote;
+                socket.room.rejoin = result.length > 0?true:false;
+                socket.join(socket.room.id_chatRoom);
+                socket.emit('Update:users', data.users);
+                socket.emit('Update:rooms', rooms, socket.room);
+              })
             })
           }
           else{
             socket.emit('Update:rooms', rooms, null);
           }
+        })
+        getAllRooms().then(rooms => {
+          socket.emit('Update:rooms:all', rooms);
         })
       })
     });
@@ -149,14 +155,20 @@ io.on('connection', function (socket) {
       checkUser(socket.room.id_chatRoom, data.user.id).then(result => {
         if (result.length == 0){
           inviteUser(socket.room.id_chatRoom, data.user.id).then((r) => {
-            getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((result) => {
-              socket.room.users = result.users;
-              socket.room.vote = result.vote;
-              socket.broadcast.emit('Reload:rooms');
-              io.to(socket.room.id_chatRoom).emit('Update:users', result.users);
-              socket.emit('Update:currentRoom',socket.room);
-              callback({success: true})
-              sendNotification(data.user.id, notif);
+            checkUser(socket.room.id_chatRoom, socket.user.id).then(data2 => {
+              getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((result) => {
+                socket.room.users = result.users;
+                socket.room.vote = result.vote;
+                socket.room.rejoin = data2.length > 0?true:false;
+                socket.broadcast.emit('Reload:rooms');
+                io.to(socket.room.id_chatRoom).emit('Update:users', result.users);
+                socket.emit('Update:currentRoom',socket.room);
+                socket.emit('Reload:rooms');
+                callback({success: true})
+                if (data.user.id != socket.user.id){
+                  sendNotification(data.user.id, notif);
+                }
+              })
             })
           });
         }
@@ -173,14 +185,17 @@ io.on('connection', function (socket) {
     socket.on('Switch:room', function(roomId){
         socket.leave(socket.room.id_chatRoom);
         getRoombyId(roomId).then((room) => {
-          socket.room = room;
-          getRoomInfos(roomId, socket.room.id_media).then((data) => {
-            socket.room.messages = data.messages;
-            socket.room.users = data.users;
-            socket.room.vote = data.vote;
-            socket.join(roomId);
-            socket.emit('Update:users', data.users);
-            socket.emit('Update:currentRoom', socket.room);
+          checkUser(roomId, socket.user.id).then(result => {
+            socket.room = room;
+            getRoomInfos(roomId, socket.room.id_media).then((data) => {
+              socket.room.messages = data.messages;
+              socket.room.users = data.users;
+              socket.room.vote = data.vote;
+              socket.room.rejoin = result.length > 0?true:false;
+              socket.join(roomId);
+              socket.emit('Update:users', data.users);
+              socket.emit('Update:currentRoom', socket.room);
+            })
           })
         })
     });
@@ -287,8 +302,12 @@ io.on('connection', function (socket) {
       return new Promise(function (fulfill, reject){
         var query = `SELECT c.*, m.img, m.id_media
                     FROM chatroom c
-                    LEFT JOIN media m on m.id_media = c.id_media
-                    WHERE c.is_active = 1
+                    JOIN chatroom_access ca ON ca.id_chatRoom NOT IN (select ca.id_chatRoom from chatroom_access ca where ca.id_user = ${BDD.escape(socket.user.id)})
+                    AND c.is_active = 1
+                    AND c.id_chatRoom = ca.id_chatRoom
+                    AND ca.status =  1
+                    LEFT JOIN media m ON m.id_media = c.id_media
+                    GROUP BY c.id_chatRoom
                     ORDER by c.id_chatRoom`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
@@ -301,15 +320,15 @@ io.on('connection', function (socket) {
 
     function getAccessRooms(){
       return new Promise(function (fulfill, reject){
-        var query = `SELECT c.*, m.img, m.id_media
+        var query = `SELECT c.*, m.img, m.id_media, ca.id_chatroom_access
                     FROM chatroom c
-                    JOIN chatroom_access ca ON c.is_active = 1
+                    INNER JOIN chatroom_access ca ON c.is_active = 1
                     AND c.id_chatRoom = ca.id_chatRoom
                     AND ca.status =  1
                     AND ca.id_user = ${BDD.escape(socket.user.id)}
                     LEFT JOIN media m ON m.id_media = c.id_media
                     GROUP BY c.id_chatRoom
-                    ORDER by c.id_chatRoom`;
+                    ORDER by ca.id_chatroom_access DESC`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             fulfill(rows);

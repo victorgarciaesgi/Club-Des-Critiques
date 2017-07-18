@@ -384,7 +384,7 @@
               <div class="loading-spinner grey"></div>
             </button>
             <button type='button' ng-if='UserConnected && !Library.adminView' class="bouton" ng-class='{green: Library.books.notation}' design='blanc' ng-if='!Library.adminView' ng-click='Library.books.toggleNote()'>Noter</button>
-            <button type='button' ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</button>
+            <!-- <button type='button' ng-if='UserConnected && !Library.adminView' class="bouton" design='green'>Créer un salon</button> -->
             <!-- Admin -->
             <button type='button' ng-if='Library.adminView && UserAdmin' ng-disabled='Library.books.refusing'
                 ng-class='{submitting: Library.books.refusing}' class="bouton red" design='blanc' ng-click='Library.books.refuse()'>Refuser le livre

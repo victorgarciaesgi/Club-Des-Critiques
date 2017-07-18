@@ -45,7 +45,7 @@ class UserController extends Controller
 
 
     /**
-     * @Route("/User/getUserStatus", options = { "expose" = true }, name="User_status")
+     * @Route("/User/getUserStatus", options = { "expose" = true })
      * @Method({"GET"})
      */
 

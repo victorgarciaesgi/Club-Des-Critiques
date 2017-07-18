@@ -11,6 +11,15 @@
             <img class='createSalon popup-bouton' popup="popup-createSalon" src="/assets/add_green.svg" alt="Ajouter un Salon">
           </div>
           <ul class="list-salons">
+            <ul class="ui-tabs">
+              <li ng-repeat='tab in Chatroom.tabs.elements track by $index'>
+                <input id='radio-{(tab.value)}' type="radio" ng-model='Chatroom.salons.all'
+                name="libraryTabs" ng-value="{(tab.value)}" ng-change='Chatroom.changeView()'>
+                <label for="radio-{(tab.value)}">
+                  {(tab.title)}
+                </label>
+              </li>
+            </ul>
             <div class="salons-search">
               <input class='s-search' type="text" ng-model='Chatroom.filter.name' placeholder="Rechercher un salon">
               <div class="s-icon"></div>
@@ -18,24 +27,46 @@
             <div class='error' ng-show='Chatroom.salons.error'>
               {(Chatroom.salons.error)}
             </div>
-            <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id_chatRoom'
-                ng-click='Chatroom.selectSalon(salon)'
-                ng-class='{selected: salon.id_chatRoom == Chatroom.selectedSalon.id_chatRoom}'>
-              <div class="salon-cover">
-                  <div style='background-image: url("{(salon.img)}")'>
+            <ul ng-show='!Chatroom.salons.all'>
+              <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id_chatRoom'
+                  ng-click='Chatroom.selectSalon(salon)'
+                  ng-class='{selected: salon.id_chatRoom == Chatroom.selectedSalon.id_chatRoom}'>
+                <div class="salon-cover">
+                    <div style='background-image: url("{(salon.img)}")'>
 
+                    </div>
+                </div>
+                <div class="salon-infos">
+                  <div class="s-i-title">
+                    {(salon.name)}
                   </div>
-              </div>
-              <div class="salon-infos">
-                <div class="s-i-title">
-                  {(salon.name)}
+                  <div class="s-i-interval">
+                    {(salon.dates | dateUntilSalon)}
+                  </div>
                 </div>
-                <div class="s-i-interval">
-                  {(salon.dates | dateUntilSalon)}
+                <div class="salonState" state='{(salon.dates | isSalonOpen)}'></div>
+              </li>
+            </ul>
+            <ul ng-show='Chatroom.salons.all'>
+              <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.allElements | filter: Chatroom.filter track by salon.id_chatRoom'
+                  ng-click='Chatroom.selectSalon(salon)'
+                  ng-class='{selected: salon.id_chatRoom == Chatroom.selectedSalon.id_chatRoom}'>
+                <div class="salon-cover">
+                    <div style='background-image: url("{(salon.img)}")'>
+
+                    </div>
                 </div>
-              </div>
-              <div class="salonState" state='{(salon.dates | isSalonOpen)}'></div>
-            </li>
+                <div class="salon-infos">
+                  <div class="s-i-title">
+                    {(salon.name)}
+                  </div>
+                  <div class="s-i-interval">
+                    {(salon.dates | dateUntilSalon)}
+                  </div>
+                </div>
+                <div class="salonState" state='{(salon.dates | isSalonOpen)}'></div>
+              </li>
+            </ul>
           </ul>
         </article>
 
@@ -52,11 +83,11 @@
           </div>
 
           <div id="messages-container" ng-show='!Chatroom.rendering'>
-              <div class="ng-cloak loader-content" ng-if='Chatroom.messages.loading || Chatroom.messages.error || Chatroom.messages.noteRequired'>
-                <div ng-show='!Chatroom.messages.error && Chatroom.messages.loading && !Chatroom.messages.noteRequired' taille='big' class="loading-spinner"></div>
-                <div class='error' ng-show='Chatroom.messages.error || Chatroom.messages.noteRequired'>
-                  <span ng-if='!Chatroom.messages.noteRequired'>{(Chatroom.messages.error)}</span>
-                  <div ng-if='Chatroom.messages.noteRequired'>
+              <div class="ng-cloak loader-content" ng-if='Chatroom.messages.loading || Chatroom.messages.error || Chatroom.salons.notAllowed'>
+                <div ng-show='!Chatroom.messages.error && Chatroom.messages.loading && !Chatroom.salons.notAllowed' taille='big' class="loading-spinner"></div>
+                <div class='error' ng-show='Chatroom.messages.error || Chatroom.salons.notAllowed'>
+                  <span ng-if='!Chatroom.salons.notAllowed'>{(Chatroom.messages.error)}</span>
+                  <div ng-if='Chatroom.salons.noteRequired'>
                       <span>Vous devez noter ce livre avant de rejoindre le salon</span>
                       <rating-form vg-model='Chatroom.noteLivre'
                                     vg-name='"nodeBookSalon"'
@@ -66,10 +97,13 @@
                                     on-select-result='Chatroom.sendNote(note)'>
                       </rating-form>
                   </div>
+                  <div ng-if='Chatroom.salons.notJoined'>
+                      <button type='button' class='bouton' design='green' ng-click='Chatroom.joinSalon()'>Rejoindre</button>
+                  </div>
                 </div>
               </div>
 
-              <div class=" ng-cloak message" ng-if='!Chatroom.messages.noteRequired && !Chatroom.messages.error' ng-repeat='message in Chatroom.messages.elements track by message.id'
+              <div class=" ng-cloak message" ng-if='!Chatroom.salons.notAllowed && !Chatroom.messages.error' ng-repeat='message in Chatroom.messages.elements track by message.id'
                     self='{(message.id_user == UserInfos.id)}'
                     new='{(message.new)}'
                     ng-class='{
@@ -185,7 +219,7 @@
               </div>
             </div>
 
-            <div class="salon-list" ng-if='!Chatroom.messages.noteRequired'>
+            <div class="salon-list" ng-if='!Chatroom.salons.notAllowed'>
               <div class="s-l-title">
                 Options
               </div>
@@ -197,7 +231,7 @@
               </ul>
             </div>
 
-            <div class="salon-list" ng-if='!Chatroom.messages.noteRequired'>
+            <div class="salon-list" ng-if='!Chatroom.salons.notAllowed'>
               <div class="s-l-title">
                 Personnes
               </div>
