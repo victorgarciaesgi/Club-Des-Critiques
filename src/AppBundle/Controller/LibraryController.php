@@ -145,6 +145,7 @@ class LibraryController extends Controller
       curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-type: application/json')); // Assuming you're requesting JSON
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       $response = curl_exec($ch);
+      curl_close($ch);
       $data = json_decode($response);
       if (isset($data->items)) {
         $array = array_slice($data->items,0,4);
