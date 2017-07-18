@@ -335,7 +335,7 @@ class LibraryController extends Controller
                          WITH u.id = m.idUsers
                          WHERE m.valid = 1
                          AND m.isActive = 1
-                         GROUP by m.idMedia");
+                         GROUP by ub.idMedia");
       $query->setMaxResults(20)
       ->setFirstResult($data['limit']);
       $books = $query->getResult();
