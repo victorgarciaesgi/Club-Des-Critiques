@@ -142,6 +142,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         if (room.vote > 0){
           this.salons.notAllowed = false;
           this.salons.noteRequired = false;
+          this.infos.details = false;
           if (room.messages.length == 0){
             this.messages.loading = false;
             this.messages.error = 'Aucun message';
@@ -161,6 +162,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         this.salons.noteRequired = false;
         this.salons.notAllowed = true;
         this.salons.notJoined = true;
+        this.infos.details = true;
       }
 
 

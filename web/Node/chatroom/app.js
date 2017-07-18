@@ -104,7 +104,9 @@ io.on('connection', function (socket) {
         else{
           socket.emit('Update:rooms', rooms, socket.room);
         }
-
+      })
+      getAllRooms().then(rooms => {
+        socket.emit('Update:rooms:all', rooms);
       })
     });
 
@@ -116,16 +118,19 @@ io.on('connection', function (socket) {
     });
 
     socket.on('New:note', function (data, callback) {
-        sendVote(data.idMedia, data.note).then((result) => {
+        sendVote(data.idMedia, data.note).then(() => {
           getRoombyId(socket.room.id_chatRoom).then((room) => {
             socket.room = room;
-            getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
-              socket.room.messages = data.messages;
-              socket.room.users = data.users;
-              socket.room.vote = data.vote;
-              callback({success: true});
-              socket.emit('Update:users', data.users);
-              socket.emit('Update:currentRoom', socket.room);
+            checkUser(socket.room.id_chatRoom, socket.user.id).then(result => {
+              getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
+                socket.room.messages = data.messages;
+                socket.room.users = data.users;
+                socket.room.vote = data.vote;
+                socket.room.rejoin = result.length > 0?true:false;
+                callback({success: true});
+                socket.emit('Update:users', data.users);
+                socket.emit('Update:currentRoom', socket.room);
+              })
             })
           })
           socket.emit()
@@ -160,10 +165,9 @@ io.on('connection', function (socket) {
                 socket.room.users = result.users;
                 socket.room.vote = result.vote;
                 socket.room.rejoin = data2.length > 0?true:false;
-                socket.broadcast.emit('Reload:rooms');
+                io.emit('Reload:rooms');
                 io.to(socket.room.id_chatRoom).emit('Update:users', result.users);
                 socket.emit('Update:currentRoom',socket.room);
-                socket.emit('Reload:rooms');
                 callback({success: true})
                 if (data.user.id != socket.user.id){
                   sendNotification(data.user.id, notif);
@@ -212,6 +216,7 @@ io.on('connection', function (socket) {
                 socket.room.messages = data.messages;
                 socket.room.users = data.users;
                 socket.room.vote = data.vote;
+                socket.room.rejoin = true;
                 socket.join(socket.room.id_chatRoom);
                 socket.emit('Update:rooms', rooms, socket.room);
               })

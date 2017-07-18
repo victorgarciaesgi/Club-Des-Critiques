@@ -295,7 +295,7 @@ class LibraryController extends Controller
       $repository = $this->getDoctrine()->getManager()->getRepository('AppBundle:Media');
       $content = $repository->createQueryBuilder('m')
                ->where('m.name LIKE :name AND m.isActive = 1 AND m.valid = 1')
-               ->setParameter('name', $data.'%')
+               ->setParameter('name', '%'.$data.'%')
                ->setMaxResults(4)
                ->getQuery();
       $results = $content->getArrayResult();

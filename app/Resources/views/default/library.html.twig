@@ -62,7 +62,7 @@
           </div>
           <div class="library-list" lazyload='Library.loadNext()'>
             <div class="ng-cloak admin-books" ng-if='UserAdmin'>
-              <ul class="ui-tabs">
+              <div class="ui-tabs">
                 <li ng-repeat='tab in Library.tabs.elements track by $index'>
                   <input id='radio-{(tab.value)}' type="radio" ng-model='Library.adminView'
                   name="libraryTabs" ng-value="{(tab.value)}" ng-change='Library.changeView()'>
@@ -70,7 +70,7 @@
                     {(tab.title)}
                   </label>
                 </li>
-              </ul>
+              </div>
             </div>
             <div class="ng-cloak book-search">
               <div class="wrapper">
