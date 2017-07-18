@@ -89,7 +89,7 @@ function mergeBooks(array){
 }
 
 function stateSalon(start, end){
-  var today = Date.now() ;
+  var today = Date.now();
   if (start * 1000 > today){
     return 'notyet'
   }
