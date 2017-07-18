@@ -120,6 +120,14 @@ article#Salons{
   width: 300px;
   border-right: 1px solid rgb(220,220,220);
 
+  .error{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
   .header{
     .createSalon{
       position: absolute;
@@ -279,7 +287,7 @@ article#Messages{
       padding: 5px;
       span{
         position: relative;
-        padding: 3px 15px 3px 15px;
+        padding: 3px 10px 3px 10px;
         color: white;
         height: 100%;
         border-radius: 30px;

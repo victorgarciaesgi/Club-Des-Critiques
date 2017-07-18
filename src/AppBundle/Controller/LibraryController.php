@@ -71,7 +71,7 @@ class LibraryController extends Controller
 
     function returnOneBookInfos($idMedia){
       $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes,u.id as userId, u.username as username
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
@@ -86,6 +86,7 @@ class LibraryController extends Controller
       $book = $book[0];
       $media = $book['media'];
       $media['username'] = $book['username'];
+      $media['userId'] = $book['userId'];
       $media['note'] = $book['note'];
       $media['nbrNotes'] = $book['nbrNotes'];
       $media['idUsers'] = $book['media']['idUsers']['id'];
@@ -199,7 +200,7 @@ class LibraryController extends Controller
       }
 
       if (isset($data['categories'])) {
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username ". (($UserConnected)?",count(ub.id) as isInCollection":"")."
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes,u.id as userId, u.username as username ". (($UserConnected)?",count(ub.id) as isInCollection":"")."
                            FROM AppBundle:Media m
                            INNER JOIN AppBundle:CategoryAffiliation mc
                            WITH mc.idCategory IN (".implode(",",array_keys($data['categories'])).")
@@ -219,7 +220,7 @@ class LibraryController extends Controller
         $books = $query->getResult();
       }
       else{
-        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username ". (($UserConnected)?",count(ub.id) as isInCollection":"")."
+        $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes,u.id as userId, u.username as username ". (($UserConnected)?",count(ub.id) as isInCollection":"")."
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
@@ -241,6 +242,7 @@ class LibraryController extends Controller
         foreach ($books as $key => $value) {
           $media = $value['media'];
           $media['username'] = $value['username'];
+          $media['userId'] = $value['userId'];
           $media['note'] = $value['note'];
           $media['isInCollection'] = isset($value['isInCollection'])?$value['isInCollection']:null;
           $media['nbrNotes'] = $value['nbrNotes'];
@@ -321,7 +323,7 @@ class LibraryController extends Controller
 
       $table = ["À prêter","Prêté","Je le veux","Je ne le veux plus","Je ne veux pas le prêter"];
 
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username, ub.userState as userState
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes,u.id as userId, u.username as username, ub.userState as userState
                          FROM AppBundle:Media m
                          INNER JOIN AppBundle:UserBooks ub
                          WITH ub.idUser = ".$data."
@@ -343,6 +345,7 @@ class LibraryController extends Controller
         foreach ($books as $key => $value) {
           $media = $value['media'];
           $media['username'] = $value['username'];
+          $media['userId'] = $value['userId'];
           $media['note'] = $value['note'];
           $media['userState'] = $table[$value['userState'] - 1];
           $media['nbrNotes'] = $value['nbrNotes'];
@@ -371,7 +374,7 @@ class LibraryController extends Controller
       $data = $this->decodeAjaxRequest($request);
       $em = $this->getDoctrine()->getManager();
 
-      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes, u.username as username
+      $query = $em->createQuery("SELECT m as media, avg(n.note) as note, count(n.note) as nbrNotes,u.id as userId, u.username as username
                          FROM AppBundle:Media m
                          INNER JOIN AppBundle:hasOne h
                          WITH h.idMedia = m.idMedia
@@ -391,6 +394,7 @@ class LibraryController extends Controller
         foreach ($books as $key => $value) {
           $media = $value['media'];
           $media['username'] = $value['username'];
+          $media['userId'] = $value['userId'];
           $media['note'] = $value['note'];
           $media['nbrNotes'] = $value['nbrNotes'];
           $media['idUsers'] = $value['media']['idUsers']['id'];

@@ -5,7 +5,7 @@
 <ng-controller ng-controller='chatroom'>
     <div id="chatroom">
       <section ng-class='{infos: Chatroom.infos.open, close: !Chatroom.infos.open}'>
-        <article id="Salons" Ftype=''>
+        <article id="Salons" Ftype='' ng-if='UserConnected'>
           <div class="header">
             <span>Salons</span>
             <img class='createSalon popup-bouton' popup="popup-createSalon" src="/assets/add_green.svg" alt="Ajouter un Salon">
@@ -14,6 +14,9 @@
             <div class="salons-search">
               <input class='s-search' type="text" ng-model='Chatroom.filter.name' placeholder="Rechercher un salon">
               <div class="s-icon"></div>
+            </div>
+            <div class='error' ng-show='Chatroom.salons.error'>
+              {(Chatroom.salons.error)}
             </div>
             <li class='ng-cloak salons' ng-repeat='salon in Chatroom.salons.elements | filter: Chatroom.filter track by salon.id_chatRoom'
                 ng-click='Chatroom.selectSalon(salon)'
@@ -34,7 +37,6 @@
               <div class="salonState" state='{(salon.dates | isSalonOpen)}'></div>
             </li>
           </ul>
-          <pre>{(Chatroom.salons | json)}</pre>
         </article>
 
         <article id="Messages">
@@ -43,19 +45,31 @@
             <div class="salonState" >
               <span state='{(Chatroom.selectedSalon.dates | isSalonOpen)}'>{(Chatroom.selectedSalon.dates | dateUntilSalon)}</span>
             </div>
-            <div class="icons" ng-click='Chatroom.infos.open = !Chatroom.infos.open'>
+            <div class="icons" ng-if='UserConnected' ng-click='Chatroom.infos.open = !Chatroom.infos.open'>
               <img show src="/assets/infos.svg" alt="">
               <img hide src="/assets/infos_close.svg" alt="">
             </div>
           </div>
+
           <div id="messages-container" ng-show='!Chatroom.rendering'>
-              <div class="ng-cloak loader-content" ng-if='Chatroom.messages.loading || Chatroom.messages.error'>
-                <div ng-show='!Chatroom.messages.error && Chatroom.messages.loading' taille='big' class="loading-spinner"></div>
-                <div class='error' ng-show='Chatroom.messages.error'>
-                  {(Chatroom.messages.error)}
+              <div class="ng-cloak loader-content" ng-if='Chatroom.messages.loading || Chatroom.messages.error || Chatroom.messages.noteRequired'>
+                <div ng-show='!Chatroom.messages.error && Chatroom.messages.loading && !Chatroom.messages.noteRequired' taille='big' class="loading-spinner"></div>
+                <div class='error' ng-show='Chatroom.messages.error || Chatroom.messages.noteRequired'>
+                  <span ng-if='!Chatroom.messages.noteRequired'>{(Chatroom.messages.error)}</span>
+                  <div ng-if='Chatroom.messages.noteRequired'>
+                      <span>Vous devez noter ce livre avant de rejoindre le salon</span>
+                      <rating-form vg-model='Chatroom.noteLivre'
+                                    vg-name='"nodeBookSalon"'
+                                    vg-editable='true'
+                                    vg-init='0'
+                                    vg-displaynote='true'
+                                    on-select-result='Chatroom.sendNote(note)'>
+                      </rating-form>
+                  </div>
                 </div>
               </div>
-              <div class=" ng-cloak message" ng-repeat='message in Chatroom.messages.elements track by message.id'
+
+              <div class=" ng-cloak message" ng-if='!Chatroom.messages.noteRequired && !Chatroom.messages.error' ng-repeat='message in Chatroom.messages.elements track by message.id'
                     self='{(message.id_user == UserInfos.id)}'
                     new='{(message.new)}'
                     ng-class='{
@@ -84,7 +98,7 @@
                   </div>
               </div>
           </div>
-          <div class="footer">
+          <div class="footer" ng-if='UserConnected'>
             <input id='sendMessage' autocomplete='off' type="text" name="message" value="" placeholder='Votre message...'
                     ng-model='Chatroom.messages.inputMessage'
                     vg-enter='Chatroom.messages.send()'>
@@ -94,7 +108,7 @@
           </div>
         </article>
 
-        <article id='Infos'>
+        <article id='Infos' ng-if='UserConnected'>
           <div class="header">
             Informations
           </div>
@@ -158,7 +172,7 @@
               <div class="info-book" ng-if='Chatroom.infos.book.username'>
                 <div class="i-b-title">Ajouté par </div>
                 <a class="i-b-content capitalize" ng-class='{link: Chatroom.infos.book}' target='_blank'
-                ng-href='{(Chatroom.infos.book.username || "#")}'>{(Chatroom.infos.book.username || '-')}</a>
+                ng-href='/profile/{(Chatroom.infos.book.userId || "#")}'>{(Chatroom.infos.book.username || '-')}</a>
               </div>
               <div class="info-book">
                 <div class="i-b-title">Description</div>
@@ -171,7 +185,7 @@
               </div>
             </div>
 
-            <div class="salon-list">
+            <div class="salon-list" ng-if='!Chatroom.messages.noteRequired'>
               <div class="s-l-title">
                 Options
               </div>
@@ -183,7 +197,7 @@
               </ul>
             </div>
 
-            <div class="salon-list">
+            <div class="salon-list" ng-if='!Chatroom.messages.noteRequired'>
               <div class="s-l-title">
                 Personnes
               </div>
@@ -195,6 +209,7 @@
               </ul>
             </div>
           </div>
+
         </article>
 
       </section>

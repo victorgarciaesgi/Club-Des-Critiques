@@ -64,21 +64,41 @@ io.on('connection', function (socket) {
       getUserInfos(user.id).then((user) => {
         socket.user = user;
         getAccessRooms().then((rooms) => {
-          socket.room = rooms[0];
-          getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
-            socket.room.messages = data.messages;
-            socket.room.users = data.users;
-            socket.room.vote = data.vote;
-            socket.join(socket.room.id_chatRoom);
-            socket.emit('Update:rooms', rooms, socket.room);
-          })
+          if (rooms.length > 0){
+            socket.room = rooms[0];
+            getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
+              socket.room.messages = data.messages;
+              socket.room.users = data.users;
+              socket.room.vote = data.vote;
+              socket.join(socket.room.id_chatRoom);
+              socket.emit('Update:users', data.users);
+              socket.emit('Update:rooms', rooms, socket.room);
+            })
+          }
+          else{
+            socket.emit('Update:rooms', rooms, null);
+          }
         })
       })
     });
 
     socket.on('Reload:rooms', function (user) {
       getAccessRooms().then((rooms) => {
-        socket.emit('Update:rooms', rooms, socket.room);
+        if (!socket.room){
+          if (rooms.length > 0){
+            getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
+              socket.room.messages = data.messages;
+              socket.room.users = data.users;
+              socket.room.vote = data.vote;
+              socket.join(socket.room.id_chatRoom);
+              socket.emit('Update:list', rooms);
+            })
+          }
+        }
+        else{
+          socket.emit('Update:rooms', rooms, socket.room);
+        }
+
       })
     });
 
@@ -87,6 +107,25 @@ io.on('connection', function (socket) {
         saveMessage(message).then((message) => {
           io.to(socket.room.id_chatRoom).emit('Update:newMessage',message);
         });
+    });
+
+    socket.on('New:note', function (data, callback) {
+        sendVote(data.idMedia, data.note).then((result) => {
+          getRoombyId(socket.room.id_chatRoom).then((room) => {
+            socket.room = room;
+            getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
+              socket.room.messages = data.messages;
+              socket.room.users = data.users;
+              socket.room.vote = data.vote;
+              callback({success: true});
+              socket.emit('Update:users', data.users);
+              socket.emit('Update:currentRoom', socket.room);
+            })
+          })
+          socket.emit()
+        }, (error) => {
+          callback({success: false});
+        })
     });
 
 
@@ -107,18 +146,25 @@ io.on('connection', function (socket) {
     // Inviter un user
     socket.on('Invite:User', function (data, callback) {
       var notif = new Notification('alert',socket.user.username + ' vous a invité au salon : ' + socket.room.name);
-      inviteUser(socket.room.id_chatRoom, data.user.id).then((r) => {
-        getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((result) => {
-          socket.room.users = result.users;
-          socket.room.vote = data.vote;
-          socket.broadcast.emit('Reload:rooms',socket.room);
-          io.to(socket.room.id_chatRoom).emit('Update:currentRoom',socket.room);
-          callback();
-          sendNotification(data.user.id, notif);
-        })
-      });
+      checkUser(socket.room.id_chatRoom, data.user.id).then(result => {
+        if (result.length == 0){
+          inviteUser(socket.room.id_chatRoom, data.user.id).then((r) => {
+            getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((result) => {
+              socket.room.users = result.users;
+              socket.room.vote = result.vote;
+              socket.broadcast.emit('Reload:rooms');
+              io.to(socket.room.id_chatRoom).emit('Update:users', result.users);
+              socket.emit('Update:currentRoom',socket.room);
+              callback({success: true})
+              sendNotification(data.user.id, notif);
+            })
+          });
+        }
+        else{
+          callback({error: 'L\'utilisateur est déjà dans le salon'})
+        }
 
-
+      })
     });
 
 
@@ -133,6 +179,7 @@ io.on('connection', function (socket) {
             socket.room.users = data.users;
             socket.room.vote = data.vote;
             socket.join(roomId);
+            socket.emit('Update:users', data.users);
             socket.emit('Update:currentRoom', socket.room);
           })
         })
@@ -143,7 +190,22 @@ io.on('connection', function (socket) {
       createRoom(newroom).then((roomId) => {
         callback(true);
         getAccessRooms().then((rooms) => {
-          socket.emit('Update:rooms', rooms, socket.room);
+          if (!socket.room){
+            if (rooms.length > 0){
+              socket.room = rooms[0];
+              getRoomInfos(socket.room.id_chatRoom, socket.room.id_media).then((data) => {
+                socket.room.messages = data.messages;
+                socket.room.users = data.users;
+                socket.room.vote = data.vote;
+                socket.join(socket.room.id_chatRoom);
+                socket.emit('Update:rooms', rooms, socket.room);
+              })
+            }
+          }
+          else{
+            socket.emit('Update:rooms', rooms, socket.room);
+          }
+
         })
       }, (error) => {
         callback(false);
@@ -181,8 +243,8 @@ io.on('connection', function (socket) {
       return new Promise(function (fulfill, reject){
         getMessages(roomId).then((messages) => {
           getUsersByRoom(roomId).then((users) => {
-            checkVote(socket.user.id, idMedia).then((vote) => {
-              fulfill({messages: messages, users: users, vote: vote});
+            checkVote(socket.user.id, roomId).then((vote) => {
+              fulfill({messages: messages, users: users, vote: vote.count});
             })
           })
         }, (error) => {reject(error)})
@@ -314,12 +376,43 @@ io.on('connection', function (socket) {
 
     function inviteUser(roomId, userId){
       return new Promise(function (fulfill, reject){
-        var query = `INSERT INTO chatroom_access VALUES (NULL, '${roomId}', ${BDD.escape(userId)}, '1', '1');`;
+        checkVote(userId, roomId).then((vote) => {
+          var query = `INSERT INTO chatroom_access VALUES (NULL, '${roomId}', ${BDD.escape(userId)}, '1', '1');`;
+          BDD.query(query,(err, rows, fields) => {
+            if (!err){
+              return fulfill();
+            }
+            else{reject(err);console.log('Erreur a Linvitation du user')}
+          });
+        })
+      })
+    }
+
+    function checkUser(roomId, userId){
+      return new Promise(function (fulfill, reject){
+        var query = `SELECT ca.id_user
+                    FROM chatroom_access ca
+                    WHERE ca.id_user = ${BDD.escape(userId)}
+                    AND ca.id_chatRoom = ${BDD.escape(roomId)}`;
+        BDD.query(query,(err, rows, fields) => {
+          if (!err){
+            return fulfill(rows);
+          }
+          else{reject(err);console.log('Erreur au check du user')}
+        });
+      })
+    }
+
+    function updateAccess(roomId, userId){
+      return new Promise(function (fulfill, reject){
+        var query = `UPDATE chatroom_access  set status = 1
+                    WHERE id_user = ${BDD.escape(userId)}
+                    AND id_chatRoom = ${BDD.escape(roomId)};`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             return fulfill();
           }
-          else{reject(err);console.log('Erreur a Linvitation du user')}
+          else{reject(err);console.log('Erreur a lupdate du user')}
         });
       })
     }
@@ -331,20 +424,21 @@ io.on('connection', function (socket) {
           if (!err){
             return fulfill(rows);
           }
-          else{reject(err);console.log('Erreur a la l\'envoie de note')}
+          else{reject(err);console.log('Erreur a la l\'envoi de note')}
         });
       })
     }
 
-    function checkVote(userId, idMedia){
+    function checkVote(userId, roomId){
       return new Promise(function (fulfill, reject){
         var query = `SELECT count(n.id_users) as count
-                    FROM note n
+                    FROM note n, chatroom c
                     WHERE n.id_users = ${BDD.escape(userId)}
-                    AND n.id_media= ${BDD.escape(idMedia)}`;
+                    AND c.id_chatRoom = ${BDD.escape(roomId)}
+                    AND n.id_media = c.id_media`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
-            return fulfill(rows);
+            return fulfill(rows[0]);
           }
           else{reject(err);console.log('Erreur lors du check vote')}
         });
@@ -390,7 +484,8 @@ io.on('connection', function (socket) {
                     FROM messages_chat_room m
                     LEFT JOIN user u on u.id = m.id_user
                     WHERE m.id_chatRoom = ${BDD.escape(roomId)}
-                    AND m.is_active = 1`;
+                    AND m.is_active = 1
+                    GROUP BY m.id`;
         BDD.query(query,(err, rows, fields) => {
           if (!err){
             return fulfill(rows);
