@@ -20,20 +20,23 @@ use AppBundle\Entity\Note;
 class NoteController extends Controller
 {
 
-    function decodeAjaxRequest($request){
+    function decodeAjaxRequest($request)
+    {
         $data = json_decode($request->getContent(), true);
         return $data['data'];
     }
 
-    function getSerializer(){
-      $encoders = array(new XmlEncoder(), new JsonEncoder());
-      $normalizers = array(new ObjectNormalizer());
-      return new Serializer($normalizers, $encoders);
+    function getSerializer()
+    {
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+        return new Serializer($normalizers, $encoders);
     }
 
-    function returnOneBookInfos($idMedia){
-      $em = $this->getDoctrine()->getManager();
-      $query = $em->createQuery("SELECT avg(n.note) as note, count(n.note) as nbrNotes
+    function returnOneBookInfos($idMedia)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery("SELECT avg(n.note) as note, count(n.note) as nbrNotes
                            FROM AppBundle:Media m
                            LEFT JOIN AppBundle:Note n
                            WITH m.idMedia = n.idMedia
@@ -41,13 +44,13 @@ class NoteController extends Controller
                            WITH u.id = m.idUsers
                            WHERE m.idMedia = :idMedia
                            GROUP by m.idMedia"
-      )->setParameter('idMedia',$idMedia)
-      ->setMaxResults(1);
-      $result = $query->getResult();
-      $book = $this->getSerializer()->normalize($result, 'null');
-      $book = $book[0];
+        )->setParameter('idMedia', $idMedia)
+            ->setMaxResults(1);
+        $result = $query->getResult();
+        $book = $this->getSerializer()->normalize($result, 'null');
+        $book = $book[0];
 
-      return $book;
+        return $book;
     }
 
 
@@ -55,7 +58,8 @@ class NoteController extends Controller
      * @Route("/note/add", options = { "expose" = true }, name="addNote")
      * @Method({"POST"})
      */
-    public function addNoteAction(Request $request){
+    public function addNoteAction(Request $request)
+    {
 
         $note = new Note();
 
@@ -67,7 +71,15 @@ class NoteController extends Controller
         $note->setIdUsers($this->getUser());
         $note->setNote($data['note']);
 
-        $em->persist($note);
+        $findExistingNote = $em->getRepository('AppBundle:Note')->
+        findOneBy(array('idMedia' => $note->getIdMedia(), 'idUsers' => $note->getIdUsers()));
+
+        if($findExistingNote!=null){
+            $findExistingNote->setNote($data['note']);
+            $em->persist($findExistingNote);
+        }else{
+            $em->persist($note);
+        }
         $em->flush();
         $em->clear();
         $newMedia = $this->returnOneBookInfos($data['idMedia']);
