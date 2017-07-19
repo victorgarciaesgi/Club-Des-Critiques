@@ -157,6 +157,8 @@
 
       .admin-books{
         position: relative;
+        display: flex;
+        align-items: center;
         height: 40px;
         width: 100%;
         flex: 0 0 auto;

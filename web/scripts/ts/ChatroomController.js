@@ -68,8 +68,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
               $rootScope.Alerts.add('error','Error lors de l\'envoi de la note');
             }
           });
+          this.noteLivre = 0;
         }, 300);
-        this.noteLivre = 0;
+
       }
     },
     selectedSalon: {},
@@ -101,6 +102,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
     selectSalon(salon){
       if(this.selectedSalon.id_chatRoom != salon.id_chatRoom){
         this.messages.loading = true;
+        this.infos.open = true;
         $scope.Chatroom.messages.error = null;
         $scope.Chatroom.messages.elements = [];
         socket.emit('Switch:room', salon.id_chatRoom);
@@ -142,6 +144,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         if (room.vote > 0){
           this.salons.notAllowed = false;
           this.salons.noteRequired = false;
+          this.infos.details = false;
           if (room.messages.length == 0){
             this.messages.loading = false;
             this.messages.error = 'Aucun message';
@@ -161,6 +164,7 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         this.salons.noteRequired = false;
         this.salons.notAllowed = true;
         this.salons.notJoined = true;
+        this.infos.details = true;
       }
 
 
@@ -173,7 +177,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         rooms.forEach((element) => {
           element.dates = {end: element.date_end,start: element.date_start};
         })
-        if (all){$scope.Chatroom.salons.allElements = rooms}
+        if (all){
+          $scope.Chatroom.salons.allElements = rooms;
+        }
         else {$scope.Chatroom.salons.elements = rooms;}
       }
       else if(!all){
@@ -181,6 +187,9 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
         $scope.Chatroom.salons.error = 'Aucun salon';
         $scope.Chatroom.messages.loading = false;
         $scope.Chatroom.messages.error = 'Vous devez rejoindre un salon ou en créer un pour discuter';
+      }
+      else{
+        $scope.Chatroom.salons.error = null;
       }
     },
     init(){
@@ -296,9 +305,13 @@ MainApp.controller('chatroom', function ($scope, $rootScope, AjaxRequest, moment
   });
 
   socket.on('Update:rooms', function(rooms, current_room) {
+    $scope.Chatroom.loadList(rooms, false);
     if (rooms.length > 0){
-      $scope.Chatroom.loadList(rooms, false);
+      $scope.Chatroom.infos.open = true;
       $scope.Chatroom.load(current_room);
+    }
+    else{
+      $scope.Chatroom.infos.open = false;
     }
   });
 

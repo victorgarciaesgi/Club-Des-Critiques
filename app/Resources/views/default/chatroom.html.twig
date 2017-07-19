@@ -11,7 +11,7 @@
             <img class='createSalon popup-bouton' popup="popup-createSalon" src="/assets/add_green.svg" alt="Ajouter un Salon">
           </div>
           <ul class="list-salons">
-            <ul class="ui-tabs">
+            <div class="ui-tabs">
               <li ng-repeat='tab in Chatroom.tabs.elements track by $index'>
                 <input id='radio-{(tab.value)}' type="radio" ng-model='Chatroom.salons.all'
                 name="libraryTabs" ng-value="{(tab.value)}" ng-change='Chatroom.changeView()'>
@@ -19,12 +19,12 @@
                   {(tab.title)}
                 </label>
               </li>
-            </ul>
+            </div>
             <div class="salons-search">
               <input class='s-search' type="text" ng-model='Chatroom.filter.name' placeholder="Rechercher un salon">
               <div class="s-icon"></div>
             </div>
-            <div class='error' ng-show='Chatroom.salons.error'>
+            <div class='error' ng-show='Chatroom.salons.error && !Chatroom.salons.all && Chatroom.salons.elements.length == 0'>
               {(Chatroom.salons.error)}
             </div>
             <ul ng-show='!Chatroom.salons.all'>
@@ -132,7 +132,7 @@
                   </div>
               </div>
           </div>
-          <div class="footer" ng-if='UserConnected'>
+          <div class="footer" ng-if='UserConnected && !Chatroom.salons.notAllowed'>
             <input id='sendMessage' autocomplete='off' type="text" name="message" value="" placeholder='Votre message...'
                     ng-model='Chatroom.messages.inputMessage'
                     vg-enter='Chatroom.messages.send()'>
