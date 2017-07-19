@@ -24,7 +24,7 @@
               <input class='s-search' type="text" ng-model='Chatroom.filter.name' placeholder="Rechercher un salon">
               <div class="s-icon"></div>
             </div>
-            <div class='error' ng-show='Chatroom.salons.error'>
+            <div class='error' ng-show='Chatroom.salons.error && !Chatroom.salons.all && Chatroom.salons.elements.length == 0'>
               {(Chatroom.salons.error)}
             </div>
             <ul ng-show='!Chatroom.salons.all'>

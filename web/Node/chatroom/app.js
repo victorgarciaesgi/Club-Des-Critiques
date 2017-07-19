@@ -187,7 +187,7 @@ io.on('connection', function (socket) {
 
     // Clicker sur une autre room
     socket.on('Switch:room', function(roomId){
-        socket.leave(socket.room.id_chatRoom);
+        if (socket.room){socket.leave(socket.room.id_chatRoom);}
         getRoombyId(roomId).then((room) => {
           checkUser(roomId, socket.user.id).then(result => {
             socket.room = room;
